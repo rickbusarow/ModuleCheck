@@ -24,14 +24,13 @@ import java.io.Serializable
  * see (Niklas Baudy's
  * [gradle-maven-publish-plugin](https://github.com/vanniktech/gradle-maven-publish-plugin))
  *
- * @param gradlePath the path of the Gradle project, such as `:workflow-core`
- * @param group The maven "group", which should always be `com.rickbusarow.modulecheck`.
- * @param artifactId The maven "module", such as `workflow-core-jvm`.
- * @param description The description of this specific artifact, such as "Workflow Core".
- * @param packaging `aar` or `jar`.
- * @param javaVersion the java version of the artifact (typically 8 or 11). If not set explicitly,
- *   this defaults to the JDK version used to build the artifact.
- * @since 0.13.0
+ * @property gradlePath the path of the Gradle project, such as `:workflow-core`
+ * @property group The maven "group", which should always be `com.rickbusarow.modulecheck`.
+ * @property artifactId The maven "module", such as `workflow-core-jvm`.
+ * @property description The description of this specific artifact, such as "Workflow Core".
+ * @property packaging `aar` or `jar`.
+ * @property javaVersion the java version of the artifact (typically 8 or 11). If
+ *   not set explicitly, this defaults to the JDK version used to build the artifact.
  */
 @JsonClass(generateAdapter = true)
 data class ArtifactConfig(

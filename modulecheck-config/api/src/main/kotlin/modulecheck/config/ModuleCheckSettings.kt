@@ -33,9 +33,9 @@ interface ModuleCheckSettings {
   var deleteUnused: Boolean
 
   /**
-   * If true, ModuleCheck will collect a trace of expensive and delicate operations. This trace is
-   * added to any thrown exceptions. Tracing is disabled by default, as it does incur a performance
-   * penalty.
+   * If true, ModuleCheck will collect a trace of expensive and delicate
+   * operations. This trace is added to any thrown exceptions. Tracing
+   * is disabled by default, as it does incur a performance penalty.
    *
    * Default value is false
    *
@@ -59,9 +59,9 @@ interface ModuleCheckSettings {
   var ignoreUnusedFinding: Set<String>
 
   /**
-   * Set of modules which will not be excluded from error reporting. The most common use-case would
-   * be if the module is the root of a dependency graph, like an Android application module, and it
-   * needs everything in its classpath for dependency injection purposes.
+   * Set of modules which will not be excluded from error reporting. The most common use-case
+   * would be if the module is the root of a dependency graph, like an Android application
+   * module, and it needs everything in its classpath for dependency injection purposes.
    *
    * @since 0.12.0
    */
@@ -77,8 +77,8 @@ interface ModuleCheckSettings {
   var additionalKaptMatchers: List<KaptMatcher>
 
   /**
-   * List of [CodeGeneratorBinding]'s to be checked, which aren't included by default with
-   * ModuleCheck.
+   * List of [CodeGeneratorBinding]'s to be checked,
+   * which aren't included by default with ModuleCheck.
    *
    * ```
    * moduleCheck {

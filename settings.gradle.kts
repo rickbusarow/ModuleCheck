@@ -26,7 +26,6 @@ pluginManagement {
       }
     }
   }
-  @Suppress("UnstableApiUsage")
   includeBuild("build-logic")
 }
 

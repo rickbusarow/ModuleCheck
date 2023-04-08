@@ -27,10 +27,8 @@ abstract class WebsitePlugin : Plugin<Project> {
     target.checkProjectIsRoot()
 
     /**
-     * Looks for all references to ModuleCheck artifacts in the md/mdx files in the un-versioned
-     * /website/docs. Updates all versions to the pre-release version.
-     *
-     * @since 0.13.0
+     * Looks for all references to ModuleCheck artifacts in the md/mdx files in the
+     * un-versioned /website/docs. Updates all versions to the pre-release version.
      */
     target.tasks.register("checkWebsiteNextDocsVersionRefs") { task ->
 
@@ -49,10 +47,8 @@ abstract class WebsitePlugin : Plugin<Project> {
     }
 
     /**
-     * Looks for all references to ModuleCheck artifacts in the md/mdx files in the un-versioned
-     * /website/docs. Updates all versions to the pre-release version.
-     *
-     * @since 0.13.0
+     * Looks for all references to ModuleCheck artifacts in the md/mdx files in the
+     * un-versioned /website/docs. Updates all versions to the pre-release version.
      */
     target.tasks.register("updateWebsiteNextDocsVersionRefs") { task ->
 
@@ -72,8 +68,6 @@ abstract class WebsitePlugin : Plugin<Project> {
 
     /**
      * Updates the "moduleCheck" version in package.json.
-     *
-     * @since 0.13.0
      */
     target.tasks.register("updateWebsitePackageJsonVersion") { task ->
 
@@ -112,8 +106,6 @@ abstract class WebsitePlugin : Plugin<Project> {
 
     /**
      * Updates the "moduleCheck" version in package.json.
-     *
-     * @since 0.13.0
      */
     target.tasks.register("checkWebsitePackageJsonVersion") { task ->
 
@@ -155,10 +147,8 @@ abstract class WebsitePlugin : Plugin<Project> {
     }
 
     /**
-     * Looks for all references to ModuleCheck artifacts in the project README.md to the current
-     * released version.
-     *
-     * @since 0.13.0
+     * Looks for all references to ModuleCheck artifacts in
+     * the project README.md to the current released version.
      */
     target.tasks.register("checkProjectReadmeVersionRefs") { task ->
 
@@ -178,10 +168,8 @@ abstract class WebsitePlugin : Plugin<Project> {
     }
 
     /**
-     * Looks for all references to ModuleCheck artifacts in the project README.md to the current
-     * released version.
-     *
-     * @since 0.13.0
+     * Looks for all references to ModuleCheck artifacts in
+     * the project README.md to the current released version.
      */
     target.tasks.register("updateProjectReadmeVersionRefs") { task ->
 

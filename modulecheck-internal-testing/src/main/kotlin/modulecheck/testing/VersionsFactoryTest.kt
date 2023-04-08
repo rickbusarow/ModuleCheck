@@ -18,25 +18,21 @@ package modulecheck.testing
 import org.junit.jupiter.api.DynamicTest
 
 /**
- * Convenience interface for a test which uses [VersionsFactory] in order to create [dynamicTest]s
- * for a JUnit5 test factory.
- *
- * @since 0.13.0
+ * Convenience interface for a test which uses [VersionsFactory]
+ * in order to create [dynamicTest]s for a JUnit5 test factory.
  */
 interface VersionsFactoryTest : VersionsFactory {
 
   /**
    * @return the latest version of valid dependencies which is not excluded by the current rules
-   * @since 0.13.0
    */
   fun defaultTestVersions(): TestVersions {
     return nonExhaustiveDefaults()
   }
 
   /**
-   * @return a list of [DynamicTest] from all valid versions combinations, optionally filtered by
-   *   [filter]. [action] is performed against each element.
-   * @since 0.13.0
+   * @return a list of [DynamicTest] from all valid versions combinations,
+   *   optionally filtered by [filter]. [action] is performed against each element.
    */
   fun factory(
     exhaustive: Boolean = this.exhaustive,
@@ -54,7 +50,6 @@ interface VersionsFactoryTest : VersionsFactory {
   /**
    * hook for performing setup/teardown for each test within a base test class
    *
-   * @since 0.13.0
    */
   fun dynamicTest(
     subject: TestVersions,

@@ -119,10 +119,7 @@ sealed class ReferenceName(name: String) : McName, ResolvableMcName {
       language = language
     )
 
-    /**
-     * @return a basic [ReferenceName] for this name and language.
-     * @since 0.13.0
-     */
+    /** @return a basic [ReferenceName] for this name and language. */
     fun String.asReferenceName(
       language: CompatibleLanguage
     ): ReferenceName = ReferenceName(this, language)

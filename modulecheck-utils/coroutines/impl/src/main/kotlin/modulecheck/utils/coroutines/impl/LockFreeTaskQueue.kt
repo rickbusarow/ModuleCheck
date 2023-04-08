@@ -23,20 +23,20 @@ private typealias Core<E> = LockFreeTaskQueueCore<E>
 /**
  * Lock-free Multiply-Producer xxx-Consumer Queue for task scheduling purposes.
  *
- * **Note 1: This queue is NOT linearizable. It provides only quiescent consistency for its
- * operations.** However, this guarantee is strong enough for task-scheduling purposes. In
- * particular, the following execution is permitted for this queue, but is not permitted for a
- * linearizable queue:
+ * **Note 1: This queue is NOT linearizable. It provides only quiescent
+ * consistency for its operations.** However, this guarantee is strong enough
+ * for task-scheduling purposes. In particular, the following execution is
+ * permitted for this queue, but is not permitted for a linearizable queue:
  *
  * ```
  * Thread 1: addLast(1) = true, removeFirstOrNull() = null
  * Thread 2: addLast(2) = 2 // this operation is concurrent with both operations in the first thread
  * ```
  *
- * **Note 2: When this queue is used with multiple consumers (`singleConsumer == false`) this it is
- * NOT lock-free.** In particular, consumer spins until producer finishes its operation in the case
- * of near-empty queue. It is a very short window that could manifest itself rarely and only under
- * specific load conditions, but it still deprives this algorithm of its lock-freedom.
+ * **Note 2: When this queue is used with multiple consumers (`singleConsumer == false`) this
+ * it is NOT lock-free.** In particular, consumer spins until producer finishes its operation in
+ * the case of near-empty queue. It is a very short window that could manifest itself rarely and
+ * only under specific load conditions, but it still deprives this algorithm of its lock-freedom.
  *
  * @since 0.12.0
  */
@@ -86,8 +86,8 @@ internal open class LockFreeTaskQueue<E : Any>(
 /**
  * A symbol class that is used to define unique constants that are self-explanatory in debugger.
  *
- * @suppress **This is unstable API and it is subject to change.**
  * @since 0.12.0
+ * @suppress **This is unstable API and it is subject to change.**
  */
 internal class Symbol(
   @JvmField

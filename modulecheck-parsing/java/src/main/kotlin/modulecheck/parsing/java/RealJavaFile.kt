@@ -241,8 +241,8 @@ class RealJavaFile(
 }
 
 /**
- * Includes all types referenced by the receiver [ClassOrInterfaceType], optionally including
- * itself.
+ * Includes all types referenced by the receiver
+ * [ClassOrInterfaceType], optionally including itself.
  *
  * For instance, given the function:
  *

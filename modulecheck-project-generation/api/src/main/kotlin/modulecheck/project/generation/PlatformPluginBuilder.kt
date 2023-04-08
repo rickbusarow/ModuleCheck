@@ -116,10 +116,7 @@ interface AndroidPlatformPluginBuilder<T : AndroidPlatformPlugin> : PlatformPlug
   var kotlinAndroidExtensionEnabled: Boolean
   val manifests: MutableMap<SourceSetName, File>
 
-  /**
-   * @see AndroidPlatformPlugin.namespaces
-   * @since 0.13.0
-   */
+  /** @see AndroidPlatformPlugin.namespaces */
   val namespaces: MutableMap<SourceSetName, PackageName>
   val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>>
 }

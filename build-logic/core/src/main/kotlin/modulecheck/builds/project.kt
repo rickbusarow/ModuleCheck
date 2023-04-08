@@ -30,21 +30,20 @@ import org.gradle.composite.internal.DefaultIncludedBuild
 import org.gradle.composite.internal.DefaultIncludedBuild.IncludedBuildImpl
 
 /**
- * Determines if this project is the root project **and** root of a composite build, if it's part of
- * a composite build.
+ * Determines if this project is the root project **and** root
+ * of a composite build, if it's part of a composite build.
  *
- * A composite build is a build using 'includeBuild(...)' in settings.gradle[.kts]. In composite
- * builds, the root of an included build is also a `rootProject` inside that included build. So
- * within that composite build, there are multiple projects for which `project == rootProject` would
- * return true.
+ * A composite build is a build using 'includeBuild(...)' in settings.gradle[.kts].
+ * In composite builds, the root of an included build is also a `rootProject`
+ * inside that included build. So within that composite build, there are
+ * multiple projects for which `project == rootProject` would return true.
  *
  * The Project property [gradle][org.gradle.api.Project.getGradle] refers to the specific
- * [gradle][org.gradle.api.invocation.Gradle] instance in that invocation of `./gradlew`, and the
- * only time [gradle.parent][org.gradle.api.invocation.Gradle.getParent] is null is when it's at the
- * true root of that tree.
+ * [gradle][org.gradle.api.invocation.Gradle] instance in that invocation of `./gradlew`,
+ * and the only time [gradle.parent][org.gradle.api.invocation.Gradle.getParent]
+ * is null is when it's at the true root of that tree.
  *
  * @return true if this project is the root of the entire build, else false
- * @since 0.13.0
  */
 fun Project.isRootOfComposite(): Boolean {
   return this == rootProject && gradle.parent == null
@@ -95,7 +94,6 @@ fun Project.registerSimpleGenerationTaskAsDependency(
 
 /**
  * @return the root project of this included build
- * @since 0.13.0
  */
 fun IncludedBuild.rootProject(): ProjectInternal {
   return requireProjectRegistry().rootProject!!
@@ -103,16 +101,14 @@ fun IncludedBuild.rootProject(): ProjectInternal {
 
 /**
  * @return all projects in this included build
- * @since 0.13.0
  */
 fun IncludedBuild.allProjects(): Set<ProjectInternal> {
   return requireProjectRegistry().allProjects
 }
 
 /**
- * @return the projects in this included build, or throws if the [IncludedBuild] is of an
- *   unexpected type
- * @since 0.13.0
+ * @return the projects in this included build, or throws
+ *   if the [IncludedBuild] is of an unexpected type
  */
 fun IncludedBuild.requireProjectRegistry(): ProjectRegistry<ProjectInternal> {
   require(this is IncludedBuildImpl) {
@@ -139,8 +135,8 @@ fun Gradle.allIncludedProjects(): List<ProjectInternal> {
 }
 
 /**
- * Look at the internal modules of an included build, find any tasks with a matching name, and
- * return them all.
+ * Look at the internal modules of an included build, find
+ * any tasks with a matching name, and return them all.
  *
  * Note that this forces the included build to configure.
  *
@@ -151,10 +147,10 @@ fun Gradle.includedAllProjectsTasks(taskName: String): List<TaskCollection<Task>
 }
 
 /**
- * Look at the root project of an included build, find any task with a matching name, and return it
- * or null. This is an alternative to the standard
- * [IncludedBuild.task][org.gradle.api.initialization.IncludedBuild.task] function in that the
- * standard `task` version will throw an exception if the task is not registered.
+ * Look at the root project of an included build, find any task with a
+ * matching name, and return it or null. This is an alternative to the standard
+ * [IncludedBuild.task][org.gradle.api.initialization.IncludedBuild.task] function in
+ * that the standard `task` version will throw an exception if the task is not registered.
  *
  * Note that this forces the included build to configure.
  *
@@ -174,8 +170,8 @@ fun Gradle.includedRootProjectsTasks(taskName: String): List<TaskCollection<Task
 }
 
 /**
- * Determines whether the receiver project is the "real" root of this composite build, as opposed to
- * the root projects of included builds.
+ * Determines whether the receiver project is the "real" root of this
+ * composite build, as opposed to the root projects of included builds.
  *
  * @since 0.10.0
  */

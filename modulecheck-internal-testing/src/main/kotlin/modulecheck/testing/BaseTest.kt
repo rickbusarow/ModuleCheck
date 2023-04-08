@@ -31,14 +31,14 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
   /**
    * The unique directory for an individual test, recreated each time.
    *
-   * For a standard `@Test`-annotated test, this directory will be:
-   * `$projectDir/build/tests/$className/$functionName`
+   * For a standard `@Test`-annotated test, this directory will
+   * be: `$projectDir/build/tests/$className/$functionName`
    *
    * For a `TestFactory` test, this will be:
    * `$projectDir/build/tests/$className/$functionName/$displayName`
    *
-   * This directory is deleted at the **start** of test execution, so it's always fresh, but the
-   * source is still there after the test completes.
+   * This directory is deleted at the **start** of test execution, so it's
+   * always fresh, but the source is still there after the test completes.
    *
    * @since 0.12.0
    */
@@ -74,8 +74,8 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
   protected var testFunctionName: String by Delegates.notNull()
 
   /**
-   * This is typically the same as the function name, but for dynamic tests, the name for each
-   * permutation is appended.
+   * This is typically the same as the function name, but for
+   * dynamic tests, the name for each permutation is appended.
    *
    * @since 0.12.0
    */

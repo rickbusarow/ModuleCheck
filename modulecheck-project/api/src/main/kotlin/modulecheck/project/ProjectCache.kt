@@ -35,10 +35,10 @@ class ProjectCache @Inject constructor() : HasTraceTags {
   val values: MutableCollection<McProject> get() = delegate.values
 
   /**
-   * N.B. This [path] argument can be the base [ProjectPath] instead of one of the concrete types
-   * ([StringProjectPath], [TypeSafeProjectPath]), because all project paths are compared using the
-   * derived type-safe variant. So, there are no cache misses when a project is already stored using
-   * the String variant, but then we attempt to look it up via the type-safe one.
+   * N.B. This [path] argument can be the base [ProjectPath] instead of one of the concrete
+   * types ([StringProjectPath], [TypeSafeProjectPath]), because all project paths are compared
+   * using the derived type-safe variant. So, there are no cache misses when a project is already
+   * stored using the String variant, but then we attempt to look it up via the type-safe one.
    *
    * @since 0.12.0
    */

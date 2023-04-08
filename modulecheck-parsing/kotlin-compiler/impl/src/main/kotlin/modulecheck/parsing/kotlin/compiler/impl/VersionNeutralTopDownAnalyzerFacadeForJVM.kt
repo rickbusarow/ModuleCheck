@@ -39,25 +39,21 @@ import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProvid
 import org.jetbrains.kotlin.storage.StorageManager
 
 /**
- * This is a compatibility shim for invoking Kotlin 1.6.2x compiler analysis using the 1.6.10
- * classes. The `explicitCompilerEnvironment: TargetEnvironment = CompilerEnvironment` argument with
- * default was added in 1.6.20, and causes a `NotSuchMethodError` exception if parsing a 1.6.2x
- * project with 1.6.10 source.
- *
- * @since 0.13.0
+ * This is a compatibility shim for invoking Kotlin 1.6.2x compiler analysis using the
+ * 1.6.10 classes. The `explicitCompilerEnvironment: TargetEnvironment = CompilerEnvironment`
+ * argument with default was added in 1.6.20, and causes a `NotSuchMethodError`
+ * exception if parsing a 1.6.2x project with 1.6.10 source.
  */
 object VersionNeutralTopDownAnalyzerFacadeForJVM {
   /**
-   * Performs the full analysis of this source set/configuration, returning the [AnalysisResult] so
-   * that we can use the [BindingContext][org.jetbrains.kotlin.resolve.BindingContext] for type
-   * resolution.
+   * Performs the full analysis of this source set/configuration,
+   * returning the [AnalysisResult] so that we can use the
+   * [BindingContext][org.jetbrains.kotlin.resolve.BindingContext] for type resolution.
    *
-   * Note that this process is eager, and can be very time-consuming for large projects. This
-   * function is called when the lazy
-   * t.bindingContext][modulecheck.parsing.kotlin.compiler.KotlinEnvironment.bindingContextDeferred]
+   * Note that this process is eager, and can be very time-consuming
+   * for large projects. This function is called when the lazy
+   * [bindingContext][modulecheck.parsing.kotlin.compiler.KotlinEnvironment.bindingContextDeferred]
    * is accessed.
-   *
-   * @since 0.13.0
    */
   @Suppress("LongParameterList")
   fun analyzeFilesWithJavaIntegration(

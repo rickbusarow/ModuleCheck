@@ -20,18 +20,18 @@ import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.PluginDefinition
 
 /**
- * Models a special kind of dependency, where the symbols which determine whether it's "used" are
- * actually provided by a different artifact.
+ * Models a special kind of dependency, where the symbols which determine
+ * whether it's "used" are actually provided by a different artifact.
  *
  * For instance, an annotation processor `com.example.foo:foo-generator` does not have any
- * declarations which show up in a library's source code. Instead, it looks for annotations from
- * `com.example.foo:foo-annotations` in order to trigger code generation. So, in order for us to
- * determine whether `foo-generator` is used, we must look for those annotations. If there are no
- * annotations, then `foo-generator` isn't triggered and could probably be removed.
+ * declarations which show up in a library's source code. Instead, it looks for annotations
+ * from `com.example.foo:foo-annotations` in order to trigger code generation. So, in order
+ * for us to determine whether `foo-generator` is used, we must look for those annotations. If
+ * there are no annotations, then `foo-generator` isn't triggered and could probably be removed.
  *
- * N.B. Code generators often evolve over time, adding new annotations. So if a defined generator is
- * throwing a false positive saying it's unused, it's best to first check the list of
- * [annotationNames] to make sure it's exhaustive.
+ * N.B. Code generators often evolve over time, adding new annotations. So if a
+ * defined generator is throwing a false positive saying it's unused, it's best
+ * to first check the list of [annotationNames] to make sure it's exhaustive.
  *
  * @since 0.12.0
  */
@@ -41,8 +41,8 @@ import modulecheck.model.dependency.PluginDefinition
 //   and/or a keyword matcher.
 sealed class CodeGeneratorBinding(
   /**
-   * The human-readable name for this type of extension, like 'annotation processor' or 'KSP
-   * extension'
+   * The human-readable name for this type of extension,
+   * like 'annotation processor' or 'KSP extension'
    *
    * @since 0.12.0
    */
@@ -52,9 +52,9 @@ sealed class CodeGeneratorBinding(
    * compilation, such as `kapt`, `annotationProcessor`, `ksp`, or `anvil`. All other configuration
    * names for downstream source sets are derived from these base names, like `kapt` -> `kaptTest`.
    *
-   * This should almost always just be a single name. It's a List because annotations processors may
-   * be `kapt` or `annotationProcessor` depending upon whether they're applied to a Kotlin module or
-   * a pure Java one.
+   * This should almost always just be a single name. It's a List because
+   * annotations processors may be `kapt` or `annotationProcessor` depending
+   * upon whether they're applied to a Kotlin module or a pure Java one.
    *
    * @since 0.12.0
    */
@@ -62,11 +62,11 @@ sealed class CodeGeneratorBinding(
 ) : CodeGenerator {
 
   /**
-   * Represents an annotation processor like Dagger or Room, which could be used via `kapt` in a
-   * Kotlin library or `annotationProcessor` in a pure Java library.
+   * Represents an annotation processor like Dagger or Room, which could be used
+   * via `kapt` in a Kotlin library or `annotationProcessor` in a pure Java library.
    *
-   * For any processor which also has a KSP implementation, that extension should just be listed
-   * twice.
+   * For any processor which also has a KSP implementation,
+   * that extension should just be listed twice.
    *
    * @since 0.12.0
    */
@@ -82,8 +82,8 @@ sealed class CodeGeneratorBinding(
   /**
    * Represents KSP extensions, like Moshi or Room.
    *
-   * For any extension which also has annotation processor implementation, that extension should
-   * just be listed twice.
+   * For any extension which also has annotation processor
+   * implementation, that extension should just be listed twice.
    *
    * @since 0.12.0
    */
@@ -97,8 +97,8 @@ sealed class CodeGeneratorBinding(
   )
 
   /**
-   * Represents code generators which **extend** Anvil's codegen functionality, but **not Anvil
-   * itself**.
+   * Represents code generators which **extend** Anvil's
+   * codegen functionality, but **not Anvil itself**.
    *
    * @see KotlinCompilerPlugin
    * @since 0.12.0

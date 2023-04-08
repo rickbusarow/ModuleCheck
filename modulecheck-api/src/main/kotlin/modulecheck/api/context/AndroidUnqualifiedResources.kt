@@ -44,8 +44,8 @@ data class AndroidUnqualifiedResources(
     get() = Key
 
   /**
-   * @return every [UnqualifiedAndroidResource] declared within this [sourceSetName], like
-   *   `R.string.app_name`
+   * @return every [UnqualifiedAndroidResource] declared
+   *   within this [sourceSetName], like `R.string.app_name`
    * @since 0.12.0
    */
   suspend fun get(sourceSetName: SourceSetName): LazySet<UnqualifiedAndroidResource> {
@@ -112,8 +112,8 @@ suspend fun ProjectContext.androidUnqualifiedResources(): AndroidUnqualifiedReso
   get(AndroidUnqualifiedResources)
 
 /**
- * @return every [UnqualifiedAndroidResource] declared within this [sourceSetName], like
- *   `R.string.app_name`
+ * @return every [UnqualifiedAndroidResource] declared
+ *   within this [sourceSetName], like `R.string.app_name`
  * @since 0.12.0
  */
 suspend fun ProjectContext.androidUnqualifiedResourcesForSourceSetName(

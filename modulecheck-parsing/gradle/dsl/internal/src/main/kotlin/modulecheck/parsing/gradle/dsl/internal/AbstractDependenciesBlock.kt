@@ -208,8 +208,8 @@ abstract class AbstractDependenciesBlock(
   }
 
   /**
-   * Compares the target parsed string to the un-parsed lines of the original dependencies block,
-   * and returns the index of **the last row** which matches the parsed string.
+   * Compares the target parsed string to the un-parsed lines of the original dependencies
+   * block, and returns the index of **the last row** which matches the parsed string.
    *
    * So, given the target:
    *
@@ -232,8 +232,8 @@ abstract class AbstractDependenciesBlock(
    *
    * This function would return index `4`, because rows 2-4 match the target parsed string.
    *
-   * From this value, [getOriginalString] will return a multi-line string which includes the blank
-   * line and the comment.
+   * From this value, [getOriginalString] will return a multi-line
+   * string which includes the blank line and the comment.
    *
    * @since 0.12.0
    */

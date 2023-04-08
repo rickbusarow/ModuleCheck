@@ -19,8 +19,8 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 /**
- * Static Analysis Results Format (SARIF) Version 2.1.0 JSON Schema: a standard format for the
- * output of static analysis tools.
+ * Static Analysis Results Format (SARIF) Version 2.1.0 JSON Schema:
+ * a standard format for the output of static analysis tools.
  *
  * @since 0.12.0
  */
@@ -147,8 +147,8 @@ data class ExternalProperties(
   val invocations: List<Invocation>? = null,
 
   /**
-   * An array of logical locations such as namespaces, types or functions that will be merged with a
-   * separate run.
+   * An array of logical locations such as namespaces, types
+   * or functions that will be merged with a separate run.
    *
    * @since 0.12.0
    */
@@ -180,8 +180,8 @@ data class ExternalProperties(
   val results: List<SarifResult>? = null,
 
   /**
-   * A stable, unique identifer for the run associated with this external properties object, in the
-   * form of a GUID.
+   * A stable, unique identifer for the run associated with
+   * this external properties object, in the form of a GUID.
    *
    * @since 0.12.0
    */
@@ -246,8 +246,8 @@ data class ExternalProperties(
 )
 
 /**
- * A physical or virtual address, or a range of addresses, in an 'addressable region' (memory or a
- * binary file).
+ * A physical or virtual address, or a range of addresses,
+ * in an 'addressable region' (memory or a binary file).
  *
  * The address of the location.
  *
@@ -280,9 +280,9 @@ data class Address(
   val index: Int? = null,
 
   /**
-   * An open-ended string that identifies the address kind. 'data', 'function',
-   * 'header','instruction', 'module', 'page', 'section', 'segment', 'stack', 'stackFrame', 'table'
-   * are well-known values.
+   * An open-ended string that identifies the address kind. 'data',
+   * 'function', 'header','instruction', 'module', 'page', 'section',
+   * 'segment', 'stack', 'stackFrame', 'table' are well-known values.
    *
    * @since 0.12.0
    */
@@ -386,8 +386,8 @@ data class Artifact(
   val encoding: String? = null,
 
   /**
-   * A dictionary, each of whose keys is the name of a hash function and each of whose values is the
-   * hashed value of the artifact produced by the specified hash function.
+   * A dictionary, each of whose keys is the name of a hash function and each of whose
+   * values is the hashed value of the artifact produced by the specified hash function.
    *
    * @since 0.12.0
    */
@@ -395,8 +395,8 @@ data class Artifact(
   val hashes: Map<String, String>? = null,
 
   /**
-   * The Coordinated Universal Time (UTC) date and time at which the artifact was most recently
-   * modified. See "Date/time properties" in the SARIF spec for the required format.
+   * The Coordinated Universal Time (UTC) date and time at which the artifact was most
+   * recently modified. See "Date/time properties" in the SARIF spec for the required format.
    *
    * @since 0.12.0
    */
@@ -460,8 +460,8 @@ data class Artifact(
   val roles: List<Role>? = null,
 
   /**
-   * Specifies the source language for any artifact object that refers to a text file that contains
-   * source code.
+   * Specifies the source language for any artifact object
+   * that refers to a text file that contains source code.
    *
    * @since 0.12.0
    */
@@ -487,8 +487,8 @@ data class Artifact(
 @JsonClass(generateAdapter = true)
 data class ArtifactContent(
   /**
-   * MIME Base64-encoded content from a binary artifact, or from a text artifact in its original
-   * encoding.
+   * MIME Base64-encoded content from a binary artifact,
+   * or from a text artifact in its original encoding.
    *
    * @since 0.12.0
    */
@@ -504,8 +504,8 @@ data class ArtifactContent(
   val properties: PropertyBag? = null,
 
   /**
-   * An alternate rendered representation of the artifact (e.g., a decompiled representation of a
-   * binary region).
+   * An alternate rendered representation of the artifact
+   * (e.g., a decompiled representation of a binary region).
    *
    * @since 0.12.0
    */
@@ -522,20 +522,20 @@ data class ArtifactContent(
 )
 
 /**
- * An alternate rendered representation of the artifact (e.g., a decompiled representation of a
- * binary region).
+ * An alternate rendered representation of the artifact
+ * (e.g., a decompiled representation of a binary region).
  *
  * A message string or message format string rendered in multiple formats.
  *
  * A comprehensive description of the tool component.
  *
- * A description of the report. Should, as far as possible, provide details sufficient to enable
- * resolution of any problem indicated by the result.
+ * A description of the report. Should, as far as possible, provide details
+ * sufficient to enable resolution of any problem indicated by the result.
  *
  * Provides the primary documentation for the report, useful when there is no online documentation.
  *
- * A concise description of the report. Should be a single sentence that is understandable when
- * visible space is limited to a single line of text.
+ * A concise description of the report. Should be a single sentence that is
+ * understandable when visible space is limited to a single line of text.
  *
  * A brief description of the tool component.
  *
@@ -603,18 +603,18 @@ data class MultiformatMessageString(
  *
  * A message relevant to the thread flow.
  *
- * A message that describes the proposed fix, enabling viewers to present the proposed change to an
- * end user.
+ * A message that describes the proposed fix, enabling
+ * viewers to present the proposed change to an end user.
  *
  * A description of this graph traversal.
  *
  * A message to display to the user as the edge is traversed.
  *
- * A message that describes the result. The first sentence of the message only will be displayed
- * when visible space is limited.
+ * A message that describes the result. The first sentence of the
+ * message only will be displayed when visible space is limited.
  *
- * A description of the identity and role played within the engineering system by this object's
- * containing run object.
+ * A description of the identity and role played within the
+ * engineering system by this object's containing run object.
  *
  * Encapsulates a message intended to be read by the end user.
  *
@@ -676,13 +676,13 @@ data class Message(
  *
  * A file containing the standard output stream from the process that was invoked.
  *
- * A file containing the interleaved standard output and standard error stream from the process that
- * was invoked.
+ * A file containing the interleaved standard output and
+ * standard error stream from the process that was invoked.
  *
  * The working directory for the analysis tool run.
  *
- * Identifies the artifact that the analysis tool was instructed to scan. This need not be the same
- * as the artifact where the result actually occurred.
+ * Identifies the artifact that the analysis tool was instructed to scan. This
+ * need not be the same as the artifact where the result actually occurred.
  *
  * The location of the attachment.
  *
@@ -690,11 +690,11 @@ data class Message(
  *
  * The location of the external property file.
  *
- * Provides a suggestion to SARIF consumers to display file paths relative to the specified
- * location.
+ * Provides a suggestion to SARIF consumers to display
+ * file paths relative to the specified location.
  *
- * The location in the local file system to which the root of the repository was mapped at the time
- * of the analysis.
+ * The location in the local file system to which the root
+ * of the repository was mapped at the time of the analysis.
  *
  * @since 0.12.0
  */
@@ -709,8 +709,8 @@ data class ArtifactLocation(
   val description: Message? = null,
 
   /**
-   * The index within the run artifacts array of the artifact object associated with the artifact
-   * location.
+   * The index within the run artifacts array of the
+   * artifact object associated with the artifact location.
    *
    * @since 0.12.0
    */
@@ -734,8 +734,8 @@ data class ArtifactLocation(
   val uri: String? = null,
 
   /**
-   * A string which indirectly specifies the absolute URI with respect to which a relative URI in
-   * the "uri" property is interpreted.
+   * A string which indirectly specifies the absolute URI with respect
+   * to which a relative URI in the "uri" property is interpreted.
    *
    * @since 0.12.0
    */
@@ -817,11 +817,11 @@ enum class Role {
 /**
  * A conversion object that will be merged with a separate run.
  *
- * Describes how a converter transformed the output of a static analysis tool from the analysis
- * tool's native output format into the SARIF format.
+ * Describes how a converter transformed the output of a static analysis
+ * tool from the analysis tool's native output format into the SARIF format.
  *
- * A conversion object that describes how a converter transformed an analysis tool's native
- * reporting format into the SARIF format.
+ * A conversion object that describes how a converter transformed
+ * an analysis tool's native reporting format into the SARIF format.
  *
  * @since 0.12.0
  */
@@ -878,8 +878,8 @@ data class Invocation(
   val account: String? = null,
 
   /**
-   * An array of strings, containing in order the command line arguments passed to the tool from the
-   * operating system.
+   * An array of strings, containing in order the command line
+   * arguments passed to the tool from the operating system.
    *
    * @since 0.12.0
    */
@@ -895,8 +895,8 @@ data class Invocation(
   val commandLine: String? = null,
 
   /**
-   * The Coordinated Universal Time (UTC) date and time at which the run ended. See "Date/time
-   * properties" in the SARIF spec for the required format.
+   * The Coordinated Universal Time (UTC) date and time at which the run ended.
+   * See "Date/time properties" in the SARIF spec for the required format.
    *
    * @since 0.12.0
    */
@@ -904,8 +904,8 @@ data class Invocation(
   val endTimeUTC: String? = null,
 
   /**
-   * The environment variables associated with the analysis tool process, expressed as key/value
-   * pairs.
+   * The environment variables associated with the
+   * analysis tool process, expressed as key/value pairs.
    *
    * @since 0.12.0
    */
@@ -969,8 +969,8 @@ data class Invocation(
   val machine: String? = null,
 
   /**
-   * An array of configurationOverride objects that describe notifications related runtime
-   * overrides.
+   * An array of configurationOverride objects that
+   * describe notifications related runtime overrides.
    *
    * @since 0.12.0
    */
@@ -1018,8 +1018,8 @@ data class Invocation(
   val ruleConfigurationOverrides: List<ConfigurationOverride>? = null,
 
   /**
-   * The Coordinated Universal Time (UTC) date and time at which the run started. See "Date/time
-   * properties" in the SARIF spec for the required format.
+   * The Coordinated Universal Time (UTC) date and time at which the run started.
+   * See "Date/time properties" in the SARIF spec for the required format.
    *
    * @since 0.12.0
    */
@@ -1051,8 +1051,8 @@ data class Invocation(
   val stdout: ArtifactLocation? = null,
 
   /**
-   * A file containing the interleaved standard output and standard error stream from the process
-   * that was invoked.
+   * A file containing the interleaved standard output and
+   * standard error stream from the process that was invoked.
    *
    * @since 0.12.0
    */
@@ -1225,9 +1225,9 @@ data class ReportingDescriptorReference(
   val id: String? = null,
 
   /**
-   * The index into an array of descriptors in toolComponent.ruleDescriptors,
-   * toolComponent.notificationDescriptors, or toolComponent.taxonomyDescriptors, depending on
-   * context.
+   * The index into an array of descriptors in
+   * toolComponent.ruleDescriptors, toolComponent.notificationDescriptors,
+   * or toolComponent.taxonomyDescriptors, depending on context.
    *
    * @since 0.12.0
    */
@@ -1256,9 +1256,9 @@ data class ReportingDescriptorReference(
  *
  * Identifies a particular toolComponent object, either the driver or an extension.
  *
- * The component which is strongly associated with this component. For a translation, this refers to
- * the component which has been translated. For an extension, this is the driver that provides the
- * extension's plugin model.
+ * The component which is strongly associated with this component. For a
+ * translation, this refers to the component which has been translated. For an
+ * extension, this is the driver that provides the extension's plugin model.
  *
  * @since 0.12.0
  */
@@ -1298,8 +1298,8 @@ data class ToolComponentReference(
 )
 
 /**
- * Describes a condition relevant to the tool itself, as opposed to being relevant to a target being
- * analyzed by the tool.
+ * Describes a condition relevant to the tool itself, as opposed
+ * to being relevant to a target being analyzed by the tool.
  *
  * @since 0.12.0
  */
@@ -1370,8 +1370,8 @@ data class Notification(
   val threadID: Int? = null,
 
   /**
-   * The Coordinated Universal Time (UTC) date and time at which the analysis tool generated the
-   * notification.
+   * The Coordinated Universal Time (UTC) date and time at
+   * which the analysis tool generated the notification.
    *
    * @since 0.12.0
    */
@@ -1397,8 +1397,8 @@ data class Exception(
   val innerExceptions: List<Exception>? = null,
 
   /**
-   * A string that identifies the kind of exception, for example, the fully qualified type name of
-   * an object that was thrown, or the symbolic name of a signal.
+   * A string that identifies the kind of exception, for example, the fully qualified
+   * type name of an object that was thrown, or the symbolic name of a signal.
    *
    * @since 0.12.0
    */
@@ -1442,8 +1442,8 @@ data class Exception(
 @JsonClass(generateAdapter = true)
 data class Stack(
   /**
-   * An array of stack frames that represents a sequence of calls, rendered in reverse chronological
-   * order, that comprise the call stack.
+   * An array of stack frames that represents a sequence of calls,
+   * rendered in reverse chronological order, that comprise the call stack.
    *
    * @since 0.12.0
    */
@@ -1590,8 +1590,8 @@ data class Location(
 /**
  * A region within an artifact where a result was detected.
  *
- * Specifies a portion of the artifact that encloses the region. Allows a viewer to display
- * additional context around the region.
+ * Specifies a portion of the artifact that encloses the region.
+ * Allows a viewer to display additional context around the region.
  *
  * Specifies a portion of the artifact.
  *
@@ -1674,8 +1674,8 @@ data class Region(
   val snippet: ArtifactContent? = null,
 
   /**
-   * Specifies the source language, if any, of the portion of the artifact specified by the region
-   * object.
+   * Specifies the source language, if any, of the portion
+   * of the artifact specified by the region object.
    *
    * @since 0.12.0
    */
@@ -1707,9 +1707,9 @@ data class Region(
 @JsonClass(generateAdapter = true)
 data class LogicalLocation(
   /**
-   * The machine-readable name for the logical location, such as a mangled function name provided by
-   * a C++ compiler that encodes calling convention, return type and other details along with the
-   * function name.
+   * The machine-readable name for the logical location, such as a
+   * mangled function name provided by a C++ compiler that encodes calling
+   * convention, return type and other details along with the function name.
    *
    * @since 0.12.0
    */
@@ -1733,11 +1733,11 @@ data class LogicalLocation(
   val index: Int? = null,
 
   /**
-   * The type of construct this logical location component refers to. Should be one of 'function',
-   * 'member', 'module', 'namespace', 'parameter', 'resource', 'returnType', 'type', 'variable',
-   * 'object', 'array', 'property', 'value', 'element', 'text', 'attribute', 'comment',
-   * 'declaration', 'dtd' or 'processingInstruction', if any of those accurately describe the
-   * construct.
+   * The type of construct this logical location component refers to. Should
+   * be one of 'function', 'member', 'module', 'namespace', 'parameter',
+   * 'resource', 'returnType', 'type', 'variable', 'object', 'array', 'property',
+   * 'value', 'element', 'text', 'attribute', 'comment', 'declaration', 'dtd' or
+   * 'processingInstruction', if any of those accurately describe the construct.
    *
    * @since 0.12.0
    */
@@ -1745,8 +1745,8 @@ data class LogicalLocation(
   val kind: String? = null,
 
   /**
-   * Identifies the construct in which the result occurred. For example, this property might contain
-   * the name of a class or a method.
+   * Identifies the construct in which the result occurred. For example,
+   * this property might contain the name of a class or a method.
    *
    * @since 0.12.0
    */
@@ -1754,9 +1754,9 @@ data class LogicalLocation(
   val name: String? = null,
 
   /**
-   * Identifies the index of the immediate parent of the construct in which the result was detected.
-   * For example, this property might point to a logical location that represents the namespace that
-   * holds a type.
+   * Identifies the index of the immediate parent of the construct in which
+   * the result was detected. For example, this property might point to
+   * a logical location that represents the namespace that holds a type.
    *
    * @since 0.12.0
    */
@@ -1775,8 +1775,8 @@ data class LogicalLocation(
 /**
  * Identifies the artifact and region.
  *
- * A physical location relevant to a result. Specifies a reference to a programming artifact
- * together with a range of bytes or characters within that artifact.
+ * A physical location relevant to a result. Specifies a reference to a programming
+ * artifact together with a range of bytes or characters within that artifact.
  *
  * @since 0.12.0
  */
@@ -1799,8 +1799,8 @@ data class PhysicalLocation(
   val artifactLocation: ArtifactLocation? = null,
 
   /**
-   * Specifies a portion of the artifact that encloses the region. Allows a viewer to display
-   * additional context around the region.
+   * Specifies a portion of the artifact that encloses the region.
+   * Allows a viewer to display additional context around the region.
    *
    * @since 0.12.0
    */
@@ -1840,8 +1840,8 @@ data class LocationRelationship(
   val description: Message? = null,
 
   /**
-   * A set of distinct strings that categorize the relationship. Well-known kinds include
-   * 'includes', 'isIncludedBy' and 'relevant'.
+   * A set of distinct strings that categorize the relationship.
+   * Well-known kinds include 'includes', 'isIncludedBy' and 'relevant'.
    *
    * @since 0.12.0
    */
@@ -1870,10 +1870,10 @@ data class LocationRelationship(
  *
  * The analysis tool that was run.
  *
- * Information about the tool or tool pipeline that generated the results in this run. A run can
- * only contain results produced by a single tool or tool pipeline. A run can aggregate results from
- * multiple log files, as long as context around the tool run (tool command-line arguments and the
- * like) is identical for all aggregated files.
+ * Information about the tool or tool pipeline that generated the results in this run.
+ * A run can only contain results produced by a single tool or tool pipeline. A run can
+ * aggregate results from multiple log files, as long as context around the tool run
+ * (tool command-line arguments and the like) is identical for all aggregated files.
  *
  * @since 0.12.0
  */
@@ -1916,9 +1916,9 @@ data class Tool(
 @JsonClass(generateAdapter = true)
 data class SarifDriver(
   /**
-   * The component which is strongly associated with this component. For a translation, this refers
-   * to the component which has been translated. For an extension, this is the driver that provides
-   * the extension's plugin model.
+   * The component which is strongly associated with this component. For a
+   * translation, this refers to the component which has been translated. For an
+   * extension, this is the driver that provides the extension's plugin model.
    *
    * @since 0.12.0
    */
@@ -1934,9 +1934,9 @@ data class SarifDriver(
   val contents: List<Content>? = null,
 
   /**
-   * The binary version of the tool component's primary executable file expressed as four
-   * non-negative integers separated by a period (for operating systems that express file versions
-   * in this way).
+   * The binary version of the tool component's primary executable
+   * file expressed as four non-negative integers separated by a period
+   * (for operating systems that express file versions in this way).
    *
    * @since 0.12.0
    */
@@ -1960,8 +1960,8 @@ data class SarifDriver(
   val fullDescription: MultiformatMessageString? = null,
 
   /**
-   * The name of the tool component along with its version and any other useful identifying
-   * information, such as its locale.
+   * The name of the tool component along with its version and
+   * any other useful identifying information, such as its locale.
    *
    * @since 0.12.0
    */
@@ -1971,8 +1971,8 @@ data class SarifDriver(
   /**
    * A dictionary, each of whose keys is a resource identifier and each of whose values is a
    * multiformatMessageString object, which holds message strings in plain text and (optionally)
-   * Markdown format. The strings can include placeholders, which can be used to construct a message
-   * in combination with an arbitrary number of additional string arguments.
+   * Markdown format. The strings can include placeholders, which can be used to construct
+   * a message in combination with an arbitrary number of additional string arguments.
    *
    * @since 0.12.0
    */
@@ -1996,9 +1996,9 @@ data class SarifDriver(
   val informationURI: String? = null,
 
   /**
-   * Specifies whether this object contains a complete definition of the localizable and/or
-   * non-localizable data for this component, as opposed to including only data that is relevant to
-   * the results persisted to this log file.
+   * Specifies whether this object contains a complete definition of the localizable
+   * and/or non-localizable data for this component, as opposed to including
+   * only data that is relevant to the results persisted to this log file.
    *
    * @since 0.12.0
    */
@@ -2006,10 +2006,10 @@ data class SarifDriver(
   val isComprehensive: Boolean? = null,
 
   /**
-   * The language of the messages emitted into the log file during this run (expressed as an ISO
-   * 639-1 two-letter lowercase language code) and an optional region (expressed as an ISO 3166-1
-   * two-letter uppercase subculture code associated with a country or region). The casing is
-   * recommended but not required (in order for this data to conform to RFC5646).
+   * The language of the messages emitted into the log file during this run (expressed as an
+   * ISO 639-1 two-letter lowercase language code) and an optional region (expressed as an
+   * ISO 3166-1 two-letter uppercase subculture code associated with a country or region). The
+   * casing is recommended but not required (in order for this data to conform to RFC5646).
    *
    * @since 0.12.0
    */
@@ -2017,8 +2017,8 @@ data class SarifDriver(
   val language: String? = null,
 
   /**
-   * The semantic version of the localized strings defined in this component; maintained by
-   * components that provide translations.
+   * The semantic version of the localized strings defined in this
+   * component; maintained by components that provide translations.
    *
    * @since 0.12.0
    */
@@ -2034,8 +2034,8 @@ data class SarifDriver(
   val locations: List<ArtifactLocation>? = null,
 
   /**
-   * The minimum value of localizedDataSemanticVersion required in translations consumed by this
-   * component; used by components that consume translations.
+   * The minimum value of localizedDataSemanticVersion required in translations
+   * consumed by this component; used by components that consume translations.
    *
    * @since 0.12.0
    */
@@ -2051,8 +2051,8 @@ data class SarifDriver(
   val name: String,
 
   /**
-   * An array of reportingDescriptor objects relevant to the notifications related to the
-   * configuration and runtime execution of the tool component.
+   * An array of reportingDescriptor objects relevant to the notifications
+   * related to the configuration and runtime execution of the tool component.
    *
    * @since 0.12.0
    */
@@ -2076,8 +2076,8 @@ data class SarifDriver(
   val product: String? = null,
 
   /**
-   * A localizable string containing the name of the suite of products to which the tool component
-   * belongs.
+   * A localizable string containing the name of the suite
+   * of products to which the tool component belongs.
    *
    * @since 0.12.0
    */
@@ -2117,8 +2117,8 @@ data class SarifDriver(
   val shortDescription: MultiformatMessageString? = null,
 
   /**
-   * An array of toolComponentReference objects to declare the taxonomies supported by the tool
-   * component.
+   * An array of toolComponentReference objects to declare
+   * the taxonomies supported by the tool component.
    *
    * @since 0.12.0
    */
@@ -2126,8 +2126,8 @@ data class SarifDriver(
   val supportedTaxonomies: List<ToolComponentReference>? = null,
 
   /**
-   * An array of reportingDescriptor objects relevant to the definitions of both standalone and
-   * tool-defined taxonomies.
+   * An array of reportingDescriptor objects relevant to the
+   * definitions of both standalone and tool-defined taxonomies.
    *
    * @since 0.12.0
    */
@@ -2151,8 +2151,8 @@ data class SarifDriver(
   val version: String? = null,
 
   /**
-   * An array of reportingDescriptor objects relevant to the analysis performed by the tool
-   * component.
+   * An array of reportingDescriptor objects relevant
+   * to the analysis performed by the tool component.
    *
    * @since 0.12.0
    */
@@ -2166,8 +2166,8 @@ enum class Content(val value: String) {
 }
 
 /**
- * Metadata that describes a specific report produced by the tool, as part of the analysis it
- * provides or its runtime reporting.
+ * Metadata that describes a specific report produced by the tool,
+ * as part of the analysis it provides or its runtime reporting.
  *
  * @since 0.12.0
  */
@@ -2207,8 +2207,8 @@ data class SarifRule(
   val defaultConfiguration: ReportingConfiguration? = null,
 
   /**
-   * A concise description of the report. Should be a single sentence that is understandable when
-   * visible space is limited to a single line of text.
+   * A concise description of the report. Should be a single sentence that is
+   * understandable when visible space is limited to a single line of text.
    *
    * @since 0.12.0
    */
@@ -2216,8 +2216,8 @@ data class SarifRule(
   val shortDescription: MultiformatMessageString? = null,
 
   /**
-   * A description of the report. Should, as far as possible, provide details sufficient to enable
-   * resolution of any problem indicated by the result.
+   * A description of the report. Should, as far as possible, provide details
+   * sufficient to enable resolution of any problem indicated by the result.
    *
    * @since 0.12.0
    */
@@ -2225,8 +2225,8 @@ data class SarifRule(
   val fullDescription: MultiformatMessageString? = null,
 
   /**
-   * An array of unique identifies in the form of a GUID by which this report was known in some
-   * previous version of the analysis tool.
+   * An array of unique identifies in the form of a GUID by which this
+   * report was known in some previous version of the analysis tool.
    *
    * @since 0.12.0
    */
@@ -2234,8 +2234,8 @@ data class SarifRule(
   val deprecatedGuids: List<String>? = null,
 
   /**
-   * An array of stable, opaque identifiers by which this report was known in some previous version
-   * of the analysis tool.
+   * An array of stable, opaque identifiers by which this report
+   * was known in some previous version of the analysis tool.
    *
    * @since 0.12.0
    */
@@ -2243,8 +2243,8 @@ data class SarifRule(
   val deprecatedIDS: List<String>? = null,
 
   /**
-   * An array of readable identifiers by which this report was known in some previous version of the
-   * analysis tool.
+   * An array of readable identifiers by which this report
+   * was known in some previous version of the analysis tool.
    *
    * @since 0.12.0
    */
@@ -2260,8 +2260,8 @@ data class SarifRule(
   val guid: String? = null,
 
   /**
-   * Provides the primary documentation for the report, useful when there is no online
-   * documentation.
+   * Provides the primary documentation for the report,
+   * useful when there is no online documentation.
    *
    * @since 0.12.0
    */
@@ -2270,9 +2270,9 @@ data class SarifRule(
 
   /**
    * A set of name/value pairs with arbitrary names. Each value is a multiformatMessageString
-   * object, which holds message strings in plain text and (optionally) Markdown format. The strings
-   * can include placeholders, which can be used to construct a message in combination with an
-   * arbitrary number of additional string arguments.
+   * object, which holds message strings in plain text and (optionally) Markdown
+   * format. The strings can include placeholders, which can be used to construct a
+   * message in combination with an arbitrary number of additional string arguments.
    *
    * @since 0.12.0
    */
@@ -2312,9 +2312,9 @@ data class ReportingDescriptorRelationship(
   val description: Message? = null,
 
   /**
-   * A set of distinct strings that categorize the relationship. Well-known kinds include
-   * 'canPrecede', 'canFollow', 'willPrecede', 'willFollow', 'superset', 'subset', 'equal',
-   * 'disjoint', 'relevant', and 'incomparable'.
+   * A set of distinct strings that categorize the relationship. Well-known
+   * kinds include 'canPrecede', 'canFollow', 'willPrecede', 'willFollow',
+   * 'superset', 'subset', 'equal', 'disjoint', 'relevant', and 'incomparable'.
    *
    * @since 0.12.0
    */
@@ -2405,8 +2405,8 @@ data class TranslationMetadata(
 )
 
 /**
- * A network of nodes and directed edges that describes some aspect of the structure of the code
- * (for example, a call graph).
+ * A network of nodes and directed edges that describes some
+ * aspect of the structure of the code (for example, a call graph).
  *
  * @since 0.12.0
  */
@@ -2549,8 +2549,8 @@ data class Node(
 @JsonClass(generateAdapter = true)
 data class SarifResult(
   /**
-   * Identifies the artifact that the analysis tool was instructed to scan. This need not be the
-   * same as the artifact where the result actually occurred.
+   * Identifies the artifact that the analysis tool was instructed to scan. This
+   * need not be the same as the artifact where the result actually occurred.
    *
    * @since 0.12.0
    */
@@ -2582,8 +2582,8 @@ data class SarifResult(
   val codeFlows: List<CodeFlow>? = null,
 
   /**
-   * A stable, unique identifier for the equivalence class of logically identical results to which
-   * this result belongs, in the form of a GUID.
+   * A stable, unique identifier for the equivalence class of logically
+   * identical results to which this result belongs, in the form of a GUID.
    *
    * @since 0.12.0
    */
@@ -2599,8 +2599,8 @@ data class SarifResult(
   val fingerprints: Map<String, String>? = null,
 
   /**
-   * An array of 'fix' objects, each of which represents a proposed fix to the problem indicated by
-   * the result.
+   * An array of 'fix' objects, each of which represents a
+   * proposed fix to the problem indicated by the result.
    *
    * @since 0.12.0
    */
@@ -2656,9 +2656,9 @@ data class SarifResult(
   val level: Level? = null,
 
   /**
-   * The set of locations where the result was detected. Specify only one location unless the
-   * problem indicated by the result can only be corrected by making a change at every specified
-   * location.
+   * The set of locations where the result was detected. Specify only
+   * one location unless the problem indicated by the result can only
+   * be corrected by making a change at every specified location.
    *
    * @since 0.12.0
    */
@@ -2666,8 +2666,8 @@ data class SarifResult(
   val locations: List<Location>? = null,
 
   /**
-   * A message that describes the result. The first sentence of the message only will be displayed
-   * when visible space is limited.
+   * A message that describes the result. The first sentence of the
+   * message only will be displayed when visible space is limited.
    *
    * @since 0.12.0
    */
@@ -2675,8 +2675,8 @@ data class SarifResult(
   val message: Message,
 
   /**
-   * A positive integer specifying the number of times this logically unique result was observed in
-   * this run.
+   * A positive integer specifying the number of times
+   * this logically unique result was observed in this run.
    *
    * @since 0.12.0
    */
@@ -2732,8 +2732,8 @@ data class SarifResult(
   val rule: ReportingDescriptorReference? = null,
 
   /**
-   * The stable, unique identifier of the rule, if any, to which this notification is relevant. This
-   * member can be used to retrieve rule metadata from the rules dictionary, if it exists.
+   * The stable, unique identifier of the rule, if any, to which this notification is relevant.
+   * This member can be used to retrieve rule metadata from the rules dictionary, if it exists.
    *
    * @since 0.12.0
    */
@@ -2914,8 +2914,8 @@ enum class BaselineState(val value: String) {
 }
 
 /**
- * A set of threadFlows which together describe a pattern of code execution relevant to detecting a
- * result.
+ * A set of threadFlows which together describe a pattern
+ * of code execution relevant to detecting a result.
  *
  * @since 0.12.0
  */
@@ -2938,8 +2938,8 @@ data class CodeFlow(
   val properties: PropertyBag? = null,
 
   /**
-   * An array of one or more unique threadFlow objects, each of which describes the progress of a
-   * program through a thread of execution.
+   * An array of one or more unique threadFlow objects, each of which
+   * describes the progress of a program through a thread of execution.
    *
    * @since 0.12.0
    */
@@ -2948,8 +2948,8 @@ data class CodeFlow(
 )
 
 /**
- * Describes a sequence of code locations that specify a path through a single thread of execution
- * such as an operating system or fiber.
+ * Describes a sequence of code locations that specify a path through
+ * a single thread of execution such as an operating system or fiber.
  *
  * @since 0.12.0
  */
@@ -2972,8 +2972,8 @@ data class ThreadFlow(
   val immutableState: Map<String, MultiformatMessageString>? = null,
 
   /**
-   * Values of relevant expressions at the start of the thread flow that may change during thread
-   * flow execution.
+   * Values of relevant expressions at the start of the
+   * thread flow that may change during thread flow execution.
    *
    * @since 0.12.0
    */
@@ -2981,8 +2981,8 @@ data class ThreadFlow(
   val initialState: Map<String, MultiformatMessageString>? = null,
 
   /**
-   * A temporally ordered array of 'threadFlowLocation' objects, each of which describes a location
-   * visited by the tool while producing the result.
+   * A temporally ordered array of 'threadFlowLocation' objects, each of which
+   * describes a location visited by the tool while producing the result.
    *
    * @since 0.12.0
    */
@@ -3030,9 +3030,9 @@ data class ThreadFlowLocation(
   val executionTimeUTC: String? = null,
 
   /**
-   * Specifies the importance of this location in understanding the code flow in which it occurs.
-   * The order from most to least important is "essential", "important", "unimportant". Default:
-   * "important".
+   * Specifies the importance of this location in understanding the code
+   * flow in which it occurs. The order from most to least important
+   * is "essential", "important", "unimportant". Default: "important".
    *
    * @since 0.12.0
    */
@@ -3048,10 +3048,10 @@ data class ThreadFlowLocation(
   val index: Int? = null,
 
   /**
-   * A set of distinct strings that categorize the thread flow location. Well-known kinds include
-   * 'acquire', 'release', 'enter', 'exit', 'call', 'return', 'branch', 'implicit', 'false', 'true',
-   * 'caution', 'danger', 'unknown', 'unreachable', 'taint', 'function', 'handler', 'lock',
-   * 'memory', 'resource', 'scope' and 'value'.
+   * A set of distinct strings that categorize the thread flow location. Well-known
+   * kinds include 'acquire', 'release', 'enter', 'exit', 'call', 'return', 'branch',
+   * 'implicit', 'false', 'true', 'caution', 'danger', 'unknown', 'unreachable',
+   * 'taint', 'function', 'handler', 'lock', 'memory', 'resource', 'scope' and 'value'.
    *
    * @since 0.12.0
    */
@@ -3099,10 +3099,10 @@ data class ThreadFlowLocation(
   val stack: Stack? = null,
 
   /**
-   * A dictionary, each of whose keys specifies a variable or expression, the associated value of
-   * which represents the variable or expression value. For an annotation of kind 'continuation',
-   * for example, this dictionary might hold the current assumed values of a set of global
-   * variables.
+   * A dictionary, each of whose keys specifies a variable or expression, the
+   * associated value of which represents the variable or expression value.
+   * For an annotation of kind 'continuation', for example, this dictionary
+   * might hold the current assumed values of a set of global variables.
    *
    * @since 0.12.0
    */
@@ -3110,8 +3110,8 @@ data class ThreadFlowLocation(
   val state: Map<String, MultiformatMessageString>? = null,
 
   /**
-   * An array of references to rule or taxonomy reporting descriptors that are applicable to the
-   * thread flow location.
+   * An array of references to rule or taxonomy reporting
+   * descriptors that are applicable to the thread flow location.
    *
    * @since 0.12.0
    */
@@ -3136,9 +3136,9 @@ data class ThreadFlowLocation(
 )
 
 /**
- * Specifies the importance of this location in understanding the code flow in which it occurs. The
- * order from most to least important is "essential", "important", "unimportant". Default:
- * "important".
+ * Specifies the importance of this location in understanding the code
+ * flow in which it occurs. The order from most to least important
+ * is "essential", "important", "unimportant". Default: "important".
  *
  * @since 0.12.0
  */
@@ -3184,8 +3184,8 @@ data class WebRequest(
   val index: Int? = null,
 
   /**
-   * The HTTP method. Well-known values are 'GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD',
-   * 'OPTIONS', 'TRACE', 'CONNECT'.
+   * The HTTP method. Well-known values are 'GET', 'PUT', 'POST',
+   * 'DELETE', 'PATCH', 'HEAD', 'OPTIONS', 'TRACE', 'CONNECT'.
    *
    * @since 0.12.0
    */
@@ -3318,9 +3318,9 @@ data class WebResponse(
 )
 
 /**
- * A proposed fix for the problem represented by a result object. A fix specifies a set of artifacts
- * to modify. For each artifact, it specifies a set of bytes to remove, and provides a set of new
- * bytes to replace them.
+ * A proposed fix for the problem represented by a result object. A fix
+ * specifies a set of artifacts to modify. For each artifact, it specifies a
+ * set of bytes to remove, and provides a set of new bytes to replace them.
  *
  * @since 0.12.0
  */
@@ -3335,8 +3335,8 @@ data class Fix(
   val artifactChanges: List<ArtifactChange>,
 
   /**
-   * A message that describes the proposed fix, enabling viewers to present the proposed change to
-   * an end user.
+   * A message that describes the proposed fix, enabling
+   * viewers to present the proposed change to an end user.
    *
    * @since 0.12.0
    */
@@ -3376,8 +3376,8 @@ data class ArtifactChange(
   val properties: PropertyBag? = null,
 
   /**
-   * An array of replacement objects, each of which represents the replacement of a single region in
-   * a single artifact specified by 'artifactLocation'.
+   * An array of replacement objects, each of which represents the replacement
+   * of a single region in a single artifact specified by 'artifactLocation'.
    *
    * @since 0.12.0
    */
@@ -3441,8 +3441,8 @@ data class GraphTraversal(
   val edgeTraversals: List<EdgeTraversal>? = null,
 
   /**
-   * Values of relevant expressions at the start of the graph traversal that remain constant for the
-   * graph traversal.
+   * Values of relevant expressions at the start of the graph
+   * traversal that remain constant for the graph traversal.
    *
    * @since 0.12.0
    */
@@ -3450,8 +3450,8 @@ data class GraphTraversal(
   val immutableState: Map<String, MultiformatMessageString>? = null,
 
   /**
-   * Values of relevant expressions at the start of the graph traversal that may change during graph
-   * traversal.
+   * Values of relevant expressions at the start of the
+   * graph traversal that may change during graph traversal.
    *
    * @since 0.12.0
    */
@@ -3555,8 +3555,8 @@ enum class ResultKind(val value: String) {
 @JsonClass(generateAdapter = true)
 data class ResultProvenance(
   /**
-   * An array of physicalLocation objects which specify the portions of an analysis tool's output
-   * that a converter transformed into the result.
+   * An array of physicalLocation objects which specify the portions of an
+   * analysis tool's output that a converter transformed into the result.
    *
    * @since 0.12.0
    */
@@ -3564,8 +3564,8 @@ data class ResultProvenance(
   val conversionSources: List<PhysicalLocation>? = null,
 
   /**
-   * A GUID-valued string equal to the automationDetails.guid property of the run in which the
-   * result was first detected.
+   * A GUID-valued string equal to the automationDetails.guid
+   * property of the run in which the result was first detected.
    *
    * @since 0.12.0
    */
@@ -3573,8 +3573,8 @@ data class ResultProvenance(
   val firstDetectionRunGUID: String? = null,
 
   /**
-   * The Coordinated Universal Time (UTC) date and time at which the result was first detected. See
-   * "Date/time properties" in the SARIF spec for the required format.
+   * The Coordinated Universal Time (UTC) date and time at which the result was first
+   * detected. See "Date/time properties" in the SARIF spec for the required format.
    *
    * @since 0.12.0
    */
@@ -3582,8 +3582,8 @@ data class ResultProvenance(
   val firstDetectionTimeUTC: String? = null,
 
   /**
-   * The index within the run.invocations array of the invocation object which describes the tool
-   * invocation that detected the result.
+   * The index within the run.invocations array of the invocation object
+   * which describes the tool invocation that detected the result.
    *
    * @since 0.12.0
    */
@@ -3591,8 +3591,8 @@ data class ResultProvenance(
   val invocationIndex: Int? = null,
 
   /**
-   * A GUID-valued string equal to the automationDetails.guid property of the run in which the
-   * result was most recently detected.
+   * A GUID-valued string equal to the automationDetails.guid property
+   * of the run in which the result was most recently detected.
    *
    * @since 0.12.0
    */
@@ -3600,8 +3600,8 @@ data class ResultProvenance(
   val lastDetectionRunGUID: String? = null,
 
   /**
-   * The Coordinated Universal Time (UTC) date and time at which the result was most recently
-   * detected. See "Date/time properties" in the SARIF spec for the required format.
+   * The Coordinated Universal Time (UTC) date and time at which the result was most
+   * recently detected. See "Date/time properties" in the SARIF spec for the required format.
    *
    * @since 0.12.0
    */
@@ -3746,8 +3746,8 @@ data class Run(
   val automationDetails: RunAutomationDetails? = null,
 
   /**
-   * The 'guid' property of a previous SARIF 'run' that comprises the baseline that was used to
-   * compute result 'baselineState' properties for the run.
+   * The 'guid' property of a previous SARIF 'run' that comprises the baseline
+   * that was used to compute result 'baselineState' properties for the run.
    *
    * @since 0.12.0
    */
@@ -3763,8 +3763,8 @@ data class Run(
   val columnKind: ColumnKind? = null,
 
   /**
-   * A conversion object that describes how a converter transformed an analysis tool's native
-   * reporting format into the SARIF format.
+   * A conversion object that describes how a converter transformed
+   * an analysis tool's native reporting format into the SARIF format.
    *
    * @since 0.12.0
    */
@@ -3780,8 +3780,8 @@ data class Run(
   val defaultEncoding: String? = null,
 
   /**
-   * Specifies the default source language for any artifact object that refers to a text file that
-   * contains source code.
+   * Specifies the default source language for any artifact
+   * object that refers to a text file that contains source code.
    *
    * @since 0.12.0
    */
@@ -3789,8 +3789,8 @@ data class Run(
   val defaultSourceLanguage: String? = null,
 
   /**
-   * References to external property files that should be inlined with the content of a root log
-   * file.
+   * References to external property files that should
+   * be inlined with the content of a root log file.
    *
    * @since 0.12.0
    */
@@ -3814,10 +3814,10 @@ data class Run(
   val invocations: List<Invocation>? = null,
 
   /**
-   * The language of the messages emitted into the log file during this run (expressed as an ISO
-   * 639-1 two-letter lowercase culture code) and an optional region (expressed as an ISO 3166-1
-   * two-letter uppercase subculture code associated with a country or region). The casing is
-   * recommended but not required (in order for this data to conform to RFC5646).
+   * The language of the messages emitted into the log file during this run (expressed as an
+   * ISO 639-1 two-letter lowercase culture code) and an optional region (expressed as an ISO
+   * 3166-1 two-letter uppercase subculture code associated with a country or region). The
+   * casing is recommended but not required (in order for this data to conform to RFC5646).
    *
    * @since 0.12.0
    */
@@ -3833,8 +3833,8 @@ data class Run(
   val logicalLocations: List<LogicalLocation>? = null,
 
   /**
-   * An ordered list of character sequences that were treated as line breaks when computing region
-   * information for the run.
+   * An ordered list of character sequences that were treated as
+   * line breaks when computing region information for the run.
    *
    * @since 0.12.0
    */
@@ -3842,8 +3842,8 @@ data class Run(
   val newlineSequences: List<String>? = null,
 
   /**
-   * The artifact location specified by each uriBaseId symbol on the machine where the tool
-   * originally ran.
+   * The artifact location specified by each uriBaseId
+   * symbol on the machine where the tool originally ran.
    *
    * @since 0.12.0
    */
@@ -3877,9 +3877,9 @@ data class Run(
   val redactionTokens: List<String>? = null,
 
   /**
-   * The set of results contained in an SARIF log. The results array can be omitted when a run is
-   * solely exporting rules metadata. It must be present (but may be empty) if a log file represents
-   * an actual scan.
+   * The set of results contained in an SARIF log. The results array can
+   * be omitted when a run is solely exporting rules metadata. It must be
+   * present (but may be empty) if a log file represents an actual scan.
    *
    * @since 0.12.0
    */
@@ -3919,10 +3919,10 @@ data class Run(
   val threadFlowLocations: List<ThreadFlowLocation>? = null,
 
   /**
-   * Information about the tool or tool pipeline that generated the results in this run. A run can
-   * only contain results produced by a single tool or tool pipeline. A run can aggregate results
-   * from multiple log files, as long as context around the tool run (tool command-line arguments
-   * and the like) is identical for all aggregated files.
+   * Information about the tool or tool pipeline that generated the results in this run.
+   * A run can only contain results produced by a single tool or tool pipeline. A run can
+   * aggregate results from multiple log files, as long as context around the tool run
+   * (tool command-line arguments and the like) is identical for all aggregated files.
    *
    * @since 0.12.0
    */
@@ -3972,8 +3972,8 @@ data class Run(
 @JsonClass(generateAdapter = true)
 data class RunAutomationDetails(
   /**
-   * A stable, unique identifier for the equivalence class of runs to which this object's containing
-   * run object belongs in the form of a GUID.
+   * A stable, unique identifier for the equivalence class of runs to which
+   * this object's containing run object belongs in the form of a GUID.
    *
    * @since 0.12.0
    */
@@ -3981,8 +3981,8 @@ data class RunAutomationDetails(
   val correlationGUID: String? = null,
 
   /**
-   * A description of the identity and role played within the engineering system by this object's
-   * containing run object.
+   * A description of the identity and role played within the
+   * engineering system by this object's containing run object.
    *
    * @since 0.12.0
    */
@@ -4032,8 +4032,8 @@ enum class ColumnKind(val value: String) {
 @JsonClass(generateAdapter = true)
 data class ExternalPropertyFileReferences(
   /**
-   * An array of external property files containing run.addresses array to be merged with the root
-   * log file.
+   * An array of external property files containing
+   * run.addresses array to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4041,8 +4041,8 @@ data class ExternalPropertyFileReferences(
   val addresses: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.artifacts array to be merged with the root
-   * log file.
+   * An array of external property files containing
+   * run.artifacts array to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4050,8 +4050,8 @@ data class ExternalPropertyFileReferences(
   val artifacts: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An external property file containing a run.conversion object to be merged with the root log
-   * file.
+   * An external property file containing a run.conversion
+   * object to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4067,8 +4067,8 @@ data class ExternalPropertyFileReferences(
   val driver: ExternalPropertyFileReference? = null,
 
   /**
-   * An array of external property files containing run.extensions array to be merged with the root
-   * log file.
+   * An array of external property files containing
+   * run.extensions array to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4076,8 +4076,8 @@ data class ExternalPropertyFileReferences(
   val extensions: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An external property file containing a run.properties object to be merged with the root log
-   * file.
+   * An external property file containing a run.properties
+   * object to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4085,8 +4085,8 @@ data class ExternalPropertyFileReferences(
   val externalizedProperties: ExternalPropertyFileReference? = null,
 
   /**
-   * An array of external property files containing a run.graphs object to be merged with the root
-   * log file.
+   * An array of external property files containing a
+   * run.graphs object to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4094,8 +4094,8 @@ data class ExternalPropertyFileReferences(
   val graphs: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.invocations array to be merged with the root
-   * log file.
+   * An array of external property files containing
+   * run.invocations array to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4103,8 +4103,8 @@ data class ExternalPropertyFileReferences(
   val invocations: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.logicalLocations array to be merged with the
-   * root log file.
+   * An array of external property files containing
+   * run.logicalLocations array to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4112,8 +4112,8 @@ data class ExternalPropertyFileReferences(
   val logicalLocations: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.policies array to be merged with the root
-   * log file.
+   * An array of external property files containing
+   * run.policies array to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4129,8 +4129,8 @@ data class ExternalPropertyFileReferences(
   val properties: PropertyBag? = null,
 
   /**
-   * An array of external property files containing run.results array to be merged with the root log
-   * file.
+   * An array of external property files containing
+   * run.results array to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4138,8 +4138,8 @@ data class ExternalPropertyFileReferences(
   val results: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.taxonomies array to be merged with the root
-   * log file.
+   * An array of external property files containing
+   * run.taxonomies array to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4147,8 +4147,8 @@ data class ExternalPropertyFileReferences(
   val taxonomies: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.threadFlowLocations array to be merged with
-   * the root log file.
+   * An array of external property files containing
+   * run.threadFlowLocations array to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4156,8 +4156,8 @@ data class ExternalPropertyFileReferences(
   val threadFlowLocations: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.translations array to be merged with the
-   * root log file.
+   * An array of external property files containing
+   * run.translations array to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4165,8 +4165,8 @@ data class ExternalPropertyFileReferences(
   val translations: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.requests array to be merged with the root
-   * log file.
+   * An array of external property files containing
+   * run.requests array to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4174,8 +4174,8 @@ data class ExternalPropertyFileReferences(
   val webRequests: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.responses array to be merged with the root
-   * log file.
+   * An array of external property files containing
+   * run.responses array to be merged with the root log file.
    *
    * @since 0.12.0
    */
@@ -4190,8 +4190,8 @@ data class ExternalPropertyFileReferences(
  *
  * An external property file containing a run.properties object to be merged with the root log file.
  *
- * Contains information that enables a SARIF consumer to locate the external property file that
- * contains the value of an externalized property associated with the run.
+ * Contains information that enables a SARIF consumer to locate the external property
+ * file that contains the value of an externalized property associated with the run.
  *
  * @since 0.12.0
  */
@@ -4240,8 +4240,8 @@ data class ExternalPropertyFileReference(
 @JsonClass(generateAdapter = true)
 data class SpecialLocations(
   /**
-   * Provides a suggestion to SARIF consumers to display file paths relative to the specified
-   * location.
+   * Provides a suggestion to SARIF consumers to display
+   * file paths relative to the specified location.
    *
    * @since 0.12.0
    */
@@ -4265,8 +4265,8 @@ data class SpecialLocations(
 @JsonClass(generateAdapter = true)
 data class VersionControlDetails(
   /**
-   * A Coordinated Universal Time (UTC) date and time that can be used to synchronize an enlistment
-   * to the state of the repository at that time.
+   * A Coordinated Universal Time (UTC) date and time that can be used to
+   * synchronize an enlistment to the state of the repository at that time.
    *
    * @since 0.12.0
    */
@@ -4282,8 +4282,8 @@ data class VersionControlDetails(
   val branch: String? = null,
 
   /**
-   * The location in the local file system to which the root of the repository was mapped at the
-   * time of the analysis.
+   * The location in the local file system to which the root
+   * of the repository was mapped at the time of the analysis.
    *
    * @since 0.12.0
    */

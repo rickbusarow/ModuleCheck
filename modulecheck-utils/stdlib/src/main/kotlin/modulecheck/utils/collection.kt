@@ -31,8 +31,6 @@ fun <T> T.singletonSet(): Set<T> = setOf(this)
 
 /**
  * shorthand for `filterTo(destination, predicate)`
- *
- * @since 0.13.0
  */
 inline fun <T> Iterable<T>.filterToSet(
   destination: MutableSet<T> = mutableSetOf(),
@@ -65,8 +63,8 @@ inline fun <T, R> Sequence<T>.flatMapToSet(
 /**
  * Returns a list of all elements sorted according to the specified [selectors].
  *
- * The sort is _stable_. It means that equal elements preserve their order relative to each other
- * after sorting.
+ * The sort is _stable_. It means that equal elements
+ * preserve their order relative to each other after sorting.
  *
  * @since 0.12.0
  */
@@ -82,8 +80,8 @@ public fun <T> Iterable<T>.sortedWith(vararg selectors: (T) -> Comparable<*>): L
 /**
  * Returns a list of all elements sorted according to the specified [selectors].
  *
- * The sort is _stable_. It means that equal elements preserve their order relative to each other
- * after sorting.
+ * The sort is _stable_. It means that equal elements
+ * preserve their order relative to each other after sorting.
  *
  * @since 0.12.0
  */
@@ -94,8 +92,8 @@ public fun <T> Sequence<T>.sortedWith(vararg selectors: (T) -> Comparable<*>): S
 /**
  * Returns a list of all elements sorted according to the specified [selectors].
  *
- * The sort is _stable_. It means that equal elements preserve their order relative to each other
- * after sorting.
+ * The sort is _stable_. It means that equal elements
+ * preserve their order relative to each other after sorting.
  *
  * @since 0.12.0
  */
@@ -105,8 +103,6 @@ public fun <T> Iterable<T>.sortedWithDescending(vararg selectors: (T) -> Compara
 
 /**
  * shorthand for `values.flatten().distinct()`
- *
- * @since 0.13.0
  */
 fun <K : Any, T : Any> Map<K, Collection<T>>.allValues(): List<T> {
   return values.flatten().distinct()
@@ -114,8 +110,6 @@ fun <K : Any, T : Any> Map<K, Collection<T>>.allValues(): List<T> {
 
 /**
  * Creates a sequence of those [elements] which are not null
- *
- * @since 0.13.0
  */
 fun <T> sequenceOfNotNull(
   vararg elements: T?
@@ -126,9 +120,8 @@ fun <T> sequenceOfNotNull(
 }
 
 /**
- * @return true if any element in [other] is contained within the receiver collection, otherwise
- *   returns false
- * @since 0.13.0
+ * @return true if any element in [other] is contained
+ *   within the receiver collection, otherwise returns false
  */
 fun <E> Iterable<E>.containsAny(other: Iterable<Any?>): Boolean {
 
@@ -148,9 +141,8 @@ fun <E> Iterable<E>.containsAny(other: Iterable<Any?>): Boolean {
 /**
  * shorthand for `this as? Set<E> ?: toSet()`
  *
- * @return itself if the receiver [Iterable] is already a `Set<E>`, otherwise calls `toSet()` to
- *   create a new one
- * @since 0.13.0
+ * @return itself if the receiver [Iterable] is already a
+ *   `Set<E>`, otherwise calls `toSet()` to create a new one
  */
 internal fun <E> Iterable<E>.toSetOrSelf(): Set<E> {
   return this as? Set<E> ?: toSet()

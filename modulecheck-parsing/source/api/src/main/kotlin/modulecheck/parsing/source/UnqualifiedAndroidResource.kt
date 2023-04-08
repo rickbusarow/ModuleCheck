@@ -41,9 +41,9 @@ class UnqualifiedAndroidResource private constructor(
   override val name: String by unsafeLazy { simpleNames.asString() }
 
   /**
-   * @return the fully qualified name of a generated Android resource, like
-   *   `com.example.R.string.app_name` from the combination of `com.example.R` and
-   *   `R.string.app_name`
+   * @return the fully qualified name of a generated Android
+   *   resource, like `com.example.R.string.app_name` from the
+   *   combination of `com.example.R` and `R.string.app_name`
    * @since 0.12.0
    */
   fun toQualifiedDeclaredName(

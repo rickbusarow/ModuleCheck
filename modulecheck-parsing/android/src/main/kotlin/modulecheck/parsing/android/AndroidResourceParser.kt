@@ -23,8 +23,8 @@ import java.io.File
 class AndroidResourceParser {
 
   /**
-   * @return returns all **unqualified** resources declared within this directory, such as
-   *   `R.string.app_name`
+   * @return returns all **unqualified** resources declared
+   *   within this directory, such as `R.string.app_name`
    * @since 0.12.0
    */
   fun parseFile(resDir: File): Set<UnqualifiedAndroidResource> {

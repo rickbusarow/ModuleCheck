@@ -16,8 +16,8 @@
 package modulecheck.parsing.gradle.dsl
 
 /**
- * Models some compilation unit, like a DSL block or a function, where the declarations or
- * statements ([C]) inside it may have suppressions ([S]).
+ * Models some compilation unit, like a DSL block or a function, where the
+ * declarations or statements ([C]) inside it may have suppressions ([S]).
  *
  * @since 0.12.0
  */

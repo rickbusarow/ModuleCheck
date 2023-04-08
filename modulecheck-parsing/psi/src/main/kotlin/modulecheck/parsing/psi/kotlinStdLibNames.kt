@@ -56,8 +56,8 @@ fun String.kotlinStdLibNameOrNull(): QualifiedDeclaredName? {
  * print_classes | sort -u | gsed '/^"[A-Z_]*"/d'
  * ```
  *
- * And the list of packages that should be considered was extracted from the kotlin documentation:
- * https://kotlinlang.org/docs/packages.html#default-imports
+ * And the list of packages that should be considered was extracted from the
+ * kotlin documentation: https://kotlinlang.org/docs/packages.html#default-imports
  *
  * @since 0.12.0
  */

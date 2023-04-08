@@ -18,8 +18,8 @@ package modulecheck.utils.coroutines
 import kotlinx.coroutines.CoroutineDispatcher
 
 /**
- * An abstract marker representing the `limitParallelism(...)` functionality in coroutines 1.6.x,
- * which is forked here
+ * An abstract marker representing the `limitParallelism(...)`
+ * functionality in coroutines 1.6.x, which is forked here
  *
  * @since 0.12.0
  */

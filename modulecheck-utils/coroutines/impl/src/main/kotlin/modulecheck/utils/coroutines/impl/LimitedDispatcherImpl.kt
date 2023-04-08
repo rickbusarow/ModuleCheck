@@ -28,8 +28,8 @@ import kotlin.coroutines.EmptyCoroutineContext
 /**
  * Forked from kotlinx.coroutines
  *
- * The result of .limitedParallelism(x) call, a dispatcher that wraps the given dispatcher, but
- * limits the parallelism level, while trying to emulate fairness.
+ * The result of .limitedParallelism(x) call, a dispatcher that wraps the given
+ * dispatcher, but limits the parallelism level, while trying to emulate fairness.
  *
  * @since 0.12.0
  */
