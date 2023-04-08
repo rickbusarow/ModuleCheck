@@ -31,12 +31,12 @@ import modulecheck.model.dependency.TypeSafeProjectPathResolver
 import javax.inject.Inject
 
 /**
- * Creates a [ProjectDependency] for given arguments, using [pathResolver] and [generatorBindings]
- * to look up a [CodeGeneratorBinding] in the event that the project dependency in question is an
- * annotation processor.
+ * Creates a [ProjectDependency] for given arguments, using [pathResolver]
+ * and [generatorBindings] to look up a [CodeGeneratorBinding] in the event
+ * that the project dependency in question is an annotation processor.
  *
- * @property pathResolver used to look up the [StringProjectPath] of any internal project code
- *   generators. This is necessary in order to look up the [CodeGeneratorBinding].
+ * @property pathResolver used to look up the [StringProjectPath] of any internal project
+ *   code generators. This is necessary in order to look up the [CodeGeneratorBinding].
  * @property generatorBindings the list of possible bindings to search
  * @since 0.12.0
  */

@@ -21,8 +21,8 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 /**
- * Lazily invokes some the first time [await][Deferred.await] or [join][kotlinx.coroutines.Job.join]
- * is called.
+ * Lazily invokes some the first time [await][Deferred.await]
+ * or [join][kotlinx.coroutines.Job.join] is called.
  *
  * This action is only invoked once. The caller's coroutine is used to execute this action.
  *
@@ -44,14 +44,13 @@ interface LazyDeferred<out T> {
    * This should only be called after manually checking the value of [isCompleted].
    *
    * @throws [IllegalStateException] if this deferred value has not [completed][isCompleted] yet.
-   * @since 0.13.0
    */
   fun getCompleted(): T
 }
 
 /**
- * Lazily invokes [action] the first time [await][Deferred.await] or
- * [join][kotlinx.coroutines.Job.join] is called.
+ * Lazily invokes [action] the first time [await][Deferred.await]
+ * or [join][kotlinx.coroutines.Job.join] is called.
  *
  * This [action] is only invoked once. The caller's coroutine is used to execute this action.
  *

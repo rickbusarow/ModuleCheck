@@ -22,7 +22,6 @@ package modulecheck.testing
  * @property agp version of the agp dependency
  * @property anvil version of the anvil dependency
  * @property kotlin version of the kotlin dependency
- * @since 0.13.0
  */
 data class TestVersions(
   val gradle: String,

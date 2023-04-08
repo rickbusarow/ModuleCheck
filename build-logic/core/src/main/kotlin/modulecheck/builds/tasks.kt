@@ -37,8 +37,6 @@ fun TaskContainer.maybeNamed(
 
 /**
  * code golf for `matching { it.name == taskName }`
- *
- * @since 0.13.0
  */
 fun TaskContainer.matchingName(
   taskName: String
@@ -46,8 +44,6 @@ fun TaskContainer.matchingName(
 
 /**
  * adds all [objects] as dependencies to every task in the collection, inside a `configureEach { }`
- *
- * @since 0.13.0
  */
 fun <T : Task> TaskCollection<T>.dependOn(vararg objects: Any): TaskCollection<T> {
   return also { taskCollection ->
@@ -57,8 +53,6 @@ fun <T : Task> TaskCollection<T>.dependOn(vararg objects: Any): TaskCollection<T
 
 /**
  * adds all [objects] as dependencies inside a configuration block, inside a `configure { }`
- *
- * @since 0.13.0
  */
 fun <T : Task> TaskProvider<T>.dependsOn(vararg objects: Any): TaskProvider<T> {
   return also { provider ->
@@ -69,15 +63,14 @@ fun <T : Task> TaskProvider<T>.dependsOn(vararg objects: Any): TaskProvider<T> {
 }
 
 /**
- * Returns a collection containing the objects in this collection of the given type. The returned
- * collection is live, so that when matching objects are later added to this collection, they are
- * also visible in the filtered collection.
+ * Returns a collection containing the objects in this collection of the given
+ * type. The returned collection is live, so that when matching objects are later
+ * added to this collection, they are also visible in the filtered collection.
  *
  * @param S The type of objects to find.
- * @return The matching objects. Returns an empty collection if there are no such objects in this
- *   collection.
+ * @return The matching objects. Returns an empty collection
+ *   if there are no such objects in this collection.
  * @see [TaskCollection.withType]
- * @since 0.13.0
  */
 inline fun <reified S : Task> TaskCollection<in S>.withType(): TaskCollection<S> =
   withType(S::class.java)
@@ -90,10 +83,8 @@ inline fun <reified T : Task> TaskContainer.register(
   .apply { configure { configuration(it) } }
 
 /**
- * Adds a task of this name and type if it doesn't exist. [configurationAction] is performed on the
- * new task, or the existing task if one already existed.
- *
- * @since 0.13.0
+ * Adds a task of this name and type if it doesn't exist. [configurationAction]
+ * is performed on the new task, or the existing task if one already existed.
  */
 @JvmName("registerOnceInline")
 inline fun <reified T : Task> TaskContainer.registerOnce(
@@ -102,10 +93,8 @@ inline fun <reified T : Task> TaskContainer.registerOnce(
 ): TaskProvider<T> = registerOnce(name, T::class.java, configurationAction)
 
 /**
- * Adds a task of this name and type if it doesn't exist. [configurationAction] is performed on the
- * new task, or the existing task if one already existed.
- *
- * @since 0.13.0
+ * Adds a task of this name and type if it doesn't exist. [configurationAction]
+ * is performed on the new task, or the existing task if one already existed.
  */
 fun <T : Task> TaskContainer.registerOnce(
   name: String,
@@ -118,9 +107,8 @@ fun <T : Task> TaskContainer.registerOnce(
 }
 
 /**
- * @return the fully qualified name of this task's type, without any '_Decorated' suffix if one
- *   exists
- * @since 0.13.0
+ * @return the fully qualified name of this task's
+ *   type, without any '_Decorated' suffix if one exists
  */
 fun Task.undecoratedTypeName(): String {
   return javaClass.canonicalName.removeSuffix("_Decorated")

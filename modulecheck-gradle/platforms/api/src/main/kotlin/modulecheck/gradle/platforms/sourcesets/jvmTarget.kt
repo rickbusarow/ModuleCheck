@@ -24,8 +24,8 @@ import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion
 
 /**
- * @return every file which is an actual file (not directory), and actually exists in this file
- *   system
+ * @return every file which is an actual file (not
+ *   directory), and actually exists in this file system
  * @since 0.12.0
  */
 fun FileCollection.existingFiles(): FileCollection = filter { it.isFile && it.exists() }

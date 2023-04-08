@@ -141,11 +141,9 @@ abstract class VersionsFactoryTestTask @Inject constructor(
   }
 
   /**
-   * The GitHub Actions test matrix parses "7.0" into an integer and passes in a command line
-   * argument of "7". That version doesn't resolve. So if the string doesn't contain a period, just
-   * append ".0"
-   *
-   * @since 0.13.0
+   * The GitHub Actions test matrix parses "7.0" into an integer and
+   * passes in a command line argument of "7". That version doesn't
+   * resolve. So if the string doesn't contain a period, just append ".0"
    */
   private fun String.noInt() = if (!contains(".")) {
     "$this.0"

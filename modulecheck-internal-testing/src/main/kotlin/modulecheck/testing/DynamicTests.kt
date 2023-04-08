@@ -39,8 +39,8 @@ interface DynamicTests : ResetManager {
   }
 
   /**
-   * @return a collection of [DynamicTest], named after [testName] for each test and executing the
-   *   logic within [test]
+   * @return a collection of [DynamicTest], named after [testName]
+   *   for each test and executing the logic within [test]
    * @since 0.12.0
    */
   fun <T : Any> Sequence<T>.dynamic(
@@ -49,8 +49,8 @@ interface DynamicTests : ResetManager {
   ): List<DynamicTest> = toList().dynamic(testName, test)
 
   /**
-   * @return a collection of [DynamicTest], named after [testName] for each test and executing the
-   *   logic within [test]
+   * @return a collection of [DynamicTest], named after [testName]
+   *   for each test and executing the logic within [test]
    * @since 0.12.0
    */
   fun <T : Any> Iterable<T>.dynamic(

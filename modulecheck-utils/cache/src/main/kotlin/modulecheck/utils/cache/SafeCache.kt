@@ -30,8 +30,8 @@ import modulecheck.utils.trace.traced
 /**
  * A thread (and coroutine) -safe cache, with automatic eviction.
  *
- * When accessing data via [getOrPut], the operation inside the lambda is guaranteed to only execute
- * once for each key -- unless the previous data has been evicted from the cache.
+ * When accessing data via [getOrPut], the operation inside the lambda is guaranteed to only
+ * execute once for each key -- unless the previous data has been evicted from the cache.
  *
  * @since 0.12.0
  */
@@ -44,8 +44,8 @@ interface SafeCache<K : Any, V> : HasTraceTags {
    * [ConcurrentHashMap.computeIfAbsent][java.util.concurrent.ConcurrentHashMap.computeIfAbsent].
    *
    * @param key the unique key for the desired value
-   * @param loader the action to perform if [key] does not already have a value in the cache. This
-   *   action is guaranteed only to be performed once per key.
+   * @param loader the action to perform if [key] does not already have a value
+   *   in the cache. This action is guaranteed only to be performed once per key.
    * @return the value associated with this [key]
    * @since 0.12.0
    */
@@ -94,8 +94,8 @@ internal class RealSafeCache<K : Any, V>(
 ) : SafeCache<K, V> {
 
   /**
-   * Note that the api surface is that of a `Cache<K, V>`, but this is using a `LazyDeferred<V>`.
-   * This allows all "loader" operations to be light-weight and non-recursive.
+   * Note that the api surface is that of a `Cache<K, V>`, but this is using a
+   * `LazyDeferred<V>`. This allows all "loader" operations to be light-weight and non-recursive.
    *
    * @see getOrPut
    * @since 0.12.0

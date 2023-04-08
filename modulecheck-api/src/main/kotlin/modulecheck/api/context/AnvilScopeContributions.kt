@@ -31,8 +31,8 @@ data class AnvilScopeContributions(
     get() = Key
 
   /**
-   * @return all contributed interfaces for this [sourceSetName], grouped by the [AnvilScopeName]
-   *   for which they're contributed
+   * @return all contributed interfaces for this [sourceSetName],
+   *   grouped by the [AnvilScopeName] for which they're contributed
    * @since 0.12.0
    */
   suspend fun get(sourceSetName: SourceSetName): Map<AnvilScopeName, Set<QualifiedDeclaredName>> {
@@ -60,8 +60,8 @@ suspend fun ProjectContext.anvilScopeContributions(): AnvilScopeContributions =
   get(AnvilScopeContributions)
 
 /**
- * @return all contributed interfaces for this [sourceSetName], grouped by the [AnvilScopeName]
- *   for which they're contributed
+ * @return all contributed interfaces for this [sourceSetName],
+ *   grouped by the [AnvilScopeName] for which they're contributed
  * @since 0.12.0
  */
 suspend fun ProjectContext.anvilScopeContributionsForSourceSetName(

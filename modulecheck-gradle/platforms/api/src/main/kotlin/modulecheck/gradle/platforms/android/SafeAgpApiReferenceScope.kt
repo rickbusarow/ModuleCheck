@@ -22,8 +22,8 @@ import modulecheck.parsing.gradle.model.GradleProject
 import net.swiftzer.semver.SemVer
 
 /**
- * Wrapper for accessing AGP declarations only after it's been established that they exist in the
- * classpath.
+ * Wrapper for accessing AGP declarations only after it's
+ * been established that they exist in the classpath.
  *
  * @see AgpApiAccess
  * @see UnsafeDirectAgpApiReference
@@ -71,8 +71,8 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
   fun Any?.isAndroidTestedExtension(): Boolean = this is AndroidTestedExtension
 
   /**
-   * Direct access to the AGP [com.android.build.api.dsl.CommonExtension] type, only accessible
-   * after it's been established that the type is in the classpath.
+   * Direct access to the AGP [com.android.build.api.dsl.CommonExtension] type,
+   * only accessible after it's been established that the type is in the classpath.
    *
    * @since 0.12.0
    */
@@ -81,8 +81,8 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
       .getByType(com.android.build.api.dsl.CommonExtension::class.java)
 
   /**
-   * Direct access to the AGP [AndroidBaseExtension] type, only accessible after it's been
-   * established that the type is in the classpath.
+   * Direct access to the AGP [AndroidBaseExtension] type, only accessible
+   * after it's been established that the type is in the classpath.
    *
    * @since 0.12.0
    */

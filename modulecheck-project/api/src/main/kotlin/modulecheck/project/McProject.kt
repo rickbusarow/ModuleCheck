@@ -84,8 +84,8 @@ interface McProject :
   val jvmTarget: JvmTarget
 
   /**
-   * @return a [QualifiedDeclaredName] if one can be found for the given [resolvableMcName] and
-   *   [sourceSetName]
+   * @return a [QualifiedDeclaredName] if one can be found
+   *   for the given [resolvableMcName] and [sourceSetName]
    * @since 0.12.0
    */
   suspend fun resolvedNameOrNull(

@@ -20,8 +20,8 @@ import java.io.File
 /**
  * Walks upward in the file tree, looking for a directory which will resolve [relativePath].
  *
- * For example, given a receiver File path of './a/b/c/' and a `relativePath` of 'foo/bar.txt', this
- * function will attempt to resolve the following paths in order:
+ * For example, given a receiver File path of './a/b/c/' and a `relativePath` of
+ * 'foo/bar.txt', this function will attempt to resolve the following paths in order:
  *
  * ```text
  * ./a/b/c/foo/bar.txt
@@ -30,10 +30,9 @@ import java.io.File
  * ./foo/bar.txt
  * ```
  *
- * @returns the first path to contain an [existent][File.exists] File for [relativePath], or
- *   `null` if it could not be resolved
+ * @returns the first path to contain an [existent][File.exists]
+ *   File for [relativePath], or `null` if it could not be resolved
  * @see resolveInParent for a version which throws if nothing is resolved
- * @since 0.13.0
  */
 fun File.resolveInParentOrNull(relativePath: String): File? {
   return resolve(relativePath).existsOrNull()
@@ -43,9 +42,8 @@ fun File.resolveInParentOrNull(relativePath: String): File? {
 /**
  * Non-nullable version of [resolveInParentOrNull]
  *
- * @throws IllegalArgumentException if a file cannot be resolved
  * @see resolveInParentOrNull for a nullable, non-throwing variant
- * @since 0.13.0
+ * @throws IllegalArgumentException if a file cannot be resolved
  */
 fun File.resolveInParent(relativePath: String): File {
   return requireNotNull(resolveInParentOrNull(relativePath)) {
@@ -58,8 +56,8 @@ fun File.resolveInParent(relativePath: String): File {
 fun File.existsOrNull(): File? = takeIf { it.exists() }
 
 /**
- * @return true if the receiver [File] is a directory with at least one child file which satisfies
- *   [childPredicate]
+ * @return true if the receiver [File] is a directory with
+ *   at least one child file which satisfies [childPredicate]
  * @since 0.10.0
  */
 fun File.isDirectoryWithFiles(
@@ -67,12 +65,12 @@ fun File.isDirectoryWithFiles(
 ): Boolean = !isFile && listFiles()?.any(childPredicate) == true
 
 /**
- * Returns true if the receiver [File] is `/build/` or `/.gradle/`, but there is no sibling
- * `/build.gradle.kts` or `/settings.gradle.kts`.
+ * Returns true if the receiver [File] is `/build/` or `/.gradle/`, but
+ * there is no sibling `/build.gradle.kts` or `/settings.gradle.kts`.
  *
- * The most common cause of this would be switching between git branches with different module
- * structures. Since `build` and `.gradle` directories are ignored in git, they'll stick around
- * after a branch switch.
+ * The most common cause of this would be switching between git branches
+ * with different module structures. Since `build` and `.gradle` directories
+ * are ignored in git, they'll stick around after a branch switch.
  *
  * @since 0.10.0
  */
@@ -87,12 +85,12 @@ fun File.isOrphanedBuildOrGradleDir(): Boolean {
 }
 
 /**
- * Returns true if the receiver [File] is `/gradle.properties`, but there is no sibling
- * `/build.gradle.kts` or `/settings.gradle.kts`.
+ * Returns true if the receiver [File] is `/gradle.properties`, but
+ * there is no sibling `/build.gradle.kts` or `/settings.gradle.kts`.
  *
- * The most common cause of this would be switching between git branches with different module
- * structures. Since all `gradle.properties` files except the root are ignored in git, they'll stick
- * around after a branch switch.
+ * The most common cause of this would be switching between git branches with
+ * different module structures. Since all `gradle.properties` files except
+ * the root are ignored in git, they'll stick around after a branch switch.
  *
  * @since 0.10.0
  */

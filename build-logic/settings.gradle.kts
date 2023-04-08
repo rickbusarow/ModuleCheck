@@ -31,7 +31,6 @@ dependencyResolutionManagement {
     maven("https://plugins.gradle.org/m2/")
   }
 
-  @Suppress("UnstableApiUsage")
   versionCatalogs {
     create("libs") {
       from(files("../gradle/libs.versions.toml"))
@@ -43,7 +42,6 @@ include(
   ":artifacts-check",
   ":conventions",
   ":core",
-  ":ktlint-rules",
   ":mcbuild",
   ":versions-matrix"
 )

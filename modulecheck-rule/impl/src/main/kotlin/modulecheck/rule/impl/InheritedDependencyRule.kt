@@ -178,12 +178,12 @@ class InheritedDependencyRule @Inject constructor() :
   }
 
   /**
-   * Returns a sequence starting with the receiver's configuration, then all **downstream**
-   * configurations.
+   * Returns a sequence starting with the receiver's
+   * configuration, then all **downstream** configurations.
    *
-   * For example, if we're checking to see if a transitive dependency is used in `main`, we should
-   * also check whether it's used in the source sets which inherit from `main` (like `debug`,
-   * `release`, `androidTest`, `test`, etc.).
+   * For example, if we're checking to see if a transitive dependency is used
+   * in `main`, we should also check whether it's used in the source sets which
+   * inherit from `main` (like `debug`, `release`, `androidTest`, `test`, etc.).
    *
    * @since 0.12.0
    */
@@ -215,9 +215,9 @@ class InheritedDependencyRule @Inject constructor() :
   }
 
   /**
-   * @return a sequence containing all original transitive dependencies, but adds `main`
-   *   contributed dependencies where the original transitive dependency was providing `main` via
-   *   `testFixtures`.
+   * @return a sequence containing all original transitive dependencies,
+   *   but adds `main` contributed dependencies where the original
+   *   transitive dependency was providing `main` via `testFixtures`.
    * @since 0.12.0
    */
   private fun Sequence<TransitiveProjectDependency>.withTestFixturesMainSource() =

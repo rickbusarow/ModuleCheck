@@ -21,8 +21,8 @@ interface AndroidPlatformPluginFactory {
   /**
    * @param gradleProject the target project
    * @param androidCommonExtension the instance of AGP extension applied to this project
-   * @param hasTestFixturesPlugin has either the `java-test-fixtures` plugin or
-   *   `buildFeatures.testFixtures` is enabled in the extension
+   * @param hasTestFixturesPlugin has either the `java-test-fixtures`
+   *   plugin or `buildFeatures.testFixtures` is enabled in the extension
    * @return the [AndroidPlatformPlugin] capturing all of this project's settings
    * @since 0.12.0
    */

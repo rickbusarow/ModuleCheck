@@ -28,41 +28,39 @@ interface HasSourceSets {
 
 /**
  * Cache of [sourceSets][McSourceSet], probably at the project level.
- *
- * @since 0.13.0
  */
 class SourceSets(
   delegate: Map<SourceSetName, McSourceSet>
 ) : Map<SourceSetName, McSourceSet> by delegate
 
 /**
- * Models all the particulars for a compilation unit, roughly equivalent to the source set models in
- * AGP, KGP, and the Java Gradle Plugin.
+ * Models all the particulars for a compilation unit, roughly equivalent
+ * to the source set models in AGP, KGP, and the Java Gradle Plugin.
  *
  * @property name the name of this source set, like 'main' or 'internalRelease'
  * @property compileOnlyConfiguration the configuration name of this source set's 'compileOnly'
  *   configuration, like 'compileOnly' for 'main' or 'debugCompileOnly' for 'debug'
- * @property apiConfiguration the configuration name of this source set's 'api' configuration,
- *   like 'api' for 'main' or 'debugApi' for 'debug'
- * @property implementationConfiguration the configuration name of this source set's
- *   'implementation' configuration, like 'implementation' for 'main' or 'debugImplementation' for
- *   'debug'
+ * @property apiConfiguration the configuration name of this source set's
+ *   'api' configuration, like 'api' for 'main' or 'debugApi' for 'debug'
+ * @property implementationConfiguration the configuration name
+ *   of this source set's 'implementation' configuration, like
+ *   'implementation' for 'main' or 'debugImplementation' for 'debug'
  * @property runtimeOnlyConfiguration the configuration name of this source set's 'runtimeOnly'
  *   configuration, like 'runtimeOnly' for 'main' or 'debugRuntimeOnly' for 'debug'
- * @property annotationProcessorConfiguration the configuration name of this source set's
- *   'annotationProcessor' configuration, like 'annotationProcessor' for 'main' or
- *   'debugAnnotationProcessor' for 'debug'
+ * @property annotationProcessorConfiguration the configuration name
+ *   of this source set's 'annotationProcessor' configuration, like
+ *   'annotationProcessor' for 'main' or 'debugAnnotationProcessor' for 'debug'
  * @property jvmFiles all java/kotlin/scala/groovy files in this source set
  * @property resourceFiles all xml 'res' files for this source set
- * @property layoutFiles all android layout files for this source set. This is a subset of
- *   [resourceFiles].
+ * @property layoutFiles all android layout files for
+ *   this source set. This is a subset of [resourceFiles].
  * @property jvmTarget the Java version used when compiling this source set
- * @property kotlinEnvironmentDeferred the kotlin environment used for "compiling" and parsing
- *   this source set
- * @property upstreamLazy all source sets upstream of this one, like `main` if this source set is
- *   `test`
- * @property downstreamLazy all source sets downstream of this one, like `test` if this source set
- *   is `main`
+ * @property kotlinEnvironmentDeferred the kotlin environment
+ *   used for "compiling" and parsing this source set
+ * @property upstreamLazy all source sets upstream of
+ *   this one, like `main` if this source set is `test`
+ * @property downstreamLazy all source sets downstream of
+ *   this one, like `test` if this source set is `main`
  * @since 0.12.0
  */
 @Suppress("LongParameterList")
@@ -144,9 +142,9 @@ class McSourceSet(
    * If one source set extends another, then the extended one should come before it in a collection.
    * For instance, in [withUpstream] for `TestDebug`, the list would be `[main, debug, testDebug]`.
    *
-   * If two source sets are siblings (neither extends the other, such as in build flavors from
-   * different dimensions), then they should be sorted alphabetically (by name). The alphabetical
-   * sort just ensures that all lists are stable.
+   * If two source sets are siblings (neither extends the other, such as in build
+   * flavors from different dimensions), then they should be sorted alphabetically
+   * (by name). The alphabetical sort just ensures that all lists are stable.
    *
    * @since 0.12.0
    */
@@ -202,8 +200,6 @@ fun Collection<McSourceSet>.sortedByInheritance(): Sequence<McSourceSet> {
 
 /**
  * Upstream source set names **not** including the receiver name.
- *
- * @since 0.13.0
  */
 fun SourceSetName.upstream(
   hasSourceSets: HasSourceSets
@@ -216,11 +212,9 @@ fun SourceSetName.upstream(
  *
  * ### Ordering
  *
- * Order is based upon proximity to the receiver name. This is a breadth-first traversal of a
- * directed graph where the receiver [SourceSetName] is the root. The first returned name is the
- * receiver, followed by the source sets it directly inherits.
- *
- * @since 0.13.0
+ * Order is based upon proximity to the receiver name. This is a breadth-first traversal
+ * of a directed graph where the receiver [SourceSetName] is the root. The first
+ * returned name is the receiver, followed by the source sets it directly inherits.
  */
 fun SourceSetName.withUpstream(
   hasSourceSets: HasSourceSets

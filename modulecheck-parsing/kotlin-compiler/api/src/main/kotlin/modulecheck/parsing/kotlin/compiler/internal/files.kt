@@ -21,22 +21,19 @@ import org.jetbrains.kotlin.incremental.isKotlinFile
 import java.io.File
 
 /**
- * @return true if the file exists in the Java file system and has an extension of `.kt` or
- *   `.kts`, otherwise false
- * @since 0.13.0
+ * @return true if the file exists in the Java file system
+ *   and has an extension of `.kt` or `.kts`, otherwise false
  */
 fun File.isKotlinFile(): Boolean = exists() && isKotlinFile(listOf("kts", "kt"))
 
 /**
- * @return true if the file exists in the Java file system and has an extension of `.kts`,
- *   otherwise false
- * @since 0.13.0
+ * @return true if the file exists in the Java file system
+ *   and has an extension of `.kts`, otherwise false
  */
 fun File.isKotlinScriptFile(): Boolean = exists() && isKotlinFile(listOf("kts"))
 
 /**
- * @return true if the file exists in the Java file system and has an extension of `.kt`,
- *   otherwise false
- * @since 0.13.0
+ * @return true if the file exists in the Java file
+ *   system and has an extension of `.kt`, otherwise false
  */
 fun File.isKtFile(): Boolean = exists() && isKotlinFile(listOf("kt"))

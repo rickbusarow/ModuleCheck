@@ -45,13 +45,13 @@ import java.io.File
 import kotlin.system.measureTimeMillis
 
 /**
- * Proxy for a Gradle task, without all the Gradle framework stuff. Most logic is delegated to its
- * various dependencies.
+ * Proxy for a Gradle task, without all the Gradle framework
+ * stuff. Most logic is delegated to its various dependencies.
  *
- * @param findingFactory handles parsing of the projects in order to generate the findings
- * @param findingResultFactory attempts to apply fixes to the findings and returns a list of
- *   [FindingResult][modulecheck.finding.Finding.FindingResult]
- * @param reportFactory handles console output of the results
+ * @property findingFactory handles parsing of the projects in order to generate the findings
+ * @property findingResultFactory attempts to apply fixes to the findings and
+ *   returns a list of [FindingResult][modulecheck.finding.Finding.FindingResult]
+ * @property reportFactory handles console output of the results
  * @since 0.12.0
  */
 @Suppress("LongParameterList")

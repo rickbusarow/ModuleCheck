@@ -20,19 +20,19 @@ import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
 import javax.inject.Inject
 
 /**
- * A type-safe name can't always be resolved to a String path, because dashes and pascalCase in a
- * String path are treated the same. For instance, these two paths:
+ * A type-safe name can't always be resolved to a String path, because dashes and
+ * pascalCase in a String path are treated the same. For instance, these two paths:
  *
  * - `:foo-bar`
  * - `:fooBar`
  *
  * will both have the same accessor name: `projects.fooBar`.
  *
- * Gradle guards against this by checking for name collisions during configuration, so we're
- * guaranteed that only one of the String versions will exist.
+ * Gradle guards against this by checking for name collisions during configuration,
+ * so we're guaranteed that only one of the String versions will exist.
  *
- * So, in order to convert a type-safe name into its original String path, we need the list of
- * actual paths to compare against.
+ * So, in order to convert a type-safe name into its original
+ * String path, we need the list of actual paths to compare against.
  *
  * @since 0.12.0
  */

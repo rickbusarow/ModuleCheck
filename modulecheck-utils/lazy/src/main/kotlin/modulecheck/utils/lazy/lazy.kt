@@ -21,11 +21,7 @@ import kotlin.reflect.KProperty
 fun <T> unsafeLazy(initializer: () -> T): Lazy<T> =
   lazy(mode = LazyThreadSafetyMode.NONE, initializer = initializer)
 
-/**
- * just a var, but the initial value is lazy
- *
- * @since 0.13.0
- */
+/** just a var, but the initial value is lazy */
 fun <T> lazyVar(initializer: () -> T): ReadWriteProperty<Any?, T> = SynchronizedLazyVar(initializer)
 
 private class SynchronizedLazyVar<T>(initializer: () -> T) : ReadWriteProperty<Any?, T> {

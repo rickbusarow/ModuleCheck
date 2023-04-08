@@ -12,17 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package modulecheck.builds.ktlint
+package modulecheck.builds
 
-import modulecheck.builds.ModuleCheckBuildTask
-import modulecheck.builds.allProjects
-import modulecheck.builds.applyOnce
-import modulecheck.builds.capitalize
-import modulecheck.builds.dependsOn
-import modulecheck.builds.isRealRootProject
-import modulecheck.builds.matchingName
-import modulecheck.builds.register
-import modulecheck.builds.rootProject
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskContainer
@@ -194,10 +185,8 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
     }
 
   /**
-   * These exclude anything in `$projectDir/build/generated/` from Kotlinter's checks. Globs are
-   * relative to the **source set's** kotlin root.
-   *
-   * @since 0.13.0
+   * These exclude anything in `$projectDir/build/generated/` from Kotlinter's
+   * checks. Globs are relative to the **source set's** kotlin root.
    */
   private fun excludeGenerated(task: ConfigurableKtLintTask, project: Project) {
     // task.exclude("*Plugin.kt")

@@ -107,6 +107,7 @@ dependencies {
   implementation(libs.kotlin.stdlib.jdk7)
   implementation(libs.kotlin.stdlib.jdk8)
   implementation(libs.kotlinx.knit)
+  implementation(libs.rickBusarow.ktrules)
   implementation(libs.scabbard)
   implementation(libs.square.anvil.gradle)
   implementation(libs.square.kotlinPoet)

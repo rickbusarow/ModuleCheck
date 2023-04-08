@@ -38,12 +38,10 @@ import java.io.FileNotFoundException
 import javax.inject.Inject
 
 /**
- * A simple [McPsiFileFactory] which performs no source code analysis and has just a generic
- * [coreEnvironment] and [configuration]. The resulting
- * [BindingContext][org.jetbrains.kotlin.resolve.BindingContext] will always be "empty" and will be
- * useless for type resolution.
- *
- * @since 0.13.0
+ * A simple [McPsiFileFactory] which performs no source code analysis
+ * and has just a generic [coreEnvironment] and [configuration]. The
+ * resulting [BindingContext][org.jetbrains.kotlin.resolve.BindingContext]
+ * will always be "empty" and will be useless for type resolution.
  */
 class NoContextPsiFileFactory @Inject constructor() :
   AbstractMcPsiFileFactory(),
@@ -97,10 +95,9 @@ class NoContextPsiFileFactory @Inject constructor() :
   }
 
   /**
-   * @return a "virtual" Psi `KtFile` with the given [name] and [content]. This file does not
-   *   exist in a Java file system.
+   * @return a "virtual" Psi `KtFile` with the given [name] and
+   *   [content]. This file does not exist in a Java file system.
    * @see createKotlin
-   * @since 0.13.0
    */
   suspend fun createKotlin(
     name: String,
@@ -112,10 +109,9 @@ class NoContextPsiFileFactory @Inject constructor() :
   }
 
   /**
-   * @return a "virtual" Psi `PsiJavaFile` with the given [name] and [content]. This file does not
-   *   exist in a Java file system.
+   * @return a "virtual" Psi `PsiJavaFile` with the given [name] and
+   *   [content]. This file does not exist in a Java file system.
    * @see createJava
-   * @since 0.13.0
    */
   suspend fun createJava(
     name: String,

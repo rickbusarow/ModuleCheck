@@ -41,8 +41,8 @@ interface XmlFile : HasReferences {
     val name: String = file.nameWithoutExtension
 
     /**
-     * All custom view types *used* within this file. Note that this is not the declaration of a
-     * view.
+     * All custom view types *used* within this file.
+     * Note that this is not the declaration of a view.
      *
      * @since 0.12.0
      */

@@ -26,23 +26,17 @@ import modulecheck.utils.lazy.unsafeLazy
  *
  * @see McName
  * @see DEFAULT
- * @since 0.13.0
  */
 sealed interface PackageName : McName {
-  /**
-   * the full name of this package
-   *
-   * @since 0.13.0
-   */
+  /** the full name of this package */
   override val name: String
 
   /**
-   * Represents a [PackageName] when there isn't actually a package name, meaning that top-level
-   * declarations in that file are at the root of source without qualifiers.
+   * Represents a [PackageName] when there isn't actually a package name, meaning that
+   * top-level declarations in that file are at the root of source without qualifiers.
    *
    * @see McName
    * @see DEFAULT
-   * @since 0.13.0
    */
   object DEFAULT : PackageName {
     override val name: String = ""
@@ -55,30 +49,23 @@ sealed interface PackageName : McName {
   /**
    * Safe function for appending a simple name to the "end" of a package name.
    *
-   * If the package name is default/empty, this function will return just the simple name without a
-   * preceding period.
+   * If the package name is default/empty, this function will
+   * return just the simple name without a preceding period.
    *
-   * If the package name is not blank, this function will append a period to the package name, then
-   * add the simple name.
-   *
-   * @since 0.13.0
+   * If the package name is not blank, this function will append
+   * a period to the package name, then add the simple name.
    */
   fun append(simpleNames: Iterable<String>): String
 
   companion object {
-    /**
-     * Shorthand for calling [PackageName.invoke] in-line.
-     *
-     * @since 0.13.0
-     */
+    /** Shorthand for calling [PackageName.invoke] in-line. */
     fun String?.asPackageName(): PackageName = PackageName(this)
 
     /**
      * Shorthand for calling [PackageName.invoke] in-line.
      *
-     * @return A `PackageName` wrapper around [nameOrNull]. If [nameOrNull] is null or blank, this
-     *   will return [PackageName.DEFAULT].
-     * @since 0.13.0
+     * @return A `PackageName` wrapper around [nameOrNull]. If [nameOrNull]
+     *   is null or blank, this will return [PackageName.DEFAULT].
      */
     operator fun invoke(nameOrNull: String?): PackageName {
       return when {
@@ -92,20 +79,17 @@ sealed interface PackageName : McName {
 /**
  * Safe function for appending a simple name to the "end" of a package name.
  *
- * If the package name is default/empty, this function will return just the simple name without a
- * preceding period.
+ * If the package name is default/empty, this function will
+ * return just the simple name without a preceding period.
  *
- * If the package name is not blank, this function will append a period to the package name, then
- * add the simple name.
- *
- * @since 0.13.0
+ * If the package name is not blank, this function will append
+ * a period to the package name, then add the simple name.
  */
 fun PackageName.append(vararg simpleNames: String): String = append(simpleNames.toList())
 
 /**
  * @property name the full name of this package
  * @see McName
- * @since 0.13.0
  * @throws IllegalArgumentException if the [name] parameter is empty or blank
  */
 data class PackageNameImpl internal constructor(override val name: String) : PackageName {
@@ -123,11 +107,7 @@ data class PackageNameImpl internal constructor(override val name: String) : Pac
   override val segments: List<String> by unsafeLazy { name.split('.') }
 }
 
-/**
- * Convenience interface for providing a [PackageName].
- *
- * @since 0.13.0
- */
+/** Convenience interface for providing a [PackageName]. */
 interface HasPackageName {
   val packageName: PackageName
 }
