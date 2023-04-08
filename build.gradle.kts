@@ -13,6 +13,11 @@
  * limitations under the License.
  */
 
+import modulecheck.builds.GROUP
+import modulecheck.builds.PLUGIN_ID
+import modulecheck.builds.VERSION_NAME
+import modulecheck.builds.VERSION_NAME_STABLE
+
 buildscript {
   dependencies {
     classpath(libs.kotlin.gradle.plugin)
@@ -25,10 +30,90 @@ buildscript {
 plugins {
   alias(libs.plugins.dependencyAnalysis)
   alias(libs.plugins.detekt)
+  alias(libs.plugins.doks)
   alias(libs.plugins.moduleCheck)
   alias(libs.plugins.taskTree)
   base
   id("mcbuild.root")
+}
+
+doks {
+  dokSet("readme") {
+    docs("README.md", "CHANGELOG.md")
+
+    rule("modulecheck-version") {
+      regex = SEMVER
+      replacement = VERSION_NAME
+    }
+    rule("modulecheck-plugin") {
+      regex = gradlePluginWithVersion(pluginId = PLUGIN_ID)
+      replacement = "$1$2$3$4$VERSION_NAME$6"
+    }
+    rule("modulecheck-maven") {
+      regex = maven(GROUP.escapeRegex())
+      replacement = "$1:$2:$VERSION_NAME"
+    }
+
+    rule("modulecheck-version-stable") {
+      regex = SEMVER
+      replacement = VERSION_NAME_STABLE
+    }
+    rule("modulecheck-plugin-stable") {
+      regex = gradlePluginWithVersion(pluginId = PLUGIN_ID)
+      replacement = "$1$2$3$4$VERSION_NAME_STABLE$6"
+    }
+    rule("modulecheck-maven-stable") {
+      regex = maven(GROUP.escapeRegex())
+      replacement = "$1:$2:$VERSION_NAME_STABLE"
+    }
+  }
+  dokSet("website") {
+    docs("website/docs") {
+      include("**/*.md", "**/*.mdx")
+    }
+    sampleCodeSource("modulecheck-gradle/plugin/src/integrationTest/kotlin") {
+      include("**/*.kt")
+    }
+
+    rule("modulecheck-version") {
+      regex = SEMVER
+      replacement = VERSION_NAME
+    }
+    rule("modulecheck-plugin") {
+      regex = gradlePluginWithVersion(pluginId = PLUGIN_ID)
+      replacement = "$1$2$3$4$VERSION_NAME$6"
+    }
+    rule("modulecheck-maven") {
+      regex = maven(GROUP.escapeRegex())
+      replacement = "$1:$2:$VERSION_NAME"
+    }
+
+    rule("dollar-raw-string") {
+      regex = "\${'$'}".escapeRegex()
+      replacement = "$".escapeReplacement()
+    }
+    rule("buildConfig-version") {
+      regex = "\${BuildConfig.version}".escapeRegex()
+      replacement = VERSION_NAME.escapeReplacement()
+    }
+
+    rule("modulecheck-gradle-config-kotlin") {
+      replacement = sourceCode(
+        fqName = "modulecheck.gradle.ConfigValidationTest.kotlinConfig",
+        bodyOnly = true,
+        codeBlockLanguage = "kotlin",
+        attributes = "title = root/build.gradle.kts"
+      )
+    }
+    rule("modulecheck-gradle-config-groovy") {
+      replacement = sourceCode(
+        fqName = "modulecheck.gradle.ConfigValidationTest.groovyConfig",
+        bodyOnly = true,
+        codeBlockLanguage = "groovy",
+        attributes = "title = root/build.gradle"
+      )
+    }
+  }
 }
 
 moduleCheck {

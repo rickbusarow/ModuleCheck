@@ -9,9 +9,15 @@ import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
   <TabItem value="Kotlin" default>
 
-``` kotlin title="root/build.gradle.kts"
+<!--doks modulecheck-gradle-config-kotlin,dollar-raw-string:5-->
+
+```kotlin title = root/build.gradle.kts
+import com.sun.jndi.ldap.LdapPoolManager.trace
+import jdk.tools.jlink.resources.plugins
+import java.awt.SystemColor.text
+
 plugins {
-  id("com.rickbusarow.module-check") version "0.13.0-SNAPSHOT"
+  id("com.rickbusarow.module-check")
 }
 
 moduleCheck {
@@ -20,19 +26,19 @@ moduleCheck {
   trace = true // default is false
 
   checks {
-    overShotDependency = true // default is true
-    redundantDependency = false // default is false
-    unusedDependency = true // default is true
-    mustBeApi = true // default is true
-    inheritedDependency = true // default is true
-    sortDependencies = false // default is false
-    sortPlugins = false // default is false
-    unusedKapt = true // default is true
-    anvilFactoryGeneration = true // default is true
-    disableAndroidResources = false // default is false
-    disableViewBinding = false // default is false
-    unusedKotlinAndroidExtensions = false // default is false
-    depths = false // default is false
+    overShotDependency = true  // default is true
+    redundantDependency = false  // default is false
+    unusedDependency = true  // default is true
+    mustBeApi = true  // default is true
+    inheritedDependency = true  // default is true
+    sortDependencies = false  // default is false
+    sortPlugins = false  // default is false
+    unusedKapt = true  // default is true
+    anvilFactoryGeneration = true  // default is true
+    disableAndroidResources = false  // default is false
+    disableViewBinding = false  // default is false
+    unusedKotlinAndroidExtensions = false  // default is false
+    depths = false  // default is false
   }
 
   // allow these modules to be declared as dependency anywhere,
@@ -43,7 +49,7 @@ moduleCheck {
   // in this case, :app could declare any module it wants without issue
   doNotCheck = setOf(":app")
 
-    additionalCodeGenerators = listOf(
+  additionalCodeGenerators = listOf(
     modulecheck.config.CodeGeneratorBinding.AnnotationProcessor(
       name = "My Processor",
       generatorMavenCoordinates = "my-project.codegen:processor",
@@ -58,19 +64,19 @@ moduleCheck {
 
   reports {
     checkstyle {
-      enabled = true // default is false
+      enabled = true  // default is false
       outputPath = "${project.buildDir}/reports/modulecheck/checkstyle.xml"
     }
     sarif {
-      enabled = true // default is false
+      enabled = true  // default is false
       outputPath = "${project.buildDir}/reports/modulecheck/modulecheck.sarif"
     }
     depths {
-      enabled = true // default is false
+      enabled = true  // default is false
       outputPath = "${project.buildDir}/reports/modulecheck/depths.txt"
     }
     graphs {
-      enabled = true // default is false
+      enabled = true  // default is false
       // The root directory of all generated graphs.  If set, directories will be created
       // for each module, mirroring the structure of the project.  If this property is null,
       // graphs will be created in the `build/reports/modulecheck/graphs/` relative
@@ -78,20 +84,24 @@ moduleCheck {
       outputDir = "${project.buildDir}/reports/modulecheck/graphs"
     }
     text {
-      enabled = true // default is false
+      enabled = true  // default is false
       outputPath = "${project.buildDir}/reports/modulecheck/report.txt"
     }
   }
 }
 ```
 
+<!--doks END-->
+
   </TabItem>
 
   <TabItem value="Groovy">
 
-``` groovy title="root/build.gradle"
+<!--doks modulecheck-gradle-config-groovy,dollar-raw-string:5-->
+
+```groovy title = root/build.gradle
 plugins {
-  id 'com.rickbusarow.module-check' version '0.13.0-SNAPSHOT'
+  id 'com.rickbusarow.module-check'
 }
 
 moduleCheck {
@@ -99,19 +109,19 @@ moduleCheck {
   trace = true // default is false
 
   checks {
-    overShotDependency = true // default is true
-    redundantDependency = false // default is false
-    unusedDependency = true // default is true
-    mustBeApi = true // default is true
-    inheritedDependency = true // default is true
-    sortDependencies = false // default is false
-    sortPlugins = false // default is false
-    unusedKapt = true // default is true
-    anvilFactoryGeneration = true // default is true
-    disableAndroidResources = false // default is false
-    disableViewBinding = false // default is false
-    unusedKotlinAndroidExtensions = false // default is false
-    depths = false // default is false
+    overShotDependency = true  // default is true
+    redundantDependency = false  // default is false
+    unusedDependency = true  // default is true
+    mustBeApi = true  // default is true
+    inheritedDependency = true  // default is true
+    sortDependencies = false  // default is false
+    sortPlugins = false  // default is false
+    unusedKapt = true  // default is true
+    anvilFactoryGeneration = true  // default is true
+    disableAndroidResources = false  // default is false
+    disableViewBinding = false  // default is false
+    unusedKotlinAndroidExtensions = false  // default is false
+    depths = false  // default is false
   }
 
   // allow these modules to be declared as dependency anywhere,
@@ -126,7 +136,7 @@ moduleCheck {
     new modulecheck.config.CodeGeneratorBinding.AnnotationProcessor(
       'My Processor',
       'my-project.codegen:processor',
-      [
+       [
         "myproject.MyInject",
         "myproject.MyInject.Factory",
         "myproject.MyInjectParam",
@@ -137,19 +147,19 @@ moduleCheck {
 
   reports {
     checkstyle {
-      it.enabled = true // default is false
+      it.enabled = true  // default is false
       it.outputPath = "${project.buildDir}/reports/modulecheck/checkstyle.xml"
     }
     sarif {
-      it.enabled = true // default is false
+      it.enabled = true  // default is false
       it.outputPath = "${project.buildDir}/reports/modulecheck/modulecheck.sarif"
     }
     depths {
-      it.enabled = true // default is false
+      it.enabled = true  // default is false
       it.outputPath = "${project.buildDir}/reports/modulecheck/depths.txt"
     }
     graphs {
-      it.enabled = true // default is false
+      it.enabled = true  // default is false
       // The root directory of all generated graphs.  If set, directories will be created
       // for each module, mirroring the structure of the project.  If this property is null,
       // graphs will be created in the `build/reports/modulecheck/graphs/` relative
@@ -157,11 +167,14 @@ moduleCheck {
       it.outputDir = "${project.buildDir}/reports/modulecheck/graphs"
     }
     text {
-      it.enabled = true // default is false
+      it.enabled = true  // default is false
       it.outputPath = "${project.buildDir}/reports/modulecheck/report.txt"
     }
   }
+
 }
 ```
+
+<!--doks END-->
   </TabItem>
 </Tabs>
