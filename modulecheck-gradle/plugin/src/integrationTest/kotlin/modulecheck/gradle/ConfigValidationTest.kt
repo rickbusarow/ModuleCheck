@@ -137,7 +137,7 @@ class ConfigValidationTest : BaseGradleTest() {
         }
       }
     }
-    """.trimIndent()
+  """.trimIndent()
 
   @Test
   fun `Kotlin configuration`() {
@@ -221,7 +221,7 @@ class ConfigValidationTest : BaseGradleTest() {
       }
 
     }
-    """.trimIndent()
+  """.trimIndent()
 
   @Test
   fun `Groovy configuration`() {
