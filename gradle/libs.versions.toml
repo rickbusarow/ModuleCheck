@@ -6,7 +6,7 @@ jvmTarget = "11"
 kotlinApi = "1.6"
 
 kotlin = "1.8.10"
-google-ksp = "1.8.10-1.0.9"
+google-ksp = "1.8.20-1.0.10"
 square-anvil = "2.4.4"
 
 androidTools = "7.4.2"
