@@ -21,6 +21,9 @@ import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.provider.Provider
 
+val Project.VERSION_NAME_STABLE: String
+  get() = libsCatalog.version("rickBusarow-moduleCheck")
+
 const val GROUP = "com.rickbusarow.modulecheck"
 const val PLUGIN_ID = "com.rickbusarow.module-check"
 const val VERSION_NAME = "0.13.0-SNAPSHOT"

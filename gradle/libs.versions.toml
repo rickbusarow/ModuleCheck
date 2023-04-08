@@ -76,6 +76,7 @@ prettier = "2.8.4"
 prettier-plugin-sh = "0.12.8"
 rickBusarow-dependencySync = "0.11.2"
 rickBusarow-dispatch = "1.0.0-beta10"
+rickBusarow-doks = "0.1.3"
 rickBusarow-ktrules = "1.0.6"
 rickBusarow-hermit = "0.9.6"
 rickBusarow-moduleCheck = "0.12.5"
@@ -102,6 +103,7 @@ dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.re
 dependencySync = { id = "com.rickbusarow.dependency-sync", version.ref = "rickBusarow-dependencySync" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+doks = { id = "com.rickbusarow.doks", version.ref = "rickBusarow-doks" }
 dropbox-dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dropbox-dependencyGuard" }
 exhaustive = { id = "app.cash.exhaustive:exhaustive-gradle", version.ref = "exhaustive" }
 github-release = { id = "com.github.breadmoirai.github-release", version.ref = "github-release" }
