@@ -389,10 +389,10 @@ jobs:
       fail-fast: false
       ### <start-matrix>
       matrix:
-        kotlin-version: [ 1.8.0, 1.8.10, 1.8.20-RC ]
+        kotlin-version: [ 1.8.0, 1.8.10, 1.8.20 ]
         gradle-version: [ 7.5.1, 7.6.1, 8.0.2 ]
         agp-version: [ 7.3.1, 7.4.2 ]
-        anvil-version: [ 2.4.4 ]
+        anvil-version: [ 2.4.5 ]
         exclude: [ ]
       ### <end-matrix>
 

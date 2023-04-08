@@ -23,7 +23,7 @@ import modulecheck.parsing.kotlin.compiler.internal.isKtFile
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.project.test.ProjectTest
 import org.jetbrains.kotlin.incremental.isJavaFile
-import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
+import org.jetbrains.kotlin.js.descriptorUtils.getKotlinTypeFqName
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.types.error.ErrorType
@@ -75,7 +75,7 @@ class RealKotlinEnvironmentTest : ProjectTest() {
     val propertyType = propertyDescriptor.returnType!!
 
     assertSoftly {
-      propertyType.getJetTypeFqName(true) shouldBe "com.modulecheck.lib1.Lib1Class"
+      propertyType.getKotlinTypeFqName(true) shouldBe "com.modulecheck.lib1.Lib1Class"
       propertyType.isNullable() shouldBe false
     }
   }
@@ -118,7 +118,7 @@ class RealKotlinEnvironmentTest : ProjectTest() {
     val propertyType = propertyDescriptor.returnType!!
 
     assertSoftly {
-      propertyType.getJetTypeFqName(true) shouldBe "com.modulecheck.subject.DepClass"
+      propertyType.getKotlinTypeFqName(true) shouldBe "com.modulecheck.subject.DepClass"
       propertyType.isNullable() shouldBe false
     }
   }
@@ -161,7 +161,7 @@ class RealKotlinEnvironmentTest : ProjectTest() {
       val propertyType = propertyDescriptor.returnType!!
 
       assertSoftly {
-        propertyType.getJetTypeFqName(true) shouldBe "com.modulecheck.subject.DepClass"
+        propertyType.getKotlinTypeFqName(true) shouldBe "com.modulecheck.subject.DepClass"
         propertyType.isNullable() shouldBe false
       }
     }
@@ -202,7 +202,7 @@ class RealKotlinEnvironmentTest : ProjectTest() {
     val propertyType = propertyDescriptor.returnType!!
 
     assertSoftly {
-      propertyType.getJetTypeFqName(true) shouldBe "com.modulecheck.subject.DepClass"
+      propertyType.getKotlinTypeFqName(true) shouldBe "com.modulecheck.subject.DepClass"
       propertyType.isNullable() shouldBe false
     }
   }
@@ -277,13 +277,13 @@ class RealKotlinEnvironmentTest : ProjectTest() {
 
     assertSoftly {
       propertyType.shouldBeTypeOf<ErrorType>()
-      propertyType.getJetTypeFqName(false) shouldBe ""
+      propertyType.getKotlinTypeFqName(false) shouldBe ""
       propertyType.debugMessage shouldBe "Unresolved type for com.fake.Fake<String>"
       propertyType.isNullable() shouldBe true
 
       propertyType.arguments.single()
         .type
-        .getJetTypeFqName(false) shouldBe String::class.qualifiedName
+        .getKotlinTypeFqName(false) shouldBe String::class.qualifiedName
     }
   }
 }

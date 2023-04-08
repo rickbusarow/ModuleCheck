@@ -30,7 +30,7 @@ import modulecheck.utils.requireNotNull
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.PropertyDescriptor
 import org.jetbrains.kotlin.descriptors.VariableDescriptor
-import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
+import org.jetbrains.kotlin.js.descriptorUtils.getKotlinTypeFqName
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtAnnotated
@@ -61,7 +61,6 @@ import org.jetbrains.kotlin.psi.psiUtil.parents
 import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.types.KotlinType
-import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 import java.io.File
 import kotlin.contracts.contract
 
@@ -81,10 +80,10 @@ inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): Lis
 }
 
 fun KotlinType?.requireReferenceName(): ReferenceName = requireNotNull()
-  .getJetTypeFqName(false)
+  .getKotlinTypeFqName(false)
   .asReferenceName(KOTLIN)
 
-fun KotlinType.asReferenceName(): ReferenceName = getJetTypeFqName(false)
+fun KotlinType.asReferenceName(): ReferenceName = getKotlinTypeFqName(false)
   .asReferenceName(KOTLIN)
 
 fun KtProperty.resolveType(bindingContext: BindingContext): VariableDescriptor? {
@@ -373,9 +372,9 @@ fun PsiElement.callSiteName(): String {
   // For example, `com.example.foo(...)` has a selector of `foo(...)`.
   // In order to get just the qualified name, we have to get the `calleeExpression` of the
   // function, then append that to the parent qualified expression's receiver expression.
-  return safeAs<KtDotQualifiedExpression>()
+  return (this as? KtDotQualifiedExpression)
     ?.selectorExpression
-    ?.safeAs<KtCallExpression>()
+    ?.let { it as? KtCallExpression }
     ?.calleeExpression
     ?.let {
       val receiver = this.cast<KtDotQualifiedExpression>()

@@ -26,11 +26,11 @@ class VersionsMatrix(
   val agpList = agpArg?.singletonList()
     ?: listOf("7.3.1", "7.4.2")
   val anvilList = anvilArg?.singletonList()
-    ?: listOf("2.4.4")
+    ?: listOf("2.4.5")
   val gradleList = gradleArg?.singletonList()
     ?: listOf("7.5.1", "7.6.1", "8.0.2")
   val kotlinList = kotlinArg?.singletonList()
-    ?: listOf("1.8.0", "1.8.10", "1.8.20-RC")
+    ?: listOf("1.8.0", "1.8.10", "1.8.20")
 
   internal val exclusions = listOf<Exclusion>().requireNoDuplicates()
 
