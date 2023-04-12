@@ -75,10 +75,10 @@ abstract class TestConventionPlugin : Plugin<Project> {
             "junit.jupiter.execution.parallel.config.dynamic.factor" to 1.0
           )
         )
-      }
 
-      // Allow JUnit4 tests to run in parallel
-      task.maxParallelForks = Runtime.getRuntime().availableProcessors()
+        // Allow JUnit4 tests to run in parallel
+        task.maxParallelForks = Runtime.getRuntime().availableProcessors()
+      }
     }
   }
 }
