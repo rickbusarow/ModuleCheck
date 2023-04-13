@@ -83,6 +83,7 @@ rickBusarow-moduleCheck = "0.12.5"
 rickBusarow-tangle = "0.15.1"
 semVer = "1.2.0"
 slf4j = "2.0.7"
+square-kotlinPoet = "1.13.0"
 square-moshi = "1.14.0"
 square-okio = "3.3.0"
 square-retrofit = "2.9.0"
@@ -100,7 +101,6 @@ autoManifest = { id = "com.gradleup.auto.manifest", version.ref = "autoManifest"
 benManes = { id = "com.github.ben-manes.versions", version.ref = "benManes-versions" }
 buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
 dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
-dependencySync = { id = "com.rickbusarow.dependency-sync", version.ref = "rickBusarow-dependencySync" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 doks = { id = "com.rickbusarow.doks", version.ref = "rickBusarow-doks" }
@@ -112,7 +112,6 @@ gradle-plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradl
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "jmailen-kotlinter" }
 kotlinx-binaryCompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinx-binaryCompatibility" }
-kotlinx-knit = { id = "kotlinx-knit", version.ref = "kotlinx-knit" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-plugin" }
 moduleCheck = { id = "com.rickbusarow.module-check", version.ref = "rickBusarow-moduleCheck" }
@@ -282,7 +281,7 @@ square-anvil-compiler-core = { module = "com.squareup.anvil:compiler", version.r
 square-anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "square-anvil" }
 square-anvil-gradle = { module = "com.squareup.anvil:gradle-plugin", version.ref = "square-anvil" }
 
-square-kotlinPoet = "com.squareup:kotlinpoet:1.13.0"
+square-kotlinPoet = { module = "com.squareup:kotlinpoet", version.ref = "square-kotlinPoet" }
 
 square-moshi = { module = "com.squareup.moshi:moshi", version.ref = "square-moshi" }
 square-moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "square-moshi" }
@@ -299,7 +298,6 @@ square-wire-gson-support = { module = "com.squareup.wire:wire-gson-support", ver
 square-wire-java-generator = { module = "com.squareup.wire:wire-java-generator", version.ref = "square-wire" }
 square-wire-kotlin-generator = { module = "com.squareup.wire:wire-kotlin-generator", version.ref = "square-wire" }
 square-wire-runtime = { module = "com.squareup.wire:wire-runtime", version.ref = "square-wire" }
-square-wire-runtime-swift = { module = "com.squareup.wire:wire-runtime-swift", version.ref = "square-wire" }
 square-wire-schema = { module = "com.squareup.wire:wire-schema", version.ref = "square-wire" }
 square-wire-schema-tests = { module = "com.squareup.wire:wire-schema-tests", version.ref = "square-wire" }
 
@@ -308,7 +306,6 @@ square-turbine = "app.cash.turbine:turbine:0.12.3"
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 
 vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktech-publish" }
-vanniktech-publish-base = { module = "com.vanniktech:gradle-maven-publish-plugin-base", version.ref = "vanniktech-publish" }
 
 zacSweers-auto-service-ksp = "dev.zacsweers.autoservice:auto-service-ksp:1.0.0"
 
