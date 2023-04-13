@@ -575,5 +575,5 @@ jobs:
       - name: require that all other jobs have passed
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: true
+          allowed-skips: doks, ktlint, modulecheck, versioning
           jobs: ${{ toJSON(needs) }}
