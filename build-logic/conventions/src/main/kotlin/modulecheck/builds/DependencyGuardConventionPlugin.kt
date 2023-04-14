@@ -43,15 +43,15 @@ abstract class DependencyGuardConventionPlugin : Plugin<Project> {
       Delete::class.java
     ) { it.delete("dependencies") }
 
-    target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME) {
+    target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME).configure {
       it.dependsOn("dependencyGuard")
     }
 
-    target.tasks.named("dependencyGuardBaseline") {
+    target.tasks.named("dependencyGuardBaseline").configure {
       it.dependsOn(dependencyGuardDeleteBaselines)
       it.finalizedBy(target.rootProject.tasks.matchingName("dependencyGuardAggregate"))
     }
-    target.tasks.named("dependencyGuard") {
+    target.tasks.named("dependencyGuard").configure {
       it.dependsOn(target.rootProject.tasks.matchingName("dependencyGuardExplode"))
       it.finalizedBy(dependencyGuardDeleteBaselines)
     }

@@ -34,7 +34,7 @@ gradlePlugin {
   plugins {
     create("mcbuild.matrix-yaml") {
       id = "mcbuild.matrix-yaml"
-      implementationClass = "VersionsMatrixYamlPlugin"
+      implementationClass = "modulecheck.builds.matrix.VersionsMatrixYamlPlugin"
     }
   }
 }

@@ -42,19 +42,19 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
       target.addRootProjectDelegateTasks()
     }
 
-    target.tasks.named("lintKotlin") {
+    target.tasks.named("lintKotlin").configure {
       it.mustRunAfter(target.tasks.named("formatKotlin"))
     }
 
     if (target == target.rootProject) {
       target.addGradleScriptTasks(target.tasks, taskNameQualifier = "")
 
-      target.tasks.named("lintKotlin") { rootLint ->
+      target.tasks.named("lintKotlin").configure { rootLint ->
         target.subprojects { sub ->
           rootLint.dependsOn(sub.tasks.matchingName("lintKotlin"))
         }
       }
-      target.tasks.named("formatKotlin") { rootLint ->
+      target.tasks.named("formatKotlin").configure { rootLint ->
         target.subprojects { sub ->
           rootLint.dependsOn(sub.tasks.matchingName("formatKotlin"))
         }
@@ -63,7 +63,7 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
 
     target.afterEvaluate {
 
-      target.tasks.withType(ConfigurableKtLintTask::class.java) { task ->
+      target.tasks.withType(ConfigurableKtLintTask::class.java).configureEach { task ->
         excludeGenerated(task, target)
       }
     }

@@ -15,6 +15,7 @@
 
 package modulecheck.testing
 
+import io.kotest.common.ExperimentalKotest
 import io.kotest.property.Gen
 import io.kotest.property.PropTestConfig
 import io.kotest.property.PropertyContext
@@ -30,6 +31,7 @@ fun <A> forAllBlocking(
   property: suspend PropertyContext.(A) -> Unit
 ) {
   runBlocking<Unit> {
+    @OptIn(ExperimentalKotest::class)
     io.kotest.property.forAll(PropTestConfig(), genA) {
       property.invoke(this, it)
       true
