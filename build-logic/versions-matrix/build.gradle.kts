@@ -22,7 +22,6 @@ buildscript {
   }
 }
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   base
   kotlin("jvm")

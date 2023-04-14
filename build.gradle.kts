@@ -26,7 +26,6 @@ buildscript {
   }
 }
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   alias(libs.plugins.dependencyAnalysis)
   alias(libs.plugins.detekt)
