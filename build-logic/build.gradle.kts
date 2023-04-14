@@ -13,16 +13,24 @@
  * limitations under the License.
  */
 
-buildscript {
-  dependencies {
-    // Gradle 7.6 has a dependency resolution bug which tries to use Kotlin 1.7.10
-    // for transitive dependencies like `sam-with-receiver`.
-    // https://github.com/gradle/gradle/issues/22510
-    classpath(libs.kotlin.sam.with.receiver)
-  }
-}
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
 
-@Suppress("DSL_SCOPE_VIOLATION")
+/*
+ * Copyright (C) 2021-2023 Rick Busarow
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 plugins {
   alias(libs.plugins.kotlin.jvm)
   alias(libs.plugins.kotlinter)
@@ -40,10 +48,16 @@ moduleCheck {
 val kotlinVersion = libs.versions.kotlin.get()
 allprojects {
 
+  plugins.withType(KotlinBasePlugin::class.java) {
+    extensions.configure(KotlinJvmProjectExtension::class.java) {
+      jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.jdk.get()))
+      }
+    }
+  }
   plugins.withType(JavaPlugin::class.java) {
-    configure<JavaPluginExtension> {
-      @Suppress("MagicNumber")
-      toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+    extensions.configure(JavaPluginExtension::class.java) {
+      sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
   }
 
@@ -53,7 +67,7 @@ allprojects {
       languageVersion = "1.6"
       apiVersion = "1.6"
 
-      jvmTarget = "11"
+      jvmTarget = libs.versions.jvmTarget.get()
 
       freeCompilerArgs = freeCompilerArgs + listOf(
         "-opt-in=kotlin.RequiresOptIn"

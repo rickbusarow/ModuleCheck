@@ -1,6 +1,6 @@
 [versions]
 # the jdk used to build the project
-jdk = "11"
+jdk = "17"
 # the jdk used in packaging
 jvmTarget = "11"
 kotlinApi = "1.6"

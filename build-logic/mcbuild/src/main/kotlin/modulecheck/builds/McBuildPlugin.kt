@@ -28,7 +28,6 @@ abstract class McBuildPlugin : Plugin<Project> {
     target.plugins.apply(DependencyGuardConventionPlugin::class.java)
     target.plugins.apply(DetektConventionPlugin::class.java)
     target.plugins.apply(DokkaConventionPlugin::class.java)
-    target.plugins.apply(JavaLibraryConventionPlugin::class.java)
     target.plugins.apply(KotlinJvmConventionPlugin::class.java)
     target.plugins.apply(KtLintConventionPlugin::class.java)
     target.plugins.apply(TestConventionPlugin::class.java)

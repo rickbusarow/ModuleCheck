@@ -13,16 +13,6 @@
  * limitations under the License.
  */
 
-buildscript {
-  dependencies {
-    // Gradle 7.6 has a dependency resolution bug which tries to use Kotlin 1.7.10
-    // for transitive dependencies like `sam-with-receiver`.
-    // https://github.com/gradle/gradle/issues/22510
-    classpath(libs.kotlin.sam.with.receiver)
-  }
-}
-
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   base
   kotlin("jvm")

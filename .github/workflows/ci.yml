@@ -35,7 +35,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: ci versions matrix check (used by everyone but Renovate)
         if: github.actor != 'renovate[bot]'
@@ -126,7 +126,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: KtLint format (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
@@ -171,7 +171,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: ModuleCheck with auto-correct (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
@@ -216,7 +216,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: Doks with auto-correct (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
@@ -261,7 +261,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: Check that the version is a -SNAPSHOT version
         uses: gradle/gradle-build-action@v2
@@ -350,7 +350,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: compileKotlin
         uses: gradle/gradle-build-action@v2
@@ -388,7 +388,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: all tests
         uses: gradle/gradle-build-action@v2
@@ -423,7 +423,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: publishToMavenLocalNoDokka integrationTestClasses
         uses: gradle/gradle-build-action@v2
@@ -459,7 +459,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: integration tests
         uses: gradle/gradle-build-action@v2
@@ -494,7 +494,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: all tests
         uses: gradle/gradle-build-action@v2
@@ -530,7 +530,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: publishToMavenLocal
         uses: gradle/gradle-build-action@v2

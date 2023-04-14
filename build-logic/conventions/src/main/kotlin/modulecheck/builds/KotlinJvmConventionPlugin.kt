@@ -15,7 +15,6 @@
 
 package modulecheck.builds
 
-import com.vanniktech.maven.publish.MavenPublishBasePlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -36,7 +35,13 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
         toolChain.languageVersion.set(JavaLanguageVersion.of(target.JDK))
       }
     }
-
+    target.tasks.withType(JavaCompile::class.java) { task ->
+      task.options.release.set(target.JVM_TARGET_INT)
+      task.targetCompatibility = target.JVM_TARGET
+    }
+    target.extensions.configure(JavaPluginExtension::class.java) { extension ->
+      extension.sourceCompatibility = JavaVersion.toVersion(target.JVM_TARGET)
+    }
     target.tasks.withType(KotlinCompile::class.java) { task ->
       task.kotlinOptions {
         allWarningsAsErrors = false
@@ -76,15 +81,19 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
       }
     }
 
-    target.plugins.withType(MavenPublishBasePlugin::class.java) {
-      target.extensions.configure(JavaPluginExtension::class.java) { extension ->
-        extension.sourceCompatibility = JavaVersion.toVersion(target.JVM_TARGET)
+    target.tasks.register("lintMain") { task ->
+      task.doFirst {
+        target.tasks.withType(KotlinCompile::class.java) { compileTask ->
+          compileTask.kotlinOptions {
+            allWarningsAsErrors = true
+          }
+        }
       }
-      target.tasks.withType(JavaCompile::class.java) { task ->
-        task.options.release.set(target.JVM_TARGET_INT)
-      }
+      task.finalizedBy(target.tasks.withType(KotlinCompile::class.java))
     }
 
+    target.tasks.register("testJvm") { it.dependsOn("test") }
+    target.tasks.register("buildTests") { it.dependsOn("testClasses") }
     target.tasks.register("moveJavaSrcToKotlin") { task ->
 
       task.doLast {
