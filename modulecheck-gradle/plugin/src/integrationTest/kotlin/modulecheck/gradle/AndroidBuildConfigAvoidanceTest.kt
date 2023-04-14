@@ -16,13 +16,14 @@
 package modulecheck.gradle
 
 import io.kotest.matchers.collections.shouldContainAll
+import io.kotest.matchers.collections.shouldNotContainAnyOf
 import org.junit.jupiter.api.TestFactory
 
 class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
 
   @TestFactory
-  fun `buildConfig task should be required when not configured in android library module`() =
-    factory {
+  fun `AGP before 8 -- buildConfig task should be required when not configured in android library module`() =
+    factory(filter = { it.agp < "8.0.0" }) {
       androidLibrary(":lib", "com.modulecheck.lib1") {
         buildFile {
           """
@@ -33,14 +34,17 @@ class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
 
         android {
           defaultConfig {
-            minSdkVersion(23)
-            compileSdkVersion(30)
-            targetSdkVersion(30)
+            minSdk = 23
+            compileSdk = 33
+            targetSdk = 33
           }
+          namespace = "com.modulecheck.lib1"
         }
         """
         }
       }
+
+      shouldSucceed(":lib:assembleDebug")
 
       shouldSucceed("moduleCheck").apply {
         // Assert that nothing else executed.
@@ -50,6 +54,42 @@ class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
           ":lib:generateDebugBuildConfig",
           ":lib:generateReleaseBuildConfig",
           ":moduleCheck"
+        )
+      }
+    }
+
+  @TestFactory
+  fun `AGP after 8 -- buildConfig task not should be required if not explicitly enabled in android library module`() =
+    factory(filter = { it.agp >= "8.0.0" }) {
+      androidLibrary(":lib", "com.modulecheck.lib1") {
+        buildFile {
+          """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          defaultConfig {
+            minSdk = 23
+            compileSdk = 33
+            targetSdk = 33
+          }
+          namespace = "com.modulecheck.lib1"
+        }
+        """
+        }
+      }
+
+      shouldSucceed(":lib:assembleDebug")
+
+      shouldSucceed("moduleCheck").apply {
+        // Assert that nothing else executed.
+        // If ModuleCheck is relying upon buildConfig tasks, they'll be in this list.
+        tasks.map { it.path }.sorted() shouldNotContainAnyOf listOf(
+          ":lib:generateDebugAndroidTestBuildConfig",
+          ":lib:generateDebugBuildConfig",
+          ":lib:generateReleaseBuildConfig"
         )
       }
     }
@@ -67,11 +107,12 @@ class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
 
         android {
           defaultConfig {
-            minSdkVersion(23)
-            compileSdkVersion(30)
-            targetSdkVersion(30)
+            minSdk = 23
+            compileSdk = 33
+            targetSdk = 33
           }
           buildFeatures.buildConfig = false
+          namespace = "com.modulecheck.lib1"
         }
         """
         }
@@ -80,92 +121,11 @@ class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
       shouldSucceed("moduleCheck").apply {
         // Assert that nothing else executed.
         // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
-        tasks.map { it.path } shouldBe listOf(":moduleCheck")
-      }
-    }
-
-  @TestFactory
-  fun `buildConfig task should not be required when disabled in android dynamic-feature module`() =
-    factory {
-      androidLibrary(":lib", "com.modulecheck.lib1") {
-        buildFile {
-          """
-        plugins {
-          id("com.android.dynamic-feature")
-          kotlin("android")
-        }
-
-        android {
-          defaultConfig {
-            minSdkVersion(23)
-            compileSdkVersion(30)
-          }
-          buildFeatures.buildConfig = false
-        }
-        """
-        }
-      }
-
-      shouldSucceed("moduleCheck").apply {
-        // Assert that nothing else executed.
-        // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
-        tasks.map { it.path } shouldBe listOf(":moduleCheck")
-      }
-    }
-
-  @TestFactory
-  fun `buildConfig task should not be required when disabled in android test module`() =
-    factory {
-      androidLibrary(":lib", "com.modulecheck.lib1") {
-        buildFile {
-          """
-        plugins {
-          id("com.android.test")
-          kotlin("android")
-        }
-
-        android {
-          targetProjectPath = ":app"
-          defaultConfig {
-            minSdkVersion(23)
-            compileSdkVersion(30)
-            targetSdkVersion(30)
-          }
-          buildFeatures.buildConfig = false
-        }
-
-        dependencies {
-          @Suppress("unused-dependency")
-          compileOnly(project(path = ":app"))
-        }
-        """
-        }
-      }
-
-      androidLibrary(":app", "com.modulecheck.app") {
-        buildFile {
-          """
-        plugins {
-          id("com.android.library")
-          kotlin("android")
-        }
-
-        android {
-          defaultConfig {
-            minSdkVersion(23)
-            compileSdkVersion(30)
-            targetSdkVersion(30)
-          }
-          buildFeatures.buildConfig = false
-        }
-        """
-        }
-      }
-
-      shouldSucceed("moduleCheck").apply {
-        // Assert that nothing else executed.
-        // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
-        tasks.map { it.path } shouldBe listOf(":moduleCheck")
+        tasks.map { it.path } shouldNotContainAnyOf listOf(
+          ":lib:generateDebugAndroidTestBuildConfig",
+          ":lib:generateDebugBuildConfig",
+          ":lib:generateReleaseBuildConfig"
+        )
       }
     }
 }

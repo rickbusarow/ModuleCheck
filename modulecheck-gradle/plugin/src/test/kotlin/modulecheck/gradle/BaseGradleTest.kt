@@ -125,9 +125,7 @@ abstract class BaseGradleTest :
 
   val rootSettings by resets {
     root.child("settings.gradle.kts")
-      .createSafely(
-        DEFAULT_SETTINGS_FILE
-      )
+      .createSafely(DEFAULT_SETTINGS_FILE)
   }
 
   val rootProject by resets {
@@ -149,7 +147,6 @@ abstract class BaseGradleTest :
   @BeforeEach
   fun beforeEach() {
     testProjectDir.deleteRecursively()
-    testVersions = defaultTestVersions()
   }
 
   // Make sure that every project in the cache is also added to the root project's settings file
@@ -245,8 +242,8 @@ abstract class BaseGradleTest :
       }
 
       testVersions = subject
-      resetAll()
 
+      resetAll()
       beforeEach()
 
       // make sure that the root project is initialized

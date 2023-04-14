@@ -56,43 +56,42 @@ class TasksValidationTest : BaseGradleTest() {
   }
 
   @TestFactory
-  fun `all tasks should ignore configuration caching`() =
-    factory(
-      // ignore this test for Gradle versions less than 7.4, since they can't disable caching
-      // programmatically
-      filter = { it.gradle >= "7.4" }
-    ) {
+  fun `all tasks should ignore configuration caching`() = factory {
 
-      listOf(
-        "moduleCheck",
-        "moduleCheckAuto",
-        "moduleCheckDepths",
-        "moduleCheckGraphs",
-        "moduleCheckSortDependencies",
-        "moduleCheckSortDependenciesAuto",
-        "moduleCheckSortPlugins",
-        "moduleCheckSortPluginsAuto"
-      ).forAll { taskName ->
+    listOf(
+      "moduleCheck",
+      "moduleCheckAuto",
+      "moduleCheckDepths",
+      "moduleCheckGraphs",
+      "moduleCheckSortDependencies",
+      "moduleCheckSortDependenciesAuto",
+      "moduleCheckSortPlugins",
+      "moduleCheckSortPluginsAuto"
+    ).forAll { taskName ->
 
-        val expected1 = "Configuration cache is an incubating feature."
-        val expected2 =
-          "Calculating task graph as no configuration cache is available for tasks: $taskName"
+      val expected1 = if (gradle < "8.0.0") {
+        "Configuration cache is an incubating feature."
+      } else {
+        "Encryption of the configuration cache is enabled."
+      }
+      val expected2 =
+        "Calculating task graph as no configuration cache is available for tasks: $taskName"
 
-        // The first invocation would always succeed, but will generate a cache if caching isn't ignored
-        shouldSucceed(
-          taskName,
-          "--configuration-cache",
-          withPluginClasspath = true
-        ).output.clean().let { output ->
-          output shouldContain expected1
-          output shouldContain expected2
-        }
+      // The first invocation would always succeed, but will generate a cache if caching isn't ignored
+      shouldSucceed(
+        taskName,
+        "--configuration-cache",
+        withPluginClasspath = true
+      ).output.clean().let { output ->
+        output shouldContain expected1
+        output shouldContain expected2
+      }
 
-        // The second invocation will fail if a cache exists and caching isn't ignored.
-        shouldSucceed(taskName, "--configuration-cache").output.clean().let { output ->
-          output shouldContain expected1
-          output shouldContain expected2
-        }
+      // The second invocation will fail if a cache exists and caching isn't ignored.
+      shouldSucceed(taskName, "--configuration-cache").output.clean().let { output ->
+        output shouldContain expected1
+        output shouldContain expected2
       }
     }
+  }
 }

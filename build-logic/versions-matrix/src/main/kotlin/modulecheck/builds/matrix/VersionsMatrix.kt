@@ -35,6 +35,8 @@ class VersionsMatrix(
   internal val exclusions = listOf<Exclusion>(
     Exclusion(gradle = "8.1", agp = "7.3.1", anvil = null, kotlin = null),
     Exclusion(gradle = "8.1", agp = "7.4.2", anvil = null, kotlin = null),
+    Exclusion(gradle = "7.5.1", agp = "8.0.0", anvil = null, kotlin = null),
+    Exclusion(gradle = "7.6.1", agp = "8.0.0", anvil = null, kotlin = null),
   ).requireNoDuplicates()
 
   private val latest by lazy { allValid.last() }
