@@ -116,7 +116,6 @@ fun Task.undecoratedTypeName(): String {
   return javaClass.canonicalName.removeSuffix("_Decorated")
 }
 
-
 fun <T : Any> NamedDomainObjectContainer<T>.maybeRegister(name: String): NamedDomainObjectProvider<T> {
   return if (names.contains(name)) {
     named(name)
