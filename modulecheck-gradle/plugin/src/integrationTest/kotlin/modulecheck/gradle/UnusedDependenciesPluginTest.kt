@@ -17,6 +17,7 @@ package modulecheck.gradle
 
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.utils.child
+import modulecheck.utils.createSafely
 import org.junit.jupiter.api.TestFactory
 import java.io.File
 
@@ -29,18 +30,19 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
       androidLibrary(":lib1", "com.modulecheck.lib1") {
         buildFile {
           """
-        plugins {
-          id("com.android.library")
-          kotlin("android")
-        }
-
-        android {
-          defaultConfig {
-            minSdk = 23
-            compileSdk = 32
+          plugins {
+            id("com.android.library")
+            kotlin("android")
           }
-        }
-        """
+
+          android {
+            namespace = "com.modulecheck.lib1"
+            defaultConfig {
+              minSdk = 23
+              compileSdk = 32
+            }
+          }
+          """
         }
 
         addKotlinSource(
@@ -56,22 +58,23 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
       androidLibrary(":lib2", "com.modulecheck.lib2") {
         buildFile {
           """
-        plugins {
-          id("com.android.library")
-          kotlin("android")
-        }
-
-        android {
-          defaultConfig {
-            minSdk = 23
-            compileSdk = 32
+          plugins {
+            id("com.android.library")
+            kotlin("android")
           }
-        }
 
-        dependencies {
-          api(project(path = ":lib1"))
-        }
-        """
+          android {
+            namespace = "com.modulecheck.lib2"
+            defaultConfig {
+              minSdk = 23
+              compileSdk = 32
+            }
+          }
+
+          dependencies {
+            api(project(path = ":lib1"))
+          }
+          """
         }
 
         addKotlinSource(
@@ -90,7 +93,7 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
 
   @TestFactory
   fun `module with an auto-generated manifest used in subject module should not be unused`() =
-    factory(true) {
+    factory(exhaustive = true, filter = { it.agp < "8.0.0" }) {
 
       // This module is declaring a base package in an auto-generated manifest which isn't present
       // until the manifest processor task is invoked.  That base package needs to be read from the
@@ -126,23 +129,26 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
       androidLibrary(":app", "com.modulecheck.app") {
         buildFile {
           """
-        plugins {
-          id("com.android.library")
-          kotlin("android")
-        }
-
-        android {
-          defaultConfig {
-            minSdk = 23
-            compileSdk = 32
+          plugins {
+            id("com.android.library")
+            kotlin("android")
           }
+
+          android {
+            defaultConfig {
+              minSdk = 23
+              compileSdk = 32
+            }
+          }
+
+          dependencies {
+            api(project(path = ":lib1"))
+          }
+          """
         }
 
-        dependencies {
-          api(project(path = ":lib1"))
-        }
-        """
-        }
+        projectDir.child("src/main/AndroidManifest.xml")
+          .createSafely("<manifest package=\"com.modulecheck.app\" />")
 
         addKotlinSource(
           """
@@ -160,9 +166,7 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
     }
 
   @TestFactory
-  fun `android test fixtures from android DSL should be treated as test fixtures`() = factory(
-    filter = { it.agp >= "7.1.0" }
-  ) {
+  fun `android test fixtures from android DSL should be treated as test fixtures`() = factory {
 
     androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -173,6 +177,7 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
         }
 
         android {
+          namespace = "com.modulecheck.lib1"
           defaultConfig {
             minSdk = 23
             compileSdk = 32
@@ -201,6 +206,7 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
         }
 
         android {
+          namespace = "com.modulecheck.lib2"
           defaultConfig {
             minSdk = 23
             compileSdk = 32
@@ -240,6 +246,7 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
         }
 
         android {
+          namespace = "com.modulecheck.lib1"
           defaultConfig {
             resValue("string", "app_name", "AppName")
 
@@ -273,6 +280,7 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
         }
 
         android {
+          namespace = "com.modulecheck.lib2"
           defaultConfig {
             minSdk = 23
             compileSdk = 32

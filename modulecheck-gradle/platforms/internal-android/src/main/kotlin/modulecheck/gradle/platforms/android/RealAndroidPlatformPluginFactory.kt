@@ -46,7 +46,10 @@ import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.utils.cast
+import modulecheck.utils.requireNotNull
+import net.swiftzer.semver.SemVer
 import javax.inject.Inject
+import kotlin.LazyThreadSafetyMode.NONE
 
 @ContributesBinding(TaskScope::class)
 class RealAndroidPlatformPluginFactory @Inject constructor(
@@ -55,6 +58,9 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
   private val sourceSetsFactory: SourceSetsFactory
 ) : AndroidPlatformPluginFactory {
 
+  private val agp8 by lazy(NONE) { SemVer(major = 8, minor = 0, patch = 0) }
+
+  @Suppress("SpellCheckingInspection")
   @UnsafeDirectAgpApiReference
   override fun create(
     gradleProject: GradleProject,
@@ -82,25 +88,41 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
       .pluginManager
       .hasPlugin("android-extensions")
 
+    // Defaults for `nonTransitiveRClass` and `buildconfig` changed with AGP 8.0,
+    // so we have to do the version check.
+    // https://developer.android.com/build/releases/gradle-plugin#default-changes
+    val agpVersion = agpApiAccess.agpVersionOrNull
+      .requireNotNull { "Could not parse the AGP version" }
+
     val nonTransientRClass = gradleProject
-      .findProperty("android.nonTransitiveRClass") as? Boolean ?: false
+      .findProperty("android.nonTransitiveRClass")?.toString()
+      ?.toBooleanStrictOrNull()
+      ?: (agpVersion >= agp8)
 
     @Suppress("UnstableApiUsage")
     val buildConfigEnabled = type.extension.buildFeatures.buildConfig
-      .orPropertyDefault(gradleProject, "android.defaults.buildfeatures.buildconfig", true)
+      .orPropertyDefault(
+        gradleProject = gradleProject,
+        key = "android.defaults.buildfeatures.buildconfig",
+        defaultValue = agpVersion < agp8
+      )
 
     @Suppress("UnstableApiUsage")
     val viewBindingEnabled = type.extension.buildFeatures.viewBinding
-      .orPropertyDefault(gradleProject, "android.defaults.buildfeatures.viewbinding", false)
+      .orPropertyDefault(
+        gradleProject = gradleProject,
+        key = "android.defaults.buildfeatures.viewbinding",
+        defaultValue = false
+      )
 
     @Suppress("UnstableApiUsage")
     val androidResourcesEnabled = (type.extension as? LibraryExtension)
       ?.buildFeatures
       ?.androidResources
       .orPropertyDefault(
-        gradleProject,
-        "android.library.defaults.buildfeatures.androidresources",
-        true
+        gradleProject = gradleProject,
+        key = "android.library.defaults.buildfeatures.androidresources",
+        defaultValue = true
       )
 
     return when (type) {

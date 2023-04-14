@@ -98,6 +98,7 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
         }
 
         android {
+          namespace = "com.modulecheck.lib"
           defaultConfig {
             minSdkVersion(23)
             compileSdkVersion(30)
