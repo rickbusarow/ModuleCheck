@@ -16,6 +16,8 @@
 package modulecheck.builds
 
 import org.gradle.api.Action
+import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Task
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskContainer
@@ -112,4 +114,22 @@ fun <T : Task> TaskContainer.registerOnce(
  */
 fun Task.undecoratedTypeName(): String {
   return javaClass.canonicalName.removeSuffix("_Decorated")
+}
+
+
+fun <T : Any> NamedDomainObjectContainer<T>.maybeRegister(name: String): NamedDomainObjectProvider<T> {
+  return if (names.contains(name)) {
+    named(name)
+  } else {
+    register(name)
+  }
+}
+
+fun <T : Any> NamedDomainObjectContainer<T>.maybeRegister(
+  name: String,
+  configuration: Action<in T>
+): NamedDomainObjectProvider<T> = if (names.contains(name)) {
+  named(name, configuration)
+} else {
+  register(name, configuration)
 }

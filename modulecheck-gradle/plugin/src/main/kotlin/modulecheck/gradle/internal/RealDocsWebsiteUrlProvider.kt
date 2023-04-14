@@ -24,15 +24,15 @@ import javax.inject.Inject
 
 @ContributesBinding(TaskScope::class)
 class RealDocsWebsiteUrlProvider @Inject constructor() : DocsWebsiteUrlProvider {
-  override fun get(): String = BuildProperties().docsWebsite
+  override fun get(): String = BuildProperties.docsWebsite
 }
 
 @ContributesBinding(TaskScope::class)
 class RealSourceWebsiteUrlProvider @Inject constructor() : SourceWebsiteUrlProvider {
-  override fun get(): String = BuildProperties().sourceWebsite
+  override fun get(): String = BuildProperties.sourceWebsite
 }
 
 @ContributesBinding(TaskScope::class)
 class RealModuleCheckVersionProvider @Inject constructor() : ModuleCheckVersionProvider {
-  override fun get(): String = BuildProperties().version
+  override fun get(): String = BuildProperties.version
 }

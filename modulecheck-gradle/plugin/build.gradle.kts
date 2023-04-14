@@ -24,18 +24,18 @@ mcbuild {
   artifactId = "modulecheck-gradle-plugin"
   dagger()
 
-  buildProperties(
-    "main",
-    """
-    package modulecheck.gradle.internal
-
-    internal class BuildProperties {
-      val version = "${modulecheck.builds.VERSION_NAME}"
-      val sourceWebsite = "${modulecheck.builds.SOURCE_WEBSITE}"
-      val docsWebsite = "${modulecheck.builds.DOCS_WEBSITE}"
-    }
-    """
-  )
+  buildConfig {
+    packageName.set("modulecheck.gradle.internal")
+    field("version") { modulecheck.builds.VERSION_NAME }
+    field("sourceWebsite") { modulecheck.builds.SOURCE_WEBSITE }
+    field("docsWebsite") { modulecheck.builds.DOCS_WEBSITE }
+  }
+  buildConfig("integrationTest") {
+    packageName.set("modulecheck.gradle.internal")
+    field("version") { modulecheck.builds.VERSION_NAME }
+    field("sourceWebsite") { modulecheck.builds.SOURCE_WEBSITE }
+    field("docsWebsite") { modulecheck.builds.DOCS_WEBSITE }
+  }
 }
 
 val main by sourceSets.getting
