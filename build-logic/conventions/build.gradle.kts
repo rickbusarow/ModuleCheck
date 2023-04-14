@@ -94,6 +94,7 @@ dependencies {
   compileOnly(libs.kotlin.gradle.plugin)
 
   implementation(libs.benManes.versions)
+  implementation(libs.buildconfig)
   implementation(libs.detekt.gradle)
   implementation(libs.dokka.gradle)
   implementation(libs.dropbox.dependencyGuard)
