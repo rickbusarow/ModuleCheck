@@ -77,6 +77,20 @@ abstract class VersionsFactoryTestTask @Inject constructor(
       kotlinArg = kotlinVersion.orNull?.noInt()
     )
 
+    val fullListDefaults = versionsMatrix.allValidDefaults
+      .joinToString(
+        separator = ",\n",
+        prefix = "listOf(\n",
+        postfix = "\n|    )"
+      ) { (gradle, agp, anvil, kotlin) ->
+        "|      TestVersions(" +
+          """gradle = "$gradle", """ +
+          """agp = "$agp", """ +
+          """anvil = "$anvil", """ +
+          """kotlin = "$kotlin"""" +
+          ")"
+      }
+
     val fullList = versionsMatrix.allValid
       .joinToString(
         separator = ",\n",
@@ -109,6 +123,9 @@ abstract class VersionsFactoryTestTask @Inject constructor(
       |  val exhaustive: Boolean
       |    get() = ${versionsMatrix.exhaustive}
       |
+      |  val allVersions: List<TestVersions>
+      |    get() = $fullListDefaults
+      |
       |  fun versions(
       |    exhaustive: Boolean = this.exhaustive
       |  ): List<TestVersions> {
@@ -128,7 +145,7 @@ abstract class VersionsFactoryTestTask @Inject constructor(
       |    kotlin = "${versionsMatrix.defaultKotlin}"
       |  )
       |
-    """.trimMargin()
+    """.replaceIndentByMargin()
 
     val packageDir = packageNameString.replace(".", File.separator)
 

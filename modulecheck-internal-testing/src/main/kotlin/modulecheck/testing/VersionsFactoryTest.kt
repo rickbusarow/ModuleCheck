@@ -18,6 +18,7 @@ package modulecheck.testing
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import modulecheck.utils.letIf
+import modulecheck.utils.requireNotNull
 import org.junit.jupiter.api.DynamicTest
 
 /**
@@ -43,23 +44,21 @@ interface VersionsFactoryTest : VersionsFactory {
     action: TestVersions.() -> Unit
   ): List<DynamicTest> {
 
-    if (filter != null) {
-
-      val (included, excluded) = versions(exhaustive = true)
-        .partition(filter)
-
-      "The filter excludes all possible versions".asClue {
-        included.shouldNotBeEmpty()
-      }
-
-      "The filter does not exclude any versions".asClue {
-        excluded.shouldNotBeEmpty()
-      }
-    }
-
     return versions(exhaustive = exhaustive)
       .letIf(filter != null) {
-        it.filter(filter!!)
+
+        val (included, excluded) = allVersions
+          .partition(filter.requireNotNull())
+
+        "The filter excludes all possible versions".asClue {
+          included.shouldNotBeEmpty()
+        }
+
+        "The filter does not exclude any versions".asClue {
+          excluded.shouldNotBeEmpty()
+        }
+
+        it.filter(filter.requireNotNull())
       }
       .map { subject ->
         dynamicTest(subject, subject.toString(), action)

@@ -74,6 +74,7 @@ interface ProjectCollector {
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
         manifests = manifests.toMutableMap(),
+        namespaces = namespaces.toMutableMap(),
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
       )
@@ -83,6 +84,7 @@ interface ProjectCollector {
         kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
         buildConfigEnabled = buildConfigEnabled,
         manifests = manifests.toMutableMap(),
+        namespaces = namespaces.toMutableMap(),
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
       )
@@ -93,6 +95,7 @@ interface ProjectCollector {
         buildConfigEnabled = buildConfigEnabled,
         androidResourcesEnabled = androidResourcesEnabled,
         manifests = manifests.toMutableMap(),
+        namespaces = namespaces.toMutableMap(),
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
       )
@@ -102,6 +105,7 @@ interface ProjectCollector {
         kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
         buildConfigEnabled = buildConfigEnabled,
         manifests = manifests.toMutableMap(),
+        namespaces = namespaces.toMutableMap(),
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
       )

@@ -36,6 +36,9 @@ data class AndroidBasePackages(
 
     return delegate.getOrPut(sourceSetName) {
 
+      val namespaces = project.platformPlugin.asAndroidOrNull()?.namespaces
+        ?: return@getOrPut null
+
       sourceSetName
         .withUpstream(project)
         .firstNotNullOfOrNull { sourceSetOrUpstream ->
@@ -44,9 +47,7 @@ data class AndroidBasePackages(
           // manifest is in a downstream source set.  So, if a namespace is set anywhere, it's set
           // everywhere, and a downstream source set like `debugInternalRelease` will return the
           // same value as for `main`.
-          project.platformPlugin.asAndroidOrNull()
-            ?.namespaces
-            ?.get(sourceSetOrUpstream)
+          namespaces[sourceSetOrUpstream]
 
             // Note that this isn't just looking for a manifest file.  It's looking for a manifest
             // which has a defined base package.  It's possible for a manifest to exist, but just
