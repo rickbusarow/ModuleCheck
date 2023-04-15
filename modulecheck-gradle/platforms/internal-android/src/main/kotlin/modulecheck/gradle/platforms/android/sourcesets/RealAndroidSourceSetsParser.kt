@@ -54,6 +54,7 @@ import javax.inject.Inject
 
 /**
  * Given this Android config block:
+ *
  * ```
  * android {
  *   buildTypes {
@@ -79,27 +80,27 @@ import javax.inject.Inject
  *
  * Combined flavor names: [[lightRed, lightBlue, darkRed, darkBlue]]
  *
- * Flavor dimensions are just arbitrary keys which allow us to group flavors together. These names
- * are not used to create SourceSets. The final collection of SourceSets would be unaffected if
- * these were just named something like [["a", "b"]].
+ * Flavor dimensions are just arbitrary keys which allow us to group flavors together.
+ * These names are not used to create SourceSets. The final collection of SourceSets
+ * would be unaffected if these were just named something like [["a", "b"]].
  *
  * ```
  *   Flavor dimensions (these do not become SourceSets): [[shade, color]]
  *   Product flavors: { color: [[blue, red]], shade: [[light, dark]] }
  * ```
  *
- * Flavors get combined via matrix multiplication and string concatenation in order to create more
- * SourceSets. The order of the concatenated string components ("light", "red", etc.) is determined
- * by the order in which their corresponding flavor dimensions are added. In this example, since
- * "shade" is added before "color", then the flavors of "shade" ("light", "dark") will be before the
- * flavors of "color" ("red", "blue").
+ * Flavors get combined via matrix multiplication and string concatenation in order to
+ * create more SourceSets. The order of the concatenated string components ("light",
+ * "red", etc.) is determined by the order in which their corresponding flavor dimensions
+ * are added. In this example, since "shade" is added before "color", then the flavors
+ * of "shade" ("light", "dark") will be before the flavors of "color" ("red", "blue").
  *
  * ```
  * [light, dark] x [red, blue] = [lightRed, lightBlue, darkRed, darkBlue]
  * ```
  *
- * Build Variants are now created via more matrix multiplication and string concatenation, between
- * the `BuildType` and combined flavor names. **BuildType names are always last.**
+ * Build Variants are now created via more matrix multiplication and string concatenation,
+ * between the `BuildType` and combined flavor names. **BuildType names are always last.**
  *
  * ```
  * [lightRed, lightBlue, darkRed, darkBlue] x [debug, internalRelease, release] =
@@ -114,6 +115,7 @@ import javax.inject.Inject
  * Finally, a "main" SourceSet is always created.
  *
  * So just within the *production code* sources, we get all these SourceSets:
+ *
  * ```
  * // primitives
  * main
@@ -583,8 +585,8 @@ class RealAndroidSourceSetsParser private constructor(
   }
 
   /**
-   * This removes the `-AndroidTest` suffix from **variant** names. SourceSet names don't get this
-   * suffix
+   * This removes the `-AndroidTest` suffix from **variant**
+   * names. SourceSet names don't get this suffix
    *
    * @since 0.12.0
    */
@@ -594,8 +596,8 @@ class RealAndroidSourceSetsParser private constructor(
   }
 
   /**
-   * This removes the `-UnitTest` suffix from **variant** names. SourceSet names don't get this
-   * suffix
+   * This removes the `-UnitTest` suffix from **variant**
+   * names. SourceSet names don't get this suffix
    *
    * @since 0.12.0
    */

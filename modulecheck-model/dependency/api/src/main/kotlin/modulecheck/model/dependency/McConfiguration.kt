@@ -26,8 +26,6 @@ import modulecheck.model.sourceset.SourceSetName
 
 /**
  * Cache of [configurations][McConfiguration], probably at the project level.
- *
- * @since 0.13.0
  */
 @Serializable(with = ConfigurationsSerializer::class)
 class Configurations(
@@ -76,30 +74,26 @@ data class McConfiguration(
 ) {
 
   /**
-   * @return list of all other configurations which this configuration depends upon. The list is
-   *   breadth-first, with the most-downstream configurations being last.
-   * @since 0.13.0
+   * @return list of all other configurations which this configuration depends upon.
+   *   The list is breadth-first, with the most-downstream configurations being last.
    */
   val upstream: List<McConfiguration> by lazy { upstreamSequence.toList() }
 
   /**
-   * @return list of all other configurations which depend upon this configuration. The list is
-   *   breadth-first, with the most-downstream configurations being last.
-   * @since 0.13.0
+   * @return list of all other configurations which depend upon this configuration.
+   *   The list is breadth-first, with the most-downstream configurations being last.
    */
   val downstream: List<McConfiguration> by lazy { downstreamSequence.toList() }
 
   /**
-   * @return list of this configuration and all other configurations which it depends upon. The list
-   *   is breadth-first, with the most-upstream configurations being last.
-   * @since 0.13.0
+   * @return list of this configuration and all other configurations which it depends
+   *   upon. The list is breadth-first, with the most-upstream configurations being last.
    */
   fun withUpstream(): List<McConfiguration> = listOf(this) + upstream
 
   /**
-   * @return list of this configuration and all other configurations which depend upon it. The list
-   *   is breadth-first, with the most-downstream configurations being last.
-   * @since 0.13.0
+   * @return list of this configuration and all other configurations which depend upon
+   *   it. The list is breadth-first, with the most-downstream configurations being last.
    */
   fun withDownstream(): List<McConfiguration> = listOf(this) + downstream
 
@@ -114,14 +108,10 @@ data class McConfiguration(
 
 /**
  * convenience for `map { it.name }`
- *
- * @since 0.13.0
  */
 fun Iterable<McConfiguration>.names(): List<ConfigurationName> = map { it.name }
 
 /**
  * convenience for `map { it.name }`
- *
- * @since 0.13.0
  */
 fun Sequence<McConfiguration>.names(): Sequence<ConfigurationName> = map { it.name }

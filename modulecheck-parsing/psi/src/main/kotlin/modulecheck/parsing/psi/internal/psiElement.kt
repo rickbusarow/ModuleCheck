@@ -17,13 +17,20 @@ package modulecheck.parsing.psi.internal
 
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.QualifiedDeclaredName
+import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.ReferenceName.Companion.asReferenceName
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.McProject
 import modulecheck.utils.cast
 import modulecheck.utils.lazy.unsafeLazy
+import modulecheck.utils.requireNotNull
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.descriptors.PropertyDescriptor
+import org.jetbrains.kotlin.descriptors.VariableDescriptor
+import org.jetbrains.kotlin.js.descriptorUtils.getKotlinTypeFqName
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtAnnotated
@@ -38,6 +45,7 @@ import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtNullableType
 import org.jetbrains.kotlin.psi.KtObjectDeclaration
 import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.psi.KtPropertyDelegate
 import org.jetbrains.kotlin.psi.KtPureElement
 import org.jetbrains.kotlin.psi.KtQualifiedExpression
 import org.jetbrains.kotlin.psi.KtScriptInitializer
@@ -51,7 +59,8 @@ import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 import org.jetbrains.kotlin.psi.psiUtil.isObjectLiteral
 import org.jetbrains.kotlin.psi.psiUtil.parents
 import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
-import org.jetbrains.kotlin.utils.addToStdlib.safeAs
+import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.types.KotlinType
 import java.io.File
 import kotlin.contracts.contract
 
@@ -67,6 +76,28 @@ inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): Lis
     .flatten()
     .filterIsInstance<T>()
     .toList()
+}
+
+fun KotlinType?.requireReferenceName(): ReferenceName = requireNotNull()
+  .getKotlinTypeFqName(false)
+  .asReferenceName(KOTLIN)
+
+fun KotlinType.asReferenceName(): ReferenceName = getKotlinTypeFqName(false)
+  .asReferenceName(KOTLIN)
+
+fun KtProperty.resolveType(bindingContext: BindingContext): VariableDescriptor? {
+  return bindingContext[BindingContext.VARIABLE, this]
+}
+
+fun KtPropertyDelegate.returnType(bindingContext: BindingContext): KotlinType? {
+  val property = this.parent as? KtProperty ?: return null
+  val propertyDescriptor =
+    bindingContext[BindingContext.DECLARATION_TO_DESCRIPTOR, property] as? PropertyDescriptor
+  return propertyDescriptor?.getter?.let {
+    bindingContext[BindingContext.DELEGATED_PROPERTY_RESOLVED_CALL, it]
+      ?.resultingDescriptor
+      ?.returnType
+  }
 }
 
 fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean {
@@ -317,8 +348,8 @@ fun KtCallExpression.nameSafe(): String? {
 }
 
 /**
- * This poorly-named function will return the most-qualified name available for a given [PsiElement]
- * from the snippet of code where it's being called, without looking at imports.
+ * This poorly-named function will return the most-qualified name available for a given
+ * [PsiElement] from the snippet of code where it's being called, without looking at imports.
  *
  * @since 0.12.0
  */
@@ -328,9 +359,9 @@ fun PsiElement.callSiteName(): String {
   // For example, `com.example.foo(...)` has a selector of `foo(...)`.
   // In order to get just the qualified name, we have to get the `calleeExpression` of the
   // function, then append that to the parent qualified expression's receiver expression.
-  return safeAs<KtDotQualifiedExpression>()
+  return (this as? KtDotQualifiedExpression)
     ?.selectorExpression
-    ?.safeAs<KtCallExpression>()
+    ?.let { it as? KtCallExpression }
     ?.calleeExpression
     ?.let {
       val receiver = this.cast<KtDotQualifiedExpression>()
@@ -381,8 +412,8 @@ internal fun KtNamedDeclaration.isConst() = (this as? KtProperty)?.isConstant() 
 fun KtNamedDeclaration.identifierName(): String? = nameIdentifier?.text
 
 /**
- * For a declaration with a name wrapped in backticks, this returns a name with those backticks. The
- * regular `fqName` property does not.
+ * For a declaration with a name wrapped in backticks, this returns a
+ * name with those backticks. The regular `fqName` property does not.
  *
  * @since 0.12.0
  */

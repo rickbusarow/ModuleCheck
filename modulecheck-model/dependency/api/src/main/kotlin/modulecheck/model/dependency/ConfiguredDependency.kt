@@ -28,8 +28,8 @@ sealed interface ConfiguredDependency : Dependency {
    *
    * For a [ProjectDependency], this is a Gradle path like `:common:ui:widgets`.
    *
-   * For an [ExternalDependency], this is the Maven coordinates with or without a version, like
-   * `com.example.foo:ui-widgets:1.0.0`.
+   * For an [ExternalDependency], this is the Maven coordinates with
+   * or without a version, like `com.example.foo:ui-widgets:1.0.0`.
    *
    * @since 0.12.0
    */
@@ -43,9 +43,9 @@ sealed interface ConfiguredDependency : Dependency {
   val isTestFixture: Boolean
 
   /**
-   * @return the most-downstream [SourceSetName] which contains declarations used by this dependency
-   *     configuration. For a simple `implementation` configuration, this returns `main`. For a
-   *     `debugImplementation`, it would return `debug`.
+   * @return the most-downstream [SourceSetName] which contains declarations used by
+   *   this dependency configuration. For a simple `implementation` configuration,
+   *   this returns `main`. For a `debugImplementation`, it would return `debug`.
    * @since 0.12.0
    */
   fun declaringSourceSetName(sourceSets: SourceSets): SourceSetName = when {
@@ -93,16 +93,17 @@ sealed interface Dependency
 /**
  * [https://docs.gradle.org/current/userguide/plugins.html#sec:binary_plugins]
  *
- * @param accessor Could be any of:
- *    - standard `id` invocations
- *       - `id 'org.jetbrains.kotlin.kapt'` (groovy) or `id("org.jetbrains.kotlin.kapt")` (kotlin)
- *       - `id 'kotlin-kapt'` (groovy) or `id("kotlin-kapt")` (kotlin)
- *    - precompiled accessor for Gradle plugins or `buildSrc`
- *       - `java`, `maven-publish`, `my-convention-plugin`
- *    - function invocations for Kotlin libraries in the Kotlin DSL only
- *       - `kotlin("kapt")`
- *    - alias invocations for Gradle's type-safe catalogs
- *       - `alias(libs.plugins.anvil)`
+ * @property accessor Could be any of:
+ *
+ *   - standard `id` invocations
+ *   - `id 'org.jetbrains.kotlin.kapt'` (groovy) or `id("org.jetbrains.kotlin.kapt")` (kotlin)
+ *     - `id 'kotlin-kapt'` (groovy) or `id("kotlin-kapt")` (kotlin)
+ *   - precompiled accessor for Gradle plugins or `buildSrc`
+ *     - `java`, `maven-publish`, `my-convention-plugin`
+ *   - function invocations for Kotlin libraries in the Kotlin DSL only
+ *     - `kotlin("kapt")`
+ *   - alias invocations for Gradle's type-safe catalogs
+ *     - `alias(libs.plugins.anvil)`
  * @since 0.12.0
  */
 @Serializable

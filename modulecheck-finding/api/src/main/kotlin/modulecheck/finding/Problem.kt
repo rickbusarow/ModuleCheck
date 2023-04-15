@@ -25,8 +25,8 @@ interface Problem :
   DependencyFinding {
 
   /**
-   * Whether this Problem should be ignored. True if the associated statement is annotated with
-   * `@Suppress` and the corresponding finding ID.
+   * Whether this Problem should be ignored. True if the associated statement
+   * is annotated with `@Suppress` and the corresponding finding ID.
    *
    * @since 0.12.0
    */

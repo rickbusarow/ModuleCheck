@@ -37,23 +37,32 @@ abstract class DependencyGuardConventionPlugin : Plugin<Project> {
       }
     }
 
+    target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME)
+      .dependsOn(DEPENDENCY_GUARD_CHECK_TASK_NAME)
+
     // Delete any existing dependency files/directories before recreating with a new baseline task.
-    val dependencyGuardDeleteBaselines = target.tasks.register(
-      "dependencyGuardDeleteBaselines",
-      Delete::class.java
-    ) { it.delete("dependencies") }
+    val dependencyGuardDeleteBaselines = target.tasks
+      .register("dependencyGuardDeleteBaselines", Delete::class.java) {
+        it.delete("dependencies")
+        it.mustRunAfter(DEPENDENCY_GUARD_BASELINE_TASK_NAME)
+      }
 
-    target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME) {
-      it.dependsOn("dependencyGuard")
-    }
+    target.tasks.named(DEPENDENCY_GUARD_BASELINE_TASK_NAME) {
 
-    target.tasks.named("dependencyGuardBaseline") {
-      it.dependsOn(dependencyGuardDeleteBaselines)
-      it.finalizedBy(target.rootProject.tasks.matchingName("dependencyGuardAggregate"))
+      it.finalizedBy(
+        target.rootProject.tasks.matchingName(DependencyGuardAggregatePlugin.AGGREGATE_TASK_NAME)
+      )
     }
-    target.tasks.named("dependencyGuard") {
-      it.dependsOn(target.rootProject.tasks.matchingName("dependencyGuardExplode"))
+    target.tasks.named(DEPENDENCY_GUARD_CHECK_TASK_NAME) {
+      it.dependsOn(
+        target.rootProject.tasks.matchingName(DependencyGuardAggregatePlugin.EXPLODE_TASK_NAME)
+      )
       it.finalizedBy(dependencyGuardDeleteBaselines)
     }
+  }
+
+  companion object {
+    const val DEPENDENCY_GUARD_CHECK_TASK_NAME = "dependencyGuard"
+    const val DEPENDENCY_GUARD_BASELINE_TASK_NAME = "dependencyGuardBaseline"
   }
 }

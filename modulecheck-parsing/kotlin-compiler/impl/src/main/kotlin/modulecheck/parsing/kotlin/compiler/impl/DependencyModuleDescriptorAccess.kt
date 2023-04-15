@@ -32,8 +32,6 @@ import javax.inject.Inject
  * Provides all descriptors for the dependencies of a given project's source set.
  *
  * These descriptors are globally cached and shared.
- *
- * @since 0.13.0
  */
 @SingleIn(TaskScope::class)
 class DependencyModuleDescriptorAccess @Inject constructor(
@@ -41,9 +39,8 @@ class DependencyModuleDescriptorAccess @Inject constructor(
 ) {
 
   /**
-   * @return all descriptors for the dependencies of a given project's source set. These descriptors
-   *     are globally cached and shared.
-   * @since 0.13.0
+   * @return all descriptors for the dependencies of a given project's
+   *   source set. These descriptors are globally cached and shared.
    */
   suspend fun projectDependencies(
     projectPath: ProjectPath,

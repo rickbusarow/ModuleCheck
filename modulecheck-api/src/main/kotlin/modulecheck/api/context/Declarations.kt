@@ -123,6 +123,9 @@ class Declarations private constructor(
 
 suspend fun ProjectContext.declarations(): Declarations = get(Declarations)
 
+/**
+ * @return all declarations in the receiver dependency
+ */
 suspend fun ConfiguredDependency.declarations(
   projectCache: ProjectCache
 ): LazySet<DeclaredName> {

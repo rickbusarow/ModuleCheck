@@ -42,8 +42,8 @@ interface TaskComponent : RunnerComponent, RulesComponent {
      * @param rootProject the root (`:`) rootProject
      * @param moduleCheckSettings settings...
      * @param ruleFilter this lets the tasks define which rule(s) they're going to apply
-     * @param projectRoot the root directory for the rootProject. This is the same as calling
-     *   `rootProject.rootDir`.
+     * @param projectRoot the root directory for the rootProject.
+     *   This is the same as calling `rootProject.rootDir`.
      * @param workerExecutor the only way into Gradle's managed thread ecosystem
      * @since 0.12.0
      */

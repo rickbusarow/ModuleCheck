@@ -26,16 +26,13 @@ import java.io.File
 
 /**
  * Base class for an [McPsiFileFactory] implementation
- *
- * @since 0.13.0
  */
 abstract class AbstractMcPsiFileFactory : McPsiFileFactory {
 
   /**
-   * wrapper around "core" settings like Kotlin version, source files, and classpath files (external
-   * dependencies)
+   * wrapper around "core" settings like Kotlin version,
+   * source files, and classpath files (external dependencies)
    *
-   * @since 0.13.0
    */
   abstract val coreEnvironment: LazyDeferred<KotlinCoreEnvironment>
 

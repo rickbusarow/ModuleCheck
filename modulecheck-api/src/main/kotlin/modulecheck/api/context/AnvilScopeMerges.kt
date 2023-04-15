@@ -39,8 +39,8 @@ data class AnvilScopeMerges(
   }
 
   /**
-   * @return all merged interfaces for this [sourceSetName], grouped by the [AnvilScopeName] for
-   *   which they're merged
+   * @return all merged interfaces for this [sourceSetName],
+   *   grouped by the [AnvilScopeName] for which they're merged
    * @since 0.12.0
    */
   suspend fun get(sourceSetName: SourceSetName): Map<AnvilScopeName, Set<QualifiedDeclaredName>> {
@@ -67,8 +67,8 @@ data class AnvilScopeMerges(
 suspend fun ProjectContext.anvilScopeMerges(): AnvilScopeMerges = get(AnvilScopeMerges)
 
 /**
- * @return all merged interfaces for this [sourceSetName], grouped by the [AnvilScopeName] for which
- *   they're merged
+ * @return all merged interfaces for this [sourceSetName],
+ *   grouped by the [AnvilScopeName] for which they're merged
  * @since 0.12.0
  */
 suspend fun ProjectContext.anvilScopeMergesForSourceSetName(

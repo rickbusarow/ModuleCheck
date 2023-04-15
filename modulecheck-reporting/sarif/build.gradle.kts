@@ -36,7 +36,7 @@ dependencies {
   "ksp"(libs.square.moshi.codegen)
 
   testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.square.okio)

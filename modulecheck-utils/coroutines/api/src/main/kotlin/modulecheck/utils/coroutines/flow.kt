@@ -38,8 +38,8 @@ suspend fun <T> Flow<T>.any(predicate: suspend (T) -> Boolean): Boolean {
 }
 
 /**
- * @return a [Flow] containing only distinct elements from the receiver flow. When there are equal
- *     elements in the receiver, the first value is the one emitted in the returned flow.
+ * @return a [Flow] containing only distinct elements from the receiver flow. When there are
+ *   equal elements in the receiver, the first value is the one emitted in the returned flow.
  * @since 0.12.0
  */
 fun <T> Flow<T>.distinct(): Flow<T> = flow {
@@ -122,8 +122,8 @@ suspend fun <T> Flow<Iterable<T>>.flatMapSetConcat(
 }
 
 /**
- * Returns a [Flow] from the receiver [Flow], performing [transform] upon each element
- * *concurrently* before that element is emitted.
+ * Returns a [Flow] from the receiver [Flow], performing [transform]
+ * upon each element *concurrently* before that element is emitted.
  *
  * **This is a "hot" flow**, since [transform] is performed eagerly.
  *
@@ -173,8 +173,8 @@ suspend fun <T, R> Flow<T>.flatMapListMerge(
 }
 
 /**
- * Returns a [Flow] from the receiver [Iterable], performing [transform] upon each element
- * *concurrently* before that element is emitted.
+ * Returns a [Flow] from the receiver [Iterable], performing [transform]
+ * upon each element *concurrently* before that element is emitted.
  *
  * **This is a "hot" flow**, since [transform] is performed eagerly.
  *
@@ -192,8 +192,8 @@ fun <T, R> Iterable<T>.mapAsync(
 }
 
 /**
- * Returns a [Flow] from the receiver [Iterable], performing [action] upon each element
- * *concurrently* before that element is emitted.
+ * Returns a [Flow] from the receiver [Iterable], performing [action]
+ * upon each element *concurrently* before that element is emitted.
  *
  * **This is a "hot" flow**, since [action] is performed eagerly.
  *
@@ -216,8 +216,8 @@ fun <T> Iterable<T>.onEachAsync(
 /**
  * **This is a "hot" flow**, since [transform] is performed eagerly.
  *
- * @return a [Flow] from the receiver [Sequence], performing [transform] upon each element
- *     *concurrently* before that element is emitted.
+ * @return a [Flow] from the receiver [Sequence], performing [transform]
+ *   upon each element *concurrently* before that element is emitted.
  * @since 0.12.0
  */
 fun <T, R> Sequence<T>.mapAsync(
@@ -233,8 +233,8 @@ fun <T, R> Sequence<T>.mapAsync(
 /**
  * **This is a "hot" flow**, since [transform] is performed eagerly.
  *
- * @return a [Flow] from the receiver [Flow], performing [transform] and filtering out `null` values
- *     upon each element *concurrently*.
+ * @return a [Flow] from the receiver [Flow], performing [transform]
+ *   and filtering out `null` values upon each element *concurrently*.
  * @since 0.12.0
  */
 fun <T, R : Any> Flow<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> {
@@ -247,8 +247,8 @@ fun <T, R : Any> Flow<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> 
 /**
  * **This is a "hot" flow**, since [transform] is performed eagerly.
  *
- * @return a [Flow] from the receiver [Iterable], performing [transform] and filtering out `null`
- *     values upon each element *concurrently*.
+ * @return a [Flow] from the receiver [Iterable], performing [transform]
+ *   and filtering out `null` values upon each element *concurrently*.
  * @since 0.12.0
  */
 fun <T, R : Any> Iterable<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> {
@@ -262,8 +262,8 @@ fun <T, R : Any> Iterable<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow
 /**
  * **This is a "hot" flow**, since [transform] is performed eagerly.
  *
- * @return a [Flow] from the receiver [Sequence], performing [transform] and filtering out `null`
- *     values upon each element *concurrently*.
+ * @return a [Flow] from the receiver [Sequence], performing [transform]
+ *   and filtering out `null` values upon each element *concurrently*.
  * @since 0.12.0
  */
 fun <T, R : Any> Sequence<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> {
@@ -277,8 +277,8 @@ fun <T, R : Any> Sequence<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow
 /**
  * **This is a "hot" flow**, since [predicate] is performed eagerly.
  *
- * @return a [Flow] from the receiver [Flow], filtering values based upon [predicate]
- *     *concurrently*.
+ * @return a [Flow] from the receiver [Flow], filtering
+ *   values based upon [predicate] *concurrently*.
  * @since 0.12.0
  */
 fun <T> Flow<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
@@ -291,8 +291,8 @@ fun <T> Flow<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
 /**
  * **This is a "hot" flow**, since [predicate] is performed eagerly.
  *
- * @return a [Flow] from the receiver [Iterable], filtering values based upon [predicate]
- *     *concurrently*.
+ * @return a [Flow] from the receiver [Iterable], filtering
+ *   values based upon [predicate] *concurrently*.
  * @since 0.12.0
  */
 fun <T> Iterable<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
@@ -304,8 +304,8 @@ fun <T> Iterable<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
 /**
  * **This is a "hot" flow**, since [predicate] is performed eagerly.
  *
- * @return a [Flow] from the receiver [Sequence], filtering values based upon [predicate]
- *     *concurrently*.
+ * @return a [Flow] from the receiver [Sequence], filtering
+ *   values based upon [predicate] *concurrently*.
  * @since 0.12.0
  */
 fun <T> Sequence<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
@@ -320,8 +320,6 @@ fun <T> Sequence<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
  * ```
  * val mySingleFlow = someFlow + someOtherFlow
  * ```
- *
- * @since 0.13.0
  */
 operator fun <T> Flow<T>.plus(other: Flow<T>): Flow<T> {
   return onCompletion { if (it == null) emitAll(other) }

@@ -16,7 +16,6 @@
 package modulecheck.builds
 
 import modulecheck.builds.artifacts.ArtifactsPlugin
-import modulecheck.builds.ktlint.KtLintConventionPlugin
 import modulecheck.builds.matrix.VersionsMatrixYamlPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -24,6 +23,7 @@ import org.gradle.api.Project
 abstract class McBuildPlugin : Plugin<Project> {
   override fun apply(target: Project) {
 
+    target.plugins.apply(CheckPlugin::class.java)
     target.plugins.apply(CleanPlugin::class.java)
     target.plugins.apply(DependencyGuardConventionPlugin::class.java)
     target.plugins.apply(DetektConventionPlugin::class.java)

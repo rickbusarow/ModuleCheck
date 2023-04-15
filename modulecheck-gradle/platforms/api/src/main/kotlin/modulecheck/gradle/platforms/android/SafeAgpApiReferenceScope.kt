@@ -23,8 +23,8 @@ import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
 
 /**
- * Wrapper for accessing AGP declarations only after it's been established that they exist in the
- * classpath.
+ * Wrapper for accessing AGP declarations only after it's
+ * been established that they exist in the classpath.
  *
  * @see AgpApiAccess
  * @see UnsafeDirectAgpApiReference
@@ -70,8 +70,8 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
   fun Any?.isAndroidTestedExtension(): Boolean = this is AndroidTestedExtension
 
   /**
-   * Direct access to the AGP [com.android.build.api.dsl.CommonExtension] type, only accessible
-   * after it's been established that the type is in the classpath.
+   * Direct access to the AGP [com.android.build.api.dsl.CommonExtension] type,
+   * only accessible after it's been established that the type is in the classpath.
    *
    * @since 0.12.0
    */
@@ -80,8 +80,8 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
       .getByType(com.android.build.api.dsl.CommonExtension::class.java)
 
   /**
-   * Direct access to the AGP [AndroidBaseExtension] type, only accessible after it's been
-   * established that the type is in the classpath.
+   * Direct access to the AGP [AndroidBaseExtension] type, only accessible
+   * after it's been established that the type is in the classpath.
    *
    * @since 0.12.0
    */
@@ -91,9 +91,9 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
 
   /**
    * @return if this [BaseVariant][com.android.build.gradle.api.BaseVariant] is a
-   *     [TestedVariant][com.android.build.gradle.internal.api.TestedVariant], returns its
-   *     [testVariant][com.android.build.gradle.internal.api.TestedVariant.testVariant]. Otherwise,
-   *     returns null.
+   *   [TestedVariant][com.android.build.gradle.internal.api.TestedVariant], returns its
+   *   [testVariant][com.android.build.gradle.internal.api.TestedVariant.testVariant].
+   *   Otherwise, returns null.
    * @since 0.13.0
    */
   fun AndroidBaseVariant.androidTestVariantOrNull(): AndroidTestVariant? {
@@ -105,9 +105,9 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
 
   /**
    * @return if this [BaseVariant][com.android.build.gradle.api.BaseVariant] is a
-   *     [TestedVariant][com.android.build.gradle.internal.api.TestedVariant], returns its
-   *     [unitTestVariant][com.android.build.gradle.internal.api.TestedVariant.unitTestVariant].
-   *     Otherwise, returns null.
+   *   [TestedVariant][com.android.build.gradle.internal.api.TestedVariant], returns its
+   *   [unitTestVariant][com.android.build.gradle.internal.api.TestedVariant.unitTestVariant].
+   *   Otherwise, returns null.
    * @since 0.13.0
    */
   fun AndroidBaseVariant.unitTestVariantOrNull(): AndroidUnitTestVariant? {
@@ -147,13 +147,11 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
     } ?: false
 
   /**
-   * `api`, `implementation`, `compileOnly`, and `runtimeOnly` configuration names for this source
-   * set.
+   * `api`, `implementation`, `compileOnly`, and
+   * `runtimeOnly` configuration names for this source set.
    *
    * Inspired by
    * [KotlinSourceSet.relatedConfigurationNames][org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet.relatedConfigurationNames].
-   *
-   * @since 0.13.0
    */
   @Suppress("UnstableApiUsage")
   val AndroidSourceSet.relatedConfigurationNames: List<String>

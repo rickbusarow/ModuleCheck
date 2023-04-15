@@ -25,6 +25,7 @@ sealed class ProjectPath : Identifier {
 
   /**
    * the raw value of this path
+   *
    * - **StringProjectPath**: ":some-module-group:api"
    * - **TypeSafeProjectPath**: "someModuleGroup.api"
    *
@@ -109,6 +110,7 @@ internal val projectSplitRegex = "[.\\-_]".toRegex()
 
 /**
  * Takes a conventional Gradle project path (":core:jvm") and returns the type-safe accessor name.
+ *
  * - `:core` becomes `core`
  * - `:core:jvm` becomes `core.jvm`
  * - `:core-testing` becomes `coreTesting`

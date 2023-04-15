@@ -49,12 +49,11 @@ dependencies {
 
   api(project(path = ":artifacts-check"))
   api(project(path = ":conventions"))
-  api(project(path = ":ktlint-rules"))
   api(project(path = ":versions-matrix"))
 
   compileOnly(gradleApi())
 
-  compileOnly(libs.kotlin.gradle.plug)
+  compileOnly(libs.kotlin.gradle.plugin)
 
   implementation(libs.benManes.versions)
   implementation(libs.detekt.gradle)
@@ -64,10 +63,9 @@ dependencies {
   implementation(libs.google.ksp)
   implementation(libs.jmailen.kotlinter)
   implementation(libs.kotlin.compiler)
-  implementation(libs.kotlin.gradle.plug)
+  implementation(libs.kotlin.gradle.plugin)
   implementation(libs.kotlin.reflect)
   implementation(libs.kotlin.stdlib.common)
-  implementation(libs.kotlin.stdlib.core)
   implementation(libs.kotlin.stdlib.jdk7)
   implementation(libs.kotlin.stdlib.jdk8)
   implementation(libs.kotlinx.knit)

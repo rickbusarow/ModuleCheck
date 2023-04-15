@@ -54,8 +54,6 @@ private fun String.indentWidth(): Int =
 
 /**
  * A builder scope for [StringBuilder.indent][modulecheck.utils.indent] and [buildStringIndented].
- *
- * @since 0.13.0
  */
 class IndentScope(
   @PublishedApi
@@ -85,7 +83,6 @@ class IndentScope(
   /**
    * Creates another layer of indentation by adding [tab] to [indent], then performing [action].
    *
-   * @since 0.13.0
    */
   inline fun indent(
     tab: String = this.tab,
@@ -101,10 +98,11 @@ class IndentScope(
 }
 
 /**
- * Shorthand version of [StringBuilder.indent][modulecheck.utils.indent] for when the first line of
- * the `buildString { ... }` block would just be a call to `indent(...) { ... }`.
+ * Shorthand version of [StringBuilder.indent][modulecheck.utils.indent] for when the first
+ * line of the `buildString { ... }` block would just be a call to `indent(...) { ... }`.
  *
  * example:
+ *
  * ```
  * override fun toString() = buildStringIndented(baseIndent = "      ") {
  *   appendLine("SomeClass(")
@@ -115,8 +113,6 @@ class IndentScope(
  *   eppendLine(")")
  * }
  * ```
- *
- * @since 0.13.0
  */
 inline fun buildStringIndented(
   baseIndent: String,
@@ -134,6 +130,7 @@ inline fun buildStringIndented(
 
 /**
  * example:
+ *
  * ```
  * override fun toString() = buildString {
  *   appendLine("SomeClass(")
@@ -144,8 +141,6 @@ inline fun buildStringIndented(
  *   eppendLine(")")
  * }
  * ```
- *
- * @since 0.13.0
  */
 inline fun StringBuilder.indent(
   startingIndent: String = "",
@@ -201,8 +196,8 @@ fun String.remove(vararg patterns: Regex): String = patterns.fold(this) { acc, r
 }
 
 /**
- * @return a string with no leading or trailing whitespace, and no whitespace before or after any
- *     instance of [delimiter]
+ * @return a string with no leading or trailing whitespace, and
+ *   no whitespace before or after any instance of [delimiter]
  * @since 0.12.0
  */
 fun String.trimSegments(delimiter: String = "."): String {

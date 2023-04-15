@@ -116,6 +116,11 @@ sealed class ReferenceName : McName {
       name = name,
       language = language
     )
+
+    /** @return a basic [ReferenceName] for this name and language. */
+    fun String.asReferenceName(
+      language: CompatibleLanguage
+    ): ReferenceName = ReferenceName(this, language)
   }
 }
 

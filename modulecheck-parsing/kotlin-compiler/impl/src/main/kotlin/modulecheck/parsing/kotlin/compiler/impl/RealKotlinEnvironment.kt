@@ -62,17 +62,16 @@ import javax.inject.Inject
 /**
  * @property projectPath path of the associated Gradle project
  * @property sourceSetName name of the associated
- *     [SourceSet][modulecheck.model.dependency.McSourceSet]
+ *   [SourceSet][modulecheck.model.dependency.McSourceSet]
  * @property classpathFiles `.jar` files from external dependencies
- * @property sourceDirs all jvm source code directories for this source set, like
- *     `[...]/myProject/src/main/java`.
+ * @property sourceDirs all jvm source code directories for
+ *   this source set, like `[...]/myProject/src/main/java`.
  * @property kotlinLanguageVersion the version of Kotlin being used
  * @property jvmTarget the version of Java being compiled to
- * @property dependencyModuleDescriptorAccess provides the module descriptors of all dependency
- *     source sets from the current module and dependency modules
+ * @property dependencyModuleDescriptorAccess provides the module descriptors of
+ *   all dependency source sets from the current module and dependency modules
  * @property logger logs Kotlin compiler messages during analysis
  * @property resetManager used to reset caching
- * @since 0.13.0
  */
 @Suppress("LongParameterList")
 data class RealKotlinEnvironment(
@@ -273,8 +272,6 @@ data class RealKotlinEnvironment(
 
   /**
    * Dagger implementation for [KotlinEnvironmentFactory]
-   *
-   * @since 0.13.0
    */
   @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor(

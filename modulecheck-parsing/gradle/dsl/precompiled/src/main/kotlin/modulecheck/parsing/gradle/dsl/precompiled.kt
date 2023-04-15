@@ -34,8 +34,9 @@ import modulecheck.utils.prefixIfNot
 import modulecheck.utils.sortedWith
 
 /**
- * Precompiled configuration names are names which are added by a pre-compiled plugin. These names
- * can be used as functions in Kotlin scripts. examples:
+ * Precompiled configuration names are names which are added by a pre-compiled
+ * plugin. These names can be used as functions in Kotlin scripts. examples:
+ *
  * ```
  *   api("some-dependency")
  *   testImplementation(project(":my-lib"))
@@ -44,13 +45,14 @@ import modulecheck.utils.sortedWith
  *
  * If a configuration is added in a local build script, then it won't have a function associated
  * with it. In this case, the Kotlin script supports using a String extension function:
+ *
  * ```
  *   "internalReleaseApi"(libs.timber)
  * ```
  *
  * @param project the project in which the configuration name is being used
- * @return `true` if we can know for sure that it's pre-compiled. `false` if we aren't certain.
  * @receiver the configuration name which may have an accessor
+ * @return `true` if we can know for sure that it's pre-compiled. `false` if we aren't certain.
  * @since 0.12.0
  */
 suspend fun ConfigurationName.isDefinitelyPrecompiledForProject(
@@ -62,13 +64,12 @@ suspend fun ConfigurationName.isDefinitelyPrecompiledForProject(
 }
 
 /**
- * Creates a new [DependencyDeclaration] which can be added to a build file, potentially using a
- * similar existing declaration as a template.
+ * Creates a new [DependencyDeclaration] which can be added to a build
+ * file, potentially using a similar existing declaration as a template.
  *
  * @param project
- * @return a Pair where the first declaration is the newly created one, and the second is the
- *     pre-existing template, or null if a template was not used.
- * @since 0.13.0
+ * @return a Pair where the first declaration is the newly created one, and the
+ *   second is the pre-existing template, or null if a template was not used.
  */
 suspend fun ConfiguredDependency.asDeclaration(
   project: HasDependencyDeclarations
@@ -88,13 +89,13 @@ suspend fun ConfiguredDependency.asDeclaration(
 }
 
 /**
- * Finds the existing dependency declaration (if there are any) which is the closest match to the
- * desired new dependency.
+ * Finds the existing dependency declaration (if there are any)
+ * which is the closest match to the desired new dependency.
  *
  * @param newDependency The dependency being added
- * @param matchPathFirst If true, matching project paths will be prioritized over matching
- *     configurations. If false, configuration matches will take priority over a matching project
- *     path.
+ * @param matchPathFirst If true, matching project paths will be
+ *   prioritized over matching configurations. If false, configuration
+ *   matches will take priority over a matching project path.
  * @receiver the project containing this declaration's match
  * @return the closest matching declaration, or null if there are no declarations at all.
  * @since 0.12.0
@@ -245,18 +246,17 @@ private suspend fun ExternalDependency.asExternalDependencyDeclaration(
 }
 
 /**
- * Creates a new [ModuleDependencyDeclaration] from the void, without copying the style of any other
- * dependency declarations.
+ * Creates a new [ModuleDependencyDeclaration] from the void,
+ * without copying the style of any other dependency declarations.
  *
  * This does not automatically write the dependency to the build file or add it to any collections.
  *
  * @param configurationName the new config name
  * @param projectPath the new project dependency
- * @param isTestFixtures if true, the dependency is wrapped in `testFixtures(...)`, like
- *     `api(testFixtures(project(":lib1")))`
+ * @param isTestFixtures if true, the dependency is wrapped in
+ *   `testFixtures(...)`, like `api(testFixtures(project(":lib1")))`
  * @receiver the project receiving this new dependency
  * @return a new declaration model
- * @since 0.13.0
  */
 suspend fun HasDependencyDeclarations.createDependencyDeclaration(
   configurationName: ConfigurationName,
@@ -309,18 +309,17 @@ private suspend fun HasDependencyDeclarations.getConfigInvocation(
 }
 
 /**
- * Creates a new [ExternalDependencyDeclaration] from the void, without copying the style of any
- * other dependency declarations.
+ * Creates a new [ExternalDependencyDeclaration] from the void,
+ * without copying the style of any other dependency declarations.
  *
  * This does not automatically write the dependency to the build file or add it to any collections.
  *
  * @param configurationName the new config name
  * @param mavenCoordinates the new dependency
- * @param isTestFixtures if true, the dependency is wrapped in `testFixtures(...)`, like
- *     `api(testFixtures("com.example:foo:1:))`
+ * @param isTestFixtures if true, the dependency is wrapped in
+ *   `testFixtures(...)`, like `api(testFixtures("com.example:foo:1:))`
  * @receiver the project receiving this new dependency
  * @return a new declaration model
- * @since 0.13.0
  */
 suspend fun HasDependencyDeclarations.createDependencyDeclaration(
   configurationName: ConfigurationName,
@@ -461,9 +460,10 @@ private fun ConfigurationName.wrapInQuotes(): String =
 
 /**
  * Returns true if the build file is Kotlin, and one of:
+ *
  * - this exact configuration name is already used as a string extension
- * - this configuration name is atypical (such as `internalDebugApi`) and not already used as a
- *   non-string invocation, so there's no way to be sure that the function is precompiled.
+ * - this configuration name is atypical (such as `internalDebugApi`) and not already used as
+ *   a non-string invocation, so there's no way to be sure that the function is precompiled.
  *
  * @since 0.12.0
  */

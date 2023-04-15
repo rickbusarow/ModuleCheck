@@ -16,6 +16,9 @@
 package modulecheck.builds
 
 import org.gradle.api.Action
+import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.NamedDomainObjectProvider
+import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskContainer
@@ -35,10 +38,23 @@ fun TaskContainer.maybeNamed(
     .configureEach(configuration)
 }
 
-/** code golf for `matching { it.name == taskName }` */
+/**
+ * code golf for `matching { it.name == taskName }`
+ */
 fun TaskContainer.matchingName(
   taskName: String
 ): TaskCollection<Task> = matching { it.name == taskName }
+
+/**
+ * Finds all tasks named [taskName] in all projects.
+ * Does not throw if there are no tasks with that name.
+ *
+ * @throws IllegalStateException if the project is not the root project
+ */
+fun Project.allProjectsTasksMatchingName(taskName: String): List<TaskCollection<Task>> {
+  checkProjectIsRoot { "only call `allProjectsTasksMatchingName(...)` from the root project." }
+  return allprojects.map { proj -> proj.tasks.matchingName(taskName) }
+}
 
 /**
  * adds all [objects] as dependencies to every task in the collection, inside a `configureEach { }`
@@ -49,7 +65,9 @@ fun <T : Task> TaskCollection<T>.dependOn(vararg objects: Any): TaskCollection<T
   }
 }
 
-/** adds all [objects] as dependencies inside a configuration block, inside a `configure { }` */
+/**
+ * adds all [objects] as dependencies inside a configuration block, inside a `configure { }`
+ */
 fun <T : Task> TaskProvider<T>.dependsOn(vararg objects: Any): TaskProvider<T> {
   return also { provider ->
     provider.configure { task ->
@@ -59,13 +77,13 @@ fun <T : Task> TaskProvider<T>.dependsOn(vararg objects: Any): TaskProvider<T> {
 }
 
 /**
- * Returns a collection containing the objects in this collection of the given type. The returned
- * collection is live, so that when matching objects are later added to this collection, they are
- * also visible in the filtered collection.
+ * Returns a collection containing the objects in this collection of the given
+ * type. The returned collection is live, so that when matching objects are later
+ * added to this collection, they are also visible in the filtered collection.
  *
  * @param S The type of objects to find.
- * @return The matching objects. Returns an empty collection if there are no such objects in this
- *     collection.
+ * @return The matching objects. Returns an empty collection
+ *   if there are no such objects in this collection.
  * @see [TaskCollection.withType]
  */
 inline fun <reified S : Task> TaskCollection<in S>.withType(): TaskCollection<S> =
@@ -79,8 +97,8 @@ inline fun <reified T : Task> TaskContainer.register(
   .apply { configure { configuration(it) } }
 
 /**
- * Adds a task of this name and type if it doesn't exist. [configurationAction] is performed on the
- * new task, or the existing task if one already existed.
+ * Adds a task of this name and type if it doesn't exist. [configurationAction]
+ * is performed on the new task, or the existing task if one already existed.
  */
 @JvmName("registerOnceInline")
 inline fun <reified T : Task> TaskContainer.registerOnce(
@@ -89,8 +107,8 @@ inline fun <reified T : Task> TaskContainer.registerOnce(
 ): TaskProvider<T> = registerOnce(name, T::class.java, configurationAction)
 
 /**
- * Adds a task of this name and type if it doesn't exist. [configurationAction] is performed on the
- * new task, or the existing task if one already existed.
+ * Adds a task of this name and type if it doesn't exist. [configurationAction]
+ * is performed on the new task, or the existing task if one already existed.
  */
 fun <T : Task> TaskContainer.registerOnce(
   name: String,
@@ -103,9 +121,28 @@ fun <T : Task> TaskContainer.registerOnce(
 }
 
 /**
- * @return the fully qualified name of this task's type, without any '_Decorated' suffix if one
- *     exists
+ * @return the fully qualified name of this task's
+ *   type, without any '_Decorated' suffix if one exists
  */
 fun Task.undecoratedTypeName(): String {
   return javaClass.canonicalName.removeSuffix("_Decorated")
+}
+
+fun <T : Any> NamedDomainObjectContainer<T>.maybeRegister(
+  name: String
+): NamedDomainObjectProvider<T> {
+  return if (names.contains(name)) {
+    named(name)
+  } else {
+    register(name)
+  }
+}
+
+fun <T : Any> NamedDomainObjectContainer<T>.maybeRegister(
+  name: String,
+  configuration: Action<in T>
+): NamedDomainObjectProvider<T> = if (names.contains(name)) {
+  named(name, configuration)
+} else {
+  register(name, configuration)
 }

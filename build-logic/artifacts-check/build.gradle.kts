@@ -48,7 +48,7 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  compileOnly(libs.kotlin.gradle.plug)
+  compileOnly(libs.kotlin.gradle.plugin)
 
   implementation(libs.benManes.versions)
   implementation(libs.detekt.gradle)
@@ -57,10 +57,8 @@ dependencies {
   implementation(libs.google.dagger.api)
   implementation(libs.google.ksp)
   implementation(libs.kotlin.compiler)
-  implementation(libs.kotlin.gradle.plug)
   implementation(libs.kotlin.reflect)
   implementation(libs.kotlin.stdlib.common)
-  implementation(libs.kotlin.stdlib.core)
   implementation(libs.kotlin.stdlib.jdk7)
   implementation(libs.kotlin.stdlib.jdk8)
   implementation(libs.kotlinx.knit)

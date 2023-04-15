@@ -26,16 +26,16 @@ interface HasProjectCache {
 
 /**
  * @param projectCache the project cache which contains the desired project
- * @return the project associated with the path in the receiver
  * @receiver has a defined path to be resolved to a project
+ * @return the project associated with the path in the receiver
  * @since 0.12.0
  */
 fun HasProjectPath.project(projectCache: ProjectCache): McProject =
   projectCache.getValue(projectPath)
 
 /**
- * @receiver has a defined path to be resolved to a project
  * @param hasProjectCache has the project cache which contains the desired project
+ * @receiver has a defined path to be resolved to a project
  * @return the project associated with the path in the receiver
  * @since 0.12.0
  */
@@ -44,8 +44,8 @@ fun HasProjectPath.project(hasProjectCache: HasProjectCache): McProject =
     .getValue(projectPath)
 
 /**
- * @receiver has a dependentPath to be resolved to a project
  * @param projectCache the project cache which contains the desired project
+ * @receiver has a dependentPath to be resolved to a project
  * @return the project associated with the path in the receiver
  * @since 0.12.0
  */
@@ -54,8 +54,8 @@ fun DownstreamDependency.project(
 ): McProject = projectCache.getValue(dependentProjectPath)
 
 /**
- * @receiver has a dependentPath to be resolved to a project
  * @param hasProjectCache has the project cache which contains the desired project
+ * @receiver has a dependentPath to be resolved to a project
  * @return the project associated with the path in the receiver
  * @since 0.12.0
  */

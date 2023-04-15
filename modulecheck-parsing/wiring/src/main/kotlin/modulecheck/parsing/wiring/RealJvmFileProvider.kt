@@ -39,12 +39,12 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 /**
- * Note that there is also a Psi file cache inside the [KotlinEnvironment]. This cache of [JvmFile]
- * just provides the next layer, in order to have caching for parsed declarations, references, and
- * whatnot.
+ * Note that there is also a Psi file cache inside the [KotlinEnvironment].
+ * This cache of [JvmFile] just provides the next layer, in order
+ * to have caching for parsed declarations, references, and whatnot.
  *
- * The Psi file cache re-uses Psi files because they have internal caching used internally by the
- * compilation object.
+ * The Psi file cache re-uses Psi files because they have
+ * internal caching used internally by the compilation object.
  *
  * @since 0.12.0
  */

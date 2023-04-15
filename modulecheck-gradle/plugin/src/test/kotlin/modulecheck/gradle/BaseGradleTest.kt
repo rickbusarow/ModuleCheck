@@ -18,6 +18,7 @@ package modulecheck.gradle
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.internal.defaultCodeGeneratorBindings
 import modulecheck.gradle.internal.BuildProperties
+import modulecheck.gradle.internal.TestBuildProperties
 import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.project.ProjectCache
 import modulecheck.project.generation.ProjectCollector
@@ -101,7 +102,7 @@ abstract class BaseGradleTest :
             useVersion("$agpVersion")
           }
           if (requested.id.id == "com.rickbusarow.module-check") {
-            useVersion("${BuildProperties().version}")
+            useVersion("${BuildProperties.version}")
           }
           if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
             useVersion("$kotlinVersion")

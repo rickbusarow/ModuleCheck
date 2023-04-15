@@ -28,8 +28,8 @@ fun interface AndroidSourceSetsParser {
     /**
      * @param parsedConfigurations the configurations for this target project
      * @param extension the instance of AGP extension applied to this project
-     * @param hasTestFixturesPlugin has either the `java-test-fixtures` plugin or
-     *   `buildFeatures.testFixtures` is enabled in the extension
+     * @param hasTestFixturesPlugin has either the `java-test-fixtures`
+     *   plugin or `buildFeatures.testFixtures` is enabled in the extension
      * @param gradleProject the project being parsed
      * @return the [AndroidSourceSetsParser] for this project
      * @since 0.12.0

@@ -97,8 +97,8 @@ class AndroidRDeclaredName(
  * example: `com.example.R.string.app_name`
  *
  * @property sourceR the R declaration used when AGP generates this fully qualified resource
- * @property sourceResource the resource declaration, like `_.string.app_name`, used when AGP
- *   generates this fully qualified resource
+ * @property sourceResource the resource declaration, like
+ *   `_.string.app_name`, used when AGP generates this fully qualified resource
  * @since 0.12.0
  */
 @Serializable

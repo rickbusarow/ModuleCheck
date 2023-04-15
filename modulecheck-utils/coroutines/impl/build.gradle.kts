@@ -32,7 +32,7 @@ dependencies {
   api(project(path = ":modulecheck-utils:coroutines:api"))
 
   testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.square.turbine)
 }

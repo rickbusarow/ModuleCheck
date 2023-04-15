@@ -33,12 +33,20 @@ abstract class DetektConventionPlugin : Plugin<Project> {
 
     val detektExcludes = listOf(
       "**/resources/**",
-      "**/build/**"
+      "**/build/**",
+      // Tasks with type resolution don't honor excludes starting with the
+      // https://github.com/detekt/detekt/issues/4743
+      "**/BuildProperties.kt"
     )
 
-    val reportMerge = target.tasks
-      .register("reportMerge", ReportMergeTask::class.java) {
-        it.output.set(target.rootProject.buildDir.resolve("reports/detekt/merged.sarif"))
+    target.tasks
+      .register("detektReportMerge", ReportMergeTask::class.java) { reportMergeTask ->
+        reportMergeTask.output
+          .set(target.rootProject.buildDir.resolve("reports/detekt/merged.sarif"))
+
+        reportMergeTask.input.from(
+          target.tasks.withType(Detekt::class.java).map { it.sarifReportFile }
+        )
       }
 
     target.dependencies.add(
@@ -63,22 +71,13 @@ abstract class DetektConventionPlugin : Plugin<Project> {
       extension.parallel = true
     }
 
-    target.tasks.withType(Detekt::class.java) { task ->
+    target.tasks.withType(Detekt::class.java).configureEach { task ->
 
       task.autoCorrect = false
       task.parallel = true
       task.baseline.set(target.file("${target.rootDir}/detekt/detekt-baseline.xml"))
       task.config.from(target.files("${target.rootDir}/detekt/detekt-config.yml"))
       task.buildUponDefaultConfig = true
-
-      // If in CI, merge sarif reports.  Skip this locally because it's not worth looking at
-      // and the task is unnecessarily chatty.
-      if (!System.getenv("CI").isNullOrBlank()) {
-        task.finalizedBy(reportMerge)
-        reportMerge.configure {
-          it.input.from(task.sarifReportFile)
-        }
-      }
 
       task.reports {
         it.xml.required.set(true)
@@ -106,11 +105,11 @@ abstract class DetektConventionPlugin : Plugin<Project> {
       DetektCreateBaselineTask::class.java,
       DetektGenerateConfigTask::class.java
     ).forEach { type ->
-      target.tasks.withType(type) { it.group = "detekt" }
+      target.tasks.withType(type).configureEach { it.group = "detekt" }
     }
 
     // By default, `check` only handles the PSI Detekt task.  This adds the type resolution tasks.
-    target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME) {
+    target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME).configure {
       it.dependsOn(target.otherDetektTasks(it, withAutoCorrect = false))
     }
 

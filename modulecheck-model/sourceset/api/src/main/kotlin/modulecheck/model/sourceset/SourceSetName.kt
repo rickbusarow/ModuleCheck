@@ -20,26 +20,14 @@ import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
 import java.io.Serializable as JavaSerializable
 
-/**
- * Something associated with a specific [SourceSetName][modulecheck.model.sourceset.SourceSetName].
- *
- * @since 0.13.0
- */
+/** Something associated with a specific [SourceSetName][modulecheck.model.sourceset.SourceSetName]. */
 interface HasSourceSetName : JavaSerializable {
 
-  /**
-   * ex: `main`, `test`, `debug`
-   *
-   * @since 0.13.0
-   */
+  /** ex: `main`, `test`, `debug` */
   val sourceSetName: SourceSetName
 }
 
-/**
- * ex: `main`, `test`, `debug`
- *
- * @since 0.13.0
- */
+/** ex: `main`, `test`, `debug` */
 @Serializable
 @JvmInline
 value class SourceSetName(val value: String) : JavaSerializable {

@@ -60,8 +60,6 @@ class JvmPlatformPluginFactory @Inject constructor(
  *
  * NB This is technically unsafe, in that it assumes the files have all been resolved already. If
  * they need to be resolved still, it may happen on a non-Gradle thread, which causes an exception.
- *
- * @since 0.13.0
  */
 fun List<McConfiguration>.classpathLazy(
   gradleProject: GradleProject

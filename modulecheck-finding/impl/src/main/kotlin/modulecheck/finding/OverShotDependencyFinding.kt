@@ -27,13 +27,13 @@ import modulecheck.utils.lazy.lazyDeferred
 
 /**
  * Represents a [ConfiguredDependency] which is unused in the
- * [SourceSet][modulecheck.model.dependency.McSourceSet] to which it's added, but *is* used in
- * another source set downstream. For instance, a dependency is overshot if it's added to `main`,
- * but only used in `test`.
+ * [SourceSet][modulecheck.model.dependency.McSourceSet] to which it's
+ * added, but *is* used in another source set downstream. For instance, a
+ * dependency is overshot if it's added to `main`, but only used in `test`.
  *
  * @property dependentProject the [McProject] declaring the dependency
- * @property oldDependency the [ConfiguredDependency] which adds the unused dependency
  * @property newDependency the [ConfiguredDependency] which should be added
+ * @property oldDependency the [ConfiguredDependency] which adds the unused dependency
  * @since 0.12.0
  */
 data class OverShotDependency(

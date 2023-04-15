@@ -23,7 +23,7 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  compileOnly(libs.kotlin.gradle.plug)
+  compileOnly(libs.kotlin.gradle.plugin)
 
   implementation(libs.google.auto.common)
   implementation(libs.google.auto.service.annotations)
@@ -35,7 +35,7 @@ dependencies {
   ksp(libs.zacSweers.auto.service.ksp)
 
   testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.ktlint.test)
 }

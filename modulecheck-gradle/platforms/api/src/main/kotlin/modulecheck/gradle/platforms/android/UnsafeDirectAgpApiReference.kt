@@ -16,12 +16,12 @@
 package modulecheck.gradle.platforms.android
 
 /**
- * Any reference to AGP code is annotated with this opt-in requirement. AGP code can only be
- * referenced if AGP is in the target project's *build* classpath, so it needs to be handled
- * carefully.
+ * Any reference to AGP code is annotated with this opt-in
+ * requirement. AGP code can only be referenced if AGP is in the target
+ * project's *build* classpath, so it needs to be handled carefully.
  *
- * Using [AgpApiAccess.ifSafeOrNull] is the easiest and safest way to ensure there are no runtime
- * exceptions.
+ * Using [AgpApiAccess.ifSafeOrNull] is the easiest and
+ * safest way to ensure there are no runtime exceptions.
  *
  * @since 0.12.0
  */

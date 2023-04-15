@@ -50,7 +50,8 @@ fun <T, U : T> T.trimmedShouldBe(expected: U?, vararg excludeFromStack: KClass<*
 }
 
 /**
- * returns the output of [assertion], or cleans up the stacktrace of any assertion errors before rethrowing
+ * returns the output of [assertion], or cleans up the
+ * stacktrace of any assertion errors before rethrowing
  *
  * @since 0.12.4
  */
@@ -60,7 +61,8 @@ fun <R> trimmedAssert(
 ): R = Unit.trimmedAssert(*excludeFromStack) { assertion() }
 
 /**
- * returns the output of [assertion], or cleans up the stacktrace of any assertion errors before rethrowing
+ * returns the output of [assertion], or cleans up the
+ * stacktrace of any assertion errors before rethrowing
  *
  * @since 0.12.4
  */

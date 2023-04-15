@@ -17,6 +17,7 @@ package modulecheck.gradle.platforms.kotlin
 
 import modulecheck.gradle.platforms.internal.toJavaVersion
 import modulecheck.parsing.gradle.model.GradleProject
+import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.JavaPluginExtension
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion
@@ -26,10 +27,13 @@ fun GradleProject.getKotlinExtensionOrNull(): KotlinProjectExtension? =
   extensions.findByName("kotlin") as? KotlinProjectExtension
 
 /**
- * shorthand for `extensions.findByType(JavaPluginExtension::class.java)`
- *
- * @since 0.13.0
+ * @return every file which is an actual file (not
+ *   directory), and actually exists in this file system
+ * @since 0.12.0
  */
+fun FileCollection.existingFiles(): FileCollection = filter { it.isFile && it.exists() }
+
+/** shorthand for `extensions.findByType(JavaPluginExtension::class.java)` */
 fun GradleProject.getJavaPluginExtensionOrNull(): JavaPluginExtension? =
   extensions.findByType(org.gradle.api.plugins.JavaPluginExtension::class.java)
 

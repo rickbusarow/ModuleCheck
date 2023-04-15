@@ -27,7 +27,6 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
-import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
 abstract class ArtifactsTask(
   private val projectLayout: ProjectLayout
@@ -74,7 +73,7 @@ abstract class ArtifactsTask(
         sub.extensions.findByType(PublishingExtension::class.java)
           ?.publications
           ?.findByName("maven")
-          .safeAs<MavenPublication>()
+          ?.let { it as? MavenPublication }
           ?.let { publication ->
             packaging = publication.pom.packaging
             group = publication.groupId

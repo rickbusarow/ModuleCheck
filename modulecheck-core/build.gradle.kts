@@ -21,16 +21,9 @@ mcbuild {
   artifactId = "modulecheck-core"
   anvil()
 
-  buildProperties(
-    "test",
-    """
-    package modulecheck.core
-
-    internal class BuildProperties {
-      val websiteDir = "${rootDir.resolve("website").invariantSeparatorsPath}"
-    }
-    """
-  )
+  buildConfig("test") {
+    field("websiteDir") { rootDir.resolve("website").invariantSeparatorsPath }
+  }
 }
 
 dependencies {
@@ -54,7 +47,7 @@ dependencies {
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.rickBusarow.dispatch.test.core)
 

@@ -24,28 +24,20 @@ mcbuild {
   artifactId = "modulecheck-gradle-plugin"
   dagger()
 
-  buildProperties(
-    "main",
-    """
-    package modulecheck.gradle.internal
-
-    internal class BuildProperties {
-      val version = "${modulecheck.builds.VERSION_NAME}"
-      val sourceWebsite = "${modulecheck.builds.SOURCE_WEBSITE}"
-      val docsWebsite = "${modulecheck.builds.DOCS_WEBSITE}"
-    }
-    """
-  )
-  buildProperties(
-    "test",
-    """
-    package modulecheck.gradle
-
-    object TestBuildProperties {
-      val testKitDir = "${buildDir.resolve("tmp/integrationTest/work/.gradle-test-kit")}"
-    }
-    """
-  )
+  buildConfig {
+    packageName.set("modulecheck.gradle.internal")
+    field("version") { modulecheck.builds.VERSION_NAME }
+    field("sourceWebsite") { modulecheck.builds.SOURCE_WEBSITE }
+    field("docsWebsite") { modulecheck.builds.DOCS_WEBSITE }
+  }
+  buildConfig("test") {
+    packageName.set("modulecheck.gradle.internal")
+    className.set("TestBuildProperties")
+    field("version") { modulecheck.builds.VERSION_NAME }
+    field("sourceWebsite") { modulecheck.builds.SOURCE_WEBSITE }
+    field("docsWebsite") { modulecheck.builds.DOCS_WEBSITE }
+    field("testKitDir") { "$buildDir/tmp/integrationTest/work/.gradle-test-kit" }
+  }
 }
 
 val main by sourceSets.getting
@@ -66,7 +58,7 @@ idea {
     integrationTest.configure {
       allSource.srcDirs
         .forEach { srcDir ->
-          module.testSourceDirs.add(srcDir)
+          module.testSources.from(srcDir)
         }
     }
   }
@@ -105,7 +97,7 @@ dependencies {
   compileOnly(libs.agp)
   compileOnly(libs.agp.api)
   compileOnly(libs.agp.builder.model)
-  compileOnly(libs.kotlin.gradle.plug)
+  compileOnly(libs.kotlin.gradle.plugin)
   compileOnly(libs.kotlin.gradle.plugin.api)
   compileOnly(libs.kotlinx.serialization.core)
   compileOnly(libs.square.anvil.gradle)
@@ -147,7 +139,7 @@ dependencies {
   "integrationTestImplementation"(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 
   testImplementation(project(path = ":modulecheck-internal-testing"))

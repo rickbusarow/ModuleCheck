@@ -23,9 +23,8 @@ fun File.existsOrNull(): File? = if (exists()) this else null
 /**
  * Checks that the receiver File exists and returns that file, throwing an exception if it does not.
  *
- * @throws IllegalArgumentException with the result of [lazyMessage] if the receiver file does not
- *     exist in the Java file system
- * @since 0.13.0
+ * @throws IllegalArgumentException with the result of [lazyMessage]
+ *   if the receiver file does not exist in the Java file system
  */
 inline fun File.requireExists(
   lazyMessage: () -> String = { "The required file does not exist: File://$absolutePath" }

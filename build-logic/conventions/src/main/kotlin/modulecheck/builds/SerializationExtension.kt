@@ -24,7 +24,7 @@ interface SerializationExtension {
     plugins.applyOnce("org.jetbrains.kotlin.plugin.serialization")
 
     dependencies.add(
-      "implementation",
+      "api",
       libsCatalog.dependency("kotlinx-serialization-core")
     )
     dependencies.add(

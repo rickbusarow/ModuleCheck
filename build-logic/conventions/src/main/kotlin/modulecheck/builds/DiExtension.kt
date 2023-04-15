@@ -17,14 +17,14 @@ package modulecheck.builds
 
 interface DiExtension {
   /**
-   * Applies the Anvil plugin with `generateDaggerFactories` set to `true`. Do not use at the same
-   * time as `dagger()`.
+   * Applies the Anvil plugin with `generateDaggerFactories`
+   * set to `true`. Do not use at the same time as `dagger()`.
    */
   fun anvil()
 
   /**
-   * Applies kapt and the Anvil plugin with `generateDaggerFactories` set to `false`. Also adds the
-   * Dagger compiler `kapt` dependency.
+   * Applies kapt and the Anvil plugin with `generateDaggerFactories`
+   * set to `false`. Also adds the Dagger compiler `kapt` dependency.
    *
    * Do not use at the same time as `anvil()`.
    */

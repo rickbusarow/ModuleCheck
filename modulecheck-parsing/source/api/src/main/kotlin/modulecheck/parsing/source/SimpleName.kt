@@ -52,8 +52,8 @@ value class SimpleName(val name: String) : Comparable<SimpleName>, java.io.Seria
     fun String.asSimpleName(): SimpleName = SimpleName(this)
 
     /**
-     * Removes the prefix of [packageName]'s value and a subsequent period, then splits the
-     * remainder by dots and returns that list as [SimpleName]
+     * Removes the prefix of [packageName]'s value and a subsequent period,
+     * then splits the remainder by dots and returns that list as [SimpleName]
      *
      * example: `com.example.Outer.Inner` becomes `[Outer, Inner]`
      *
@@ -66,11 +66,7 @@ value class SimpleName(val name: String) : Comparable<SimpleName>, java.io.Seria
   }
 }
 
-/**
- * Convenience interface for providing a [SimpleName].
- *
- * @since 0.13.0
- */
+/** Convenience interface for providing a [SimpleName]. */
 interface HasSimpleNames {
   /**
    * The contained [SimpleNames][SimpleName]
@@ -82,8 +78,8 @@ interface HasSimpleNames {
   /**
    * If the collection in [simpleNames] has more than one name, this value will be the last.
    *
-   * example: Given a full name of `com.example.Outer.Inner`, with the [simpleNames] `[Outer,
-   * Inner]`, this value will be `Inner`.
+   * example: Given a full name of `com.example.Outer.Inner`, with
+   * the [simpleNames] `[Outer, Inner]`, this value will be `Inner`.
    *
    * @since 0.12.0
    */

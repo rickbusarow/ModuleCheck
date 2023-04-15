@@ -24,9 +24,10 @@ import javax.inject.Inject
 
 /**
  * This class provides:
+ *
  * 1. 'Static', project-independent information about AGP in the build classpath.
- * 2. A gateway to [SafeAgpApiReferenceScope], which allows access to AGP classes after it's
- *    verified that they exist in the classpath.
+ * 2. A gateway to [SafeAgpApiReferenceScope], which allows access to AGP
+ *    classes after it's verified that they exist in the classpath.
  *
  * @since 0.12.0
  */
@@ -72,8 +73,8 @@ class AgpApiAccess @Inject constructor() {
    * performs [action] if AGP is in the classpath and AGP is applied to this specific [project].
    *
    * @param project the project to be used for this [SafeAgpApiReferenceScope]
-   * @param action the action to perform if AGP is in the classpath and AGP is applied to this
-   *     specific [project]
+   * @param action the action to perform if AGP is in the
+   *   classpath and AGP is applied to this specific [project]
    * @return the output `T` of this [action], or `null` if AGP is not in the classpath
    * @since 0.12.0
    */
@@ -92,8 +93,8 @@ class AgpApiAccess @Inject constructor() {
    * performs [action] if AGP is in the classpath and AGP is applied to this specific [project].
    *
    * @param project the project to be used for this [SafeAgpApiReferenceScope]
-   * @param action the action to perform if AGP is in the classpath and AGP is applied to this
-   *     specific [project]
+   * @param action the action to perform if AGP is in the
+   *   classpath and AGP is applied to this specific [project]
    * @return the output `T` of this [action], or `null` if AGP is not in the classpath
    * @since 0.12.0
    */

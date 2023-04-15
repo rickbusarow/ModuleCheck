@@ -47,8 +47,6 @@ fun <T : Task> TaskProvider<out T>.dependsOn(
  *   task.someInput.set(...)
  * }
  * ```
- *
- * @since 0.13.0
  */
 fun <T : Task> TaskProvider<T>.configuring(action: (T) -> Unit) = apply {
   configure(action)

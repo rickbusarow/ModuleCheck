@@ -15,42 +15,55 @@
 
 package modulecheck.builds
 
+import modulecheck.builds.DependencyGuardConventionPlugin.Companion.DEPENDENCY_GUARD_BASELINE_TASK_NAME
+import modulecheck.builds.DependencyGuardConventionPlugin.Companion.DEPENDENCY_GUARD_CHECK_TASK_NAME
 import modulecheck.builds.dependencyGuardAggregate.DependencyGuardAggregateTask
 import modulecheck.builds.dependencyGuardAggregate.DependencyGuardExplodeTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.language.base.plugins.LifecycleBasePlugin
 
+/**
+ * Stores all the `dependencies/runtimeClasspath.txt` files from
+ * individual modules in a single .txt file in the root project directory.
+ *
+ * The individual files are recreated before the real dependency-guard plugin does its comparisons.
+ */
 abstract class DependencyGuardAggregatePlugin : Plugin<Project> {
   override fun apply(target: Project) {
 
     target.checkProjectIsRoot()
 
-    target.tasks.register(
-      "dependencyGuardAggregate",
-      DependencyGuardAggregateTask::class.java
-    ) { task ->
+    val aggregateFile = target.file("dependency-guard-aggregate.txt")
+
+    target.tasks.register(AGGREGATE_TASK_NAME, DependencyGuardAggregateTask::class.java) { task ->
       task.rootDir.set(target.rootDir)
 
       target.subprojects.forEach { subProject ->
         task.source(subProject.fileTree(subProject.file("dependencies")))
+        task.finalizedBy(subProject.tasks.matchingName("dependencyGuardDeleteBaselines"))
       }
 
-      task.outputFile.set(target.file("dependency-guard-aggregate.txt"))
-      target.allprojects.forEach { proj ->
-        task.dependsOn(proj.tasks.matchingName("dependencyGuardBaseline"))
-      }
+      task.outputFile.set(aggregateFile)
+
+      task.mustRunAfter(target.allProjectsTasksMatchingName(DEPENDENCY_GUARD_CHECK_TASK_NAME))
+      task.dependsOn(target.allProjectsTasksMatchingName(DEPENDENCY_GUARD_BASELINE_TASK_NAME))
     }
 
-    target.tasks.register(
-      "dependencyGuardExplode",
-      DependencyGuardExplodeTask::class.java
-    ) { task ->
-      task.aggregateFile.set(target.file("dependency-guard-aggregate.txt"))
+    target.tasks.named("fix").dependsOn(AGGREGATE_TASK_NAME)
+
+    target.tasks.register(EXPLODE_TASK_NAME, DependencyGuardExplodeTask::class.java) { task ->
+      task.aggregateFile.set(aggregateFile)
       task.rootDir.set(target.rootDir)
     }
+
     target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME) { task ->
-      task.dependsOn(target.tasks.matchingName("dependencyGuard"))
+      task.dependsOn(target.tasks.matchingName(EXPLODE_TASK_NAME))
     }
+  }
+
+  companion object {
+    const val AGGREGATE_TASK_NAME = "dependencyGuardAggregate"
+    const val EXPLODE_TASK_NAME = "dependencyGuardExplode"
   }
 }

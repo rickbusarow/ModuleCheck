@@ -67,8 +67,8 @@ internal sealed interface GradleSourceSetName : Comparable<GradleSourceSetName> 
   /**
    * Represents the `test` or `androidTest` corollary to a normal/published source set.
    *
-   * For instance, a source set of `testDebug` has a test prefix of `test` and a published property
-   * of `debug`.
+   * For instance, a source set of `testDebug` has a test
+   * prefix of `test` and a published property of `debug`.
    *
    * @since 0.12.0
    */

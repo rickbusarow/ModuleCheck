@@ -33,8 +33,8 @@ data class Depths(
     get() = Key
 
   /**
-   * @return a [ProjectDepth] for each [SourceSet][modulecheck.model.dependency.McSourceSet] in this
-   *     project.
+   * @return a [ProjectDepth] for each
+   *   [SourceSet][modulecheck.model.dependency.McSourceSet] in this project.
    * @since 0.12.0
    */
   suspend fun all(): List<ProjectDepth> = project.sourceSets.map { get(it.key) }

@@ -21,8 +21,8 @@ import modulecheck.utils.lazy.LazySet
 interface AndroidRNameProvider {
 
   /**
-   * @return an R name if one exists for this package such that it can be used without an import, or
-   *   null if no R is declared in this package.
+   * @return an R name if one exists for this package such that it can be
+   *   used without an import, or null if no R is declared in this package.
    * @since 0.12.0
    */
   suspend fun getLocalOrNull(): AndroidRDeclaredName?

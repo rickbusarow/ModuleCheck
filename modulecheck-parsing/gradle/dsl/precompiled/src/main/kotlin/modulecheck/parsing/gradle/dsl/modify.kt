@@ -26,9 +26,9 @@ import modulecheck.utils.suffixIfNot
 /**
  * @param configuredDependency the dependency model being added
  * @param newDeclaration the text to be added to the project's build file
- * @param existingMarkerDeclaration if not null, the new declaration will be added above or beyond
- *     this declaration. Of all declarations in the `dependencies { ... }` block, this declaration
- *     should be closest to the desired location of the new declaration.
+ * @param existingMarkerDeclaration if not null, the new declaration will be added above
+ *   or beyond this declaration. Of all declarations in the `dependencies { ... }` block,
+ *   this declaration should be closest to the desired location of the new declaration.
  * @receiver the project to which we're adding a dependency
  * @since 0.12.0
  */

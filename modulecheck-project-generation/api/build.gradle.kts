@@ -41,7 +41,7 @@ dependencies {
   compileOnly(gradleApi())
 
   implementation(libs.bundles.hermit)
-  implementation(libs.bundles.jUnit)
+  implementation(libs.bundles.junit)
   implementation(libs.bundles.kotest)
   implementation(libs.bundles.kotest)
   implementation(libs.kotlin.reflect)

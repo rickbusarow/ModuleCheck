@@ -65,20 +65,20 @@ sealed class ProjectDependency : ConfiguredDependency, HasProjectPath {
   ) : ProjectDependency(), MightHaveCodeGeneratorBinding
 
   /**
-   * @suppress
    * @since 0.12.0
+   * @suppress
    */
   operator fun component1(): ConfigurationName = configurationName
 
   /**
-   * @suppress
    * @since 0.12.0
+   * @suppress
    */
   operator fun component2(): ProjectPath = projectPath
 
   /**
-   * @suppress
    * @since 0.12.0
+   * @suppress
    */
   operator fun component3(): Boolean = isTestFixture
 
@@ -141,9 +141,9 @@ sealed class ProjectDependency : ConfiguredDependency, HasProjectPath {
   }
 
   /**
-   * Creates a [ProjectDependency] for given arguments, using [TypeSafeProjectPathResolver] and
-   * a `List<CodeGeneratorBinding>` to look up a [CodeGenerator] in the event that the project
-   * dependency in question is an annotation processor.
+   * Creates a [ProjectDependency] for given arguments, using [TypeSafeProjectPathResolver]
+   * and a `List<CodeGeneratorBinding>` to look up a [CodeGenerator] in the
+   * event that the project dependency in question is an annotation processor.
    *
    * @since 0.12.0
    */

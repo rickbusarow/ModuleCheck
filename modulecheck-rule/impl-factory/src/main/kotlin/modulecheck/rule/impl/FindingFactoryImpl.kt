@@ -45,12 +45,12 @@ interface FindingFactoryModule {
 }
 
 /**
- * Sorts rules and applies the appropriate types for each function. Sorting is stable and
- * prioritizes modification rules so that they don't clobber each other.
+ * Sorts rules and applies the appropriate types for each function. Sorting is
+ * stable and prioritizes modification rules so that they don't clobber each other.
  *
- * NB The incoming rules should already be filtered using [RuleFilter][modulecheck.rule.RuleFilter].
- * The filtering done within this class should only be done with regard to categorizing rules up by
- * fixable/sorts/reports categories.
+ * NB The incoming rules should already be filtered using
+ * [RuleFilter][modulecheck.rule.RuleFilter]. The filtering done within this class should
+ * only be done with regard to categorizing rules up by fixable/sorts/reports categories.
  *
  * @since 0.12.0
  */

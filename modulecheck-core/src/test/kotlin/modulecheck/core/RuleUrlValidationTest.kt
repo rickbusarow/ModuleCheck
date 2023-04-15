@@ -33,7 +33,7 @@ class RuleUrlValidationTest : RunnerTest() {
   @Test
   fun `each rule documentation url must correspond to a docs file and sidebar entry`() {
 
-    val websiteDir = File(BuildProperties().websiteDir)
+    val websiteDir = File(BuildProperties.websiteDir)
 
     """
       The path must point to the project website: $websiteDir

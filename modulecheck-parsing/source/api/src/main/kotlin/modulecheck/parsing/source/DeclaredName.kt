@@ -24,6 +24,7 @@ import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.parsing.source.SimpleName.Companion.asString
 import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
 import modulecheck.utils.lazy.unsafeLazy
+import modulecheck.utils.singletonList
 import org.jetbrains.kotlin.name.FqName
 
 /**
@@ -35,9 +36,9 @@ import org.jetbrains.kotlin.name.FqName
 sealed interface DeclaredName : McName, HasSimpleNames {
 
   /**
-   * The languages with which this declaration is compatible. For instance, a member property will
-   * typically have a [KOTLIN] declaration using property access syntax, but will also have a
-   * [JAVA]/[XML] declaration for setter and getter functions.
+   * The languages with which this declaration is compatible. For instance, a member
+   * property will typically have a [KOTLIN] declaration using property access syntax,
+   * but will also have a [JAVA]/[XML] declaration for setter and getter functions.
    *
    * @since 0.12.0
    */
@@ -61,8 +62,8 @@ sealed interface DeclaredName : McName, HasSimpleNames {
     )
 
     /**
-     * Shorthand for creating a [QualifiedDeclaredName] which is only accessible from Java or XML
-     * files.
+     * Shorthand for creating a [QualifiedDeclaredName]
+     * which is only accessible from Java or XML files.
      *
      * @see McName.CompatibleLanguage.JAVA
      * @see McName.CompatibleLanguage.XML
@@ -78,8 +79,8 @@ sealed interface DeclaredName : McName, HasSimpleNames {
     )
 
     /**
-     * Shorthand for creating a [QualifiedDeclaredName] which is accessible from files in any
-     * language.
+     * Shorthand for creating a [QualifiedDeclaredName]
+     * which is accessible from files in any language.
      *
      * @see McName.CompatibleLanguage.JAVA
      * @see McName.CompatibleLanguage.KOTLIN
@@ -149,8 +150,8 @@ class QualifiedDeclaredNameImpl(
 }
 
 /**
- * @return a [QualifiedDeclaredName], where the String after [packageName] is split and treated as
- *   the collection of [SimpleNames][SimpleName].
+ * @return a [QualifiedDeclaredName], where the String after [packageName]
+ *   is split and treated as the collection of [SimpleNames][SimpleName].
  * @since 0.12.0
  */
 fun FqName.asDeclaredName(
@@ -161,8 +162,8 @@ fun FqName.asDeclaredName(
 }
 
 /**
- * @return a [QualifiedDeclaredName] from the [packageName] argument, appending the receiver
- *   [SimpleNames][SimpleName]
+ * @return a [QualifiedDeclaredName] from the [packageName]
+ *   argument, appending the receiver [SimpleNames][SimpleName]
  * @since 0.12.0
  */
 fun Iterable<SimpleName>.asDeclaredName(
@@ -175,4 +176,15 @@ fun Iterable<SimpleName>.asDeclaredName(
     !languages.contains(KOTLIN) -> DeclaredName.java(packageName, this)
     else -> DeclaredName.agnostic(packageName, this)
   }
+}
+
+/**
+ * @return a [QualifiedDeclaredName] from the [packageName]
+ *   argument, appending the receiver [SimpleNames][SimpleName]
+ */
+fun SimpleName.asDeclaredName(
+  packageName: PackageName,
+  vararg languages: CompatibleLanguage
+): QualifiedDeclaredName {
+  return singletonList().asDeclaredName(packageName, *languages)
 }

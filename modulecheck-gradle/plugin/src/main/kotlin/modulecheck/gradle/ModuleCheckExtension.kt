@@ -75,9 +75,9 @@ open class ModuleCheckExtension @Inject constructor(
   override var deleteUnused: Boolean by objects.property(false)
 
   /**
-   * If true, ModuleCheck will collect a trace of expensive and delicate operations. This trace is
-   * added to any thrown exceptions. Tracing is disabled by default, as it does incur a performance
-   * penalty.
+   * If true, ModuleCheck will collect a trace of expensive and delicate
+   * operations. This trace is added to any thrown exceptions. Tracing
+   * is disabled by default, as it does incur a performance penalty.
    *
    * Default value is false
    *
@@ -89,6 +89,7 @@ open class ModuleCheckExtension @Inject constructor(
    * Set of modules which are allowed to be unused.
    *
    * For instance, given:
+   *
    * ```
    * ignoreUnusedFinding = setOf(":core")
    * ```
@@ -100,9 +101,9 @@ open class ModuleCheckExtension @Inject constructor(
   override var ignoreUnusedFinding: Set<String> by objects.setProperty()
 
   /**
-   * Set of modules which will not be excluded from error reporting. The most common use-case would
-   * be if the module is the root of a dependency graph, like an Android application module, and it
-   * needs everything in its classpath for dependency injection purposes.
+   * Set of modules which will not be excluded from error reporting. The most common use-case
+   * would be if the module is the root of a dependency graph, like an Android application
+   * module, and it needs everything in its classpath for dependency injection purposes.
    *
    * @since 0.12.0
    */
@@ -118,8 +119,8 @@ open class ModuleCheckExtension @Inject constructor(
   override var additionalKaptMatchers: List<KaptMatcher> by objects.listProperty()
 
   /**
-   * List of [CodeGeneratorBinding]'s to be checked, which aren't included by default with
-   * ModuleCheck.
+   * List of [CodeGeneratorBinding]'s to be checked,
+   * which aren't included by default with ModuleCheck.
    *
    * @since 0.12.0
    */
