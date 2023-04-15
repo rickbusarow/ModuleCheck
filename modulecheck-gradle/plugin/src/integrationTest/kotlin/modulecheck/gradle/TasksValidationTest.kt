@@ -69,7 +69,7 @@ class TasksValidationTest : BaseGradleTest() {
       "moduleCheckSortPluginsAuto"
     ).forAll { taskName ->
 
-      val expected1 = if (gradle < "8.0.0") {
+      val expected1 = if (gradleVersion < "8.1") {
         "Configuration cache is an incubating feature."
       } else {
         "Encryption of the configuration cache is enabled."

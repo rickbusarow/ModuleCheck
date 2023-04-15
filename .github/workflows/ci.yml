@@ -5,9 +5,9 @@ on:
   workflow_dispatch:
 
 env:
-  macosGradleArgs: '-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
-  ubuntuGradleArgs: '-Dorg.gradle.jvmargs=-Xmx5g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
-  windowsGradleArgs: '-Dorg.gradle.jvmargs=-Xmx3g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
+  macosGradleArgs: '-Dorg.gradle.jvmargs=-Xmx10g'
+  ubuntuGradleArgs: '-Dorg.gradle.jvmargs=-Xmx5g'
+  windowsGradleArgs: '-Dorg.gradle.jvmargs=-Xmx3g'
 
 concurrency:
   group: ci-${{ github.ref }}-${{ github.head_ref }}

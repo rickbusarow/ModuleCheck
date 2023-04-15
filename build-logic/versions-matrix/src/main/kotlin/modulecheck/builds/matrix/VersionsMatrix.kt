@@ -23,14 +23,15 @@ class VersionsMatrix(
   private val kotlinArg: String? = null
 ) {
 
-  val agpList = agpArg?.singletonList()
-    ?: listOf("7.3.1", "7.4.2", "8.0.0")
-  val anvilList = anvilArg?.singletonList()
-    ?: listOf("2.4.5")
-  val gradleList = gradleArg?.singletonList()
-    ?: listOf("7.5.1", "7.6.1", "8.0.2", "8.1")
-  val kotlinList = kotlinArg?.singletonList()
-    ?: listOf("1.8.0", "1.8.10", "1.8.20")
+  internal val gradleListDefault = listOf("7.5.1", "7.6.1", "8.0.2", "8.1")
+  internal val agpListDefault = listOf("7.3.1", "7.4.2", "8.0.0")
+  internal val anvilListDefault = listOf("2.4.5")
+  internal val kotlinListDefault = listOf("1.8.0", "1.8.10", "1.8.20")
+
+  val gradleList = gradleArg?.singletonList() ?: gradleListDefault
+  val agpList = agpArg?.singletonList() ?: agpListDefault
+  val anvilList = anvilArg?.singletonList() ?: anvilListDefault
+  val kotlinList = kotlinArg?.singletonList() ?: kotlinListDefault
 
   internal val exclusions = listOf<Exclusion>(
     Exclusion(gradle = "8.1", agp = "7.3.1", anvil = null, kotlin = null),
@@ -52,7 +53,12 @@ class VersionsMatrix(
   // By testing all the Gradle versions together, TestKit doesn't have to re-download everything
   // for each new test. As soon as the Gradle version changes, the previous Gradle version is
   // deleted.
-  private val combinations =
+  private fun combinations(
+    gradleList: List<String>,
+    agpList: List<String>,
+    anvilList: List<String>,
+    kotlinList: List<String>
+  ) =
     gradleList.flatMap { gradle ->
       agpList.flatMap { agp ->
         anvilList.flatMap { anvil ->
@@ -68,7 +74,19 @@ class VersionsMatrix(
       }
     }
 
-  val allValid = combinations.filtered(exclusions).requireNotEmpty()
+  val allValidDefaults = combinations(
+    gradleList = gradleListDefault,
+    agpList = agpListDefault,
+    anvilList = anvilListDefault,
+    kotlinList = kotlinListDefault
+  ).filtered(exclusions).requireNotEmpty()
+
+  val allValid = combinations(
+    gradleList = gradleList,
+    agpList = agpList,
+    anvilList = anvilList,
+    kotlinList = kotlinList
+  ).filtered(exclusions).requireNotEmpty()
 
   init {
 
@@ -110,7 +128,12 @@ class VersionsMatrix(
     val redundant = mutableListOf<Exclusion>()
 
     exclusions.forEach { exclusion ->
-      val filteredWithout = combinations.filtered(exclusions.filterNot { it == exclusion })
+      val filteredWithout = combinations(
+        gradleList = gradleList,
+        agpList = agpList,
+        anvilList = anvilList,
+        kotlinList = kotlinList
+      ).filtered(exclusions.filterNot { it == exclusion })
 
       val leftOut = filteredWithout.subtract(allValid.toSet())
         .sortedBy { it.hashCode() }
