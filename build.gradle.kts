@@ -17,6 +17,7 @@ import modulecheck.builds.GROUP
 import modulecheck.builds.PLUGIN_ID
 import modulecheck.builds.VERSION_NAME
 import modulecheck.builds.VERSION_NAME_STABLE
+import modulecheck.builds.matchingName
 
 buildscript {
   dependencies {
@@ -156,5 +157,65 @@ afterEvaluate {
     tasks.named(taskName).configure {
       dependsOn(gradle.includedBuild("build-logic").task(":$taskName"))
     }
+  }
+}
+
+val foo by tasks.registering {
+  val paths = allprojects
+    .flatMap { it.tasks.matchingName("dokkaHtmlPartial").toList() }
+    .map { it.path }
+
+  doLast {
+
+    val needs = List(paths.size) {
+
+      val numStr = it.toString().padStart(2, '0')
+      "- dokkaHtmlPartial_$numStr"
+    }
+
+    val yaml = paths.mapIndexed { index, path ->
+
+      val numStr = index.toString().padStart(2, '0')
+
+      """
+      |  dokkaHtmlPartial_$numStr:
+      |    name: build website $numStr -- $path
+      |    runs-on: ubuntu-latest
+      |    steps:
+      |
+      |      - name: Check out repo
+      |        uses: actions/checkout@v3
+      |
+      |      - uses: gradle/wrapper-validation-action@v1
+      |
+      |      - name: Set up JDK
+      |        uses: actions/setup-java@v3
+      |        with:
+      |          distribution: 'zulu'
+      |          java-version: '17'
+      |
+      |      - name: $path
+      |        uses: gradle/gradle-build-action@v2
+      |        with:
+      |          arguments: $path "${'$'}{{ env.macosGradleArgs }}"
+      |          cache-read-only: false
+      """.trimMargin()
+    }
+      .joinToString("\n\n")
+
+    println(
+      """
+        |############################################################## needs
+        |$needs
+        |##############################################################
+      """.trimMargin()
+    )
+    println(
+      """
+        |############################################################## yaml
+        |$yaml
+        |##############################################################
+      """.trimMargin()
+    )
   }
 }

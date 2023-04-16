@@ -324,9 +324,1344 @@ jobs:
           commit_message: update website changelog
           commit_options: '--no-verify --signoff'
 
+  dokkaHtmlPartial_00:
+    name: build website 00 -- :modulecheck-api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_01:
+    name: build website 01 -- :modulecheck-core:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-core:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-core:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_02:
+    name: build website 02 -- :modulecheck-dagger:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-dagger:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-dagger:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_03:
+    name: build website 03 -- :modulecheck-internal-testing:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-internal-testing:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-internal-testing:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_04:
+    name: build website 04 -- :modulecheck-config:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-config:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-config:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_05:
+    name: build website 05 -- :modulecheck-config:fake:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-config:fake:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-config:fake:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_06:
+    name: build website 06 -- :modulecheck-config:impl:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-config:impl:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-config:impl:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_07:
+    name: build website 07 -- :modulecheck-finding:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-finding:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-finding:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_08:
+    name: build website 08 -- :modulecheck-finding:impl:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-finding:impl:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-finding:impl:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_09:
+    name: build website 09 -- :modulecheck-finding:impl-android:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-finding:impl-android:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-finding:impl-android:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_10:
+    name: build website 10 -- :modulecheck-finding:impl-sort:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-finding:impl-sort:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-finding:impl-sort:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_11:
+    name: build website 11 -- :modulecheck-finding:name:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-finding:name:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-finding:name:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_12:
+    name: build website 12 -- :modulecheck-gradle:plugin:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-gradle:plugin:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-gradle:plugin:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_13:
+    name: build website 13 -- :modulecheck-parsing:android:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:android:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:android:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_14:
+    name: build website 14 -- :modulecheck-parsing:groovy-antlr:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:groovy-antlr:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:groovy-antlr:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_15:
+    name: build website 15 -- :modulecheck-parsing:java:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:java:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:java:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_16:
+    name: build website 16 -- :modulecheck-parsing:psi:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:psi:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:psi:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_17:
+    name: build website 17 -- :modulecheck-parsing:wiring:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:wiring:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:wiring:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_18:
+    name: build website 18 -- :modulecheck-project:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-project:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-project:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_19:
+    name: build website 19 -- :modulecheck-project:impl:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-project:impl:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-project:impl:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_20:
+    name: build website 20 -- :modulecheck-project:testing:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-project:testing:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-project:testing:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_21:
+    name: build website 21 -- :modulecheck-project-generation:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-project-generation:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-project-generation:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_22:
+    name: build website 22 -- :modulecheck-reporting:checkstyle:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-reporting:checkstyle:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-reporting:checkstyle:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_23:
+    name: build website 23 -- :modulecheck-reporting:console:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-reporting:console:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-reporting:console:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_24:
+    name: build website 24 -- :modulecheck-reporting:graphviz:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-reporting:graphviz:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-reporting:graphviz:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_25:
+    name: build website 25 -- :modulecheck-reporting:sarif:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-reporting:sarif:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-reporting:sarif:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_26:
+    name: build website 26 -- :modulecheck-rule:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-rule:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-rule:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_27:
+    name: build website 27 -- :modulecheck-rule:impl:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-rule:impl:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-rule:impl:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_28:
+    name: build website 28 -- :modulecheck-rule:impl-factory:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-rule:impl-factory:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-rule:impl-factory:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_29:
+    name: build website 29 -- :modulecheck-rule:testing:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-rule:testing:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-rule:testing:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_30:
+    name: build website 30 -- :modulecheck-runtime:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-runtime:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-runtime:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_31:
+    name: build website 31 -- :modulecheck-runtime:testing:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-runtime:testing:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-runtime:testing:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_32:
+    name: build website 32 -- :modulecheck-utils:cache:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-utils:cache:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-utils:cache:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_33:
+    name: build website 33 -- :modulecheck-utils:lazy:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-utils:lazy:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-utils:lazy:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_34:
+    name: build website 34 -- :modulecheck-utils:stdlib:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-utils:stdlib:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-utils:stdlib:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_35:
+    name: build website 35 -- :modulecheck-utils:trace:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-utils:trace:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-utils:trace:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_36:
+    name: build website 36 -- :modulecheck-utils:trace-testing:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-utils:trace-testing:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-utils:trace-testing:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_37:
+    name: build website 37 -- :modulecheck-gradle:platforms:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-gradle:platforms:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-gradle:platforms:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_38:
+    name: build website 38 -- :modulecheck-gradle:platforms:impl:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-gradle:platforms:impl:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-gradle:platforms:impl:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_39:
+    name: build website 39 -- :modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_40:
+    name: build website 40 -- :modulecheck-gradle:platforms:internal-jvm:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-gradle:platforms:internal-jvm:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-gradle:platforms:internal-jvm:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_41:
+    name: build website 41 -- :modulecheck-model:dependency:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-model:dependency:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-model:dependency:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_42:
+    name: build website 42 -- :modulecheck-model:dependency:impl:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-model:dependency:impl:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-model:dependency:impl:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_43:
+    name: build website 43 -- :modulecheck-model:sourceset:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-model:sourceset:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-model:sourceset:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_44:
+    name: build website 44 -- :modulecheck-parsing:kotlin-compiler:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:kotlin-compiler:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:kotlin-compiler:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_45:
+    name: build website 45 -- :modulecheck-parsing:kotlin-compiler:impl:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:kotlin-compiler:impl:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:kotlin-compiler:impl:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_46:
+    name: build website 46 -- :modulecheck-parsing:source:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:source:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:source:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_47:
+    name: build website 47 -- :modulecheck-parsing:source:testing:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:source:testing:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:source:testing:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_48:
+    name: build website 48 -- :modulecheck-reporting:logging:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-reporting:logging:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-reporting:logging:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_49:
+    name: build website 49 -- :modulecheck-reporting:logging:testing:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-reporting:logging:testing:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-reporting:logging:testing:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_50:
+    name: build website 50 -- :modulecheck-utils:coroutines:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-utils:coroutines:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-utils:coroutines:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_51:
+    name: build website 51 -- :modulecheck-utils:coroutines:impl:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-utils:coroutines:impl:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-utils:coroutines:impl:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_52:
+    name: build website 52 -- :modulecheck-parsing:gradle:dsl:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:gradle:dsl:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:gradle:dsl:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_53:
+    name: build website 53 -- :modulecheck-parsing:gradle:dsl:internal:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:gradle:dsl:internal:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:gradle:dsl:internal:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_54:
+    name: build website 54 -- :modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_55:
+    name: build website 55 -- :modulecheck-parsing:gradle:dsl:testing:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:gradle:dsl:testing:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:gradle:dsl:testing:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_56:
+    name: build website 56 -- :modulecheck-parsing:gradle:model:api:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:gradle:model:api:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:gradle:model:api:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+  dokkaHtmlPartial_57:
+    name: build website 57 -- :modulecheck-parsing:gradle:model:impl-typesafe:dokkaHtmlPartial
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: :modulecheck-parsing:gradle:model:impl-typesafe:dokkaHtmlPartial
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :modulecheck-parsing:gradle:model:impl-typesafe:dokkaHtmlPartial "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
   website:
     name: build website
     runs-on: macos-latest
+    needs:
+      - dokkaHtmlPartial_00
+      - dokkaHtmlPartial_01
+      - dokkaHtmlPartial_02
+      - dokkaHtmlPartial_03
+      - dokkaHtmlPartial_04
+      - dokkaHtmlPartial_05
+      - dokkaHtmlPartial_06
+      - dokkaHtmlPartial_07
+      - dokkaHtmlPartial_08
+      - dokkaHtmlPartial_09
+      - dokkaHtmlPartial_10
+      - dokkaHtmlPartial_11
+      - dokkaHtmlPartial_12
+      - dokkaHtmlPartial_13
+      - dokkaHtmlPartial_14
+      - dokkaHtmlPartial_15
+      - dokkaHtmlPartial_16
+      - dokkaHtmlPartial_17
+      - dokkaHtmlPartial_18
+      - dokkaHtmlPartial_19
+      - dokkaHtmlPartial_20
+      - dokkaHtmlPartial_21
+      - dokkaHtmlPartial_22
+      - dokkaHtmlPartial_23
+      - dokkaHtmlPartial_24
+      - dokkaHtmlPartial_25
+      - dokkaHtmlPartial_26
+      - dokkaHtmlPartial_27
+      - dokkaHtmlPartial_28
+      - dokkaHtmlPartial_29
+      - dokkaHtmlPartial_30
+      - dokkaHtmlPartial_31
+      - dokkaHtmlPartial_32
+      - dokkaHtmlPartial_33
+      - dokkaHtmlPartial_34
+      - dokkaHtmlPartial_35
+      - dokkaHtmlPartial_36
+      - dokkaHtmlPartial_37
+      - dokkaHtmlPartial_38
+      - dokkaHtmlPartial_39
+      - dokkaHtmlPartial_40
+      - dokkaHtmlPartial_41
+      - dokkaHtmlPartial_42
+      - dokkaHtmlPartial_43
+      - dokkaHtmlPartial_44
+      - dokkaHtmlPartial_45
+      - dokkaHtmlPartial_46
+      - dokkaHtmlPartial_47
+      - dokkaHtmlPartial_48
+      - dokkaHtmlPartial_49
+      - dokkaHtmlPartial_50
+      - dokkaHtmlPartial_51
+      - dokkaHtmlPartial_52
+      - dokkaHtmlPartial_53
+      - dokkaHtmlPartial_54
+      - dokkaHtmlPartial_55
+      - dokkaHtmlPartial_56
+      - dokkaHtmlPartial_57
     steps:
 
       - name: Check out repo
@@ -440,19 +1775,10 @@ jobs:
       fail-fast: false
       ### <start-matrix>
       matrix:
-        kotlin-version: [ 1.8.0, 1.8.10, 1.8.20 ]
-        gradle-version: [ 7.5.1, 7.6.1, 8.0.2, 8.1 ]
-        agp-version: [ 7.3.1, 7.4.2, 8.0.0 ]
+        kotlin-version: [ 1.8.20 ]
+        gradle-version: [ 8.1 ]
+        agp-version: [ 8.0.0 ]
         anvil-version: [ 2.4.5 ]
-        exclude:
-          - gradle-version: 8.1
-            agp-version: 7.3.1
-          - gradle-version: 8.1
-            agp-version: 7.4.2
-          - gradle-version: 7.5.1
-            agp-version: 8.0.0
-          - gradle-version: 7.6.1
-            agp-version: 8.0.0
       ### <end-matrix>
 
     steps:
