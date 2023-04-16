@@ -1779,6 +1779,7 @@ jobs:
         gradle-version: [ 8.1 ]
         agp-version: [ 8.0.0 ]
         anvil-version: [ 2.4.5 ]
+        exclude: [ ]
       ### <end-matrix>
 
     steps:
