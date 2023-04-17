@@ -61,22 +61,6 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
           add("-opt-in=kotlin.contracts.ExperimentalContracts")
           add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
           add("-opt-in=kotlinx.coroutines.FlowPreview")
-
-          // Workaround for Kotest's shading of the `@Language` annotation
-          // https://github.com/kotest/kotest/issues/3387
-          // It's fixed by https://github.com/kotest/kotest/pull/3397 but that's unreleased, so check
-          // back after the next update.
-          if (task.name == "compileTestKotlin" ||
-            target.path == ":modulecheck-internal-testing" ||
-            target.path == ":modulecheck-project-generation:api"
-          ) {
-            val kotestVersion = target.libsCatalog.version("kotest")
-            check(kotestVersion == "5.5.5") {
-              "The Kotest `@Language` workaround should be fixed in version $kotestVersion.  " +
-                "Check to see if the opt-in compiler argument can be removed."
-            }
-            add("-opt-in=io.kotest.common.KotestInternal")
-          }
         }
       }
     }
