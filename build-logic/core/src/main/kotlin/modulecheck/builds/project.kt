@@ -92,16 +92,12 @@ fun Project.registerSimpleGenerationTaskAsDependency(
   }
 }
 
-/**
- * @return the root project of this included build
- */
+/** @return the root project of this included build */
 fun IncludedBuild.rootProject(): ProjectInternal {
   return requireProjectRegistry().rootProject!!
 }
 
-/**
- * @return all projects in this included build
- */
+/** @return all projects in this included build */
 fun IncludedBuild.allProjects(): Set<ProjectInternal> {
   return requireProjectRegistry().allProjects
 }

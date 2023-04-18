@@ -80,9 +80,7 @@ class RealMcPsiFileFactory(
     }
   }
 
-  /**
-   * Creates an instance of [McPsiFileFactory]
-   */
+  /** Creates an instance of [McPsiFileFactory] */
   @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor() : McPsiFileFactory.Factory {
     override fun create(

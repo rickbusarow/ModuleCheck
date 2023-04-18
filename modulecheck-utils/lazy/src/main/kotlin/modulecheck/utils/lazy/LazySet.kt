@@ -32,9 +32,7 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
 
   suspend fun contains(element: Any?): Boolean
 
-  /**
-   * @return true if the two LazySets have any element in common, otherwise false
-   */
+  /** @return true if the two LazySets have any element in common, otherwise false */
   suspend fun containsAny(other: LazySet<Any?>): Boolean
 
   suspend fun isEmpty(): Boolean

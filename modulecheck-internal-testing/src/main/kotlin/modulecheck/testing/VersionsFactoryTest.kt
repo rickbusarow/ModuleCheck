@@ -27,9 +27,7 @@ import org.junit.jupiter.api.DynamicTest
  */
 interface VersionsFactoryTest : VersionsFactory {
 
-  /**
-   * @return the latest version of valid dependencies which is not excluded by the current rules
-   */
+  /** @return the latest version of valid dependencies which is not excluded by the current rules */
   fun defaultTestVersions(): TestVersions {
     return nonExhaustiveDefaults()
   }
@@ -65,10 +63,7 @@ interface VersionsFactoryTest : VersionsFactory {
       }
   }
 
-  /**
-   * hook for performing setup/teardown for each test within a base test class
-   *
-   */
+  /** hook for performing setup/teardown for each test within a base test class */
   fun dynamicTest(
     subject: TestVersions,
     testName: String,
