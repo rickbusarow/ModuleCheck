@@ -15,7 +15,7 @@
 
 plugins {
   id("mcbuild")
-  id("com.gradle.plugin-publish") version "0.21.0"
+  id("com.gradle.plugin-publish") version "1.2.0"
   id("java-gradle-plugin")
   idea
 }
