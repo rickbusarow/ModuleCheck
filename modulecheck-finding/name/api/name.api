@@ -1,0 +1,21 @@
+public final class modulecheck/finding/FindingName {
+	public static final field Companion Lmodulecheck/finding/FindingName$Companion;
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lmodulecheck/finding/FindingName;
+	public static synthetic fun copy$default (Lmodulecheck/finding/FindingName;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/finding/FindingName;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Ljava/lang/String;
+	public final fun getPascalCase ()Ljava/lang/String;
+	public final fun getSnakeCase ()Ljava/lang/String;
+	public final fun getTitleCase ()Ljava/lang/String;
+	public final fun getWords ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/FindingName$Companion {
+	public final fun migrateLegacyIdOrNull (Ljava/lang/String;Lmodulecheck/reporting/logging/McLogger;)Ljava/lang/String;
+	public final fun safe (Ljava/lang/String;)Lmodulecheck/finding/FindingName;
+}
+

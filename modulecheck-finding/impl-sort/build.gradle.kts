@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-finding-impl-sort"
+  published(
+    artifactId = "modulecheck-finding-impl-sort"
+  )
   anvil()
 }
 dependencies {

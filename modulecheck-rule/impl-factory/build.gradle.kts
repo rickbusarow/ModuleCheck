@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-rule-impl-factory"
+  published(
+    artifactId = "modulecheck-rule-impl-factory"
+  )
   anvil()
 }
 

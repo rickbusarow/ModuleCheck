@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-psi"
+  published(
+    artifactId = "modulecheck-parsing-psi"
+  )
 }
 
 dependencies {

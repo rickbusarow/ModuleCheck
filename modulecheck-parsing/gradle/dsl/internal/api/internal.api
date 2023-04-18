@@ -1,0 +1,87 @@
+public final class anvil/hint/binding/modulecheck/parsing/gradle/dsl/internal/RealBuildFileParser_FactoryKt {
+	public static final fun getModulecheck_parsing_gradle_dsl_internal_RealBuildFileParser_Factory_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_parsing_gradle_dsl_internal_RealBuildFileParser_Factory_scope0 ()Lkotlin/reflect/KClass;
+}
+
+public abstract class modulecheck/parsing/gradle/dsl/internal/AbstractDependenciesBlock : modulecheck/parsing/gradle/dsl/DependenciesBlock {
+	public static final field Companion Lmodulecheck/parsing/gradle/dsl/internal/AbstractDependenciesBlock$Companion;
+	public fun <init> (Lmodulecheck/reporting/logging/McLogger;Ljava/util/List;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;Lmodulecheck/model/dependency/ProjectDependency$Factory;)V
+	public final fun addModuleStatement-FdhTdL0 (Ljava/lang/String;Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath;Lmodulecheck/parsing/gradle/dsl/ProjectAccessor;Ljava/util/List;)V
+	public final fun addNonModuleStatement-DjjXWn0 (Ljava/lang/String;Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;Ljava/util/List;)V
+	public final fun addUnknownStatement-DjjXWn0 (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public fun getAllSuppressions ()Ljava/util/Map;
+	public final fun getBlockSuppressed ()Ljava/util/List;
+	public fun getOrEmpty-25SeVdM (Lmodulecheck/model/dependency/MavenCoordinates;Ljava/lang/String;)Ljava/util/List;
+	public fun getOrEmpty-vAhOJHc (Ljava/lang/String;Ljava/lang/String;Z)Ljava/util/List;
+	public fun getOrEmpty-vAhOJHc (Lmodulecheck/model/dependency/ProjectPath;Ljava/lang/String;Z)Ljava/util/List;
+	public fun getSettings ()Ljava/util/List;
+	protected abstract fun originalLineMatchesParsed (Ljava/lang/String;Ljava/lang/String;)Z
+}
+
+public final class modulecheck/parsing/gradle/dsl/internal/AbstractDependenciesBlock$Companion {
+	public final fun getTestFixturesRegex ()Lkotlin/text/Regex;
+}
+
+public abstract class modulecheck/parsing/gradle/dsl/internal/AbstractPluginsBlock : modulecheck/parsing/gradle/dsl/PluginsBlock {
+	public fun <init> (Lmodulecheck/reporting/logging/McLogger;Ljava/util/List;)V
+	public final fun addStatement (Ljava/lang/String;Ljava/util/List;)V
+	protected abstract fun findOriginalStringIndex (Ljava/lang/String;)I
+	public fun getAllSuppressions ()Ljava/util/Map;
+	public fun getBlockSuppressed ()Ljava/util/List;
+	public fun getById (Ljava/lang/String;)Lmodulecheck/parsing/gradle/dsl/PluginDeclaration;
+	protected final fun getOriginalLines ()Ljava/util/List;
+	public fun getSettings ()Ljava/util/List;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/internal/DependenciesBlocksProvider {
+	public abstract fun get (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/internal/DependenciesBlocksProvider$Factory {
+	public abstract fun create (Lmodulecheck/parsing/gradle/dsl/InvokesConfigurationNames;)Lmodulecheck/parsing/gradle/dsl/internal/DependenciesBlocksProvider;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/internal/PluginsBlockProvider {
+	public abstract fun get ()Lmodulecheck/parsing/gradle/dsl/PluginsBlock;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/internal/PluginsBlockProvider$Factory {
+	public abstract fun create (Ljava/io/File;)Lmodulecheck/parsing/gradle/dsl/internal/PluginsBlockProvider;
+}
+
+public final class modulecheck/parsing/gradle/dsl/internal/RealBuildFileParser : modulecheck/parsing/gradle/dsl/BuildFileParser {
+	public fun <init> (Lmodulecheck/parsing/gradle/dsl/DependenciesBlocksProvider$Factory;Lmodulecheck/parsing/gradle/dsl/PluginsBlockProvider$Factory;Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettingsProvider$Factory;Lmodulecheck/parsing/gradle/dsl/InvokesConfigurationNames;)V
+	public fun androidSettings (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun dependenciesBlocks (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun pluginsBlock (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/internal/RealBuildFileParser$Factory : modulecheck/parsing/gradle/dsl/BuildFileParser$Factory {
+	public abstract fun create (Lmodulecheck/parsing/gradle/dsl/InvokesConfigurationNames;)Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser;
+}
+
+public final class modulecheck/parsing/gradle/dsl/internal/RealBuildFileParser_Factory {
+	public static final field Companion Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser_Factory;
+	public final fun get (Lmodulecheck/parsing/gradle/dsl/InvokesConfigurationNames;)Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser;
+	public static final fun newInstance (Lmodulecheck/parsing/gradle/dsl/DependenciesBlocksProvider$Factory;Lmodulecheck/parsing/gradle/dsl/PluginsBlockProvider$Factory;Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettingsProvider$Factory;Lmodulecheck/parsing/gradle/dsl/InvokesConfigurationNames;)Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser;
+}
+
+public final class modulecheck/parsing/gradle/dsl/internal/RealBuildFileParser_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser_Factory;
+	public final fun newInstance (Lmodulecheck/parsing/gradle/dsl/DependenciesBlocksProvider$Factory;Lmodulecheck/parsing/gradle/dsl/PluginsBlockProvider$Factory;Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettingsProvider$Factory;Lmodulecheck/parsing/gradle/dsl/InvokesConfigurationNames;)Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser;
+}
+
+public final class modulecheck/parsing/gradle/dsl/internal/RealBuildFileParser_Factory_Impl : modulecheck/parsing/gradle/dsl/internal/RealBuildFileParser$Factory {
+	public static final field Companion Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser_Factory_Impl$Companion;
+	public fun <init> (Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser_Factory;)V
+	public synthetic fun create (Lmodulecheck/parsing/gradle/dsl/InvokesConfigurationNames;)Lmodulecheck/parsing/gradle/dsl/BuildFileParser;
+	public fun create (Lmodulecheck/parsing/gradle/dsl/InvokesConfigurationNames;)Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser;
+	public static final fun create (Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser_Factory;)Ljavax/inject/Provider;
+}
+
+public final class modulecheck/parsing/gradle/dsl/internal/RealBuildFileParser_Factory_Impl$Companion {
+	public final fun create (Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser_Factory;)Ljavax/inject/Provider;
+}
+

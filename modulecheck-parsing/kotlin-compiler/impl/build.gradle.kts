@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-kotlin-compiler-impl"
+  published(
+    artifactId = "modulecheck-parsing-kotlin-compiler-impl"
+  )
   anvil()
 }
 

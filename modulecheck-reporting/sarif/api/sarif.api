@@ -1,0 +1,1999 @@
+public final class modulecheck/reporting/sarif/Address {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Integer;
+	public final fun component10 ()Ljava/lang/Integer;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/Integer;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/Integer;
+	public final fun component8 ()Ljava/lang/Integer;
+	public final fun component9 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;)Lmodulecheck/reporting/sarif/Address;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Address;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Address;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAbsoluteAddress ()Ljava/lang/Integer;
+	public final fun getFullyQualifiedName ()Ljava/lang/String;
+	public final fun getIndex ()Ljava/lang/Integer;
+	public final fun getKind ()Ljava/lang/String;
+	public final fun getLength ()Ljava/lang/Integer;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getOffsetFromParent ()Ljava/lang/Integer;
+	public final fun getParentIndex ()Ljava/lang/Integer;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getRelativeAddress ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/AddressJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Address;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Address;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Artifact {
+	public fun <init> ()V
+	public fun <init> (Lmodulecheck/reporting/sarif/ArtifactContent;Lmodulecheck/reporting/sarif/Message;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/ArtifactLocation;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/lang/String;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/ArtifactContent;Lmodulecheck/reporting/sarif/Message;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/ArtifactLocation;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/ArtifactContent;
+	public final fun component10 ()Ljava/lang/Integer;
+	public final fun component11 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component12 ()Ljava/util/List;
+	public final fun component13 ()Ljava/lang/String;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/Map;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/Integer;
+	public final fun component7 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Ljava/lang/Integer;
+	public final fun copy (Lmodulecheck/reporting/sarif/ArtifactContent;Lmodulecheck/reporting/sarif/Message;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/ArtifactLocation;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/lang/String;)Lmodulecheck/reporting/sarif/Artifact;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Artifact;Lmodulecheck/reporting/sarif/ArtifactContent;Lmodulecheck/reporting/sarif/Message;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/ArtifactLocation;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Artifact;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContents ()Lmodulecheck/reporting/sarif/ArtifactContent;
+	public final fun getDescription ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getEncoding ()Ljava/lang/String;
+	public final fun getHashes ()Ljava/util/Map;
+	public final fun getLastModifiedTimeUTC ()Ljava/lang/String;
+	public final fun getLength ()Ljava/lang/Integer;
+	public final fun getLocation ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun getMimeType ()Ljava/lang/String;
+	public final fun getOffset ()Ljava/lang/Integer;
+	public final fun getParentIndex ()Ljava/lang/Integer;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getRoles ()Ljava/util/List;
+	public final fun getSourceLanguage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ArtifactChange {
+	public fun <init> (Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;)Lmodulecheck/reporting/sarif/ArtifactChange;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ArtifactChange;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ArtifactChange;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getArtifactLocation ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getReplacements ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ArtifactChangeJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ArtifactChange;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ArtifactChange;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ArtifactContent {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/lang/String;)Lmodulecheck/reporting/sarif/ArtifactContent;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ArtifactContent;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ArtifactContent;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBinary ()Ljava/lang/String;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getRendered ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun getText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ArtifactContentJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ArtifactContent;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ArtifactContent;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ArtifactJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Artifact;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Artifact;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ArtifactLocation {
+	public fun <init> ()V
+	public fun <init> (Lmodulecheck/reporting/sarif/Message;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/Message;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component2 ()Ljava/lang/Integer;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (Lmodulecheck/reporting/sarif/Message;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/Message;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDescription ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getIndex ()Ljava/lang/Integer;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getUri ()Ljava/lang/String;
+	public final fun getUriBaseID ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ArtifactLocationJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ArtifactLocation;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Attachment {
+	public fun <init> (Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Ljava/util/List;
+	public final fun copy (Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;)Lmodulecheck/reporting/sarif/Attachment;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Attachment;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Attachment;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getArtifactLocation ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun getDescription ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getRectangles ()Ljava/util/List;
+	public final fun getRegions ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/AttachmentJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Attachment;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Attachment;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/BaselineState : java/lang/Enum {
+	public static final field Absent Lmodulecheck/reporting/sarif/BaselineState;
+	public static final field New Lmodulecheck/reporting/sarif/BaselineState;
+	public static final field Unchanged Lmodulecheck/reporting/sarif/BaselineState;
+	public static final field Updated Lmodulecheck/reporting/sarif/BaselineState;
+	public final fun getValue ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/BaselineState;
+	public static fun values ()[Lmodulecheck/reporting/sarif/BaselineState;
+}
+
+public final class modulecheck/reporting/sarif/CodeFlow {
+	public fun <init> (Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;)Lmodulecheck/reporting/sarif/CodeFlow;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/CodeFlow;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/CodeFlow;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMessage ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getThreadFlows ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/CodeFlowJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/CodeFlow;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/CodeFlow;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ColumnKind : java/lang/Enum {
+	public static final field UnicodeCodePoints Lmodulecheck/reporting/sarif/ColumnKind;
+	public static final field Utf16CodeUnits Lmodulecheck/reporting/sarif/ColumnKind;
+	public final fun getValue ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/ColumnKind;
+	public static fun values ()[Lmodulecheck/reporting/sarif/ColumnKind;
+}
+
+public final class modulecheck/reporting/sarif/ConfigurationOverride {
+	public fun <init> (Lmodulecheck/reporting/sarif/ReportingConfiguration;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/ReportingConfiguration;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/ReportingConfiguration;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/ReportingDescriptorReference;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Lmodulecheck/reporting/sarif/ReportingConfiguration;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/ConfigurationOverride;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ConfigurationOverride;Lmodulecheck/reporting/sarif/ReportingConfiguration;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ConfigurationOverride;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConfiguration ()Lmodulecheck/reporting/sarif/ReportingConfiguration;
+	public final fun getDescriptor ()Lmodulecheck/reporting/sarif/ReportingDescriptorReference;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ConfigurationOverrideJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ConfigurationOverride;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ConfigurationOverride;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Content : java/lang/Enum {
+	public static final field LocalizedData Lmodulecheck/reporting/sarif/Content;
+	public static final field NonLocalizedData Lmodulecheck/reporting/sarif/Content;
+	public final fun getValue ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/Content;
+	public static fun values ()[Lmodulecheck/reporting/sarif/Content;
+}
+
+public final class modulecheck/reporting/sarif/Conversion {
+	public fun <init> (Ljava/util/List;Lmodulecheck/reporting/sarif/Invocation;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Tool;)V
+	public synthetic fun <init> (Ljava/util/List;Lmodulecheck/reporting/sarif/Invocation;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Tool;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/Invocation;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/Tool;
+	public final fun copy (Ljava/util/List;Lmodulecheck/reporting/sarif/Invocation;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Tool;)Lmodulecheck/reporting/sarif/Conversion;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Conversion;Ljava/util/List;Lmodulecheck/reporting/sarif/Invocation;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Tool;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Conversion;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnalysisToolLogFiles ()Ljava/util/List;
+	public final fun getInvocation ()Lmodulecheck/reporting/sarif/Invocation;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getTool ()Lmodulecheck/reporting/sarif/Tool;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ConversionJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Conversion;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Conversion;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Edge {
+	public fun <init> (Ljava/lang/String;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/reporting/sarif/Edge;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Edge;Ljava/lang/String;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Edge;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Ljava/lang/String;
+	public final fun getLabel ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getSourceNodeID ()Ljava/lang/String;
+	public final fun getTargetNodeID ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/EdgeJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Edge;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Edge;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/EdgeTraversal {
+	public fun <init> (Ljava/lang/String;Ljava/util/Map;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Map;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component5 ()Ljava/lang/Integer;
+	public final fun copy (Ljava/lang/String;Ljava/util/Map;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;)Lmodulecheck/reporting/sarif/EdgeTraversal;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/EdgeTraversal;Ljava/lang/String;Ljava/util/Map;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/EdgeTraversal;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEdgeID ()Ljava/lang/String;
+	public final fun getFinalState ()Ljava/util/Map;
+	public final fun getMessage ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getStepOverEdgeCount ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/EdgeTraversalJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/EdgeTraversal;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/EdgeTraversal;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Exception {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Stack;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Stack;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component5 ()Lmodulecheck/reporting/sarif/Stack;
+	public final fun copy (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Stack;)Lmodulecheck/reporting/sarif/Exception;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Exception;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Stack;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Exception;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getInnerExceptions ()Ljava/util/List;
+	public final fun getKind ()Ljava/lang/String;
+	public final fun getMessage ()Ljava/lang/String;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getStack ()Lmodulecheck/reporting/sarif/Stack;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ExceptionJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Exception;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Exception;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ExternalProperties {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/Conversion;Lmodulecheck/reporting/sarif/SarifDriver;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/Version;Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/Conversion;Lmodulecheck/reporting/sarif/SarifDriver;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/Version;Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component10 ()Ljava/util/List;
+	public final fun component11 ()Ljava/util/List;
+	public final fun component12 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component13 ()Ljava/util/List;
+	public final fun component14 ()Ljava/lang/String;
+	public final fun component15 ()Ljava/lang/String;
+	public final fun component16 ()Ljava/util/List;
+	public final fun component17 ()Ljava/util/List;
+	public final fun component18 ()Ljava/util/List;
+	public final fun component19 ()Lmodulecheck/reporting/sarif/Version;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component20 ()Ljava/util/List;
+	public final fun component21 ()Ljava/util/List;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/Conversion;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/SarifDriver;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component7 ()Ljava/util/List;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/Conversion;Lmodulecheck/reporting/sarif/SarifDriver;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/Version;Ljava/util/List;Ljava/util/List;)Lmodulecheck/reporting/sarif/ExternalProperties;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ExternalProperties;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/Conversion;Lmodulecheck/reporting/sarif/SarifDriver;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/Version;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ExternalProperties;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAddresses ()Ljava/util/List;
+	public final fun getArtifacts ()Ljava/util/List;
+	public final fun getConversion ()Lmodulecheck/reporting/sarif/Conversion;
+	public final fun getDriver ()Lmodulecheck/reporting/sarif/SarifDriver;
+	public final fun getExtensions ()Ljava/util/List;
+	public final fun getExternalizedProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getGraphs ()Ljava/util/List;
+	public final fun getGuid ()Ljava/lang/String;
+	public final fun getInvocations ()Ljava/util/List;
+	public final fun getLogicalLocations ()Ljava/util/List;
+	public final fun getPolicies ()Ljava/util/List;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getResults ()Ljava/util/List;
+	public final fun getRunGUID ()Ljava/lang/String;
+	public final fun getSchema ()Ljava/lang/String;
+	public final fun getTaxonomies ()Ljava/util/List;
+	public final fun getThreadFlowLocations ()Ljava/util/List;
+	public final fun getTranslations ()Ljava/util/List;
+	public final fun getVersion ()Lmodulecheck/reporting/sarif/Version;
+	public final fun getWebRequests ()Ljava/util/List;
+	public final fun getWebResponses ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ExternalPropertiesJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ExternalProperties;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ExternalProperties;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ExternalPropertyFileReference {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/Integer;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getGuid ()Ljava/lang/String;
+	public final fun getItemCount ()Ljava/lang/Integer;
+	public final fun getLocation ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ExternalPropertyFileReferenceJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ExternalPropertyFileReferences {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;Ljava/util/List;Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;Ljava/util/List;Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component10 ()Ljava/util/List;
+	public final fun component11 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component12 ()Ljava/util/List;
+	public final fun component13 ()Ljava/util/List;
+	public final fun component14 ()Ljava/util/List;
+	public final fun component15 ()Ljava/util/List;
+	public final fun component16 ()Ljava/util/List;
+	public final fun component17 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;
+	public final fun component7 ()Ljava/util/List;
+	public final fun component8 ()Ljava/util/List;
+	public final fun component9 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;Ljava/util/List;Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;)Lmodulecheck/reporting/sarif/ExternalPropertyFileReferences;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ExternalPropertyFileReferences;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;Ljava/util/List;Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ExternalPropertyFileReferences;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAddresses ()Ljava/util/List;
+	public final fun getArtifacts ()Ljava/util/List;
+	public final fun getConversion ()Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;
+	public final fun getDriver ()Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;
+	public final fun getExtensions ()Ljava/util/List;
+	public final fun getExternalizedProperties ()Lmodulecheck/reporting/sarif/ExternalPropertyFileReference;
+	public final fun getGraphs ()Ljava/util/List;
+	public final fun getInvocations ()Ljava/util/List;
+	public final fun getLogicalLocations ()Ljava/util/List;
+	public final fun getPolicies ()Ljava/util/List;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getResults ()Ljava/util/List;
+	public final fun getTaxonomies ()Ljava/util/List;
+	public final fun getThreadFlowLocations ()Ljava/util/List;
+	public final fun getTranslations ()Ljava/util/List;
+	public final fun getWebRequests ()Ljava/util/List;
+	public final fun getWebResponses ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ExternalPropertyFileReferencesJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ExternalPropertyFileReferences;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ExternalPropertyFileReferences;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Fix {
+	public fun <init> (Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/Fix;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Fix;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Fix;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getArtifactChanges ()Ljava/util/List;
+	public final fun getDescription ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/FixJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Fix;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Fix;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Graph {
+	public fun <init> ()V
+	public fun <init> (Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/Graph;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Graph;Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Graph;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDescription ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getEdges ()Ljava/util/List;
+	public final fun getNodes ()Ljava/util/List;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/GraphJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Graph;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Graph;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/GraphTraversal {
+	public fun <init> ()V
+	public fun <init> (Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Ljava/util/Map;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Ljava/util/Map;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/Map;
+	public final fun component4 ()Ljava/util/Map;
+	public final fun component5 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component6 ()Ljava/lang/Integer;
+	public final fun component7 ()Ljava/lang/Integer;
+	public final fun copy (Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Ljava/util/Map;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;Ljava/lang/Integer;)Lmodulecheck/reporting/sarif/GraphTraversal;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/GraphTraversal;Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Ljava/util/Map;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;Ljava/lang/Integer;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/GraphTraversal;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDescription ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getEdgeTraversals ()Ljava/util/List;
+	public final fun getImmutableState ()Ljava/util/Map;
+	public final fun getInitialState ()Ljava/util/Map;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getResultGraphIndex ()Ljava/lang/Integer;
+	public final fun getRunGraphIndex ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/GraphTraversalJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/GraphTraversal;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/GraphTraversal;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Importance : java/lang/Enum {
+	public static final field Essential Lmodulecheck/reporting/sarif/Importance;
+	public static final field Important Lmodulecheck/reporting/sarif/Importance;
+	public static final field Unimportant Lmodulecheck/reporting/sarif/Importance;
+	public final fun getValue ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/Importance;
+	public static fun values ()[Lmodulecheck/reporting/sarif/Importance;
+}
+
+public final class modulecheck/reporting/sarif/Invocation {
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lmodulecheck/reporting/sarif/ArtifactLocation;ZLjava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/List;Ljava/lang/Integer;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/ArtifactLocation;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/ArtifactLocation;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lmodulecheck/reporting/sarif/ArtifactLocation;ZLjava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/List;Ljava/lang/Integer;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/ArtifactLocation;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/ArtifactLocation;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/lang/String;
+	public final fun component11 ()Ljava/lang/Integer;
+	public final fun component12 ()Ljava/lang/String;
+	public final fun component13 ()Ljava/util/List;
+	public final fun component14 ()Ljava/lang/Integer;
+	public final fun component15 ()Ljava/lang/String;
+	public final fun component16 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component17 ()Ljava/util/List;
+	public final fun component18 ()Ljava/util/List;
+	public final fun component19 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component20 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component21 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component22 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component23 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component24 ()Ljava/util/List;
+	public final fun component25 ()Ljava/util/List;
+	public final fun component26 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/util/Map;
+	public final fun component6 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component7 ()Z
+	public final fun component8 ()Ljava/lang/Integer;
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lmodulecheck/reporting/sarif/ArtifactLocation;ZLjava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/List;Ljava/lang/Integer;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/ArtifactLocation;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/ArtifactLocation;)Lmodulecheck/reporting/sarif/Invocation;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Invocation;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Lmodulecheck/reporting/sarif/ArtifactLocation;ZLjava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/List;Ljava/lang/Integer;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/ArtifactLocation;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/ArtifactLocation;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Invocation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccount ()Ljava/lang/String;
+	public final fun getArguments ()Ljava/util/List;
+	public final fun getCommandLine ()Ljava/lang/String;
+	public final fun getEndTimeUTC ()Ljava/lang/String;
+	public final fun getEnvironmentVariables ()Ljava/util/Map;
+	public final fun getExecutableLocation ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun getExecutionSuccessful ()Z
+	public final fun getExitCode ()Ljava/lang/Integer;
+	public final fun getExitCodeDescription ()Ljava/lang/String;
+	public final fun getExitSignalName ()Ljava/lang/String;
+	public final fun getExitSignalNumber ()Ljava/lang/Integer;
+	public final fun getMachine ()Ljava/lang/String;
+	public final fun getNotificationConfigurationOverrides ()Ljava/util/List;
+	public final fun getProcessID ()Ljava/lang/Integer;
+	public final fun getProcessStartFailureMessage ()Ljava/lang/String;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getResponseFiles ()Ljava/util/List;
+	public final fun getRuleConfigurationOverrides ()Ljava/util/List;
+	public final fun getStartTimeUTC ()Ljava/lang/String;
+	public final fun getStderr ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun getStdin ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun getStdout ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun getStdoutStderr ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun getToolConfigurationNotifications ()Ljava/util/List;
+	public final fun getToolExecutionNotifications ()Ljava/util/List;
+	public final fun getWorkingDirectory ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/InvocationJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Invocation;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Invocation;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Level : java/lang/Enum {
+	public static final field Error Lmodulecheck/reporting/sarif/Level;
+	public static final field None Lmodulecheck/reporting/sarif/Level;
+	public static final field Note Lmodulecheck/reporting/sarif/Level;
+	public static final field Warning Lmodulecheck/reporting/sarif/Level;
+	public final fun getValue ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/Level;
+	public static fun values ()[Lmodulecheck/reporting/sarif/Level;
+}
+
+public final class modulecheck/reporting/sarif/Location {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/lang/Integer;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PhysicalLocation;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/lang/Integer;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PhysicalLocation;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/Integer;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component5 ()Lmodulecheck/reporting/sarif/PhysicalLocation;
+	public final fun component6 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component7 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/lang/Integer;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PhysicalLocation;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;)Lmodulecheck/reporting/sarif/Location;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Location;Ljava/util/List;Ljava/lang/Integer;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PhysicalLocation;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Location;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnnotations ()Ljava/util/List;
+	public final fun getId ()Ljava/lang/Integer;
+	public final fun getLogicalLocations ()Ljava/util/List;
+	public final fun getMessage ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getPhysicalLocation ()Lmodulecheck/reporting/sarif/PhysicalLocation;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getRelationships ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/LocationJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Location;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Location;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/LocationRelationship {
+	public fun <init> (Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;I)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component4 ()I
+	public final fun copy (Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;I)Lmodulecheck/reporting/sarif/LocationRelationship;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/LocationRelationship;Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;IILjava/lang/Object;)Lmodulecheck/reporting/sarif/LocationRelationship;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDescription ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getKinds ()Ljava/util/List;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getTarget ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/LocationRelationshipJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/LocationRelationship;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/LocationRelationship;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/LogicalLocation {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/Integer;
+	public final fun component7 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/LogicalLocation;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/LogicalLocation;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/LogicalLocation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDecoratedName ()Ljava/lang/String;
+	public final fun getFullyQualifiedName ()Ljava/lang/String;
+	public final fun getIndex ()Ljava/lang/Integer;
+	public final fun getKind ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getParentIndex ()Ljava/lang/Integer;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/LogicalLocationJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/LogicalLocation;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/LogicalLocation;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Message {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;)Lmodulecheck/reporting/sarif/Message;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Message;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getArguments ()Ljava/util/List;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getMarkdown ()Ljava/lang/String;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/MessageJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Message;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Message;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/MultiformatMessageString {
+	public fun <init> (Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;)Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMarkdown ()Ljava/lang/String;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/MultiformatMessageStringJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/MultiformatMessageString;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Node {
+	public fun <init> (Ljava/util/List;Ljava/lang/String;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/Location;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/lang/String;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/Location;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/Location;
+	public final fun component5 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Ljava/util/List;Ljava/lang/String;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/Location;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/Node;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Node;Ljava/util/List;Ljava/lang/String;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/Location;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Node;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChildren ()Ljava/util/List;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getLabel ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getLocation ()Lmodulecheck/reporting/sarif/Location;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/NodeJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Node;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Node;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Notification {
+	public fun <init> (Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Lmodulecheck/reporting/sarif/Exception;Lmodulecheck/reporting/sarif/Level;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;Ljava/lang/String;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Lmodulecheck/reporting/sarif/Exception;Lmodulecheck/reporting/sarif/Level;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/ReportingDescriptorReference;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/ReportingDescriptorReference;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/Exception;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/Level;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component7 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component8 ()Ljava/lang/Integer;
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Lmodulecheck/reporting/sarif/Exception;Lmodulecheck/reporting/sarif/Level;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;Ljava/lang/String;)Lmodulecheck/reporting/sarif/Notification;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Notification;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Lmodulecheck/reporting/sarif/Exception;Lmodulecheck/reporting/sarif/Level;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Notification;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAssociatedRule ()Lmodulecheck/reporting/sarif/ReportingDescriptorReference;
+	public final fun getDescriptor ()Lmodulecheck/reporting/sarif/ReportingDescriptorReference;
+	public final fun getException ()Lmodulecheck/reporting/sarif/Exception;
+	public final fun getLevel ()Lmodulecheck/reporting/sarif/Level;
+	public final fun getLocations ()Ljava/util/List;
+	public final fun getMessage ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getThreadID ()Ljava/lang/Integer;
+	public final fun getTimeUTC ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/NotificationJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Notification;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Notification;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/PhysicalLocation {
+	public fun <init> ()V
+	public fun <init> (Lmodulecheck/reporting/sarif/Address;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/Region;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Region;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/Address;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/Region;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Region;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/Address;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/Region;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component5 ()Lmodulecheck/reporting/sarif/Region;
+	public final fun copy (Lmodulecheck/reporting/sarif/Address;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/Region;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Region;)Lmodulecheck/reporting/sarif/PhysicalLocation;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/PhysicalLocation;Lmodulecheck/reporting/sarif/Address;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/Region;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Region;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/PhysicalLocation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAddress ()Lmodulecheck/reporting/sarif/Address;
+	public final fun getArtifactLocation ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun getContextRegion ()Lmodulecheck/reporting/sarif/Region;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getRegion ()Lmodulecheck/reporting/sarif/Region;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/PhysicalLocationJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/PhysicalLocation;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/PhysicalLocation;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/PropertyBag {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lmodulecheck/reporting/sarif/PropertyBag;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTags ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/PropertyBagJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/PropertyBag;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Rectangle {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Double;Ljava/lang/Double;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Double;Ljava/lang/Double;)V
+	public synthetic fun <init> (Ljava/lang/Double;Ljava/lang/Double;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Double;Ljava/lang/Double;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Double;
+	public final fun component2 ()Ljava/lang/Double;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component5 ()Ljava/lang/Double;
+	public final fun component6 ()Ljava/lang/Double;
+	public final fun copy (Ljava/lang/Double;Ljava/lang/Double;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Double;Ljava/lang/Double;)Lmodulecheck/reporting/sarif/Rectangle;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Rectangle;Ljava/lang/Double;Ljava/lang/Double;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Double;Ljava/lang/Double;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Rectangle;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBottom ()Ljava/lang/Double;
+	public final fun getLeft ()Ljava/lang/Double;
+	public final fun getMessage ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getRight ()Ljava/lang/Double;
+	public final fun getTop ()Ljava/lang/Double;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/RectangleJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Rectangle;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Rectangle;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Region {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ArtifactContent;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ArtifactContent;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Integer;
+	public final fun component10 ()Ljava/lang/String;
+	public final fun component11 ()Ljava/lang/Integer;
+	public final fun component12 ()Ljava/lang/Integer;
+	public final fun component2 ()Ljava/lang/Integer;
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun component4 ()Ljava/lang/Integer;
+	public final fun component5 ()Ljava/lang/Integer;
+	public final fun component6 ()Ljava/lang/Integer;
+	public final fun component7 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component8 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component9 ()Lmodulecheck/reporting/sarif/ArtifactContent;
+	public final fun copy (Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ArtifactContent;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;)Lmodulecheck/reporting/sarif/Region;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Region;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ArtifactContent;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Region;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getByteLength ()Ljava/lang/Integer;
+	public final fun getByteOffset ()Ljava/lang/Integer;
+	public final fun getCharLength ()Ljava/lang/Integer;
+	public final fun getCharOffset ()Ljava/lang/Integer;
+	public final fun getEndColumn ()Ljava/lang/Integer;
+	public final fun getEndLine ()Ljava/lang/Integer;
+	public final fun getMessage ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getSnippet ()Lmodulecheck/reporting/sarif/ArtifactContent;
+	public final fun getSourceLanguage ()Ljava/lang/String;
+	public final fun getStartColumn ()Ljava/lang/Integer;
+	public final fun getStartLine ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/RegionJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Region;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Region;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Replacement {
+	public fun <init> (Lmodulecheck/reporting/sarif/Region;Lmodulecheck/reporting/sarif/ArtifactContent;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/Region;Lmodulecheck/reporting/sarif/ArtifactContent;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/Region;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/ArtifactContent;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Lmodulecheck/reporting/sarif/Region;Lmodulecheck/reporting/sarif/ArtifactContent;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/Replacement;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Replacement;Lmodulecheck/reporting/sarif/Region;Lmodulecheck/reporting/sarif/ArtifactContent;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Replacement;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDeletedRegion ()Lmodulecheck/reporting/sarif/Region;
+	public final fun getInsertedContent ()Lmodulecheck/reporting/sarif/ArtifactContent;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ReplacementJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Replacement;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Replacement;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ReportingConfiguration {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Boolean;Lmodulecheck/reporting/sarif/Level;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Double;)V
+	public synthetic fun <init> (Ljava/lang/Boolean;Lmodulecheck/reporting/sarif/Level;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Double;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Boolean;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/Level;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component5 ()Ljava/lang/Double;
+	public final fun copy (Ljava/lang/Boolean;Lmodulecheck/reporting/sarif/Level;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Double;)Lmodulecheck/reporting/sarif/ReportingConfiguration;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ReportingConfiguration;Ljava/lang/Boolean;Lmodulecheck/reporting/sarif/Level;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Double;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ReportingConfiguration;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEnabled ()Ljava/lang/Boolean;
+	public final fun getLevel ()Lmodulecheck/reporting/sarif/Level;
+	public final fun getParameters ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getRank ()Ljava/lang/Double;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ReportingConfigurationJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ReportingConfiguration;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ReportingConfiguration;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ReportingDescriptorReference {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ToolComponentReference;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ToolComponentReference;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component5 ()Lmodulecheck/reporting/sarif/ToolComponentReference;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ToolComponentReference;)Lmodulecheck/reporting/sarif/ReportingDescriptorReference;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ToolComponentReference;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ReportingDescriptorReference;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getGuid ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getIndex ()Ljava/lang/Integer;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getToolComponent ()Lmodulecheck/reporting/sarif/ToolComponentReference;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ReportingDescriptorReferenceJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ReportingDescriptorReference;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ReportingDescriptorRelationship {
+	public fun <init> (Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/ReportingDescriptorReference;
+	public final fun copy (Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;)Lmodulecheck/reporting/sarif/ReportingDescriptorRelationship;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ReportingDescriptorRelationship;Lmodulecheck/reporting/sarif/Message;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ReportingDescriptorRelationship;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDescription ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getKinds ()Ljava/util/List;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getTarget ()Lmodulecheck/reporting/sarif/ReportingDescriptorReference;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ReportingDescriptorRelationshipJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ReportingDescriptorRelationship;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ReportingDescriptorRelationship;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ResultKind : java/lang/Enum {
+	public static final field Fail Lmodulecheck/reporting/sarif/ResultKind;
+	public static final field Informational Lmodulecheck/reporting/sarif/ResultKind;
+	public static final field NotApplicable Lmodulecheck/reporting/sarif/ResultKind;
+	public static final field Open Lmodulecheck/reporting/sarif/ResultKind;
+	public static final field Pass Lmodulecheck/reporting/sarif/ResultKind;
+	public static final field Review Lmodulecheck/reporting/sarif/ResultKind;
+	public final fun getValue ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/ResultKind;
+	public static fun values ()[Lmodulecheck/reporting/sarif/ResultKind;
+}
+
+public final class modulecheck/reporting/sarif/ResultProvenance {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/Integer;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/ResultProvenance;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ResultProvenance;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ResultProvenance;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConversionSources ()Ljava/util/List;
+	public final fun getFirstDetectionRunGUID ()Ljava/lang/String;
+	public final fun getFirstDetectionTimeUTC ()Ljava/lang/String;
+	public final fun getInvocationIndex ()Ljava/lang/Integer;
+	public final fun getLastDetectionRunGUID ()Ljava/lang/String;
+	public final fun getLastDetectionTimeUTC ()Ljava/lang/String;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ResultProvenanceJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ResultProvenance;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ResultProvenance;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Role : java/lang/Enum {
+	public static final field Added Lmodulecheck/reporting/sarif/Role;
+	public static final field AnalysisTarget Lmodulecheck/reporting/sarif/Role;
+	public static final field Attachment Lmodulecheck/reporting/sarif/Role;
+	public static final field DebugOutputFile Lmodulecheck/reporting/sarif/Role;
+	public static final field Deleted Lmodulecheck/reporting/sarif/Role;
+	public static final field Directory Lmodulecheck/reporting/sarif/Role;
+	public static final field Driver Lmodulecheck/reporting/sarif/Role;
+	public static final field Extension Lmodulecheck/reporting/sarif/Role;
+	public static final field MemoryContents Lmodulecheck/reporting/sarif/Role;
+	public static final field Modified Lmodulecheck/reporting/sarif/Role;
+	public static final field Policy Lmodulecheck/reporting/sarif/Role;
+	public static final field ReferencedOnCommandLine Lmodulecheck/reporting/sarif/Role;
+	public static final field Renamed Lmodulecheck/reporting/sarif/Role;
+	public static final field ResponseFile Lmodulecheck/reporting/sarif/Role;
+	public static final field ResultFile Lmodulecheck/reporting/sarif/Role;
+	public static final field StandardStream Lmodulecheck/reporting/sarif/Role;
+	public static final field Taxonomy Lmodulecheck/reporting/sarif/Role;
+	public static final field ToolSpecifiedConfiguration Lmodulecheck/reporting/sarif/Role;
+	public static final field TracedFile Lmodulecheck/reporting/sarif/Role;
+	public static final field Translation Lmodulecheck/reporting/sarif/Role;
+	public static final field Uncontrolled Lmodulecheck/reporting/sarif/Role;
+	public static final field Unmodified Lmodulecheck/reporting/sarif/Role;
+	public static final field UserSpecifiedConfiguration Lmodulecheck/reporting/sarif/Role;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/Role;
+	public static fun values ()[Lmodulecheck/reporting/sarif/Role;
+}
+
+public final class modulecheck/reporting/sarif/Run {
+	public fun <init> (Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/RunAutomationDetails;Ljava/lang/String;Lmodulecheck/reporting/sarif/ColumnKind;Lmodulecheck/reporting/sarif/Conversion;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ExternalPropertyFileReferences;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/SpecialLocations;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/Tool;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/RunAutomationDetails;Ljava/lang/String;Lmodulecheck/reporting/sarif/ColumnKind;Lmodulecheck/reporting/sarif/Conversion;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ExternalPropertyFileReferences;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/SpecialLocations;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/Tool;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component10 ()Ljava/util/List;
+	public final fun component11 ()Ljava/util/List;
+	public final fun component12 ()Ljava/lang/String;
+	public final fun component13 ()Ljava/util/List;
+	public final fun component14 ()Ljava/util/List;
+	public final fun component15 ()Ljava/util/Map;
+	public final fun component16 ()Ljava/util/List;
+	public final fun component17 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component18 ()Ljava/util/List;
+	public final fun component19 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component20 ()Ljava/util/List;
+	public final fun component21 ()Lmodulecheck/reporting/sarif/SpecialLocations;
+	public final fun component22 ()Ljava/util/List;
+	public final fun component23 ()Ljava/util/List;
+	public final fun component24 ()Lmodulecheck/reporting/sarif/Tool;
+	public final fun component25 ()Ljava/util/List;
+	public final fun component26 ()Ljava/util/List;
+	public final fun component27 ()Ljava/util/List;
+	public final fun component28 ()Ljava/util/List;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/RunAutomationDetails;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Lmodulecheck/reporting/sarif/ColumnKind;
+	public final fun component6 ()Lmodulecheck/reporting/sarif/Conversion;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Lmodulecheck/reporting/sarif/ExternalPropertyFileReferences;
+	public final fun copy (Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/RunAutomationDetails;Ljava/lang/String;Lmodulecheck/reporting/sarif/ColumnKind;Lmodulecheck/reporting/sarif/Conversion;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ExternalPropertyFileReferences;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/SpecialLocations;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/Tool;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;)Lmodulecheck/reporting/sarif/Run;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Run;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/RunAutomationDetails;Ljava/lang/String;Lmodulecheck/reporting/sarif/ColumnKind;Lmodulecheck/reporting/sarif/Conversion;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ExternalPropertyFileReferences;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Ljava/util/Map;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/SpecialLocations;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/Tool;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Run;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAddresses ()Ljava/util/List;
+	public final fun getArtifacts ()Ljava/util/List;
+	public final fun getAutomationDetails ()Lmodulecheck/reporting/sarif/RunAutomationDetails;
+	public final fun getBaselineGUID ()Ljava/lang/String;
+	public final fun getColumnKind ()Lmodulecheck/reporting/sarif/ColumnKind;
+	public final fun getConversion ()Lmodulecheck/reporting/sarif/Conversion;
+	public final fun getDefaultEncoding ()Ljava/lang/String;
+	public final fun getDefaultSourceLanguage ()Ljava/lang/String;
+	public final fun getExternalPropertyFileReferences ()Lmodulecheck/reporting/sarif/ExternalPropertyFileReferences;
+	public final fun getGraphs ()Ljava/util/List;
+	public final fun getInvocations ()Ljava/util/List;
+	public final fun getLanguage ()Ljava/lang/String;
+	public final fun getLogicalLocations ()Ljava/util/List;
+	public final fun getNewlineSequences ()Ljava/util/List;
+	public final fun getOriginalURIBaseIDS ()Ljava/util/Map;
+	public final fun getPolicies ()Ljava/util/List;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getRedactionTokens ()Ljava/util/List;
+	public final fun getResults ()Ljava/util/List;
+	public final fun getRunAggregates ()Ljava/util/List;
+	public final fun getSpecialLocations ()Lmodulecheck/reporting/sarif/SpecialLocations;
+	public final fun getTaxonomies ()Ljava/util/List;
+	public final fun getThreadFlowLocations ()Ljava/util/List;
+	public final fun getTool ()Lmodulecheck/reporting/sarif/Tool;
+	public final fun getTranslations ()Ljava/util/List;
+	public final fun getVersionControlProvenance ()Ljava/util/List;
+	public final fun getWebRequests ()Ljava/util/List;
+	public final fun getWebResponses ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/RunAutomationDetails {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Lmodulecheck/reporting/sarif/Message;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Ljava/lang/String;Lmodulecheck/reporting/sarif/Message;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Ljava/lang/String;Lmodulecheck/reporting/sarif/Message;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/RunAutomationDetails;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/RunAutomationDetails;Ljava/lang/String;Lmodulecheck/reporting/sarif/Message;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/RunAutomationDetails;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCorrelationGUID ()Ljava/lang/String;
+	public final fun getDescription ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getGuid ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/RunAutomationDetailsJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/RunAutomationDetails;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/RunAutomationDetails;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/RunJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Run;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Run;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/SarifDriver {
+	public fun <init> (Lmodulecheck/reporting/sarif/ToolComponentReference;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/TranslationMetadata;Ljava/lang/String;Ljava/util/List;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/ToolComponentReference;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/TranslationMetadata;Ljava/lang/String;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/ToolComponentReference;
+	public final fun component10 ()Ljava/lang/Boolean;
+	public final fun component11 ()Ljava/lang/String;
+	public final fun component12 ()Ljava/lang/String;
+	public final fun component13 ()Ljava/util/List;
+	public final fun component14 ()Ljava/lang/String;
+	public final fun component15 ()Ljava/lang/String;
+	public final fun component16 ()Ljava/util/List;
+	public final fun component17 ()Ljava/lang/String;
+	public final fun component18 ()Ljava/lang/String;
+	public final fun component19 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component20 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component21 ()Ljava/lang/String;
+	public final fun component22 ()Ljava/lang/String;
+	public final fun component23 ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun component24 ()Ljava/util/List;
+	public final fun component25 ()Ljava/util/List;
+	public final fun component26 ()Lmodulecheck/reporting/sarif/TranslationMetadata;
+	public final fun component27 ()Ljava/lang/String;
+	public final fun component28 ()Ljava/util/List;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/util/Map;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Lmodulecheck/reporting/sarif/ToolComponentReference;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/TranslationMetadata;Ljava/lang/String;Ljava/util/List;)Lmodulecheck/reporting/sarif/SarifDriver;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/SarifDriver;Lmodulecheck/reporting/sarif/ToolComponentReference;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/lang/String;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/TranslationMetadata;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/SarifDriver;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAssociatedComponent ()Lmodulecheck/reporting/sarif/ToolComponentReference;
+	public final fun getContents ()Ljava/util/List;
+	public final fun getDottedQuadFileVersion ()Ljava/lang/String;
+	public final fun getDownloadURI ()Ljava/lang/String;
+	public final fun getFullDescription ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun getFullName ()Ljava/lang/String;
+	public final fun getGlobalMessageStrings ()Ljava/util/Map;
+	public final fun getGuid ()Ljava/lang/String;
+	public final fun getInformationURI ()Ljava/lang/String;
+	public final fun getLanguage ()Ljava/lang/String;
+	public final fun getLocalizedDataSemanticVersion ()Ljava/lang/String;
+	public final fun getLocations ()Ljava/util/List;
+	public final fun getMinimumRequiredLocalizedDataSemanticVersion ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNotifications ()Ljava/util/List;
+	public final fun getOrganization ()Ljava/lang/String;
+	public final fun getProduct ()Ljava/lang/String;
+	public final fun getProductSuite ()Ljava/lang/String;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getReleaseDateUTC ()Ljava/lang/String;
+	public final fun getRules ()Ljava/util/List;
+	public final fun getSemanticVersion ()Ljava/lang/String;
+	public final fun getShortDescription ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun getSupportedTaxonomies ()Ljava/util/List;
+	public final fun getTaxa ()Ljava/util/List;
+	public final fun getTranslationMetadata ()Lmodulecheck/reporting/sarif/TranslationMetadata;
+	public final fun getVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isComprehensive ()Ljava/lang/Boolean;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/SarifDriverJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/SarifDriver;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/SarifDriver;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/SarifReport {
+	public fun <init> (Ljava/lang/String;Lmodulecheck/reporting/sarif/Version;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Lmodulecheck/reporting/sarif/Version;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/Version;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component5 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Lmodulecheck/reporting/sarif/Version;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;)Lmodulecheck/reporting/sarif/SarifReport;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/SarifReport;Ljava/lang/String;Lmodulecheck/reporting/sarif/Version;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/SarifReport;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getInlineExternalProperties ()Ljava/util/List;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getRuns ()Ljava/util/List;
+	public final fun getSchema ()Ljava/lang/String;
+	public final fun getVersion ()Lmodulecheck/reporting/sarif/Version;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/SarifReportFactory {
+	public fun <init> (Lmodulecheck/dagger/SourceWebsiteUrlProvider;Lmodulecheck/dagger/ModuleCheckVersionProvider;Lmodulecheck/project/ProjectRoot;)V
+	public final fun create (Ljava/util/List;Ljava/util/List;)Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/SarifReportFactory_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/reporting/sarif/SarifReportFactory_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/reporting/sarif/SarifReportFactory_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/reporting/sarif/SarifReportFactory;
+	public static final fun newInstance (Lmodulecheck/dagger/SourceWebsiteUrlProvider;Lmodulecheck/dagger/ModuleCheckVersionProvider;Lmodulecheck/project/ProjectRoot;)Lmodulecheck/reporting/sarif/SarifReportFactory;
+}
+
+public final class modulecheck/reporting/sarif/SarifReportFactory_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/reporting/sarif/SarifReportFactory_Factory;
+	public final fun newInstance (Lmodulecheck/dagger/SourceWebsiteUrlProvider;Lmodulecheck/dagger/ModuleCheckVersionProvider;Lmodulecheck/project/ProjectRoot;)Lmodulecheck/reporting/sarif/SarifReportFactory;
+}
+
+public final class modulecheck/reporting/sarif/SarifReportJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/SarifReport;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/SarifReport;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/SarifResult {
+	public fun <init> (Lmodulecheck/reporting/sarif/ArtifactLocation;Ljava/util/List;Lmodulecheck/reporting/sarif/BaselineState;Ljava/util/List;Ljava/lang/String;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ResultKind;Lmodulecheck/reporting/sarif/Level;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Ljava/lang/Integer;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ResultProvenance;Ljava/lang/Double;Ljava/util/List;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Ljava/lang/String;Ljava/lang/Integer;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/WebRequest;Lmodulecheck/reporting/sarif/WebResponse;Ljava/util/List;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/ArtifactLocation;Ljava/util/List;Lmodulecheck/reporting/sarif/BaselineState;Ljava/util/List;Ljava/lang/String;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ResultKind;Lmodulecheck/reporting/sarif/Level;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Ljava/lang/Integer;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ResultProvenance;Ljava/lang/Double;Ljava/util/List;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Ljava/lang/String;Ljava/lang/Integer;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/WebRequest;Lmodulecheck/reporting/sarif/WebResponse;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component10 ()Ljava/lang/String;
+	public final fun component11 ()Ljava/lang/String;
+	public final fun component12 ()Lmodulecheck/reporting/sarif/ResultKind;
+	public final fun component13 ()Lmodulecheck/reporting/sarif/Level;
+	public final fun component14 ()Ljava/util/List;
+	public final fun component15 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component16 ()Ljava/lang/Integer;
+	public final fun component17 ()Ljava/util/Map;
+	public final fun component18 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component19 ()Lmodulecheck/reporting/sarif/ResultProvenance;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component20 ()Ljava/lang/Double;
+	public final fun component21 ()Ljava/util/List;
+	public final fun component22 ()Lmodulecheck/reporting/sarif/ReportingDescriptorReference;
+	public final fun component23 ()Ljava/lang/String;
+	public final fun component24 ()Ljava/lang/Integer;
+	public final fun component25 ()Ljava/util/List;
+	public final fun component26 ()Ljava/util/List;
+	public final fun component27 ()Ljava/util/List;
+	public final fun component28 ()Lmodulecheck/reporting/sarif/WebRequest;
+	public final fun component29 ()Lmodulecheck/reporting/sarif/WebResponse;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/BaselineState;
+	public final fun component30 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/util/Map;
+	public final fun component7 ()Ljava/util/List;
+	public final fun component8 ()Ljava/util/List;
+	public final fun component9 ()Ljava/util/List;
+	public final fun copy (Lmodulecheck/reporting/sarif/ArtifactLocation;Ljava/util/List;Lmodulecheck/reporting/sarif/BaselineState;Ljava/util/List;Ljava/lang/String;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ResultKind;Lmodulecheck/reporting/sarif/Level;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Ljava/lang/Integer;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ResultProvenance;Ljava/lang/Double;Ljava/util/List;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Ljava/lang/String;Ljava/lang/Integer;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/WebRequest;Lmodulecheck/reporting/sarif/WebResponse;Ljava/util/List;)Lmodulecheck/reporting/sarif/SarifResult;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/SarifResult;Lmodulecheck/reporting/sarif/ArtifactLocation;Ljava/util/List;Lmodulecheck/reporting/sarif/BaselineState;Ljava/util/List;Ljava/lang/String;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ResultKind;Lmodulecheck/reporting/sarif/Level;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Ljava/lang/Integer;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/ResultProvenance;Ljava/lang/Double;Ljava/util/List;Lmodulecheck/reporting/sarif/ReportingDescriptorReference;Ljava/lang/String;Ljava/lang/Integer;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lmodulecheck/reporting/sarif/WebRequest;Lmodulecheck/reporting/sarif/WebResponse;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/SarifResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnalysisTarget ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun getAttachments ()Ljava/util/List;
+	public final fun getBaselineState ()Lmodulecheck/reporting/sarif/BaselineState;
+	public final fun getCodeFlows ()Ljava/util/List;
+	public final fun getCorrelationGUID ()Ljava/lang/String;
+	public final fun getFingerprints ()Ljava/util/Map;
+	public final fun getFixes ()Ljava/util/List;
+	public final fun getGraphTraversals ()Ljava/util/List;
+	public final fun getGraphs ()Ljava/util/List;
+	public final fun getGuid ()Ljava/lang/String;
+	public final fun getHostedViewerURI ()Ljava/lang/String;
+	public final fun getKind ()Lmodulecheck/reporting/sarif/ResultKind;
+	public final fun getLevel ()Lmodulecheck/reporting/sarif/Level;
+	public final fun getLocations ()Ljava/util/List;
+	public final fun getMessage ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getOccurrenceCount ()Ljava/lang/Integer;
+	public final fun getPartialFingerprints ()Ljava/util/Map;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getProvenance ()Lmodulecheck/reporting/sarif/ResultProvenance;
+	public final fun getRank ()Ljava/lang/Double;
+	public final fun getRelatedLocations ()Ljava/util/List;
+	public final fun getRule ()Lmodulecheck/reporting/sarif/ReportingDescriptorReference;
+	public final fun getRuleID ()Ljava/lang/String;
+	public final fun getRuleIndex ()Ljava/lang/Integer;
+	public final fun getStacks ()Ljava/util/List;
+	public final fun getSuppressions ()Ljava/util/List;
+	public final fun getTaxa ()Ljava/util/List;
+	public final fun getWebRequest ()Lmodulecheck/reporting/sarif/WebRequest;
+	public final fun getWebResponse ()Lmodulecheck/reporting/sarif/WebResponse;
+	public final fun getWorkItemUris ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/SarifResultJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/SarifResult;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/SarifResult;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/SarifRule {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ReportingConfiguration;Lmodulecheck/reporting/sarif/MultiformatMessageString;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ReportingConfiguration;Lmodulecheck/reporting/sarif/MultiformatMessageString;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/lang/String;
+	public final fun component11 ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun component12 ()Ljava/util/Map;
+	public final fun component13 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component14 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/ReportingConfiguration;
+	public final fun component5 ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun component6 ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun component7 ()Ljava/util/List;
+	public final fun component8 ()Ljava/util/List;
+	public final fun component9 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ReportingConfiguration;Lmodulecheck/reporting/sarif/MultiformatMessageString;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;)Lmodulecheck/reporting/sarif/SarifRule;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/SarifRule;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ReportingConfiguration;Lmodulecheck/reporting/sarif/MultiformatMessageString;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/SarifRule;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDefaultConfiguration ()Lmodulecheck/reporting/sarif/ReportingConfiguration;
+	public final fun getDeprecatedGuids ()Ljava/util/List;
+	public final fun getDeprecatedIDS ()Ljava/util/List;
+	public final fun getDeprecatedNames ()Ljava/util/List;
+	public final fun getFullDescription ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun getGuid ()Ljava/lang/String;
+	public final fun getHelp ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun getHelpURI ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getMessageStrings ()Ljava/util/Map;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getRelationships ()Ljava/util/List;
+	public final fun getShortDescription ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/SarifRuleJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/SarifRule;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/SarifRule;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/SpecialLocations {
+	public fun <init> ()V
+	public fun <init> (Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/SpecialLocations;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/SpecialLocations;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/SpecialLocations;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDisplayBase ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/SpecialLocationsJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/SpecialLocations;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/SpecialLocations;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Stack {
+	public fun <init> (Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/Stack;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Stack;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Stack;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFrames ()Ljava/util/List;
+	public final fun getMessage ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/StackFrame {
+	public fun <init> ()V
+	public fun <init> (Lmodulecheck/reporting/sarif/Location;Ljava/lang/String;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/Location;Ljava/lang/String;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/Location;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component5 ()Ljava/lang/Integer;
+	public final fun copy (Lmodulecheck/reporting/sarif/Location;Ljava/lang/String;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;)Lmodulecheck/reporting/sarif/StackFrame;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/StackFrame;Lmodulecheck/reporting/sarif/Location;Ljava/lang/String;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/Integer;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/StackFrame;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLocation ()Lmodulecheck/reporting/sarif/Location;
+	public final fun getModule ()Ljava/lang/String;
+	public final fun getParameters ()Ljava/util/List;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getThreadID ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/StackFrameJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/StackFrame;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/StackFrame;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/StackJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Stack;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Stack;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/State : java/lang/Enum {
+	public static final field Accepted Lmodulecheck/reporting/sarif/State;
+	public static final field Rejected Lmodulecheck/reporting/sarif/State;
+	public static final field UnderReview Lmodulecheck/reporting/sarif/State;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/State;
+	public static fun values ()[Lmodulecheck/reporting/sarif/State;
+}
+
+public final class modulecheck/reporting/sarif/Suppression {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/SuppressionKind;Lmodulecheck/reporting/sarif/Location;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/State;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/SuppressionKind;Lmodulecheck/reporting/sarif/Location;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/State;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/SuppressionKind;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/Location;
+	public final fun component5 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component6 ()Lmodulecheck/reporting/sarif/State;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/SuppressionKind;Lmodulecheck/reporting/sarif/Location;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/State;)Lmodulecheck/reporting/sarif/Suppression;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Suppression;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/SuppressionKind;Lmodulecheck/reporting/sarif/Location;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/State;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Suppression;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getGuid ()Ljava/lang/String;
+	public final fun getJustification ()Ljava/lang/String;
+	public final fun getKind ()Lmodulecheck/reporting/sarif/SuppressionKind;
+	public final fun getLocation ()Lmodulecheck/reporting/sarif/Location;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getState ()Lmodulecheck/reporting/sarif/State;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/SuppressionJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Suppression;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Suppression;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/SuppressionKind : java/lang/Enum {
+	public static final field External Lmodulecheck/reporting/sarif/SuppressionKind;
+	public static final field InSource Lmodulecheck/reporting/sarif/SuppressionKind;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/SuppressionKind;
+	public static fun values ()[Lmodulecheck/reporting/sarif/SuppressionKind;
+}
+
+public final class modulecheck/reporting/sarif/ThreadFlow {
+	public fun <init> (Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun component3 ()Ljava/util/Map;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Lmodulecheck/reporting/sarif/Message;
+	public final fun component6 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/ThreadFlow;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ThreadFlow;Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/util/List;Lmodulecheck/reporting/sarif/Message;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ThreadFlow;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Ljava/lang/String;
+	public final fun getImmutableState ()Ljava/util/Map;
+	public final fun getInitialState ()Ljava/util/Map;
+	public final fun getLocations ()Ljava/util/List;
+	public final fun getMessage ()Lmodulecheck/reporting/sarif/Message;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ThreadFlowJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ThreadFlow;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ThreadFlow;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ThreadFlowLocation {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Integer;Ljava/lang/String;Lmodulecheck/reporting/sarif/Importance;Ljava/lang/Integer;Ljava/util/List;Lmodulecheck/reporting/sarif/Location;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Stack;Ljava/util/Map;Ljava/util/List;Lmodulecheck/reporting/sarif/WebRequest;Lmodulecheck/reporting/sarif/WebResponse;)V
+	public synthetic fun <init> (Ljava/lang/Integer;Ljava/lang/String;Lmodulecheck/reporting/sarif/Importance;Ljava/lang/Integer;Ljava/util/List;Lmodulecheck/reporting/sarif/Location;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Stack;Ljava/util/Map;Ljava/util/List;Lmodulecheck/reporting/sarif/WebRequest;Lmodulecheck/reporting/sarif/WebResponse;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Integer;
+	public final fun component10 ()Lmodulecheck/reporting/sarif/Stack;
+	public final fun component11 ()Ljava/util/Map;
+	public final fun component12 ()Ljava/util/List;
+	public final fun component13 ()Lmodulecheck/reporting/sarif/WebRequest;
+	public final fun component14 ()Lmodulecheck/reporting/sarif/WebResponse;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/Importance;
+	public final fun component4 ()Ljava/lang/Integer;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Lmodulecheck/reporting/sarif/Location;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/lang/Integer;
+	public final fun component9 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Ljava/lang/Integer;Ljava/lang/String;Lmodulecheck/reporting/sarif/Importance;Ljava/lang/Integer;Ljava/util/List;Lmodulecheck/reporting/sarif/Location;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Stack;Ljava/util/Map;Ljava/util/List;Lmodulecheck/reporting/sarif/WebRequest;Lmodulecheck/reporting/sarif/WebResponse;)Lmodulecheck/reporting/sarif/ThreadFlowLocation;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ThreadFlowLocation;Ljava/lang/Integer;Ljava/lang/String;Lmodulecheck/reporting/sarif/Importance;Ljava/lang/Integer;Ljava/util/List;Lmodulecheck/reporting/sarif/Location;Ljava/lang/String;Ljava/lang/Integer;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/Stack;Ljava/util/Map;Ljava/util/List;Lmodulecheck/reporting/sarif/WebRequest;Lmodulecheck/reporting/sarif/WebResponse;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ThreadFlowLocation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExecutionOrder ()Ljava/lang/Integer;
+	public final fun getExecutionTimeUTC ()Ljava/lang/String;
+	public final fun getImportance ()Lmodulecheck/reporting/sarif/Importance;
+	public final fun getIndex ()Ljava/lang/Integer;
+	public final fun getKinds ()Ljava/util/List;
+	public final fun getLocation ()Lmodulecheck/reporting/sarif/Location;
+	public final fun getModule ()Ljava/lang/String;
+	public final fun getNestingLevel ()Ljava/lang/Integer;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getStack ()Lmodulecheck/reporting/sarif/Stack;
+	public final fun getState ()Ljava/util/Map;
+	public final fun getTaxa ()Ljava/util/List;
+	public final fun getWebRequest ()Lmodulecheck/reporting/sarif/WebRequest;
+	public final fun getWebResponse ()Lmodulecheck/reporting/sarif/WebResponse;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ThreadFlowLocationJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ThreadFlowLocation;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ThreadFlowLocation;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Tool {
+	public fun <init> (Lmodulecheck/reporting/sarif/SarifDriver;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/SarifDriver;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/SarifDriver;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Lmodulecheck/reporting/sarif/SarifDriver;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/Tool;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/Tool;Lmodulecheck/reporting/sarif/SarifDriver;Ljava/util/List;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/Tool;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDriver ()Lmodulecheck/reporting/sarif/SarifDriver;
+	public final fun getExtensions ()Ljava/util/List;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ToolComponentReference {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/Integer;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun copy (Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;)Lmodulecheck/reporting/sarif/ToolComponentReference;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/ToolComponentReference;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/ToolComponentReference;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getGuid ()Ljava/lang/String;
+	public final fun getIndex ()Ljava/lang/Integer;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ToolComponentReferenceJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/ToolComponentReference;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/ToolComponentReference;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/ToolJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/Tool;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/Tool;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/TranslationMetadata {
+	public fun <init> (Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/MultiformatMessageString;)V
+	public synthetic fun <init> (Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/MultiformatMessageString;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component7 ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun copy (Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/MultiformatMessageString;)Lmodulecheck/reporting/sarif/TranslationMetadata;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/TranslationMetadata;Ljava/lang/String;Lmodulecheck/reporting/sarif/MultiformatMessageString;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/PropertyBag;Lmodulecheck/reporting/sarif/MultiformatMessageString;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/TranslationMetadata;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDownloadURI ()Ljava/lang/String;
+	public final fun getFullDescription ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public final fun getFullName ()Ljava/lang/String;
+	public final fun getInformationURI ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getShortDescription ()Lmodulecheck/reporting/sarif/MultiformatMessageString;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/TranslationMetadataJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/TranslationMetadata;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/TranslationMetadata;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/Version : java/lang/Enum {
+	public static final field The210 Lmodulecheck/reporting/sarif/Version;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/Version;
+	public static fun values ()[Lmodulecheck/reporting/sarif/Version;
+}
+
+public final class modulecheck/reporting/sarif/VersionControlDetails {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun component4 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/reporting/sarif/VersionControlDetails;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/VersionControlDetails;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/reporting/sarif/ArtifactLocation;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/VersionControlDetails;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAsOfTimeUTC ()Ljava/lang/String;
+	public final fun getBranch ()Ljava/lang/String;
+	public final fun getMappedTo ()Lmodulecheck/reporting/sarif/ArtifactLocation;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getRepositoryURI ()Ljava/lang/String;
+	public final fun getRevisionID ()Ljava/lang/String;
+	public final fun getRevisionTag ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/VersionControlDetailsJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/VersionControlDetails;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/VersionControlDetails;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/WebRequest {
+	public fun <init> ()V
+	public fun <init> (Lmodulecheck/reporting/sarif/ArtifactContent;Ljava/util/Map;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/ArtifactContent;Ljava/util/Map;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/ArtifactContent;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/util/Map;
+	public final fun component6 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Lmodulecheck/reporting/sarif/ArtifactContent;Ljava/util/Map;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/reporting/sarif/WebRequest;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/WebRequest;Lmodulecheck/reporting/sarif/ArtifactContent;Ljava/util/Map;Ljava/lang/Integer;Ljava/lang/String;Ljava/util/Map;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/WebRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBody ()Lmodulecheck/reporting/sarif/ArtifactContent;
+	public final fun getHeaders ()Ljava/util/Map;
+	public final fun getIndex ()Ljava/lang/Integer;
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getParameters ()Ljava/util/Map;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getProtocol ()Ljava/lang/String;
+	public final fun getTarget ()Ljava/lang/String;
+	public final fun getVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/WebRequestJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/WebRequest;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/WebRequest;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/WebResponse {
+	public fun <init> ()V
+	public fun <init> (Lmodulecheck/reporting/sarif/ArtifactContent;Ljava/util/Map;Ljava/lang/Integer;Ljava/lang/Boolean;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;)V
+	public synthetic fun <init> (Lmodulecheck/reporting/sarif/ArtifactContent;Ljava/util/Map;Ljava/lang/Integer;Ljava/lang/Boolean;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/reporting/sarif/ArtifactContent;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun component4 ()Ljava/lang/Boolean;
+	public final fun component5 ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/lang/Integer;
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Lmodulecheck/reporting/sarif/ArtifactContent;Ljava/util/Map;Ljava/lang/Integer;Ljava/lang/Boolean;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;)Lmodulecheck/reporting/sarif/WebResponse;
+	public static synthetic fun copy$default (Lmodulecheck/reporting/sarif/WebResponse;Lmodulecheck/reporting/sarif/ArtifactContent;Ljava/util/Map;Ljava/lang/Integer;Ljava/lang/Boolean;Lmodulecheck/reporting/sarif/PropertyBag;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/reporting/sarif/WebResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBody ()Lmodulecheck/reporting/sarif/ArtifactContent;
+	public final fun getHeaders ()Ljava/util/Map;
+	public final fun getIndex ()Ljava/lang/Integer;
+	public final fun getNoResponseReceived ()Ljava/lang/Boolean;
+	public final fun getProperties ()Lmodulecheck/reporting/sarif/PropertyBag;
+	public final fun getProtocol ()Ljava/lang/String;
+	public final fun getReasonPhrase ()Ljava/lang/String;
+	public final fun getStatusCode ()Ljava/lang/Integer;
+	public final fun getVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/sarif/WebResponseJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lmodulecheck/reporting/sarif/WebResponse;
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lmodulecheck/reporting/sarif/WebResponse;)V
+	public fun toString ()Ljava/lang/String;
+}
+

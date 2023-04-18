@@ -1,0 +1,298 @@
+public abstract interface class modulecheck/parsing/gradle/dsl/AndroidGradleParser {
+	public abstract fun parse (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/gradle/dsl/AndroidGradleSettings {
+	public fun <init> (Ljava/util/List;Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;Ljava/util/List;)Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettings;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettings;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettings;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAndroidBlocks ()Ljava/util/List;
+	public final fun getAssignments ()Ljava/util/List;
+	public final fun getBuildFeaturesBlocks ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/AndroidGradleSettings$AgpBlock : modulecheck/parsing/gradle/dsl/Block {
+}
+
+public final class modulecheck/parsing/gradle/dsl/AndroidGradleSettings$AgpBlock$AndroidBlock : modulecheck/parsing/gradle/dsl/AndroidGradleSettings$AgpBlock {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;)Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettings$AgpBlock$AndroidBlock;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettings$AgpBlock$AndroidBlock;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettings$AgpBlock$AndroidBlock;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getBlockSuppressed ()Ljava/util/List;
+	public fun getFullText ()Ljava/lang/String;
+	public fun getLambdaContent ()Ljava/lang/String;
+	public fun getSettings ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/gradle/dsl/AndroidGradleSettings$AgpBlock$BuildFeaturesBlock : modulecheck/parsing/gradle/dsl/AndroidGradleSettings$AgpBlock {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;)Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettings$AgpBlock$BuildFeaturesBlock;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettings$AgpBlock$BuildFeaturesBlock;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettings$AgpBlock$BuildFeaturesBlock;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getBlockSuppressed ()Ljava/util/List;
+	public fun getFullText ()Ljava/lang/String;
+	public fun getLambdaContent ()Ljava/lang/String;
+	public fun getSettings ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/AndroidGradleSettingsProvider {
+	public abstract fun get (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/AndroidGradleSettingsProvider$Factory {
+	public abstract fun create (Ljava/io/File;)Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettingsProvider;
+}
+
+public final class modulecheck/parsing/gradle/dsl/Assignment : modulecheck/parsing/gradle/dsl/BuildFileStatement {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)Lmodulecheck/parsing/gradle/dsl/Assignment;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/gradle/dsl/Assignment;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/Assignment;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getDeclarationText ()Ljava/lang/String;
+	public final fun getFullText ()Ljava/lang/String;
+	public final fun getPropertyFullName ()Ljava/lang/String;
+	public fun getStatementWithSurroundingText ()Ljava/lang/String;
+	public fun getSuppressed ()Ljava/util/List;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/Block {
+	public abstract fun getBlockSuppressed ()Ljava/util/List;
+	public abstract fun getFullText ()Ljava/lang/String;
+	public abstract fun getLambdaContent ()Ljava/lang/String;
+	public abstract fun getSettings ()Ljava/util/List;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/BuildFileParser {
+	public abstract fun androidSettings (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun dependenciesBlocks (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun pluginsBlock (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/BuildFileParser$Factory {
+	public abstract fun create (Lmodulecheck/parsing/gradle/dsl/InvokesConfigurationNames;)Lmodulecheck/parsing/gradle/dsl/BuildFileParser;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/BuildFileStatement {
+	public abstract fun getDeclarationText ()Ljava/lang/String;
+	public abstract fun getStatementWithSurroundingText ()Ljava/lang/String;
+	public abstract fun getSuppressed ()Ljava/util/List;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/DependenciesBlock : modulecheck/parsing/gradle/dsl/Block, modulecheck/parsing/gradle/dsl/HasSuppressedChildren {
+	public abstract fun getOrEmpty-25SeVdM (Lmodulecheck/model/dependency/MavenCoordinates;Ljava/lang/String;)Ljava/util/List;
+	public abstract fun getOrEmpty-vAhOJHc (Ljava/lang/String;Ljava/lang/String;Z)Ljava/util/List;
+	public abstract fun getOrEmpty-vAhOJHc (Lmodulecheck/model/dependency/ProjectPath;Ljava/lang/String;Z)Ljava/util/List;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/DependenciesBlocksProvider {
+	public abstract fun get (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/DependenciesBlocksProvider$Factory {
+	public abstract fun create (Lmodulecheck/parsing/gradle/dsl/InvokesConfigurationNames;)Lmodulecheck/parsing/gradle/dsl/DependenciesBlocksProvider;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/DependencyDeclaration : modulecheck/parsing/gradle/dsl/BuildFileStatement {
+	public abstract fun getConfigName-9LqIWVA ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform {
+	public abstract fun invoke-KxNpj4Q (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/gradle/dsl/ExternalDependencyDeclaration : modulecheck/parsing/gradle/dsl/DependencyDeclaration {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-9LqIWVA ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Lmodulecheck/model/dependency/MavenCoordinates;
+	public final fun copy-DjjXWn0 (Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun copy-DjjXWn0$default (Lmodulecheck/parsing/gradle/dsl/ExternalDependencyDeclaration;Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;ZLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun copy-opSvFPU (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;)Lmodulecheck/parsing/gradle/dsl/ExternalDependencyDeclaration;
+	public static synthetic fun copy-opSvFPU$default (Lmodulecheck/parsing/gradle/dsl/ExternalDependencyDeclaration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/ExternalDependencyDeclaration;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getConfigName-9LqIWVA ()Ljava/lang/String;
+	public final fun getConfigurationNameTransform ()Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;
+	public final fun getCoordinates ()Lmodulecheck/model/dependency/MavenCoordinates;
+	public fun getDeclarationText ()Ljava/lang/String;
+	public final fun getGroup ()Ljava/lang/String;
+	public final fun getModuleName ()Ljava/lang/String;
+	public fun getStatementWithSurroundingText ()Ljava/lang/String;
+	public fun getSuppressed ()Ljava/util/List;
+	public final fun getVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/HasBuildFile {
+	public abstract fun getBuildFile ()Ljava/io/File;
+	public abstract fun getBuildFileParser ()Lmodulecheck/parsing/gradle/dsl/BuildFileParser;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/HasDependencyDeclarations : modulecheck/model/dependency/HasConfigurations, modulecheck/model/dependency/HasDependencies, modulecheck/parsing/gradle/dsl/HasBuildFile, modulecheck/parsing/gradle/model/PluginAware {
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/HasSuppressedChildren {
+	public abstract fun getAllSuppressions ()Ljava/util/Map;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/HasSuppressions {
+	public abstract fun getSuppressions ()Ljava/util/List;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/InvokesConfigurationNames : modulecheck/model/dependency/HasConfigurations, modulecheck/parsing/gradle/dsl/HasBuildFile, modulecheck/parsing/gradle/dsl/HasDependencyDeclarations, modulecheck/parsing/gradle/model/PluginAware {
+}
+
+public final class modulecheck/parsing/gradle/dsl/InvokesConfigurationNamesKt {
+	public static final fun getConfigurationInvocations (Lmodulecheck/parsing/gradle/dsl/HasDependencyDeclarations;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/gradle/dsl/ModuleDependencyDeclaration : modulecheck/parsing/gradle/dsl/DependencyDeclaration {
+	public synthetic fun <init> (Lmodulecheck/model/dependency/ProjectPath;Lmodulecheck/parsing/gradle/dsl/ProjectAccessor;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lmodulecheck/model/dependency/ProjectPath;Lmodulecheck/parsing/gradle/dsl/ProjectAccessor;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/model/dependency/ProjectPath;
+	public final fun component2 ()Lmodulecheck/parsing/gradle/dsl/ProjectAccessor;
+	public final fun component3-9LqIWVA ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;
+	public final fun copy-DjjXWn0 (Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun copy-DjjXWn0$default (Lmodulecheck/parsing/gradle/dsl/ModuleDependencyDeclaration;Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath;ZLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun copy-TZ-NI2E (Lmodulecheck/model/dependency/ProjectPath;Lmodulecheck/parsing/gradle/dsl/ProjectAccessor;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;)Lmodulecheck/parsing/gradle/dsl/ModuleDependencyDeclaration;
+	public static synthetic fun copy-TZ-NI2E$default (Lmodulecheck/parsing/gradle/dsl/ModuleDependencyDeclaration;Lmodulecheck/model/dependency/ProjectPath;Lmodulecheck/parsing/gradle/dsl/ProjectAccessor;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/ModuleDependencyDeclaration;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getConfigName-9LqIWVA ()Ljava/lang/String;
+	public final fun getConfigurationNameTransform ()Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;
+	public fun getDeclarationText ()Ljava/lang/String;
+	public final fun getProjectAccessor ()Lmodulecheck/parsing/gradle/dsl/ProjectAccessor;
+	public final fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath;
+	public fun getStatementWithSurroundingText ()Ljava/lang/String;
+	public fun getSuppressed ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/gradle/dsl/PluginDeclaration : modulecheck/parsing/gradle/dsl/BuildFileStatement {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)Lmodulecheck/parsing/gradle/dsl/PluginDeclaration;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/gradle/dsl/PluginDeclaration;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/PluginDeclaration;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccessor-HL50354 ()Ljava/lang/String;
+	public fun getDeclarationText ()Ljava/lang/String;
+	public fun getStatementWithSurroundingText ()Ljava/lang/String;
+	public fun getSuppressed ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/PluginsBlock : modulecheck/parsing/gradle/dsl/Block, modulecheck/parsing/gradle/dsl/HasSuppressedChildren {
+	public abstract fun getById (Ljava/lang/String;)Lmodulecheck/parsing/gradle/dsl/PluginDeclaration;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/PluginsBlockProvider {
+	public abstract fun get (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/PluginsBlockProvider$Factory {
+	public abstract fun create (Ljava/io/File;)Lmodulecheck/parsing/gradle/dsl/PluginsBlockProvider;
+}
+
+public abstract interface class modulecheck/parsing/gradle/dsl/ProjectAccessor {
+	public static final field Companion Lmodulecheck/parsing/gradle/dsl/ProjectAccessor$Companion;
+	public abstract fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath;
+	public abstract fun getStatementText ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/gradle/dsl/ProjectAccessor$Companion {
+	public final fun from (Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath;)Lmodulecheck/parsing/gradle/dsl/ProjectAccessor;
+}
+
+public final class modulecheck/parsing/gradle/dsl/ProjectAccessor$StringProjectAccessor : modulecheck/parsing/gradle/dsl/ProjectAccessor {
+	public fun <init> (Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public final fun copy (Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;)Lmodulecheck/parsing/gradle/dsl/ProjectAccessor$StringProjectAccessor;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/gradle/dsl/ProjectAccessor$StringProjectAccessor;Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/ProjectAccessor$StringProjectAccessor;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public synthetic fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath;
+	public fun getStatementText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/gradle/dsl/ProjectAccessor$TypeSafeProjectAccessor : modulecheck/parsing/gradle/dsl/ProjectAccessor {
+	public fun <init> (Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath$TypeSafeProjectPath;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lmodulecheck/model/dependency/ProjectPath$TypeSafeProjectPath;
+	public final fun copy (Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath$TypeSafeProjectPath;)Lmodulecheck/parsing/gradle/dsl/ProjectAccessor$TypeSafeProjectAccessor;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/gradle/dsl/ProjectAccessor$TypeSafeProjectAccessor;Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath$TypeSafeProjectPath;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/ProjectAccessor$TypeSafeProjectAccessor;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath$TypeSafeProjectPath;
+	public synthetic fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath;
+	public fun getStatementText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/gradle/dsl/UnknownDependencyDeclaration : modulecheck/parsing/gradle/dsl/DependencyDeclaration {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2-9LqIWVA ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;
+	public final fun copy-FaMAsxM (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;)Lmodulecheck/parsing/gradle/dsl/UnknownDependencyDeclaration;
+	public static synthetic fun copy-FaMAsxM$default (Lmodulecheck/parsing/gradle/dsl/UnknownDependencyDeclaration;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/UnknownDependencyDeclaration;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getArgument ()Ljava/lang/String;
+	public fun getConfigName-9LqIWVA ()Ljava/lang/String;
+	public final fun getConfigurationNameTransform ()Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration$ConfigurationNameTransform;
+	public fun getDeclarationText ()Ljava/lang/String;
+	public fun getStatementWithSurroundingText ()Ljava/lang/String;
+	public fun getSuppressed ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+

@@ -30,6 +30,12 @@ const val VERSION_NAME = "0.13.0-SNAPSHOT"
 const val SOURCE_WEBSITE = "https://github.com/rbusarow/ModuleCheck"
 const val DOCS_WEBSITE = "https://rbusarow.github.io/ModuleCheck"
 
+var Project.artifactId: String?
+  get() = extras.getOrNullAs("artifactId")
+  set(value) {
+    extras.set("artifactId", value)
+  }
+
 /**
  * "1.6", "1.7", "1.8", etc.
  */

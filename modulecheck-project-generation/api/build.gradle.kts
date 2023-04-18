@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-project-generation-api"
+  published(
+    artifactId = "modulecheck-project-generation-api"
+  )
   anvil()
 }
 

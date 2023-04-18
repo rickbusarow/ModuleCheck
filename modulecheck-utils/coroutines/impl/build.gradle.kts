@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-utils-coroutines-impl"
+  published(
+    artifactId = "modulecheck-utils-coroutines-impl"
+  )
   anvil()
 }
 

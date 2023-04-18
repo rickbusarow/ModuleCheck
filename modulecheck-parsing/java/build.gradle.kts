@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-java"
+  published(
+    artifactId = "modulecheck-parsing-java"
+  )
 }
 
 dependencies {

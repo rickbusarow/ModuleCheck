@@ -1,0 +1,111 @@
+public abstract interface class modulecheck/gradle/platforms/ConfigurationsFactory {
+	public abstract fun create (Lorg/gradle/api/Project;)Lmodulecheck/model/dependency/Configurations;
+}
+
+public final class modulecheck/gradle/platforms/JvmPlatformPluginFactory {
+	public fun <init> (Lmodulecheck/gradle/platforms/ConfigurationsFactory;Lmodulecheck/gradle/platforms/SourceSetsFactory;)V
+	public final fun create (Lorg/gradle/api/Project;Z)Lmodulecheck/model/dependency/JvmPlatformPlugin;
+}
+
+public final class modulecheck/gradle/platforms/JvmPlatformPluginFactoryKt {
+	public static final fun getKotlinExtensionOrNull (Lorg/gradle/api/Project;)Lorg/jetbrains/kotlin/gradle/dsl/KotlinProjectExtension;
+}
+
+public final class modulecheck/gradle/platforms/JvmPlatformPluginFactory_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory;
+	public static final fun newInstance (Lmodulecheck/gradle/platforms/ConfigurationsFactory;Lmodulecheck/gradle/platforms/SourceSetsFactory;)Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory;
+}
+
+public final class modulecheck/gradle/platforms/JvmPlatformPluginFactory_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory_Factory;
+	public final fun newInstance (Lmodulecheck/gradle/platforms/ConfigurationsFactory;Lmodulecheck/gradle/platforms/SourceSetsFactory;)Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory;
+}
+
+public abstract interface class modulecheck/gradle/platforms/KotlinEnvironmentFactory {
+	public abstract fun create-Flv3FUE (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/lang/String;Lmodulecheck/utils/lazy/LazyDeferred;Ljava/util/Collection;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;)Lmodulecheck/parsing/kotlin/compiler/KotlinEnvironment;
+}
+
+public final class modulecheck/gradle/platforms/SourceSetsFactory {
+	public fun <init> (Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lmodulecheck/gradle/platforms/sourcesets/JvmSourceSetsParser;Lmodulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser$Factory;)V
+	public final fun create (Lorg/gradle/api/Project;Lmodulecheck/model/dependency/Configurations;Z)Lmodulecheck/model/dependency/SourceSets;
+}
+
+public final class modulecheck/gradle/platforms/SourceSetsFactory_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/gradle/platforms/SourceSetsFactory_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/SourceSetsFactory_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/gradle/platforms/SourceSetsFactory;
+	public static final fun newInstance (Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lmodulecheck/gradle/platforms/sourcesets/JvmSourceSetsParser;Lmodulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser$Factory;)Lmodulecheck/gradle/platforms/SourceSetsFactory;
+}
+
+public final class modulecheck/gradle/platforms/SourceSetsFactory_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/SourceSetsFactory_Factory;
+	public final fun newInstance (Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lmodulecheck/gradle/platforms/sourcesets/JvmSourceSetsParser;Lmodulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser$Factory;)Lmodulecheck/gradle/platforms/SourceSetsFactory;
+}
+
+public final class modulecheck/gradle/platforms/android/AgpApiAccess {
+	public fun <init> ()V
+	public final fun getAgpVersionOrNull ()Lnet/swiftzer/semver/SemVer;
+	public final fun getAndroidIsInClasspath ()Z
+	public final fun ifSafeOrNull (Lorg/gradle/api/Project;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+}
+
+public final class modulecheck/gradle/platforms/android/AgpApiAccessKt {
+	public static final fun isAndroid (Lorg/gradle/api/Project;Lmodulecheck/gradle/platforms/android/AgpApiAccess;)Z
+}
+
+public final class modulecheck/gradle/platforms/android/AgpApiAccess_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/gradle/platforms/android/AgpApiAccess_Factory;
+	public static final fun create ()Lmodulecheck/gradle/platforms/android/AgpApiAccess_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/gradle/platforms/android/AgpApiAccess;
+	public static final fun newInstance ()Lmodulecheck/gradle/platforms/android/AgpApiAccess;
+}
+
+public abstract interface class modulecheck/gradle/platforms/android/AndroidPlatformPluginFactory {
+	public abstract fun create (Lorg/gradle/api/Project;Lcom/android/build/api/dsl/CommonExtension;Z)Lmodulecheck/model/dependency/AndroidPlatformPlugin;
+}
+
+public final class modulecheck/gradle/platforms/android/SafeAgpApiReferenceScope {
+	public fun <init> (Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lorg/gradle/api/Project;)V
+	public final fun create (Lmodulecheck/gradle/platforms/android/AndroidPlatformPluginFactory;Z)Lmodulecheck/model/dependency/AndroidPlatformPlugin;
+	public final fun create (Lmodulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser$Factory;Lmodulecheck/model/dependency/Configurations;Z)Lmodulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser;
+	public final fun isAndroidAppExtension (Ljava/lang/Object;)Z
+	public final fun isAndroidBaseExtension (Ljava/lang/Object;)Z
+	public final fun isAndroidCommonExtension (Ljava/lang/Object;)Z
+	public final fun isAndroidLibraryExtension (Ljava/lang/Object;)Z
+	public final fun isAndroidTestedExtension (Ljava/lang/Object;)Z
+	public final fun requireBaseExtension ()Lcom/android/build/gradle/BaseExtension;
+	public final fun requireCommonExtension ()Lcom/android/build/api/dsl/CommonExtension;
+}
+
+public abstract interface annotation class modulecheck/gradle/platforms/android/UnsafeDirectAgpApiReference : java/lang/annotation/Annotation {
+}
+
+public final class modulecheck/gradle/platforms/internal/JavaVersionKt {
+	public static final fun toJavaVersion (Lorg/gradle/api/JavaVersion;)Lorg/jetbrains/kotlin/config/JvmTarget;
+}
+
+public abstract interface class modulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser {
+	public abstract fun parse ()Lmodulecheck/model/dependency/SourceSets;
+}
+
+public abstract interface class modulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser$Factory {
+	public abstract fun create (Lmodulecheck/model/dependency/Configurations;Lcom/android/build/gradle/BaseExtension;ZLorg/gradle/api/Project;)Lmodulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser;
+}
+
+public abstract interface class modulecheck/gradle/platforms/sourcesets/JvmSourceSetsParser {
+	public abstract fun parse (Lmodulecheck/model/dependency/Configurations;Lorg/gradle/api/Project;)Lmodulecheck/model/dependency/SourceSets;
+}
+
+public final class modulecheck/gradle/platforms/sourcesets/JvmTargetKt {
+	public static final fun existingFiles (Lorg/gradle/api/file/FileCollection;)Lorg/gradle/api/file/FileCollection;
+	public static final fun jvmTarget (Lorg/gradle/api/Project;)Lorg/jetbrains/kotlin/config/JvmTarget;
+	public static final fun kotlinLanguageVersionOrNull (Lorg/gradle/api/Project;)Lorg/jetbrains/kotlin/config/LanguageVersion;
+}
+

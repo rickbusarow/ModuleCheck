@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-config-fake"
+  published(
+    artifactId = "modulecheck-config-fake"
+  )
   anvil()
 }
 

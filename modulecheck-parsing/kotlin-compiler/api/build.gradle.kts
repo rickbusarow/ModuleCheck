@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-kotlin-compiler-api"
+  published(
+    artifactId = "modulecheck-parsing-kotlin-compiler-api"
+  )
 }
 
 dependencies {

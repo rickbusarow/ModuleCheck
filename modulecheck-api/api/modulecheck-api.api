@@ -1,0 +1,787 @@
+public final class modulecheck/api/DepthFinding : java/lang/Comparable, modulecheck/finding/Finding {
+	public static final field Companion Lmodulecheck/api/DepthFinding$Companion;
+	public synthetic fun <init> (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;ILjava/util/List;Ljava/lang/String;Ljava/io/File;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lmodulecheck/api/DepthFinding;)I
+	public final fun component1 ()Lmodulecheck/project/McProject;
+	public final fun component2 ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public final fun component3 ()I
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5-qrJCKeA ()Ljava/lang/String;
+	public final fun component6 ()Ljava/io/File;
+	public final fun copy-DW0SUTs (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;ILjava/util/List;Ljava/lang/String;Ljava/io/File;)Lmodulecheck/api/DepthFinding;
+	public static synthetic fun copy-DW0SUTs$default (Lmodulecheck/api/DepthFinding;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;ILjava/util/List;Ljava/lang/String;Ljava/io/File;ILjava/lang/Object;)Lmodulecheck/api/DepthFinding;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getBuildFile ()Ljava/io/File;
+	public final fun getChildren ()Ljava/util/List;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public final fun getDepth ()I
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public fun getMessage ()Ljava/lang/String;
+	public fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public final fun getSourceSetName-qrJCKeA ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun toProjectDepth ()Lmodulecheck/api/context/ProjectDepth;
+	public fun toResult (ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/DepthFinding$Companion {
+	public final fun getNAME ()Lmodulecheck/finding/FindingName;
+}
+
+public final class modulecheck/api/context/AndroidBasePackages : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/AndroidBasePackages$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/AndroidBasePackages;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/AndroidBasePackages;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/AndroidBasePackages;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/AndroidBasePackages$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AndroidBasePackagesKt {
+	public static final fun androidBasePackages (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun androidBasePackagesForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AndroidDataBindingDeclarations : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/AndroidDataBindingDeclarations$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/AndroidDataBindingDeclarations;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/AndroidDataBindingDeclarations;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/AndroidDataBindingDeclarations;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/AndroidDataBindingDeclarations$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AndroidDataBindingDeclarationsKt {
+	public static final fun androidDataBindingDeclarations (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun androidDataBindingDeclarationsForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AndroidRDeclaredNames : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/AndroidRDeclaredNames$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/AndroidRDeclaredNames;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/AndroidRDeclaredNames;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/AndroidRDeclaredNames;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/AndroidRDeclaredNames$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AndroidRDeclaredNamesKt {
+	public static final fun androidRDeclaredNameForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun androidRDeclaredNames (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AndroidResourceDeclaredNames : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/AndroidResourceDeclaredNames$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/AndroidResourceDeclaredNames;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/AndroidResourceDeclaredNames;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/AndroidResourceDeclaredNames;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/AndroidResourceDeclaredNames$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AndroidResourceDeclaredNamesKt {
+	public static final fun androidResourceDeclaredNames (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun androidResourceDeclaredNamesForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AndroidResourceReferences : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/AndroidResourceReferences$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/AndroidResourceReferences;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/AndroidResourceReferences;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/AndroidResourceReferences;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/AndroidResourceReferences$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AndroidResourceReferencesKt {
+	public static final fun androidResourceReferencesForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AndroidStylesFiles : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/AndroidStylesFiles$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/AndroidStylesFiles;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/AndroidStylesFiles;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/AndroidStylesFiles;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/AndroidStylesFiles$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AndroidStylesFilesKt {
+	public static final fun androidStylesFiles (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun androidStylesFilesForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AndroidUnqualifiedResources : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/AndroidUnqualifiedResources$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/AndroidUnqualifiedResources;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/AndroidUnqualifiedResources;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/AndroidUnqualifiedResources;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/AndroidUnqualifiedResources$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AndroidUnqualifiedResourcesKt {
+	public static final fun androidUnqualifiedResources (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun androidUnqualifiedResourcesForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AnvilGraph : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/AnvilGraph$Key;
+	public fun <init> (Lmodulecheck/project/McProject;Lmodulecheck/utils/cache/SafeCache;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/project/McProject;Lmodulecheck/utils/cache/SafeCache;)Lmodulecheck/api/context/AnvilGraph;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/AnvilGraph;Lmodulecheck/project/McProject;Lmodulecheck/utils/cache/SafeCache;ILjava/lang/Object;)Lmodulecheck/api/context/AnvilGraph;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public final fun mergedScopeNames (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/AnvilGraph$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AnvilGraphKt {
+	public static final fun anvilGraph (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AnvilScopeContributions : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/AnvilScopeContributions$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/AnvilScopeContributions;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/AnvilScopeContributions;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/AnvilScopeContributions;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/AnvilScopeContributions$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AnvilScopeContributionsKt {
+	public static final fun anvilScopeContributions (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun anvilScopeContributionsForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AnvilScopeDependencies : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/AnvilScopeDependencies$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/AnvilScopeDependencies;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/AnvilScopeDependencies;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/AnvilScopeDependencies;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/AnvilScopeDependencies$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AnvilScopeDependenciesKt {
+	public static final fun anvilScopeDependencies (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun anvilScopeDependenciesForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AnvilScopeMerges : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/AnvilScopeMerges$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/AnvilScopeMerges;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/AnvilScopeMerges;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/AnvilScopeMerges;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/AnvilScopeMerges$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AnvilScopeMergesKt {
+	public static final fun anvilScopeMerges (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun anvilScopeMergesForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/AnvilScopedDeclarations {
+	public fun <init> (Lmodulecheck/parsing/source/AnvilScopeName;Ljava/util/Set;Ljava/util/Set;)V
+	public final fun component1 ()Lmodulecheck/parsing/source/AnvilScopeName;
+	public final fun component2 ()Ljava/util/Set;
+	public final fun component3 ()Ljava/util/Set;
+	public final fun copy (Lmodulecheck/parsing/source/AnvilScopeName;Ljava/util/Set;Ljava/util/Set;)Lmodulecheck/api/context/AnvilScopedDeclarations;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/AnvilScopedDeclarations;Lmodulecheck/parsing/source/AnvilScopeName;Ljava/util/Set;Ljava/util/Set;ILjava/lang/Object;)Lmodulecheck/api/context/AnvilScopedDeclarations;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContributions ()Ljava/util/Set;
+	public final fun getMerges ()Ljava/util/Set;
+	public final fun getScopeName ()Lmodulecheck/parsing/source/AnvilScopeName;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/ClasspathDependencies : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/ClasspathDependencies$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/ClasspathDependencies;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/ClasspathDependencies;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/ClasspathDependencies;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/ClasspathDependencies$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/ClasspathDependenciesKt {
+	public static final fun classpathDependencies (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/Declarations : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/Declarations$Key;
+	public synthetic fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun get-PbJP7P4 (Ljava/lang/String;ZLmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun get-PbJP7P4$default (Lmodulecheck/api/context/Declarations;Ljava/lang/String;ZLmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+}
+
+public final class modulecheck/api/context/Declarations$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/DeclarationsKt {
+	public static final fun declarations (Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/project/ProjectCache;Lmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun declarations (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun declarations$default (Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/project/ProjectCache;Lmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/DependencySources : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/DependencySources$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/DependencySources;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/DependencySources;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/DependencySources;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public final fun sourceOfOrNull-iA3lRXU (Lmodulecheck/model/dependency/ProjectPath;Ljava/lang/String;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/DependencySources$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/DependencySources$SourceKey {
+	public synthetic fun <init> (Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-qrJCKeA ()Ljava/lang/String;
+	public final fun component2 ()Lmodulecheck/model/dependency/ProjectPath;
+	public final fun component3 ()Z
+	public final fun copy-WsCknJc (Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath;Z)Lmodulecheck/api/context/DependencySources$SourceKey;
+	public static synthetic fun copy-WsCknJc$default (Lmodulecheck/api/context/DependencySources$SourceKey;Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath;ZILjava/lang/Object;)Lmodulecheck/api/context/DependencySources$SourceKey;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDependencyProjectPath ()Lmodulecheck/model/dependency/ProjectPath;
+	public final fun getSourceSetName-qrJCKeA ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isTestFixture ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/api/context/DependencySources$SourceResult {
+}
+
+public final class modulecheck/api/context/DependencySources$SourceResult$Found : modulecheck/api/context/DependencySources$SourceResult {
+	public fun <init> (Lmodulecheck/model/dependency/ProjectDependency;)V
+	public final fun component1 ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun copy (Lmodulecheck/model/dependency/ProjectDependency;)Lmodulecheck/api/context/DependencySources$SourceResult$Found;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/DependencySources$SourceResult$Found;Lmodulecheck/model/dependency/ProjectDependency;ILjava/lang/Object;)Lmodulecheck/api/context/DependencySources$SourceResult$Found;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSourceDependency ()Lmodulecheck/model/dependency/ProjectDependency;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/DependencySources$SourceResult$NOT_PRESENT : modulecheck/api/context/DependencySources$SourceResult {
+	public static final field INSTANCE Lmodulecheck/api/context/DependencySources$SourceResult$NOT_PRESENT;
+}
+
+public final class modulecheck/api/context/DependencySourcesKt {
+	public static final fun dependencySources (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun requireSourceOf-BhXIJPA (Lmodulecheck/project/McProject;Lmodulecheck/project/McProject;Ljava/lang/String;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/Depths : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/Depths$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/Depths;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/Depths;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/Depths;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/Depths$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/DepthsKt {
+	public static final fun depthForSourceSetName-5sj7XBw (Lmodulecheck/project/McProject;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun depths (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/DownstreamProjects : java/util/Set, kotlin/jvm/internal/markers/KMappedMarker, modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/DownstreamProjects$Key;
+	public fun <init> (Ljava/util/Set;)V
+	public synthetic fun add (Ljava/lang/Object;)Z
+	public fun add (Lmodulecheck/model/dependency/DownstreamDependency;)Z
+	public fun addAll (Ljava/util/Collection;)Z
+	public fun clear ()V
+	public final fun contains (Ljava/lang/Object;)Z
+	public fun contains (Lmodulecheck/model/dependency/DownstreamDependency;)Z
+	public fun containsAll (Ljava/util/Collection;)Z
+	public final fun copy (Ljava/util/Set;)Lmodulecheck/api/context/DownstreamProjects;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/DownstreamProjects;Ljava/util/Set;ILjava/lang/Object;)Lmodulecheck/api/context/DownstreamProjects;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun getSize ()I
+	public fun hashCode ()I
+	public fun isEmpty ()Z
+	public fun iterator ()Ljava/util/Iterator;
+	public fun remove (Ljava/lang/Object;)Z
+	public fun removeAll (Ljava/util/Collection;)Z
+	public fun retainAll (Ljava/util/Collection;)Z
+	public final fun size ()I
+	public fun toArray ()[Ljava/lang/Object;
+	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/DownstreamProjects$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/DownstreamProjectsKt {
+	public static final fun dependents (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/GeneratedDeclarations : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/GeneratedDeclarations$Key;
+	public synthetic fun <init> (Lmodulecheck/project/McProject;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun get-WsCknJc (Ljava/lang/String;Lmodulecheck/utils/lazy/LazySet;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+}
+
+public final class modulecheck/api/context/GeneratedDeclarations$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/GeneratedDeclarationsKt {
+	public static final fun generatedDeclarations (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun generatedDeclarations-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun generatedDeclarations-iA3lRXU (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lmodulecheck/utils/lazy/LazySet;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/Imports : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/Imports$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/Imports;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/Imports;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/Imports;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/Imports$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/ImportsKt {
+	public static final fun imports (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun importsForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/InheritedDependencyWithSource {
+	public fun <init> (Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/model/dependency/ProjectDependency;)V
+	public final fun component1 ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun component2 ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun copy (Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/model/dependency/ProjectDependency;)Lmodulecheck/api/context/InheritedDependencyWithSource;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/InheritedDependencyWithSource;Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/model/dependency/ProjectDependency;ILjava/lang/Object;)Lmodulecheck/api/context/InheritedDependencyWithSource;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getProjectDependency ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun getSource ()Lmodulecheck/model/dependency/ProjectDependency;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/JvmFiles : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/JvmFiles$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/JvmFiles;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/JvmFiles;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/JvmFiles;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/JvmFiles$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/JvmFilesKt {
+	public static final fun jvmFiles (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun jvmFilesForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/JvmSourceFiles : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/JvmSourceFiles$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/JvmSourceFiles;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/JvmSourceFiles;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/JvmSourceFiles;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/JvmSourceFiles$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/JvmSourceFilesKt {
+	public static final fun jvmSourceFiles (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun jvmSourcesForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/KaptDependencies : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/KaptDependencies$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/KaptDependencies;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/KaptDependencies;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/KaptDependencies;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-KxNpj4Q (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/KaptDependencies$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/KaptDependenciesKt {
+	public static final fun kaptDependencies (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun kaptDependenciesForConfig-vAhOJHc (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/LayoutFiles : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/LayoutFiles$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/LayoutFiles;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/LayoutFiles;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/LayoutFiles;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/LayoutFiles$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/LayoutFilesKt {
+	public static final fun layoutFiles (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun layoutFilesForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/ManifestFiles : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/ManifestFiles$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/ManifestFiles;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/ManifestFiles;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/ManifestFiles;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/ManifestFiles$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/ManifestFilesKt {
+	public static final fun manifestFileForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun manifestFiles (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/MustBeApi : java/util/Set, kotlin/jvm/internal/markers/KMappedMarker, modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/MustBeApi$Key;
+	public fun <init> (Ljava/util/Set;)V
+	public synthetic fun add (Ljava/lang/Object;)Z
+	public fun add (Lmodulecheck/api/context/InheritedDependencyWithSource;)Z
+	public fun addAll (Ljava/util/Collection;)Z
+	public fun clear ()V
+	public final fun contains (Ljava/lang/Object;)Z
+	public fun contains (Lmodulecheck/api/context/InheritedDependencyWithSource;)Z
+	public fun containsAll (Ljava/util/Collection;)Z
+	public final fun copy (Ljava/util/Set;)Lmodulecheck/api/context/MustBeApi;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/MustBeApi;Ljava/util/Set;ILjava/lang/Object;)Lmodulecheck/api/context/MustBeApi;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun getSize ()I
+	public fun hashCode ()I
+	public fun isEmpty ()Z
+	public fun iterator ()Ljava/util/Iterator;
+	public fun remove (Ljava/lang/Object;)Z
+	public fun removeAll (Ljava/util/Collection;)Z
+	public fun retainAll (Ljava/util/Collection;)Z
+	public final fun size ()I
+	public fun toArray ()[Ljava/lang/Object;
+	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/MustBeApi$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/MustBeApiKt {
+	public static final fun mustBeApi (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun mustBeApiIn-BhXIJPA (Lmodulecheck/project/McProject;Lmodulecheck/project/McProject;Ljava/lang/String;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/ProjectDepth : java/lang/Comparable {
+	public synthetic fun <init> (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;ILjava/util/List;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lmodulecheck/api/context/ProjectDepth;)I
+	public final fun component1 ()Lmodulecheck/project/McProject;
+	public final fun component2 ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public final fun component3 ()I
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5-qrJCKeA ()Ljava/lang/String;
+	public final fun copy-cFAEbwY (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;ILjava/util/List;Ljava/lang/String;)Lmodulecheck/api/context/ProjectDepth;
+	public static synthetic fun copy-cFAEbwY$default (Lmodulecheck/api/context/ProjectDepth;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;ILjava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/api/context/ProjectDepth;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun fullTree-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun fullTree-YJqa9SQ$default (Lmodulecheck/api/context/ProjectDepth;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun getChildren ()Ljava/util/List;
+	public final fun getDependentPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public final fun getDependentProject ()Lmodulecheck/project/McProject;
+	public final fun getDepth ()I
+	public final fun getSourceSetName-qrJCKeA ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun toFinding (Lmodulecheck/finding/FindingName;)Lmodulecheck/api/DepthFinding;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/PublicDependencies : java/util/Set, kotlin/jvm/internal/markers/KMappedMarker, modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/PublicDependencies$Key;
+	public fun <init> (Ljava/util/Set;)V
+	public synthetic fun add (Ljava/lang/Object;)Z
+	public fun add (Lmodulecheck/model/dependency/ProjectDependency;)Z
+	public fun addAll (Ljava/util/Collection;)Z
+	public fun clear ()V
+	public final fun contains (Ljava/lang/Object;)Z
+	public fun contains (Lmodulecheck/model/dependency/ProjectDependency;)Z
+	public fun containsAll (Ljava/util/Collection;)Z
+	public final fun copy (Ljava/util/Set;)Lmodulecheck/api/context/PublicDependencies;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/PublicDependencies;Ljava/util/Set;ILjava/lang/Object;)Lmodulecheck/api/context/PublicDependencies;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun getSize ()I
+	public fun hashCode ()I
+	public fun isEmpty ()Z
+	public fun iterator ()Ljava/util/Iterator;
+	public fun remove (Ljava/lang/Object;)Z
+	public fun removeAll (Ljava/util/Collection;)Z
+	public fun retainAll (Ljava/util/Collection;)Z
+	public final fun size ()I
+	public fun toArray ()[Ljava/lang/Object;
+	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/PublicDependencies$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/PublicDependenciesKt {
+	public static final fun publicDependencies (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/References : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/References$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/References;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/References;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/References;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/References$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/ReferencesKt {
+	public static final fun references (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun referencesForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/ResSourceFiles : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/ResSourceFiles$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/ResSourceFiles;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/ResSourceFiles;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/ResSourceFiles;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/ResSourceFiles$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/ResSourceFilesKt {
+	public static final fun resSourceFiles (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun resourceFilesForSourceSetName-5sj7XBw (Lmodulecheck/project/ProjectContext;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/ResolvedDeclaredNames : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/ResolvedDeclaredNames$Key;
+	public synthetic fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public final fun getSource-5sj7XBw (Lmodulecheck/parsing/source/ResolvableMcName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/ResolvedDeclaredNames$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/ResolvedDeclaredNames$McProjectWithSourceSetName {
+	public synthetic fun <init> (Lmodulecheck/project/McProject;Ljava/lang/String;Lmodulecheck/parsing/source/QualifiedDeclaredName;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/project/McProject;
+	public final fun component2-qrJCKeA ()Ljava/lang/String;
+	public final fun component3 ()Lmodulecheck/parsing/source/QualifiedDeclaredName;
+	public final fun copy-5sj7XBw (Lmodulecheck/project/McProject;Ljava/lang/String;Lmodulecheck/parsing/source/QualifiedDeclaredName;)Lmodulecheck/api/context/ResolvedDeclaredNames$McProjectWithSourceSetName;
+	public static synthetic fun copy-5sj7XBw$default (Lmodulecheck/api/context/ResolvedDeclaredNames$McProjectWithSourceSetName;Lmodulecheck/project/McProject;Ljava/lang/String;Lmodulecheck/parsing/source/QualifiedDeclaredName;ILjava/lang/Object;)Lmodulecheck/api/context/ResolvedDeclaredNames$McProjectWithSourceSetName;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDeclaration ()Lmodulecheck/parsing/source/QualifiedDeclaredName;
+	public final fun getProject ()Lmodulecheck/project/McProject;
+	public final fun getSourceSetName-qrJCKeA ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/ResolvedDeclaredNamesKt {
+	public static final fun resolvedDeclaredNames (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/SourceSetDependencies : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/api/context/SourceSetDependencies$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/SourceSetDependencies;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/SourceSetDependencies;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/SourceSetDependencies;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/api/context/SourceSetDependencies$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/SourceSetDependenciesKt {
+	public static final fun sourceSetDependencies (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/api/context/UsesKt {
+	public static final fun uses (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

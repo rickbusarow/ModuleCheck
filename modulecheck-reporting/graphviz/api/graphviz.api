@@ -1,0 +1,38 @@
+public final class modulecheck/reporting/graphviz/GraphvizFactory {
+	public fun <init> (Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;)V
+	public final fun create (Lmodulecheck/api/context/ProjectDepth;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/reporting/graphviz/GraphvizFactory_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/reporting/graphviz/GraphvizFactory_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/reporting/graphviz/GraphvizFactory_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/reporting/graphviz/GraphvizFactory;
+	public static final fun newInstance (Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;)Lmodulecheck/reporting/graphviz/GraphvizFactory;
+}
+
+public final class modulecheck/reporting/graphviz/GraphvizFactory_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/reporting/graphviz/GraphvizFactory_Factory;
+	public final fun newInstance (Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;)Lmodulecheck/reporting/graphviz/GraphvizFactory;
+}
+
+public final class modulecheck/reporting/graphviz/GraphvizFileWriter {
+	public fun <init> (Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/reporting/graphviz/GraphvizFactory;)V
+	public final fun write (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/reporting/graphviz/GraphvizFileWriter_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/reporting/graphviz/GraphvizFileWriter_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/reporting/graphviz/GraphvizFileWriter_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/reporting/graphviz/GraphvizFileWriter;
+	public static final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/reporting/graphviz/GraphvizFactory;)Lmodulecheck/reporting/graphviz/GraphvizFileWriter;
+}
+
+public final class modulecheck/reporting/graphviz/GraphvizFileWriter_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/reporting/graphviz/GraphvizFileWriter_Factory;
+	public final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/reporting/graphviz/GraphvizFactory;)Lmodulecheck/reporting/graphviz/GraphvizFileWriter;
+}
+

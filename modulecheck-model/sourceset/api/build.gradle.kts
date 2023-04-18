@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-model-sourceset-api"
+  published(
+    artifactId = "modulecheck-model-sourceset-api"
+  )
   anvil()
 }
 

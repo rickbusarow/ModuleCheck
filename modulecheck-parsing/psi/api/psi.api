@@ -1,0 +1,147 @@
+public final class modulecheck/parsing/psi/AndroidPsiKt {
+	public static final fun androidBlocks (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Ljava/util/List;
+	public static final fun buildFeaturesBlocks (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Ljava/util/List;
+	public static final fun inBuildscript (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Z
+}
+
+public final class modulecheck/parsing/psi/ConcatenatingParsingInterceptor : modulecheck/parsing/source/internal/ParsingInterceptor {
+	public synthetic fun <init> (Lmodulecheck/parsing/psi/internal/DeclarationsProvider;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun intercept (Lmodulecheck/parsing/source/internal/ParsingInterceptor$Chain;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/psi/ExternalDependencyDeclarationVisitor {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun find (Lorg/jetbrains/kotlin/psi/KtCallExpression;)Z
+}
+
+public final class modulecheck/parsing/psi/FqNames {
+	public static final field INSTANCE Lmodulecheck/parsing/psi/FqNames;
+	public final fun getInject ()Lorg/jetbrains/kotlin/name/FqName;
+	public final fun getJvmField ()Lorg/jetbrains/kotlin/name/FqName;
+	public final fun getJvmStatic ()Lorg/jetbrains/kotlin/name/FqName;
+}
+
+public final class modulecheck/parsing/psi/KotlinAndroidGradleParser : modulecheck/parsing/gradle/dsl/AndroidGradleParser {
+	public fun <init> (Lmodulecheck/parsing/kotlin/compiler/NoContextPsiFileFactory;)V
+	public fun parse (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/psi/KotlinDependenciesBlock : modulecheck/parsing/gradle/dsl/internal/AbstractDependenciesBlock {
+	public fun getFullText ()Ljava/lang/String;
+	public fun getLambdaContent ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/psi/KotlinDependenciesBlockParser {
+	public fun <init> (Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/parsing/kotlin/compiler/NoContextPsiFileFactory;Lmodulecheck/model/dependency/ProjectDependency$Factory;)V
+	public final fun parse (Lmodulecheck/parsing/gradle/dsl/InvokesConfigurationNames;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/psi/KotlinDependenciesBlockParserKt {
+	public static final fun blockExpressionRecursiveVisitor (Lkotlin/jvm/functions/Function2;)Lorg/jetbrains/kotlin/psi/KtTreeVisitorVoid;
+	public static final fun literalStringTemplateRecursiveVisitor (Lkotlin/jvm/functions/Function2;)Lorg/jetbrains/kotlin/psi/KtTreeVisitorVoid;
+}
+
+public final class modulecheck/parsing/psi/KotlinPluginsBlock : modulecheck/parsing/gradle/dsl/internal/AbstractPluginsBlock {
+	public fun <init> (Lmodulecheck/reporting/logging/McLogger;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public fun getFullText ()Ljava/lang/String;
+	public fun getLambdaContent ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/psi/KotlinPluginsBlockParser {
+	public fun <init> (Lmodulecheck/reporting/logging/McLogger;)V
+	public final fun parse (Lorg/jetbrains/kotlin/psi/KtFile;)Lmodulecheck/parsing/psi/KotlinPluginsBlock;
+}
+
+public final class modulecheck/parsing/psi/KotlinStdLibNamesKt {
+	public static final fun kotlinStdLibNameOrNull (Ljava/lang/String;)Lmodulecheck/parsing/source/QualifiedDeclaredName;
+	public static final fun kotlinStdLibNameOrNull (Lmodulecheck/parsing/source/ReferenceName;)Lmodulecheck/parsing/source/QualifiedDeclaredName;
+}
+
+public final class modulecheck/parsing/psi/PsiElementWithSurroundingText {
+	public fun <init> (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)V
+	public final fun component1 ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+	public final fun copy (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Lmodulecheck/parsing/psi/PsiElementWithSurroundingText;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/psi/PsiElementWithSurroundingText;Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;ILjava/lang/Object;)Lmodulecheck/parsing/psi/PsiElementWithSurroundingText;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPsiElement ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+	public final fun getStatementText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/psi/RealKotlinFile : modulecheck/parsing/source/KotlinFile {
+	public fun <init> (Ljava/io/File;Lorg/jetbrains/kotlin/psi/KtFile;Lmodulecheck/parsing/psi/internal/PsiElementResolver;Lmodulecheck/parsing/source/internal/NameParser;)V
+	public fun getAnvilScopeArguments (Ljava/util/List;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getApiReferences ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public final fun getConstructorInjectedParams ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getDeclarations ()Ljava/util/Set;
+	public fun getFile ()Ljava/io/File;
+	public fun getImportsLazy ()Lkotlin/Lazy;
+	public fun getName ()Ljava/lang/String;
+	public fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiFile;
+	public fun getPsi ()Lorg/jetbrains/kotlin/psi/KtFile;
+	public fun getReferences ()Lmodulecheck/utils/lazy/LazySet;
+}
+
+public final class modulecheck/parsing/psi/ReferenceVisitor : org/jetbrains/kotlin/psi/KtTreeVisitorVoid {
+	public fun <init> ()V
+	public fun visitCallExpression (Lorg/jetbrains/kotlin/psi/KtCallExpression;)V
+	public fun visitCallableReferenceExpression (Lorg/jetbrains/kotlin/psi/KtCallableReferenceExpression;)V
+	public fun visitClassLiteralExpression (Lorg/jetbrains/kotlin/psi/KtClassLiteralExpression;)V
+	public fun visitClassOrObject (Lorg/jetbrains/kotlin/psi/KtClassOrObject;)V
+	public fun visitNamedFunction (Lorg/jetbrains/kotlin/psi/KtNamedFunction;)V
+	public fun visitPrimaryConstructor (Lorg/jetbrains/kotlin/psi/KtPrimaryConstructor;)V
+	public fun visitProperty (Lorg/jetbrains/kotlin/psi/KtProperty;)V
+	public fun visitQualifiedExpression (Lorg/jetbrains/kotlin/psi/KtQualifiedExpression;)V
+	public fun visitReferenceExpression (Lorg/jetbrains/kotlin/psi/KtReferenceExpression;)V
+	public fun visitSecondaryConstructor (Lorg/jetbrains/kotlin/psi/KtSecondaryConstructor;)V
+	public fun visitTypeReference (Lorg/jetbrains/kotlin/psi/KtTypeReference;)V
+}
+
+public abstract interface class modulecheck/parsing/psi/internal/DeclarationsProvider {
+	public abstract fun get-WsCknJc (Ljava/lang/String;Lmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getWithUpstream-WsCknJc (Ljava/lang/String;Lmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun getWithUpstream-WsCknJc$default (Lmodulecheck/parsing/psi/internal/DeclarationsProvider;Ljava/lang/String;Lmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/psi/internal/KtCallableDeclarationKt {
+	public static final fun isJvmField (Lorg/jetbrains/kotlin/psi/KtProperty;)Z
+	public static final fun isJvmStatic (Lorg/jetbrains/kotlin/psi/KtCallableDeclaration;)Z
+	public static final fun jvmNameOrNull (Lorg/jetbrains/kotlin/psi/KtFunction;)Ljava/lang/String;
+	public static final fun jvmNameOrNull (Lorg/jetbrains/kotlin/psi/KtPropertyAccessor;)Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/psi/internal/PsiElementKt {
+	public static final fun asReferenceName (Lorg/jetbrains/kotlin/types/KotlinType;)Lmodulecheck/parsing/source/ReferenceName;
+	public static final fun callSiteName (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Ljava/lang/String;
+	public static final fun canResolveDeclaredName-Hc0XbgE (Lmodulecheck/project/McProject;Lmodulecheck/parsing/source/QualifiedDeclaredName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun canResolveReferenceName-Hc0XbgE (Lmodulecheck/project/McProject;Lmodulecheck/parsing/source/ReferenceName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun declaredNameOrNull-Hc0XbgE (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;Lmodulecheck/project/McProject;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun file (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Ljava/io/File;
+	public static final fun fqNameSafe (Lorg/jetbrains/kotlin/psi/KtNamedDeclaration;)Lorg/jetbrains/kotlin/name/FqName;
+	public static final fun hasAnnotation (Lorg/jetbrains/kotlin/psi/KtAnnotated;Lorg/jetbrains/kotlin/name/FqName;)Z
+	public static final fun identifierName (Lorg/jetbrains/kotlin/psi/KtNamedDeclaration;)Ljava/lang/String;
+	public static final fun isCompanionObject (Lorg/jetbrains/kotlin/psi/KtDeclaration;)Z
+	public static final fun isInCompanionObject (Lorg/jetbrains/kotlin/psi/KtDeclaration;)Z
+	public static final fun isInObject (Lorg/jetbrains/kotlin/psi/KtDeclaration;)Z
+	public static final fun isInObjectOrCompanionObject (Lorg/jetbrains/kotlin/psi/KtDeclaration;)Z
+	public static final fun isQualifiedPropertyOrCallExpression (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Z
+	public static final fun nameSafe (Lorg/jetbrains/kotlin/psi/KtBlockExpression;)Ljava/lang/String;
+	public static final fun nameSafe (Lorg/jetbrains/kotlin/psi/KtCallExpression;)Ljava/lang/String;
+	public static final fun requireReferenceName (Lorg/jetbrains/kotlin/types/KotlinType;)Lmodulecheck/parsing/source/ReferenceName;
+	public static final fun resolveType (Lorg/jetbrains/kotlin/psi/KtProperty;Lorg/jetbrains/kotlin/resolve/BindingContext;)Lorg/jetbrains/kotlin/descriptors/VariableDescriptor;
+	public static final fun returnType (Lorg/jetbrains/kotlin/psi/KtPropertyDelegate;Lorg/jetbrains/kotlin/resolve/BindingContext;)Lorg/jetbrains/kotlin/types/KotlinType;
+}
+
+public final class modulecheck/parsing/psi/internal/PsiElementResolver {
+	public synthetic fun <init> (Lmodulecheck/project/McProject;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun declaredNameOrNull (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/psi/internal/UtilKt {
+	public static final fun getByNameOrIndex (Lorg/jetbrains/kotlin/psi/KtValueArgumentList;ILjava/lang/String;)Lorg/jetbrains/kotlin/psi/KtValueArgument;
+	public static final fun requireSimpleName (Lorg/jetbrains/kotlin/psi/KtElement;)Ljava/lang/String;
+}
+

@@ -1,0 +1,218 @@
+public final class modulecheck/api/KaptMatcher {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)Lmodulecheck/api/KaptMatcher;
+	public static synthetic fun copy$default (Lmodulecheck/api/KaptMatcher;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/api/KaptMatcher;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnnotationImports ()Ljava/util/List;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getProcessor ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun toCodeGeneratorBinding ()Lmodulecheck/config/CodeGeneratorBinding$AnnotationProcessor;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/config/ChecksSettings {
+	public static final field ANVIL_FACTORY_GENERATION_DEFAULT Z
+	public static final field Companion Lmodulecheck/config/ChecksSettings$Companion;
+	public static final field DEPTHS_DEFAULT Z
+	public static final field DISABLE_ANDROID_RESOURCES_DEFAULT Z
+	public static final field DISABLE_VIEW_BINDING_DEFAULT Z
+	public static final field INHERITED_DEPENDENCY_DEFAULT Z
+	public static final field MUST_BE_API_DEFAULT Z
+	public static final field OVERSHOT_DEPENDENCY_DEFAULT Z
+	public static final field REDUNDANT_DEPENDENCY_DEFAULT Z
+	public static final field SORT_DEPENDENCIES_DEFAULT Z
+	public static final field SORT_PLUGINS_DEFAULT Z
+	public static final field UNUSED_DEPENDENCY_DEFAULT Z
+	public static final field UNUSED_KAPT_DEFAULT Z
+	public static final field UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT Z
+	public abstract fun getAnvilFactoryGeneration ()Z
+	public abstract fun getDepths ()Z
+	public abstract fun getDisableAndroidResources ()Z
+	public abstract fun getDisableViewBinding ()Z
+	public abstract fun getInheritedDependency ()Z
+	public abstract fun getMustBeApi ()Z
+	public abstract fun getOverShotDependency ()Z
+	public abstract fun getRedundantDependency ()Z
+	public abstract fun getSortDependencies ()Z
+	public abstract fun getSortPlugins ()Z
+	public abstract fun getUnusedDependency ()Z
+	public abstract fun getUnusedKapt ()Z
+	public abstract fun getUnusedKotlinAndroidExtensions ()Z
+	public abstract fun setAnvilFactoryGeneration (Z)V
+	public abstract fun setDepths (Z)V
+	public abstract fun setDisableAndroidResources (Z)V
+	public abstract fun setDisableViewBinding (Z)V
+	public abstract fun setInheritedDependency (Z)V
+	public abstract fun setMustBeApi (Z)V
+	public abstract fun setOverShotDependency (Z)V
+	public abstract fun setRedundantDependency (Z)V
+	public abstract fun setSortDependencies (Z)V
+	public abstract fun setSortPlugins (Z)V
+	public abstract fun setUnusedDependency (Z)V
+	public abstract fun setUnusedKapt (Z)V
+	public abstract fun setUnusedKotlinAndroidExtensions (Z)V
+}
+
+public final class modulecheck/config/ChecksSettings$Companion {
+	public static final field ANVIL_FACTORY_GENERATION_DEFAULT Z
+	public static final field DEPTHS_DEFAULT Z
+	public static final field DISABLE_ANDROID_RESOURCES_DEFAULT Z
+	public static final field DISABLE_VIEW_BINDING_DEFAULT Z
+	public static final field INHERITED_DEPENDENCY_DEFAULT Z
+	public static final field MUST_BE_API_DEFAULT Z
+	public static final field OVERSHOT_DEPENDENCY_DEFAULT Z
+	public static final field REDUNDANT_DEPENDENCY_DEFAULT Z
+	public static final field SORT_DEPENDENCIES_DEFAULT Z
+	public static final field SORT_PLUGINS_DEFAULT Z
+	public static final field UNUSED_DEPENDENCY_DEFAULT Z
+	public static final field UNUSED_KAPT_DEFAULT Z
+	public static final field UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT Z
+}
+
+public abstract class modulecheck/config/CodeGeneratorBinding : modulecheck/model/dependency/CodeGenerator {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getBaseConfigNames ()Ljava/util/List;
+	public fun getExtensionTypeName ()Ljava/lang/String;
+}
+
+public final class modulecheck/config/CodeGeneratorBinding$AnnotationProcessor : modulecheck/config/CodeGeneratorBinding {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)Lmodulecheck/config/CodeGeneratorBinding$AnnotationProcessor;
+	public static synthetic fun copy$default (Lmodulecheck/config/CodeGeneratorBinding$AnnotationProcessor;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/config/CodeGeneratorBinding$AnnotationProcessor;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAnnotationNames ()Ljava/util/List;
+	public fun getGeneratorMavenCoordinates ()Ljava/lang/String;
+	public fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/config/CodeGeneratorBinding$AnvilExtension : modulecheck/config/CodeGeneratorBinding {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)Lmodulecheck/config/CodeGeneratorBinding$AnvilExtension;
+	public static synthetic fun copy$default (Lmodulecheck/config/CodeGeneratorBinding$AnvilExtension;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/config/CodeGeneratorBinding$AnvilExtension;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAnnotationNames ()Ljava/util/List;
+	public fun getGeneratorMavenCoordinates ()Ljava/lang/String;
+	public fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/config/CodeGeneratorBinding$KotlinCompilerPlugin : modulecheck/config/CodeGeneratorBinding {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/model/dependency/PluginDefinition;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Lmodulecheck/model/dependency/PluginDefinition;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/model/dependency/PluginDefinition;)Lmodulecheck/config/CodeGeneratorBinding$KotlinCompilerPlugin;
+	public static synthetic fun copy$default (Lmodulecheck/config/CodeGeneratorBinding$KotlinCompilerPlugin;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lmodulecheck/model/dependency/PluginDefinition;ILjava/lang/Object;)Lmodulecheck/config/CodeGeneratorBinding$KotlinCompilerPlugin;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAnnotationNames ()Ljava/util/List;
+	public fun getGeneratorMavenCoordinates ()Ljava/lang/String;
+	public final fun getGradlePlugin ()Lmodulecheck/model/dependency/PluginDefinition;
+	public fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/config/CodeGeneratorBinding$KspExtension : modulecheck/config/CodeGeneratorBinding {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)Lmodulecheck/config/CodeGeneratorBinding$KspExtension;
+	public static synthetic fun copy$default (Lmodulecheck/config/CodeGeneratorBinding$KspExtension;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/config/CodeGeneratorBinding$KspExtension;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAnnotationNames ()Ljava/util/List;
+	public fun getGeneratorMavenCoordinates ()Ljava/lang/String;
+	public fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/config/ModuleCheckSettings {
+	public abstract fun getAdditionalCodeGenerators ()Ljava/util/List;
+	public abstract fun getAdditionalKaptMatchers ()Ljava/util/List;
+	public abstract fun getChecks ()Lmodulecheck/config/ChecksSettings;
+	public abstract fun getDeleteUnused ()Z
+	public abstract fun getDoNotCheck ()Ljava/util/Set;
+	public abstract fun getIgnoreUnusedFinding ()Ljava/util/Set;
+	public abstract fun getReports ()Lmodulecheck/config/ReportsSettings;
+	public abstract fun getSort ()Lmodulecheck/config/SortSettings;
+	public abstract fun getTrace ()Z
+	public abstract fun setAdditionalCodeGenerators (Ljava/util/List;)V
+	public abstract fun setAdditionalKaptMatchers (Ljava/util/List;)V
+	public abstract fun setDeleteUnused (Z)V
+	public abstract fun setDoNotCheck (Ljava/util/Set;)V
+	public abstract fun setIgnoreUnusedFinding (Ljava/util/Set;)V
+	public abstract fun setTrace (Z)V
+}
+
+public abstract interface class modulecheck/config/PerModuleReportSettings {
+	public abstract fun getEnabled ()Z
+	public abstract fun getOutputDir ()Ljava/lang/String;
+	public abstract fun setEnabled (Z)V
+	public abstract fun setOutputDir (Ljava/lang/String;)V
+}
+
+public abstract interface class modulecheck/config/ReportSettings {
+	public abstract fun getEnabled ()Z
+	public abstract fun getOutputPath ()Ljava/lang/String;
+	public abstract fun setEnabled (Z)V
+	public abstract fun setOutputPath (Ljava/lang/String;)V
+}
+
+public abstract interface class modulecheck/config/ReportsSettings {
+	public static final field CHECKSTYLE_ENABLED_DEFAULT Z
+	public static final field CHECKSTYLE_PATH_DEFAULT Ljava/lang/String;
+	public static final field Companion Lmodulecheck/config/ReportsSettings$Companion;
+	public static final field DEPTHS_ENABLED_DEFAULT Z
+	public static final field DEPTHS_PATH_DEFAULT Ljava/lang/String;
+	public static final field GRAPH_ENABLED_DEFAULT Z
+	public static final field SARIF_ENABLED_DEFAULT Z
+	public static final field SARIF_PATH_DEFAULT Ljava/lang/String;
+	public static final field TEXT_ENABLED_DEFAULT Z
+	public static final field TEXT_PATH_DEFAULT Ljava/lang/String;
+	public abstract fun getCheckstyle ()Lmodulecheck/config/ReportSettings;
+	public abstract fun getDepths ()Lmodulecheck/config/ReportSettings;
+	public abstract fun getGraphs ()Lmodulecheck/config/PerModuleReportSettings;
+	public abstract fun getSarif ()Lmodulecheck/config/ReportSettings;
+	public abstract fun getText ()Lmodulecheck/config/ReportSettings;
+}
+
+public final class modulecheck/config/ReportsSettings$Companion {
+	public static final field CHECKSTYLE_ENABLED_DEFAULT Z
+	public static final field CHECKSTYLE_PATH_DEFAULT Ljava/lang/String;
+	public static final field DEPTHS_ENABLED_DEFAULT Z
+	public static final field DEPTHS_PATH_DEFAULT Ljava/lang/String;
+	public static final field GRAPH_ENABLED_DEFAULT Z
+	public static final field SARIF_ENABLED_DEFAULT Z
+	public static final field SARIF_PATH_DEFAULT Ljava/lang/String;
+	public static final field TEXT_ENABLED_DEFAULT Z
+	public static final field TEXT_PATH_DEFAULT Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/config/SortSettings {
+	public static final field Companion Lmodulecheck/config/SortSettings$Companion;
+	public abstract fun getDependencyComparators ()Ljava/util/List;
+	public abstract fun getPluginComparators ()Ljava/util/List;
+	public abstract fun setDependencyComparators (Ljava/util/List;)V
+	public abstract fun setPluginComparators (Ljava/util/List;)V
+}
+
+public final class modulecheck/config/SortSettings$Companion {
+	public final fun getDEPENDENCY_COMPARATORS_DEFAULT ()Ljava/util/List;
+	public final fun getPLUGIN_COMPARATORS_DEFAULT ()Ljava/util/List;
+}
+

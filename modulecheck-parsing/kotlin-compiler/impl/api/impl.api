@@ -1,0 +1,123 @@
+public final class anvil/hint/binding/modulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment_FactoryKt {
+	public static final fun getModulecheck_parsing_kotlin_compiler_impl_RealKotlinEnvironment_Factory_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_parsing_kotlin_compiler_impl_RealKotlinEnvironment_Factory_scope0 ()Lkotlin/reflect/KClass;
+}
+
+public final class anvil/hint/binding/modulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory_FactoryKt {
+	public static final fun getModulecheck_parsing_kotlin_compiler_impl_RealMcPsiFileFactory_Factory_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_parsing_kotlin_compiler_impl_RealMcPsiFileFactory_Factory_scope0 ()Lkotlin/reflect/KClass;
+}
+
+public final class anvil/hint/binding/modulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImplKt {
+	public static final fun getModulecheck_parsing_kotlin_compiler_impl_SafeAnalysisResultAccessImpl_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_parsing_kotlin_compiler_impl_SafeAnalysisResultAccessImpl_scope0 ()Lkotlin/reflect/KClass;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess {
+	public fun <init> (Lmodulecheck/project/ProjectCache;)V
+	public final fun dependencyModuleDescriptors-5sj7XBw (Lmodulecheck/model/dependency/ProjectPath;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;
+	public static final fun newInstance (Lmodulecheck/project/ProjectCache;)Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess_Factory;
+	public final fun newInstance (Lmodulecheck/project/ProjectCache;)Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment : modulecheck/parsing/kotlin/compiler/KotlinEnvironment {
+	public synthetic fun <init> (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/lang/String;Lmodulecheck/utils/lazy/LazyDeferred;Ljava/util/Collection;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/utils/lazy/ResetManager;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun bestAvailablePsiFactory (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getAnalysisResultDeferred ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getBindingContextDeferred ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public final fun getClasspathFiles ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getCompilerConfiguration ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getCoreEnvironment ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public final fun getDependencyModuleDescriptorAccess ()Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;
+	public fun getHeavyPsiFactory ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public final fun getJvmTarget ()Lorg/jetbrains/kotlin/config/JvmTarget;
+	public final fun getKotlinLanguageVersion ()Lorg/jetbrains/kotlin/config/LanguageVersion;
+	public fun getLightPsiFactory ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public final fun getLogger ()Lmodulecheck/reporting/logging/McLogger;
+	public fun getModuleDescriptorDeferred ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public final fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public final fun getSourceSetName-qrJCKeA ()Ljava/lang/String;
+	public fun javaPsiFile (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun ktFile (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment$Factory : modulecheck/gradle/platforms/KotlinEnvironmentFactory {
+	public fun <init> (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/reporting/logging/McLogger;)V
+	public synthetic fun create-Flv3FUE (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/lang/String;Lmodulecheck/utils/lazy/LazyDeferred;Ljava/util/Collection;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;)Lmodulecheck/parsing/kotlin/compiler/KotlinEnvironment;
+	public fun create-Flv3FUE (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/lang/String;Lmodulecheck/utils/lazy/LazyDeferred;Ljava/util/Collection;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;)Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment_Factory_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment_Factory_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment_Factory_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment$Factory;
+	public static final fun newInstance (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/reporting/logging/McLogger;)Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment$Factory;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment_Factory_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment_Factory_Factory;
+	public final fun newInstance (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/reporting/logging/McLogger;)Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment$Factory;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory : modulecheck/parsing/kotlin/compiler/internal/AbstractMcPsiFileFactory, modulecheck/parsing/kotlin/compiler/McPsiFileFactory {
+	public fun <init> (Lmodulecheck/parsing/kotlin/compiler/KotlinEnvironment;)V
+	public fun getCoreEnvironment ()Lmodulecheck/utils/lazy/LazyDeferred;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory$Factory : modulecheck/parsing/kotlin/compiler/McPsiFileFactory$Factory {
+	public fun <init> ()V
+	public synthetic fun create (Lmodulecheck/parsing/kotlin/compiler/KotlinEnvironment;)Lmodulecheck/parsing/kotlin/compiler/McPsiFileFactory;
+	public fun create (Lmodulecheck/parsing/kotlin/compiler/KotlinEnvironment;)Lmodulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory_Factory_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory_Factory_Factory;
+	public static final fun create ()Lmodulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory_Factory_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory$Factory;
+	public static final fun newInstance ()Lmodulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory$Factory;
+}
+
+public abstract interface class modulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccess {
+	public abstract fun withLeases-BhXIJPA (Lmodulecheck/parsing/kotlin/compiler/HasAnalysisResult;Lmodulecheck/model/dependency/ProjectPath;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl : modulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccess {
+	public fun <init> (Lmodulecheck/project/ProjectCache;)V
+	public fun withLeases-BhXIJPA (Lmodulecheck/parsing/kotlin/compiler/HasAnalysisResult;Lmodulecheck/model/dependency/ProjectPath;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl;
+	public static final fun newInstance (Lmodulecheck/project/ProjectCache;)Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl_Factory;
+	public final fun newInstance (Lmodulecheck/project/ProjectCache;)Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/VersionNeutralTopDownAnalyzerFacadeForJVM {
+	public static final field INSTANCE Lmodulecheck/parsing/kotlin/compiler/impl/VersionNeutralTopDownAnalyzerFacadeForJVM;
+	public final fun analyzeFilesWithJavaIntegration (Lorg/jetbrains/kotlin/com/intellij/openapi/project/Project;Ljava/util/Collection;Lorg/jetbrains/kotlin/resolve/BindingTrace;Lorg/jetbrains/kotlin/config/CompilerConfiguration;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lorg/jetbrains/kotlin/com/intellij/psi/search/GlobalSearchScope;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lorg/jetbrains/kotlin/resolve/TargetEnvironment;)Lorg/jetbrains/kotlin/analyzer/AnalysisResult;
+	public static synthetic fun analyzeFilesWithJavaIntegration$default (Lmodulecheck/parsing/kotlin/compiler/impl/VersionNeutralTopDownAnalyzerFacadeForJVM;Lorg/jetbrains/kotlin/com/intellij/openapi/project/Project;Ljava/util/Collection;Lorg/jetbrains/kotlin/resolve/BindingTrace;Lorg/jetbrains/kotlin/config/CompilerConfiguration;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lorg/jetbrains/kotlin/com/intellij/psi/search/GlobalSearchScope;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lorg/jetbrains/kotlin/resolve/TargetEnvironment;ILjava/lang/Object;)Lorg/jetbrains/kotlin/analyzer/AnalysisResult;
+}
+

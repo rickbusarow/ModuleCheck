@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-reporting-sarif"
+  published(
+    artifactId = "modulecheck-reporting-sarif"
+  )
   anvil()
   ksp()
 }

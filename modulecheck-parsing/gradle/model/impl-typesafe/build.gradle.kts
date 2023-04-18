@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-gradle-model-impl-typesafe"
+  published(
+    artifactId = "modulecheck-parsing-gradle-model-impl-typesafe"
+  )
   anvil()
 }
 

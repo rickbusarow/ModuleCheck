@@ -41,9 +41,7 @@ abstract class DokkaConventionPlugin : Plugin<Project> {
       // The default moduleName for each module in the module list is its unqualified "name",
       // meaning the list would be full of "api", "impl", etc.  Instead, use the module's maven
       // artifact ID, if it has one, or default to its full Gradle path for internal modules.
-      val fullModuleName = target.extensions.findByType(ArtifactIdExtension::class.java)
-        ?.artifactId
-        ?: target.path.removePrefix(":")
+      val fullModuleName = target.artifactId ?: target.path.removePrefix(":")
       task.moduleName.set(fullModuleName)
 
       if (target != target.rootProject) {

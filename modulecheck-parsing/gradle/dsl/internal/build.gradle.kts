@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-gradle-dsl-internal"
+  published(
+    artifactId = "modulecheck-parsing-gradle-dsl-internal"
+  )
   anvil()
 }
 

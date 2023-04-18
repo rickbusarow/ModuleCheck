@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-utils-trace-testing"
+  published(
+    artifactId = "modulecheck-utils-trace-testing"
+  )
 }
 
 dependencies {

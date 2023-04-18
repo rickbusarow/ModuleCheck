@@ -1,0 +1,21 @@
+public final class modulecheck/reporting/logging/test/ReportingLogger : modulecheck/reporting/logging/McLogger {
+	public fun <init> ()V
+	public fun <init> (Z)V
+	public synthetic fun <init> (ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun clear ()V
+	public final fun collectReport ()Lmodulecheck/reporting/logging/Report;
+	public fun printFailure (Ljava/lang/String;)V
+	public fun printFailureHeader (Ljava/lang/String;)V
+	public fun printFailureLine (Ljava/lang/String;)V
+	public fun printHeader (Ljava/lang/String;)V
+	public fun printHeaderLine (Ljava/lang/String;)V
+	public fun printInfo (Ljava/lang/String;)V
+	public fun printInfoLine (Ljava/lang/String;)V
+	public fun printReport (Lmodulecheck/reporting/logging/Report;)V
+	public fun printSuccess (Ljava/lang/String;)V
+	public fun printSuccessHeader (Ljava/lang/String;)V
+	public fun printSuccessLine (Ljava/lang/String;)V
+	public fun printWarning (Ljava/lang/String;)V
+	public fun printWarningLine (Ljava/lang/String;)V
+}
+

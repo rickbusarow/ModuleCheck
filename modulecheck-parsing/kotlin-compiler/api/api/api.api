@@ -1,0 +1,46 @@
+public abstract interface class modulecheck/parsing/kotlin/compiler/HasAnalysisResult {
+	public abstract fun getAnalysisResultDeferred ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public abstract fun getBindingContextDeferred ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public abstract fun getModuleDescriptorDeferred ()Lmodulecheck/utils/lazy/LazyDeferred;
+}
+
+public abstract interface class modulecheck/parsing/kotlin/compiler/KotlinEnvironment : modulecheck/parsing/kotlin/compiler/HasAnalysisResult {
+	public abstract fun bestAvailablePsiFactory (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getCompilerConfiguration ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public abstract fun getCoreEnvironment ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public abstract fun getHeavyPsiFactory ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public abstract fun getLightPsiFactory ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public abstract fun javaPsiFile (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun ktFile (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/kotlin/compiler/McPsiFileFactory {
+	public abstract fun createJava (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun createKotlin (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/kotlin/compiler/McPsiFileFactory$Factory {
+	public abstract fun create (Lmodulecheck/parsing/kotlin/compiler/KotlinEnvironment;)Lmodulecheck/parsing/kotlin/compiler/McPsiFileFactory;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/NoContextPsiFileFactory : modulecheck/parsing/kotlin/compiler/internal/AbstractMcPsiFileFactory, modulecheck/parsing/kotlin/compiler/McPsiFileFactory {
+	public fun <init> ()V
+	public final fun createJava (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun createKotlin (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getCoreEnvironment ()Lmodulecheck/utils/lazy/LazyDeferred;
+}
+
+public abstract class modulecheck/parsing/kotlin/compiler/internal/AbstractMcPsiFileFactory : modulecheck/parsing/kotlin/compiler/McPsiFileFactory {
+	public fun <init> ()V
+	protected abstract fun create (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun createJava (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun createKotlin (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getCoreEnvironment ()Lmodulecheck/utils/lazy/LazyDeferred;
+}
+
+public final class modulecheck/parsing/kotlin/compiler/internal/FilesKt {
+	public static final fun isKotlinFile (Ljava/io/File;)Z
+	public static final fun isKotlinScriptFile (Ljava/io/File;)Z
+	public static final fun isKtFile (Ljava/io/File;)Z
+}
+

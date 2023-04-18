@@ -1,0 +1,79 @@
+public final class modulecheck/runtime/ModuleCheckRunner {
+	public fun <init> (Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/rule/FindingFactory;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/finding/FindingResultFactory;Lmodulecheck/reporting/console/ReportFactory;Lmodulecheck/reporting/checkstyle/CheckstyleReporter;Lmodulecheck/reporting/graphviz/GraphvizFileWriter;Ldispatch/core/DispatcherProvider;Lmodulecheck/reporting/sarif/SarifReportFactory;Lmodulecheck/project/ProjectProvider;Ljava/util/List;Z)V
+	public final fun component1 ()Lmodulecheck/config/ModuleCheckSettings;
+	public final fun component10 ()Lmodulecheck/project/ProjectProvider;
+	public final fun component11 ()Ljava/util/List;
+	public final fun component12 ()Z
+	public final fun component2 ()Lmodulecheck/rule/FindingFactory;
+	public final fun component3 ()Lmodulecheck/reporting/logging/McLogger;
+	public final fun component4 ()Lmodulecheck/finding/FindingResultFactory;
+	public final fun component5 ()Lmodulecheck/reporting/console/ReportFactory;
+	public final fun component6 ()Lmodulecheck/reporting/checkstyle/CheckstyleReporter;
+	public final fun component7 ()Lmodulecheck/reporting/graphviz/GraphvizFileWriter;
+	public final fun component8 ()Ldispatch/core/DispatcherProvider;
+	public final fun component9 ()Lmodulecheck/reporting/sarif/SarifReportFactory;
+	public final fun copy (Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/rule/FindingFactory;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/finding/FindingResultFactory;Lmodulecheck/reporting/console/ReportFactory;Lmodulecheck/reporting/checkstyle/CheckstyleReporter;Lmodulecheck/reporting/graphviz/GraphvizFileWriter;Ldispatch/core/DispatcherProvider;Lmodulecheck/reporting/sarif/SarifReportFactory;Lmodulecheck/project/ProjectProvider;Ljava/util/List;Z)Lmodulecheck/runtime/ModuleCheckRunner;
+	public static synthetic fun copy$default (Lmodulecheck/runtime/ModuleCheckRunner;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/rule/FindingFactory;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/finding/FindingResultFactory;Lmodulecheck/reporting/console/ReportFactory;Lmodulecheck/reporting/checkstyle/CheckstyleReporter;Lmodulecheck/reporting/graphviz/GraphvizFileWriter;Ldispatch/core/DispatcherProvider;Lmodulecheck/reporting/sarif/SarifReportFactory;Lmodulecheck/project/ProjectProvider;Ljava/util/List;ZILjava/lang/Object;)Lmodulecheck/runtime/ModuleCheckRunner;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAutoCorrect ()Z
+	public final fun getCheckstyleReporter ()Lmodulecheck/reporting/checkstyle/CheckstyleReporter;
+	public final fun getDispatcherProvider ()Ldispatch/core/DispatcherProvider;
+	public final fun getFindingFactory ()Lmodulecheck/rule/FindingFactory;
+	public final fun getFindingResultFactory ()Lmodulecheck/finding/FindingResultFactory;
+	public final fun getGraphvizFileWriter ()Lmodulecheck/reporting/graphviz/GraphvizFileWriter;
+	public final fun getLogger ()Lmodulecheck/reporting/logging/McLogger;
+	public final fun getProjectProvider ()Lmodulecheck/project/ProjectProvider;
+	public final fun getReportFactory ()Lmodulecheck/reporting/console/ReportFactory;
+	public final fun getRules ()Ljava/util/List;
+	public final fun getSarifReportFactory ()Lmodulecheck/reporting/sarif/SarifReportFactory;
+	public final fun getSettings ()Lmodulecheck/config/ModuleCheckSettings;
+	public fun hashCode ()I
+	public final fun run-IoAF18A (Ljava/util/List;)Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/runtime/ModuleCheckRunner$Factory {
+	public abstract fun create (Z)Lmodulecheck/runtime/ModuleCheckRunner;
+}
+
+public final class modulecheck/runtime/ModuleCheckRunner$TimedResults {
+	public fun <init> (JLjava/lang/Object;)V
+	public final fun component1 ()J
+	public final fun component2 ()Ljava/lang/Object;
+	public final fun copy (JLjava/lang/Object;)Lmodulecheck/runtime/ModuleCheckRunner$TimedResults;
+	public static synthetic fun copy$default (Lmodulecheck/runtime/ModuleCheckRunner$TimedResults;JLjava/lang/Object;ILjava/lang/Object;)Lmodulecheck/runtime/ModuleCheckRunner$TimedResults;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getData ()Ljava/lang/Object;
+	public final fun getTimeMillis ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/runtime/ModuleCheckRunner_Factory {
+	public static final field Companion Lmodulecheck/runtime/ModuleCheckRunner_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/runtime/ModuleCheckRunner_Factory;
+	public final fun get (Z)Lmodulecheck/runtime/ModuleCheckRunner;
+	public static final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/rule/FindingFactory;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/finding/FindingResultFactory;Lmodulecheck/reporting/console/ReportFactory;Lmodulecheck/reporting/checkstyle/CheckstyleReporter;Lmodulecheck/reporting/graphviz/GraphvizFileWriter;Ldispatch/core/DispatcherProvider;Lmodulecheck/reporting/sarif/SarifReportFactory;Lmodulecheck/project/ProjectProvider;Ljava/util/List;Z)Lmodulecheck/runtime/ModuleCheckRunner;
+}
+
+public final class modulecheck/runtime/ModuleCheckRunner_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/runtime/ModuleCheckRunner_Factory;
+	public final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/rule/FindingFactory;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/finding/FindingResultFactory;Lmodulecheck/reporting/console/ReportFactory;Lmodulecheck/reporting/checkstyle/CheckstyleReporter;Lmodulecheck/reporting/graphviz/GraphvizFileWriter;Ldispatch/core/DispatcherProvider;Lmodulecheck/reporting/sarif/SarifReportFactory;Lmodulecheck/project/ProjectProvider;Ljava/util/List;Z)Lmodulecheck/runtime/ModuleCheckRunner;
+}
+
+public final class modulecheck/runtime/ModuleCheckRunner_Factory_Impl : modulecheck/runtime/ModuleCheckRunner$Factory {
+	public static final field Companion Lmodulecheck/runtime/ModuleCheckRunner_Factory_Impl$Companion;
+	public fun <init> (Lmodulecheck/runtime/ModuleCheckRunner_Factory;)V
+	public static final fun create (Lmodulecheck/runtime/ModuleCheckRunner_Factory;)Ljavax/inject/Provider;
+	public fun create (Z)Lmodulecheck/runtime/ModuleCheckRunner;
+}
+
+public final class modulecheck/runtime/ModuleCheckRunner_Factory_Impl$Companion {
+	public final fun create (Lmodulecheck/runtime/ModuleCheckRunner_Factory;)Ljavax/inject/Provider;
+}
+
+public abstract interface class modulecheck/runtime/RunnerComponent {
+	public abstract fun getRunnerFactory ()Lmodulecheck/runtime/ModuleCheckRunner$Factory;
+}
+

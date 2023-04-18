@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-dagger"
+  published(
+    artifactId = "modulecheck-dagger"
+  )
   anvil()
 }
 

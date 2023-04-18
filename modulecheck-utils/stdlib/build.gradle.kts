@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-utils-stdlib"
+  published(
+    artifactId = "modulecheck-utils-stdlib"
+  )
 }
 
 dependencies {

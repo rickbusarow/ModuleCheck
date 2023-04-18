@@ -1,0 +1,12 @@
+public abstract class modulecheck/project/test/ProjectTest : modulecheck/testing/BaseTest, modulecheck/project/generation/ProjectCollector {
+	public fun <init> ()V
+	public final fun addDependency-fCcoXlo (Lmodulecheck/project/McProject;Ljava/lang/String;Lmodulecheck/project/McProject;Z)V
+	public static synthetic fun addDependency-fCcoXlo$default (Lmodulecheck/project/test/ProjectTest;Lmodulecheck/project/McProject;Ljava/lang/String;Lmodulecheck/project/McProject;ZILjava/lang/Object;)V
+	public fun getCodeGeneratorBindings ()Ljava/util/List;
+	public fun getDependencyModuleDescriptorAccess ()Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;
+	public fun getProjectCache ()Lmodulecheck/project/ProjectCache;
+	public final fun getProjectDependencyFactory ()Lmodulecheck/model/dependency/ProjectDependency$Factory;
+	public fun getRoot ()Ljava/io/File;
+	public final fun writeText (Ljava/io/File;Ljava/lang/String;)V
+}
+

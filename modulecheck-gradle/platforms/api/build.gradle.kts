@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-gradle-platform-api"
+  published(
+    artifactId = "modulecheck-gradle-platform-api"
+  )
   anvil()
 }
 
