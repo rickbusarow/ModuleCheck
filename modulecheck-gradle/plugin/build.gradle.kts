@@ -141,6 +141,7 @@ dependencies {
   testImplementation(project(path = ":modulecheck-utils:stdlib"))
 }
 
+@Suppress("UnstableApiUsage")
 gradlePlugin {
   plugins {
     create("moduleCheck") {
@@ -150,21 +151,11 @@ gradlePlugin {
       implementationClass = "modulecheck.gradle.ModuleCheckPlugin"
       version = modulecheck.builds.VERSION_NAME
       description = "Fast dependency graph validation for gradle"
+      tags.addAll("kotlin", "dependencies", "android", "gradle-plugin", "kotlin-compiler-plugin")
     }
   }
-}
-
-pluginBundle {
-  website = "https://github.com/RBusarow/ModuleCheck"
-  vcsUrl = "https://github.com/RBusarow/ModuleCheck"
-  description = "Fast dependency graph validation for gradle"
-
-  (plugins) {
-    "moduleCheck" {
-      displayName = "ModuleCheck"
-      tags = listOf("kotlin", "dependencies", "android", "gradle-plugin", "kotlin-compiler-plugin")
-    }
-  }
+  website.set("https://github.com/RBusarow/ModuleCheck")
+  vcsUrl.set("https://github.com/RBusarow/ModuleCheck")
 }
 
 val integrationTestTask = tasks.register("integrationTest", Test::class) {
