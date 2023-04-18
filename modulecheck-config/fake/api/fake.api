@@ -1,0 +1,124 @@
+public final class modulecheck/config/fake/TestChecksSettings : modulecheck/config/ChecksSettings {
+	public fun <init> ()V
+	public fun <init> (ZZZZZZZZZZZZZ)V
+	public synthetic fun <init> (ZZZZZZZZZZZZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Z
+	public final fun component10 ()Z
+	public final fun component11 ()Z
+	public final fun component12 ()Z
+	public final fun component13 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun component5 ()Z
+	public final fun component6 ()Z
+	public final fun component7 ()Z
+	public final fun component8 ()Z
+	public final fun component9 ()Z
+	public final fun copy (ZZZZZZZZZZZZZ)Lmodulecheck/config/fake/TestChecksSettings;
+	public static synthetic fun copy$default (Lmodulecheck/config/fake/TestChecksSettings;ZZZZZZZZZZZZZILjava/lang/Object;)Lmodulecheck/config/fake/TestChecksSettings;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAnvilFactoryGeneration ()Z
+	public fun getDepths ()Z
+	public fun getDisableAndroidResources ()Z
+	public fun getDisableViewBinding ()Z
+	public fun getInheritedDependency ()Z
+	public fun getMustBeApi ()Z
+	public fun getOverShotDependency ()Z
+	public fun getRedundantDependency ()Z
+	public fun getSortDependencies ()Z
+	public fun getSortPlugins ()Z
+	public fun getUnusedDependency ()Z
+	public fun getUnusedKapt ()Z
+	public fun getUnusedKotlinAndroidExtensions ()Z
+	public fun hashCode ()I
+	public fun setAnvilFactoryGeneration (Z)V
+	public fun setDepths (Z)V
+	public fun setDisableAndroidResources (Z)V
+	public fun setDisableViewBinding (Z)V
+	public fun setInheritedDependency (Z)V
+	public fun setMustBeApi (Z)V
+	public fun setOverShotDependency (Z)V
+	public fun setRedundantDependency (Z)V
+	public fun setSortDependencies (Z)V
+	public fun setSortPlugins (Z)V
+	public fun setUnusedDependency (Z)V
+	public fun setUnusedKapt (Z)V
+	public fun setUnusedKotlinAndroidExtensions (Z)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/config/fake/TestPerModuleReportSettings : modulecheck/config/PerModuleReportSettings {
+	public fun <init> (ZLjava/lang/String;)V
+	public fun getEnabled ()Z
+	public fun getOutputDir ()Ljava/lang/String;
+	public fun setEnabled (Z)V
+	public fun setOutputDir (Ljava/lang/String;)V
+}
+
+public final class modulecheck/config/fake/TestReportSettings : modulecheck/config/ReportSettings {
+	public fun <init> (ZLjava/lang/String;)V
+	public fun getEnabled ()Z
+	public fun getOutputPath ()Ljava/lang/String;
+	public fun setEnabled (Z)V
+	public fun setOutputPath (Ljava/lang/String;)V
+}
+
+public final class modulecheck/config/fake/TestReportsSettings : modulecheck/config/ReportsSettings {
+	public fun <init> ()V
+	public fun <init> (Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/PerModuleReportSettings;)V
+	public synthetic fun <init> (Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/PerModuleReportSettings;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getCheckstyle ()Lmodulecheck/config/ReportSettings;
+	public fun getDepths ()Lmodulecheck/config/ReportSettings;
+	public fun getGraphs ()Lmodulecheck/config/PerModuleReportSettings;
+	public fun getSarif ()Lmodulecheck/config/ReportSettings;
+	public fun getText ()Lmodulecheck/config/ReportSettings;
+}
+
+public final class modulecheck/config/fake/TestSettings : modulecheck/config/ModuleCheckSettings {
+	public fun <init> ()V
+	public fun <init> (ZZLjava/util/Set;Ljava/util/Set;Ljava/util/List;Ljava/util/List;Lmodulecheck/config/ChecksSettings;Lmodulecheck/config/SortSettings;Lmodulecheck/config/ReportsSettings;)V
+	public synthetic fun <init> (ZZLjava/util/Set;Ljava/util/Set;Ljava/util/List;Ljava/util/List;Lmodulecheck/config/ChecksSettings;Lmodulecheck/config/SortSettings;Lmodulecheck/config/ReportsSettings;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun checks (Lkotlin/jvm/functions/Function1;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()Ljava/util/Set;
+	public final fun component4 ()Ljava/util/Set;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Lmodulecheck/config/ChecksSettings;
+	public final fun component8 ()Lmodulecheck/config/SortSettings;
+	public final fun component9 ()Lmodulecheck/config/ReportsSettings;
+	public final fun copy (ZZLjava/util/Set;Ljava/util/Set;Ljava/util/List;Ljava/util/List;Lmodulecheck/config/ChecksSettings;Lmodulecheck/config/SortSettings;Lmodulecheck/config/ReportsSettings;)Lmodulecheck/config/fake/TestSettings;
+	public static synthetic fun copy$default (Lmodulecheck/config/fake/TestSettings;ZZLjava/util/Set;Ljava/util/Set;Ljava/util/List;Ljava/util/List;Lmodulecheck/config/ChecksSettings;Lmodulecheck/config/SortSettings;Lmodulecheck/config/ReportsSettings;ILjava/lang/Object;)Lmodulecheck/config/fake/TestSettings;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAdditionalCodeGenerators ()Ljava/util/List;
+	public fun getAdditionalKaptMatchers ()Ljava/util/List;
+	public fun getChecks ()Lmodulecheck/config/ChecksSettings;
+	public fun getDeleteUnused ()Z
+	public fun getDoNotCheck ()Ljava/util/Set;
+	public fun getIgnoreUnusedFinding ()Ljava/util/Set;
+	public fun getReports ()Lmodulecheck/config/ReportsSettings;
+	public fun getSort ()Lmodulecheck/config/SortSettings;
+	public fun getTrace ()Z
+	public fun hashCode ()I
+	public fun setAdditionalCodeGenerators (Ljava/util/List;)V
+	public fun setAdditionalKaptMatchers (Ljava/util/List;)V
+	public fun setDeleteUnused (Z)V
+	public fun setDoNotCheck (Ljava/util/Set;)V
+	public fun setIgnoreUnusedFinding (Ljava/util/Set;)V
+	public fun setTrace (Z)V
+	public final fun sort (Lkotlin/jvm/functions/Function1;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/config/fake/TestSortSettings : modulecheck/config/SortSettings {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getDependencyComparators ()Ljava/util/List;
+	public fun getPluginComparators ()Ljava/util/List;
+	public fun setDependencyComparators (Ljava/util/List;)V
+	public fun setPluginComparators (Ljava/util/List;)V
+}
+

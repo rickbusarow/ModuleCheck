@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-source-api"
+  published(
+    artifactId = "modulecheck-parsing-source-api"
+  )
   anvil()
 }
 

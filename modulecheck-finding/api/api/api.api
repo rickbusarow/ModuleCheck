@@ -1,0 +1,142 @@
+public abstract interface class modulecheck/finding/AddsDependency : modulecheck/finding/Fixable {
+	public fun addDependency (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun addDependency$suspendImpl (Lmodulecheck/finding/AddsDependency;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getNewDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+}
+
+public abstract interface class modulecheck/finding/ConfigurationFinding {
+	public abstract fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/finding/ConfiguredDependencyFinding : modulecheck/finding/ConfigurationFinding {
+	public abstract fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
+	public abstract fun getDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+}
+
+public abstract interface class modulecheck/finding/Deletable : modulecheck/finding/DependencyFinding, modulecheck/finding/Finding {
+	public fun delete (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun delete$suspendImpl (Lmodulecheck/finding/Deletable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/finding/DependencyFinding {
+	public abstract fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public abstract fun getStatementTextOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+}
+
+public abstract interface class modulecheck/finding/Finding {
+	public abstract fun getBuildFile ()Ljava/io/File;
+	public abstract fun getDependencyIdentifier ()Ljava/lang/String;
+	public abstract fun getDependentPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public abstract fun getDependentProject ()Lmodulecheck/project/McProject;
+	public abstract fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public abstract fun getMessage ()Ljava/lang/String;
+	public abstract fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public abstract fun toResult (ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/finding/Finding$FindingResult {
+	public fun <init> (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/finding/FindingName;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/finding/Finding$Position;Ljava/io/File;Ljava/lang/String;Z)V
+	public final fun component1 ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public final fun component2 ()Lmodulecheck/finding/FindingName;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Lmodulecheck/finding/Finding$Position;
+	public final fun component7 ()Ljava/io/File;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Z
+	public final fun copy (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/finding/FindingName;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/finding/Finding$Position;Ljava/io/File;Ljava/lang/String;Z)Lmodulecheck/finding/Finding$FindingResult;
+	public static synthetic fun copy$default (Lmodulecheck/finding/Finding$FindingResult;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/finding/FindingName;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/finding/Finding$Position;Ljava/io/File;Ljava/lang/String;ZILjava/lang/Object;)Lmodulecheck/finding/Finding$FindingResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBuildFile ()Ljava/io/File;
+	public final fun getConfigurationName ()Ljava/lang/String;
+	public final fun getDependencyIdentifier ()Ljava/lang/String;
+	public final fun getDependentPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public final fun getFilePathString ()Ljava/lang/String;
+	public final fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public final fun getFixed ()Z
+	public final fun getMessage ()Ljava/lang/String;
+	public final fun getPositionOrNull ()Lmodulecheck/finding/Finding$Position;
+	public final fun getSourceOrNull ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/Finding$Position : java/lang/Comparable {
+	public fun <init> (II)V
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lmodulecheck/finding/Finding$Position;)I
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun copy (II)Lmodulecheck/finding/Finding$Position;
+	public static synthetic fun copy$default (Lmodulecheck/finding/Finding$Position;IIILjava/lang/Object;)Lmodulecheck/finding/Finding$Position;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getColumn ()I
+	public final fun getRow ()I
+	public fun hashCode ()I
+	public final fun logString ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/finding/FindingResultFactory {
+	public abstract fun create (Ljava/util/List;ZZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/finding/Fixable : modulecheck/finding/Finding, modulecheck/finding/Problem {
+	public static final field Companion Lmodulecheck/finding/Fixable$Companion;
+	public static final field FIX_LABEL Ljava/lang/String;
+	public fun fix (Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun fix$suspendImpl (Lmodulecheck/finding/Fixable;Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun fixLabel ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/Fixable$Companion {
+	public static final field FIX_LABEL Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/finding/ModifiesProjectDependency : modulecheck/finding/AddsDependency, modulecheck/finding/RemovesDependency {
+}
+
+public abstract interface class modulecheck/finding/Problem : modulecheck/finding/DependencyFinding, modulecheck/finding/Finding {
+	public fun isSuppressed ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun toResult (ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun toResult$suspendImpl (Lmodulecheck/finding/Problem;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/finding/ProjectDependencyFinding : modulecheck/finding/ConfigurationFinding, modulecheck/finding/ConfiguredDependencyFinding {
+	public abstract fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
+	public abstract fun getDependency ()Lmodulecheck/model/dependency/ProjectDependency;
+}
+
+public abstract interface class modulecheck/finding/RemovesDependency : modulecheck/finding/Fixable {
+	public abstract fun getOldDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun removeDependency (Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun removeDependency$suspendImpl (Lmodulecheck/finding/RemovesDependency;Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/finding/RemovesDependency$RemovalStrategy : java/lang/Enum {
+	public static final field COMMENT Lmodulecheck/finding/RemovesDependency$RemovalStrategy;
+	public static final field DELETE Lmodulecheck/finding/RemovesDependency$RemovalStrategy;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/finding/RemovesDependency$RemovalStrategy;
+	public static fun values ()[Lmodulecheck/finding/RemovesDependency$RemovalStrategy;
+}
+
+public final class modulecheck/finding/Suppressions {
+	public fun <init> (Ljava/util/Map;)V
+	public final fun get (Lmodulecheck/finding/FindingName;)Ljava/util/Set;
+	public final fun get (Lmodulecheck/model/dependency/Dependency;)Ljava/util/Set;
+}
+
+public final class modulecheck/finding/SuppressionsKt {
+	public static final fun getSuppressions (Lmodulecheck/parsing/gradle/dsl/HasBuildFile;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/finding/internal/McProjectKt {
+	public static final fun positionIn (Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun statementOrNullIn (Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/finding/internal/StringKt {
+	public static final fun positionOfStatement (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/finding/Finding$Position;
+}
+

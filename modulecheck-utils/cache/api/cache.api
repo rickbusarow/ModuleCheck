@@ -1,0 +1,12 @@
+public abstract interface class modulecheck/utils/cache/SafeCache : modulecheck/utils/trace/HasTraceTags {
+	public static final field Companion Lmodulecheck/utils/cache/SafeCache$Companion;
+	public abstract fun getOrPut (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getValues ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class modulecheck/utils/cache/SafeCache$Companion {
+	public final fun invoke (Ljava/lang/Iterable;Ljava/util/Map;)Lmodulecheck/utils/cache/SafeCache;
+	public final fun invoke (Ljava/lang/Iterable;[Lkotlin/Pair;)Lmodulecheck/utils/cache/SafeCache;
+	public static synthetic fun invoke$default (Lmodulecheck/utils/cache/SafeCache$Companion;Ljava/lang/Iterable;Ljava/util/Map;ILjava/lang/Object;)Lmodulecheck/utils/cache/SafeCache;
+}
+

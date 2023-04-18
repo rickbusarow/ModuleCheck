@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-reporting-graphviz"
+  published(
+    artifactId = "modulecheck-reporting-graphviz"
+  )
   anvil()
 }
 

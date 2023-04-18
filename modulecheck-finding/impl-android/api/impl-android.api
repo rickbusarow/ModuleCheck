@@ -1,0 +1,54 @@
+public final class modulecheck/finding/android/DisableViewBindingGenerationFinding : modulecheck/finding/Finding, modulecheck/finding/Fixable {
+	public static final field Companion Lmodulecheck/finding/android/DisableViewBindingGenerationFinding$Companion;
+	public fun <init> (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;)V
+	public final fun component1 ()Lmodulecheck/project/McProject;
+	public final fun component2 ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public final fun component3 ()Ljava/io/File;
+	public final fun copy (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;)Lmodulecheck/finding/android/DisableViewBindingGenerationFinding;
+	public static synthetic fun copy$default (Lmodulecheck/finding/android/DisableViewBindingGenerationFinding;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;ILjava/lang/Object;)Lmodulecheck/finding/android/DisableViewBindingGenerationFinding;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun fix (Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getBuildFile ()Ljava/io/File;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public fun getMessage ()Ljava/lang/String;
+	public fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementTextOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/android/DisableViewBindingGenerationFinding$Companion {
+	public final fun getNAME ()Lmodulecheck/finding/FindingName;
+}
+
+public final class modulecheck/finding/android/UnusedResourcesGenerationFinding : modulecheck/finding/Finding, modulecheck/finding/Fixable {
+	public static final field Companion Lmodulecheck/finding/android/UnusedResourcesGenerationFinding$Companion;
+	public fun <init> (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;)V
+	public final fun component1 ()Lmodulecheck/project/McProject;
+	public final fun component2 ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public final fun component3 ()Ljava/io/File;
+	public final fun copy (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;)Lmodulecheck/finding/android/UnusedResourcesGenerationFinding;
+	public static synthetic fun copy$default (Lmodulecheck/finding/android/UnusedResourcesGenerationFinding;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;ILjava/lang/Object;)Lmodulecheck/finding/android/UnusedResourcesGenerationFinding;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun fix (Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getBuildFile ()Ljava/io/File;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public fun getMessage ()Ljava/lang/String;
+	public fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementTextOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/android/UnusedResourcesGenerationFinding$Companion {
+	public final fun getNAME ()Lmodulecheck/finding/FindingName;
+}
+

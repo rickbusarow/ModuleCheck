@@ -1,0 +1,30 @@
+public abstract interface class modulecheck/utils/trace/HasTraceTags {
+	public abstract fun getTags ()Ljava/lang/Iterable;
+}
+
+public abstract class modulecheck/utils/trace/Trace : kotlin/coroutines/CoroutineContext$Element {
+	public static final field Key Lmodulecheck/utils/trace/Trace$Key;
+	public synthetic fun <init> (Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public abstract fun asString ()Ljava/lang/String;
+	public fun fold (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/lang/Object;
+	public fun get (Lkotlin/coroutines/CoroutineContext$Key;)Lkotlin/coroutines/CoroutineContext$Element;
+	public abstract fun getDepth ()I
+	public fun getKey ()Lkotlin/coroutines/CoroutineContext$Key;
+	public final fun getTags ()Ljava/util/List;
+	public fun minusKey (Lkotlin/coroutines/CoroutineContext$Key;)Lkotlin/coroutines/CoroutineContext;
+	public fun plus (Lkotlin/coroutines/CoroutineContext;)Lkotlin/coroutines/CoroutineContext;
+}
+
+public final class modulecheck/utils/trace/Trace$Key : kotlin/coroutines/CoroutineContext$Key {
+	public final fun start ([Ljava/lang/Object;)Lmodulecheck/utils/trace/Trace;
+}
+
+public final class modulecheck/utils/trace/TraceKt {
+	public static final fun requireTrace (Lkotlin/coroutines/CoroutineContext;)Lmodulecheck/utils/trace/Trace;
+	public static final fun trace (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun traced (Ljava/lang/Iterable;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun traced (Lmodulecheck/utils/trace/HasTraceTags;Ljava/lang/Iterable;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun traced (Lmodulecheck/utils/trace/HasTraceTags;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun traced (Lmodulecheck/utils/trace/HasTraceTags;[Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

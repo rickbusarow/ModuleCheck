@@ -1,0 +1,82 @@
+public final class modulecheck/parsing/android/AndroidLayoutParser {
+	public fun <init> ()V
+	public final fun parseResources (Ljava/io/File;)Ljava/util/Set;
+	public final fun parseViews (Ljava/io/File;)Ljava/util/Set;
+}
+
+public final class modulecheck/parsing/android/AndroidManifestParser {
+	public fun <init> ()V
+	public final fun parse (Ljava/io/File;)Ljava/util/Map;
+	public final fun parseResources (Ljava/io/File;)Ljava/util/Set;
+}
+
+public final class modulecheck/parsing/android/AndroidResourceParser {
+	public fun <init> ()V
+	public final fun parseFile (Ljava/io/File;)Ljava/util/Set;
+}
+
+public final class modulecheck/parsing/android/AndroidStylesFile : modulecheck/parsing/android/XmlFile {
+	public fun <init> (Ljava/io/File;)V
+	public final fun component1 ()Ljava/io/File;
+	public final fun copy (Ljava/io/File;)Lmodulecheck/parsing/android/AndroidStylesFile;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/android/AndroidStylesFile;Ljava/io/File;ILjava/lang/Object;)Lmodulecheck/parsing/android/AndroidStylesFile;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getFile ()Ljava/io/File;
+	public final fun getName ()Ljava/lang/String;
+	public fun getReferences ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getResourceReferencesAsRReferences ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/android/AndroidStylesParser {
+	public fun <init> ()V
+	public final fun parseFile (Ljava/io/File;)Ljava/util/Set;
+}
+
+public final class modulecheck/parsing/android/SafeXmlParser {
+	public fun <init> ()V
+	public final fun parse (Ljava/io/File;)Lgroovy/util/Node;
+	public final fun parse (Ljava/lang/String;)Lgroovy/util/Node;
+}
+
+public abstract interface class modulecheck/parsing/android/XmlFile : modulecheck/parsing/source/HasReferences {
+	public static final field Companion Lmodulecheck/parsing/android/XmlFile$Companion;
+	public abstract fun getFile ()Ljava/io/File;
+	public abstract fun getResourceReferencesAsRReferences ()Ljava/util/Set;
+}
+
+public final class modulecheck/parsing/android/XmlFile$Companion {
+	public final fun getREFERENCE_PREFIXES ()Ljava/util/List;
+}
+
+public final class modulecheck/parsing/android/XmlFile$LayoutFile : modulecheck/parsing/android/XmlFile {
+	public fun <init> (Ljava/io/File;)V
+	public final fun component1 ()Ljava/io/File;
+	public final fun copy (Ljava/io/File;)Lmodulecheck/parsing/android/XmlFile$LayoutFile;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/android/XmlFile$LayoutFile;Ljava/io/File;ILjava/lang/Object;)Lmodulecheck/parsing/android/XmlFile$LayoutFile;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCustomViews ()Lkotlin/Lazy;
+	public fun getFile ()Ljava/io/File;
+	public final fun getIdDeclarations ()Ljava/util/Set;
+	public final fun getName ()Ljava/lang/String;
+	public fun getReferences ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getResourceReferencesAsRReferences ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/android/XmlFile$ManifestFile : modulecheck/parsing/android/XmlFile {
+	public fun <init> (Ljava/io/File;)V
+	public final fun component1 ()Ljava/io/File;
+	public final fun copy (Ljava/io/File;)Lmodulecheck/parsing/android/XmlFile$ManifestFile;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/android/XmlFile$ManifestFile;Ljava/io/File;ILjava/lang/Object;)Lmodulecheck/parsing/android/XmlFile$ManifestFile;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBasePackage ()Lmodulecheck/parsing/source/PackageName;
+	public fun getFile ()Ljava/io/File;
+	public fun getReferences ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getResourceReferencesAsRReferences ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+

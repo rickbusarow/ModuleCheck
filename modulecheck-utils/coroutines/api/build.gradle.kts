@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-utils-coroutines-api"
+  published(
+    artifactId = "modulecheck-utils-coroutines-api"
+  )
 }
 
 dependencies {

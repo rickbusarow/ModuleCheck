@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-runtime-api"
+  published(
+    artifactId = "modulecheck-runtime-api"
+  )
   anvil()
 }
 

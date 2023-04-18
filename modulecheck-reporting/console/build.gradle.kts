@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-reporting-console"
+  published(
+    artifactId = "modulecheck-reporting-console"
+  )
   anvil()
 }
 

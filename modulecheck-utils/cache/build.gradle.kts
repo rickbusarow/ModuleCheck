@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-utils-cache"
+  published(
+    artifactId = "modulecheck-utils-cache"
+  )
 }
 
 dependencies {

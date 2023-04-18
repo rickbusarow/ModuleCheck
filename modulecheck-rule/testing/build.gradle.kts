@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-rule-testing"
+  published(
+    artifactId = "modulecheck-rule-testing"
+  )
   dagger()
 }
 

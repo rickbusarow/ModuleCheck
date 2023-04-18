@@ -20,7 +20,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-gradle-platform-internal-android"
+  published(
+    artifactId = "modulecheck-gradle-platform-internal-android"
+  )
   anvil()
 }
 

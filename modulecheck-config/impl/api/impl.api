@@ -1,0 +1,28 @@
+public final class anvil/hint/merge/modulecheck/config/internal/CodeGeneratorBindingsModuleKt {
+	public static final fun getModulecheck_config_internal_CodeGeneratorBindingsModule_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_config_internal_CodeGeneratorBindingsModule_scope0 ()Lkotlin/reflect/KClass;
+}
+
+public final class modulecheck/config/internal/CodeGeneratorBindingsModule {
+	public static final field INSTANCE Lmodulecheck/config/internal/CodeGeneratorBindingsModule;
+	public final fun provideCodeGeneratorBindings (Lmodulecheck/config/ModuleCheckSettings;)Ljava/util/List;
+}
+
+public final class modulecheck/config/internal/CodeGeneratorBindingsModule_ProvideCodeGeneratorBindingsFactory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/config/internal/CodeGeneratorBindingsModule_ProvideCodeGeneratorBindingsFactory$Companion;
+	public fun <init> (Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/config/internal/CodeGeneratorBindingsModule_ProvideCodeGeneratorBindingsFactory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Ljava/util/List;
+	public static final fun provideCodeGeneratorBindings (Lmodulecheck/config/ModuleCheckSettings;)Ljava/util/List;
+}
+
+public final class modulecheck/config/internal/CodeGeneratorBindingsModule_ProvideCodeGeneratorBindingsFactory$Companion {
+	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/config/internal/CodeGeneratorBindingsModule_ProvideCodeGeneratorBindingsFactory;
+	public final fun provideCodeGeneratorBindings (Lmodulecheck/config/ModuleCheckSettings;)Ljava/util/List;
+}
+
+public final class modulecheck/config/internal/DefaultCodeGeneratorBindingsKt {
+	public static final fun defaultCodeGeneratorBindings ()Ljava/util/List;
+}
+

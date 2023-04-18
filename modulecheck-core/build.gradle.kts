@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-core"
+  published(
+    artifactId = "modulecheck-core"
+  )
   anvil()
 
   buildConfig("test") {

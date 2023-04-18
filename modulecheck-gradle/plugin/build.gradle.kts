@@ -15,13 +15,30 @@
 
 plugins {
   id("mcbuild")
-  id("com.gradle.plugin-publish") version "1.2.0"
+  id("com.gradle.plugin-publish")
   id("java-gradle-plugin")
   idea
 }
 
+val pluginId = "com.rickbusarow.module-check"
+
+@Suppress("UnstableApiUsage")
+val pluginDeclaration: NamedDomainObjectProvider<PluginDeclaration> = gradlePlugin.plugins
+  .register("generateProtos") {
+    id = pluginId
+    group = modulecheck.builds.GROUP
+    displayName = "ModuleCheck"
+    implementationClass = "modulecheck.gradle.ModuleCheckPlugin"
+    version = modulecheck.builds.VERSION_NAME
+    description = "Fast dependency graph validation for gradle"
+    tags.addAll("kotlin", "dependencies", "android", "gradle-plugin", "kotlin-compiler-plugin")
+  }
+
 mcbuild {
-  artifactId = "modulecheck-gradle-plugin"
+  published(
+    artifactId = "modulecheck-gradle-plugin"
+  )
+  publishedPlugin(pluginDeclaration)
   dagger()
 
   buildConfig {
@@ -139,23 +156,6 @@ dependencies {
   testImplementation(project(path = ":modulecheck-project-generation:api"))
   testImplementation(project(path = ":modulecheck-utils:lazy"))
   testImplementation(project(path = ":modulecheck-utils:stdlib"))
-}
-
-@Suppress("UnstableApiUsage")
-gradlePlugin {
-  plugins {
-    create("moduleCheck") {
-      id = "com.rickbusarow.module-check"
-      group = "com.rickbusarow.modulecheck"
-      displayName = "ModuleCheck"
-      implementationClass = "modulecheck.gradle.ModuleCheckPlugin"
-      version = modulecheck.builds.VERSION_NAME
-      description = "Fast dependency graph validation for gradle"
-      tags.addAll("kotlin", "dependencies", "android", "gradle-plugin", "kotlin-compiler-plugin")
-    }
-  }
-  website.set("https://github.com/RBusarow/ModuleCheck")
-  vcsUrl.set("https://github.com/RBusarow/ModuleCheck")
 }
 
 val integrationTestTask = tasks.register("integrationTest", Test::class) {

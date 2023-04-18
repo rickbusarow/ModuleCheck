@@ -1,0 +1,22 @@
+public abstract interface class modulecheck/dagger/DocsWebsiteUrlProvider : javax/inject/Provider {
+	public abstract fun get ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/dagger/ModuleCheckVersionProvider : javax/inject/Provider {
+	public abstract fun get ()Ljava/lang/String;
+}
+
+public abstract interface annotation class modulecheck/dagger/RootGradleProject : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class modulecheck/dagger/SingleIn : java/lang/annotation/Annotation {
+	public abstract fun scope ()Ljava/lang/Class;
+}
+
+public abstract interface class modulecheck/dagger/SourceWebsiteUrlProvider : javax/inject/Provider {
+	public abstract fun get ()Ljava/lang/String;
+}
+
+public abstract class modulecheck/dagger/TaskScope {
+}
+

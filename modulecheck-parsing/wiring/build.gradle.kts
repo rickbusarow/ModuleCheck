@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-wiring"
+  published(
+    artifactId = "modulecheck-parsing-wiring"
+  )
   anvil()
 }
 

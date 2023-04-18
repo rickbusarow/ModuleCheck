@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-gradle-model-api"
+  published(
+    artifactId = "modulecheck-parsing-gradle-model-api"
+  )
   anvil()
 }
 

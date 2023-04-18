@@ -1,0 +1,27 @@
+public final class modulecheck/project/impl/RealMcProject : modulecheck/project/McProject {
+	public fun <init> (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;Ljava/io/File;ZZLmodulecheck/project/ProjectCache;Lmodulecheck/parsing/source/AnvilGradlePlugin;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/project/JvmFileProvider$Factory;Lorg/jetbrains/kotlin/config/JvmTarget;Lmodulecheck/parsing/gradle/dsl/BuildFileParser$Factory;Lmodulecheck/model/dependency/PlatformPlugin;)V
+	public fun clearContext ()V
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lmodulecheck/project/McProject;)I
+	public fun equals (Ljava/lang/Object;)Z
+	public fun get (Lmodulecheck/project/ProjectContext$Key;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getAnvilGradlePlugin ()Lmodulecheck/parsing/source/AnvilGradlePlugin;
+	public fun getBuildFile ()Ljava/io/File;
+	public fun getBuildFileParser ()Lmodulecheck/parsing/gradle/dsl/BuildFileParser;
+	public fun getExternalDependencies ()Lmodulecheck/model/dependency/ExternalDependencies;
+	public fun getHasKapt ()Z
+	public fun getHasTestFixturesPlugin ()Z
+	public fun getJvmFileProviderFactory ()Lmodulecheck/project/JvmFileProvider$Factory;
+	public fun getJvmTarget ()Lorg/jetbrains/kotlin/config/JvmTarget;
+	public fun getLogger ()Lmodulecheck/reporting/logging/McLogger;
+	public fun getPlatformPlugin ()Lmodulecheck/model/dependency/PlatformPlugin;
+	public fun getProjectCache ()Lmodulecheck/project/ProjectCache;
+	public fun getProjectDependencies ()Lmodulecheck/model/dependency/ProjectDependencies;
+	public fun getProjectDir ()Ljava/io/File;
+	public fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public synthetic fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath;
+	public fun hashCode ()I
+	public fun resolvedNameOrNull-5sj7XBw (Lmodulecheck/parsing/source/ResolvableMcName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+

@@ -1,0 +1,31 @@
+public final class modulecheck/reporting/console/DepthLogFactory {
+	public static final field Companion Lmodulecheck/reporting/console/DepthLogFactory$Companion;
+	public fun <init> ()V
+	public final fun create (Ljava/util/List;)Lmodulecheck/reporting/logging/Report;
+}
+
+public final class modulecheck/reporting/console/DepthLogFactory$Companion {
+}
+
+public final class modulecheck/reporting/console/DepthReportFactory {
+	public static final field Companion Lmodulecheck/reporting/console/DepthReportFactory$Companion;
+	public fun <init> ()V
+	public final fun create (Ljava/util/List;)Lmodulecheck/reporting/logging/Report;
+}
+
+public final class modulecheck/reporting/console/DepthReportFactory$Companion {
+}
+
+public final class modulecheck/reporting/console/ReportFactory {
+	public fun <init> ()V
+	public final fun create (Ljava/util/List;)Lmodulecheck/reporting/logging/Report;
+}
+
+public final class modulecheck/reporting/console/ReportFactory_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/reporting/console/ReportFactory_Factory;
+	public static final fun create ()Lmodulecheck/reporting/console/ReportFactory_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/reporting/console/ReportFactory;
+	public static final fun newInstance ()Lmodulecheck/reporting/console/ReportFactory;
+}
+

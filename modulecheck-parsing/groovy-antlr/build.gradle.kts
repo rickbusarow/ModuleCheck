@@ -19,7 +19,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-groovy-antlr"
+  published(
+    artifactId = "modulecheck-parsing-groovy-antlr"
+  )
 }
 
 dependencies {

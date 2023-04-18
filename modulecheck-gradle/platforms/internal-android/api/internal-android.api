@@ -1,0 +1,121 @@
+public final class anvil/hint/binding/modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactoryKt {
+	public static final fun getModulecheck_gradle_platforms_android_RealAndroidPlatformPluginFactory_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_gradle_platforms_android_RealAndroidPlatformPluginFactory_scope0 ()Lkotlin/reflect/KClass;
+}
+
+public final class anvil/hint/binding/modulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser_FactoryKt {
+	public static final fun getModulecheck_gradle_platforms_android_sourcesets_RealAndroidSourceSetsParser_Factory_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_gradle_platforms_android_sourcesets_RealAndroidSourceSetsParser_Factory_scope0 ()Lkotlin/reflect/KClass;
+}
+
+public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory : modulecheck/gradle/platforms/android/AndroidPlatformPluginFactory {
+	public fun <init> (Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lmodulecheck/gradle/platforms/ConfigurationsFactory;Lmodulecheck/gradle/platforms/SourceSetsFactory;)V
+	public fun create (Lorg/gradle/api/Project;Lcom/android/build/api/dsl/CommonExtension;Z)Lmodulecheck/model/dependency/AndroidPlatformPlugin;
+}
+
+public abstract interface class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type {
+	public static final field Companion Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Companion;
+	public abstract fun getExtension ()Lcom/android/build/api/dsl/CommonExtension;
+}
+
+public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Application : modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type {
+	public fun <init> (Lcom/android/build/api/dsl/ApplicationExtension;)V
+	public final fun component1 ()Lcom/android/build/api/dsl/ApplicationExtension;
+	public final fun copy (Lcom/android/build/api/dsl/ApplicationExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Application;
+	public static synthetic fun copy$default (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Application;Lcom/android/build/api/dsl/ApplicationExtension;ILjava/lang/Object;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Application;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getExtension ()Lcom/android/build/api/dsl/ApplicationExtension;
+	public synthetic fun getExtension ()Lcom/android/build/api/dsl/CommonExtension;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Companion {
+	public final fun from (Lcom/android/build/api/dsl/CommonExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type;
+}
+
+public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$DynamicFeature : modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type {
+	public fun <init> (Lcom/android/build/api/dsl/DynamicFeatureExtension;)V
+	public final fun component1 ()Lcom/android/build/api/dsl/DynamicFeatureExtension;
+	public final fun copy (Lcom/android/build/api/dsl/DynamicFeatureExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$DynamicFeature;
+	public static synthetic fun copy$default (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$DynamicFeature;Lcom/android/build/api/dsl/DynamicFeatureExtension;ILjava/lang/Object;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$DynamicFeature;
+	public fun equals (Ljava/lang/Object;)Z
+	public synthetic fun getExtension ()Lcom/android/build/api/dsl/CommonExtension;
+	public fun getExtension ()Lcom/android/build/api/dsl/DynamicFeatureExtension;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Library : modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type {
+	public fun <init> (Lcom/android/build/gradle/LibraryExtension;)V
+	public final fun component1 ()Lcom/android/build/gradle/LibraryExtension;
+	public final fun copy (Lcom/android/build/gradle/LibraryExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Library;
+	public static synthetic fun copy$default (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Library;Lcom/android/build/gradle/LibraryExtension;ILjava/lang/Object;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Library;
+	public fun equals (Ljava/lang/Object;)Z
+	public synthetic fun getExtension ()Lcom/android/build/api/dsl/CommonExtension;
+	public fun getExtension ()Lcom/android/build/gradle/LibraryExtension;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Test : modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type {
+	public fun <init> (Lcom/android/build/api/dsl/TestExtension;)V
+	public final fun component1 ()Lcom/android/build/api/dsl/TestExtension;
+	public final fun copy (Lcom/android/build/api/dsl/TestExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Test;
+	public static synthetic fun copy$default (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Test;Lcom/android/build/api/dsl/TestExtension;ILjava/lang/Object;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Test;
+	public fun equals (Ljava/lang/Object;)Z
+	public synthetic fun getExtension ()Lcom/android/build/api/dsl/CommonExtension;
+	public fun getExtension ()Lcom/android/build/api/dsl/TestExtension;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory;
+	public static final fun newInstance (Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lmodulecheck/gradle/platforms/ConfigurationsFactory;Lmodulecheck/gradle/platforms/SourceSetsFactory;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory;
+}
+
+public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory_Factory;
+	public final fun newInstance (Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lmodulecheck/gradle/platforms/ConfigurationsFactory;Lmodulecheck/gradle/platforms/SourceSetsFactory;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory;
+}
+
+public final class modulecheck/gradle/platforms/android/internal/ProjectKt {
+	public static final fun androidManifests (Lorg/gradle/api/Project;Lmodulecheck/gradle/platforms/android/AgpApiAccess;)Ljava/util/Map;
+	public static final fun androidNamespaces (Lorg/gradle/api/Project;Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lmodulecheck/model/dependency/SourceSets;)Ljava/util/Map;
+	public static final fun files (Lkotlin/io/FileTreeWalk;)Lkotlin/sequences/Sequence;
+	public static final fun generatesBuildConfig (Lorg/gradle/api/Project;Lmodulecheck/gradle/platforms/android/AgpApiAccess;)Z
+	public static final fun isMissingManifestFile (Lorg/gradle/api/Project;Lmodulecheck/gradle/platforms/android/AgpApiAccess;)Z
+	public static final fun mainAndroidManifest (Lorg/gradle/api/Project;Lmodulecheck/gradle/platforms/android/AgpApiAccess;)Ljava/io/File;
+	public static final fun orPropertyDefault (Ljava/lang/Boolean;Lorg/gradle/api/Project;Ljava/lang/String;Z)Z
+}
+
+public final class modulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser : modulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser {
+	public synthetic fun <init> (Lmodulecheck/model/dependency/Configurations;Lcom/android/build/gradle/BaseExtension;ZLorg/gradle/api/Project;Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun parse ()Lmodulecheck/model/dependency/SourceSets;
+}
+
+public final class modulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser$Factory : modulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser$Factory {
+	public fun <init> (Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;)V
+	public fun create (Lmodulecheck/model/dependency/Configurations;Lcom/android/build/gradle/BaseExtension;ZLorg/gradle/api/Project;)Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser;
+	public synthetic fun create (Lmodulecheck/model/dependency/Configurations;Lcom/android/build/gradle/BaseExtension;ZLorg/gradle/api/Project;)Lmodulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser;
+}
+
+public final class modulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser_Factory_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser_Factory_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser_Factory_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser$Factory;
+	public static final fun newInstance (Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;)Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser$Factory;
+}
+
+public final class modulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser_Factory_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser_Factory_Factory;
+	public final fun newInstance (Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;)Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser$Factory;
+}
+

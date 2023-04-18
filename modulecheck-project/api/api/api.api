@@ -1,0 +1,92 @@
+public abstract interface class modulecheck/project/HasProjectCache {
+	public abstract fun getProjectCache ()Lmodulecheck/project/ProjectCache;
+	public fun project (Lmodulecheck/model/dependency/HasProjectPath;)Lmodulecheck/project/McProject;
+}
+
+public final class modulecheck/project/HasProjectCacheKt {
+	public static final fun project (Lmodulecheck/model/dependency/DownstreamDependency;Lmodulecheck/project/HasProjectCache;)Lmodulecheck/project/McProject;
+	public static final fun project (Lmodulecheck/model/dependency/DownstreamDependency;Lmodulecheck/project/ProjectCache;)Lmodulecheck/project/McProject;
+	public static final fun project (Lmodulecheck/model/dependency/HasProjectPath;Lmodulecheck/project/HasProjectCache;)Lmodulecheck/project/McProject;
+	public static final fun project (Lmodulecheck/model/dependency/HasProjectPath;Lmodulecheck/project/ProjectCache;)Lmodulecheck/project/McProject;
+}
+
+public abstract interface class modulecheck/project/JvmFileProvider {
+	public abstract fun getOrNull (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/project/JvmFileProvider$Factory {
+	public abstract fun create-wYXeOjA (Lmodulecheck/project/McProject;Ljava/lang/String;)Lmodulecheck/project/JvmFileProvider;
+}
+
+public abstract interface class modulecheck/project/McProject : java/lang/Comparable, modulecheck/model/dependency/HasConfigurations, modulecheck/model/dependency/HasDependencies, modulecheck/model/dependency/HasProjectPath, modulecheck/model/dependency/HasSourceSets, modulecheck/parsing/gradle/dsl/HasBuildFile, modulecheck/parsing/gradle/dsl/HasDependencyDeclarations, modulecheck/parsing/gradle/dsl/InvokesConfigurationNames, modulecheck/parsing/gradle/model/HasPlatformPlugin, modulecheck/parsing/gradle/model/PluginAware, modulecheck/project/HasProjectCache, modulecheck/project/ProjectContext {
+	public abstract fun getAnvilGradlePlugin ()Lmodulecheck/parsing/source/AnvilGradlePlugin;
+	public fun getConfigurations ()Lmodulecheck/model/dependency/Configurations;
+	public abstract fun getExternalDependencies ()Lmodulecheck/model/dependency/ExternalDependencies;
+	public fun getHasAGP ()Z
+	public fun getHasAnvil ()Z
+	public abstract fun getJvmFileProviderFactory ()Lmodulecheck/project/JvmFileProvider$Factory;
+	public abstract fun getJvmTarget ()Lorg/jetbrains/kotlin/config/JvmTarget;
+	public abstract fun getLogger ()Lmodulecheck/reporting/logging/McLogger;
+	public abstract fun getProjectDependencies ()Lmodulecheck/model/dependency/ProjectDependencies;
+	public abstract fun getProjectDir ()Ljava/io/File;
+	public abstract fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public fun getSourceSets ()Lmodulecheck/model/dependency/SourceSets;
+	public abstract fun resolvedNameOrNull-5sj7XBw (Lmodulecheck/parsing/source/ResolvableMcName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/project/McProjectKt {
+	public static final fun isAndroid (Lmodulecheck/project/McProject;)Z
+}
+
+public final class modulecheck/project/ProjectCache : modulecheck/utils/trace/HasTraceTags {
+	public fun <init> ()V
+	public final fun clearContexts ()V
+	public final fun getOrPut (Lmodulecheck/model/dependency/ProjectPath;Lkotlin/jvm/functions/Function0;)Lmodulecheck/project/McProject;
+	public synthetic fun getTags ()Ljava/lang/Iterable;
+	public fun getTags ()Ljava/util/List;
+	public final fun getValue (Lmodulecheck/model/dependency/ProjectPath;)Lmodulecheck/project/McProject;
+	public final fun getValues ()Ljava/util/Collection;
+	public final fun set (Lmodulecheck/model/dependency/ProjectPath;Lmodulecheck/project/McProject;)Lmodulecheck/project/McProject;
+}
+
+public final class modulecheck/project/ProjectCache_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/project/ProjectCache_Factory;
+	public static final fun create ()Lmodulecheck/project/ProjectCache_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/project/ProjectCache;
+	public static final fun newInstance ()Lmodulecheck/project/ProjectCache;
+}
+
+public abstract interface class modulecheck/project/ProjectContext {
+	public static final field Companion Lmodulecheck/project/ProjectContext$Companion;
+	public abstract fun clearContext ()V
+	public abstract fun get (Lmodulecheck/project/ProjectContext$Key;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/project/ProjectContext$Companion {
+	public final fun invoke (Lmodulecheck/project/McProject;)Lmodulecheck/project/ProjectContext;
+}
+
+public abstract interface class modulecheck/project/ProjectContext$Element {
+	public abstract fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+}
+
+public abstract interface class modulecheck/project/ProjectContext$Key {
+	public abstract fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/project/ProjectProvider : modulecheck/model/dependency/AllProjectPathsProvider, modulecheck/project/HasProjectCache {
+	public abstract fun clearCaches ()V
+	public abstract fun get (Lmodulecheck/model/dependency/ProjectPath;)Lmodulecheck/project/McProject;
+	public abstract fun getAll ()Ljava/util/List;
+	public fun getAllPaths ()Ljava/util/List;
+}
+
+public final class modulecheck/project/ProjectProviderKt {
+	public static final fun toTypeSafeProjectPathResolver (Lmodulecheck/project/ProjectProvider;)Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;
+}
+
+public abstract interface class modulecheck/project/ProjectRoot {
+	public abstract fun get ()Ljava/io/File;
+}
+

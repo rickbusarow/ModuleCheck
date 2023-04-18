@@ -1,0 +1,373 @@
+public final class modulecheck/project/generation/AndroidApplicationPluginBuilder : modulecheck/project/generation/AndroidPlatformPluginBuilder {
+	public fun <init> ()V
+	public fun <init> (ZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;)V
+	public synthetic fun <init> (ZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun component4 ()Ljava/util/Map;
+	public final fun component5 ()Ljava/util/Map;
+	public final fun component6 ()Ljava/util/Map;
+	public final fun component7 ()Ljava/util/Map;
+	public final fun component8 ()Ljava/util/Map;
+	public final fun copy (ZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;)Lmodulecheck/project/generation/AndroidApplicationPluginBuilder;
+	public static synthetic fun copy$default (Lmodulecheck/project/generation/AndroidApplicationPluginBuilder;ZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;ILjava/lang/Object;)Lmodulecheck/project/generation/AndroidApplicationPluginBuilder;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getConfigurations ()Ljava/util/Map;
+	public fun getKotlinAndroidExtensionEnabled ()Z
+	public fun getManifests ()Ljava/util/Map;
+	public fun getNamespaces ()Ljava/util/Map;
+	public fun getNonTransientRClass ()Z
+	public fun getResValues ()Ljava/util/Map;
+	public fun getSourceSets ()Ljava/util/Map;
+	public fun getViewBindingEnabled ()Z
+	public fun hashCode ()I
+	public fun setKotlinAndroidExtensionEnabled (Z)V
+	public fun setNonTransientRClass (Z)V
+	public fun setViewBindingEnabled (Z)V
+	public fun toPlugin (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;)Lmodulecheck/model/dependency/AndroidPlatformPlugin$AndroidApplicationPlugin;
+	public synthetic fun toPlugin (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;)Lmodulecheck/model/dependency/PlatformPlugin;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/project/generation/AndroidDynamicFeaturePluginBuilder : modulecheck/project/generation/AndroidPlatformPluginBuilder {
+	public fun <init> ()V
+	public fun <init> (ZZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;)V
+	public synthetic fun <init> (ZZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun component5 ()Ljava/util/Map;
+	public final fun component6 ()Ljava/util/Map;
+	public final fun component7 ()Ljava/util/Map;
+	public final fun component8 ()Ljava/util/Map;
+	public final fun component9 ()Ljava/util/Map;
+	public final fun copy (ZZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;)Lmodulecheck/project/generation/AndroidDynamicFeaturePluginBuilder;
+	public static synthetic fun copy$default (Lmodulecheck/project/generation/AndroidDynamicFeaturePluginBuilder;ZZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;ILjava/lang/Object;)Lmodulecheck/project/generation/AndroidDynamicFeaturePluginBuilder;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBuildConfigEnabled ()Z
+	public fun getConfigurations ()Ljava/util/Map;
+	public fun getKotlinAndroidExtensionEnabled ()Z
+	public fun getManifests ()Ljava/util/Map;
+	public fun getNamespaces ()Ljava/util/Map;
+	public fun getNonTransientRClass ()Z
+	public fun getResValues ()Ljava/util/Map;
+	public fun getSourceSets ()Ljava/util/Map;
+	public fun getViewBindingEnabled ()Z
+	public fun hashCode ()I
+	public final fun setBuildConfigEnabled (Z)V
+	public fun setKotlinAndroidExtensionEnabled (Z)V
+	public fun setNonTransientRClass (Z)V
+	public fun setViewBindingEnabled (Z)V
+	public fun toPlugin (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;)Lmodulecheck/model/dependency/AndroidPlatformPlugin$AndroidDynamicFeaturePlugin;
+	public synthetic fun toPlugin (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;)Lmodulecheck/model/dependency/PlatformPlugin;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/project/generation/AndroidLibraryPluginBuilder : modulecheck/project/generation/AndroidPlatformPluginBuilder {
+	public fun <init> ()V
+	public fun <init> (ZZZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;)V
+	public synthetic fun <init> (ZZZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Z
+	public final fun component10 ()Ljava/util/Map;
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun component5 ()Z
+	public final fun component6 ()Ljava/util/Map;
+	public final fun component7 ()Ljava/util/Map;
+	public final fun component8 ()Ljava/util/Map;
+	public final fun component9 ()Ljava/util/Map;
+	public final fun copy (ZZZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;)Lmodulecheck/project/generation/AndroidLibraryPluginBuilder;
+	public static synthetic fun copy$default (Lmodulecheck/project/generation/AndroidLibraryPluginBuilder;ZZZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;ILjava/lang/Object;)Lmodulecheck/project/generation/AndroidLibraryPluginBuilder;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAndroidResourcesEnabled ()Z
+	public final fun getBuildConfigEnabled ()Z
+	public fun getConfigurations ()Ljava/util/Map;
+	public fun getKotlinAndroidExtensionEnabled ()Z
+	public fun getManifests ()Ljava/util/Map;
+	public fun getNamespaces ()Ljava/util/Map;
+	public fun getNonTransientRClass ()Z
+	public fun getResValues ()Ljava/util/Map;
+	public fun getSourceSets ()Ljava/util/Map;
+	public fun getViewBindingEnabled ()Z
+	public fun hashCode ()I
+	public final fun setAndroidResourcesEnabled (Z)V
+	public final fun setBuildConfigEnabled (Z)V
+	public fun setKotlinAndroidExtensionEnabled (Z)V
+	public fun setNonTransientRClass (Z)V
+	public fun setViewBindingEnabled (Z)V
+	public fun toPlugin (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;)Lmodulecheck/model/dependency/AndroidPlatformPlugin$AndroidLibraryPlugin;
+	public synthetic fun toPlugin (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;)Lmodulecheck/model/dependency/PlatformPlugin;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/project/generation/AndroidPlatformPluginBuilder : modulecheck/project/generation/PlatformPluginBuilder {
+	public abstract fun getKotlinAndroidExtensionEnabled ()Z
+	public abstract fun getManifests ()Ljava/util/Map;
+	public abstract fun getNamespaces ()Ljava/util/Map;
+	public abstract fun getNonTransientRClass ()Z
+	public abstract fun getResValues ()Ljava/util/Map;
+	public abstract fun getViewBindingEnabled ()Z
+	public abstract fun setKotlinAndroidExtensionEnabled (Z)V
+	public abstract fun setNonTransientRClass (Z)V
+	public abstract fun setViewBindingEnabled (Z)V
+}
+
+public final class modulecheck/project/generation/AndroidTestPluginBuilder : modulecheck/project/generation/AndroidPlatformPluginBuilder {
+	public fun <init> ()V
+	public fun <init> (ZZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;)V
+	public synthetic fun <init> (ZZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun component5 ()Ljava/util/Map;
+	public final fun component6 ()Ljava/util/Map;
+	public final fun component7 ()Ljava/util/Map;
+	public final fun component8 ()Ljava/util/Map;
+	public final fun component9 ()Ljava/util/Map;
+	public final fun copy (ZZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;)Lmodulecheck/project/generation/AndroidTestPluginBuilder;
+	public static synthetic fun copy$default (Lmodulecheck/project/generation/AndroidTestPluginBuilder;ZZZZLjava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;ILjava/lang/Object;)Lmodulecheck/project/generation/AndroidTestPluginBuilder;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBuildConfigEnabled ()Z
+	public fun getConfigurations ()Ljava/util/Map;
+	public fun getKotlinAndroidExtensionEnabled ()Z
+	public fun getManifests ()Ljava/util/Map;
+	public fun getNamespaces ()Ljava/util/Map;
+	public fun getNonTransientRClass ()Z
+	public fun getResValues ()Ljava/util/Map;
+	public fun getSourceSets ()Ljava/util/Map;
+	public fun getViewBindingEnabled ()Z
+	public fun hashCode ()I
+	public final fun setBuildConfigEnabled (Z)V
+	public fun setKotlinAndroidExtensionEnabled (Z)V
+	public fun setNonTransientRClass (Z)V
+	public fun setViewBindingEnabled (Z)V
+	public fun toPlugin (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;)Lmodulecheck/model/dependency/AndroidPlatformPlugin$AndroidTestPlugin;
+	public synthetic fun toPlugin (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;)Lmodulecheck/model/dependency/PlatformPlugin;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/project/generation/ConfigBuilder {
+	public static final field Companion Lmodulecheck/project/generation/ConfigBuilder$Companion;
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-9LqIWVA ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy-9A_UJks (Ljava/lang/String;Ljava/util/List;Ljava/util/List;)Lmodulecheck/project/generation/ConfigBuilder;
+	public static synthetic fun copy-9A_UJks$default (Lmodulecheck/project/generation/ConfigBuilder;Ljava/lang/String;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/project/generation/ConfigBuilder;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDownstream ()Ljava/util/List;
+	public final fun getName-9LqIWVA ()Ljava/lang/String;
+	public final fun getUpstream ()Ljava/util/List;
+	public fun hashCode ()I
+	public final fun toConfig (Lmodulecheck/model/dependency/ConfigFactory;)Lmodulecheck/model/dependency/McConfiguration;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/project/generation/ConfigBuilder$Companion {
+	public final fun fromConfig (Lmodulecheck/model/dependency/McConfiguration;)Lmodulecheck/project/generation/ConfigBuilder;
+}
+
+public final class modulecheck/project/generation/ConfigBuilderKt {
+	public static final fun populateConfigsFromSourceSets (Lmodulecheck/project/generation/PlatformPluginBuilder;)V
+}
+
+public final class modulecheck/project/generation/FactoriesKt {
+	public static final fun buildFileParserFactory (Lmodulecheck/model/dependency/ProjectDependency$Factory;Lmodulecheck/reporting/logging/McLogger;)Lmodulecheck/parsing/gradle/dsl/BuildFileParser$Factory;
+	public static synthetic fun buildFileParserFactory$default (Lmodulecheck/model/dependency/ProjectDependency$Factory;Lmodulecheck/reporting/logging/McLogger;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/BuildFileParser$Factory;
+	public static final fun toBuilderMap (Lmodulecheck/model/dependency/Configurations;)Ljava/util/Map;
+	public static final fun toBuilderMap (Lmodulecheck/model/dependency/SourceSets;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/project/generation/JavaLibraryPluginBuilder : modulecheck/project/generation/PlatformPluginBuilder {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/Map;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/util/Map;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/Map;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun copy (Ljava/util/Map;Ljava/util/Map;)Lmodulecheck/project/generation/JavaLibraryPluginBuilder;
+	public static synthetic fun copy$default (Lmodulecheck/project/generation/JavaLibraryPluginBuilder;Ljava/util/Map;Ljava/util/Map;ILjava/lang/Object;)Lmodulecheck/project/generation/JavaLibraryPluginBuilder;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getConfigurations ()Ljava/util/Map;
+	public fun getSourceSets ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toPlugin (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;)Lmodulecheck/model/dependency/JvmPlatformPlugin$JavaLibraryPlugin;
+	public synthetic fun toPlugin (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;)Lmodulecheck/model/dependency/PlatformPlugin;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/project/generation/KotlinJvmPluginBuilder : modulecheck/project/generation/PlatformPluginBuilder {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/Map;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/util/Map;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/Map;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun copy (Ljava/util/Map;Ljava/util/Map;)Lmodulecheck/project/generation/KotlinJvmPluginBuilder;
+	public static synthetic fun copy$default (Lmodulecheck/project/generation/KotlinJvmPluginBuilder;Ljava/util/Map;Ljava/util/Map;ILjava/lang/Object;)Lmodulecheck/project/generation/KotlinJvmPluginBuilder;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getConfigurations ()Ljava/util/Map;
+	public fun getSourceSets ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toPlugin (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;)Lmodulecheck/model/dependency/JvmPlatformPlugin$KotlinJvmPlugin;
+	public synthetic fun toPlugin (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;)Lmodulecheck/model/dependency/PlatformPlugin;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/project/generation/McProjectBuilder : modulecheck/model/dependency/HasDependencies, modulecheck/parsing/gradle/dsl/HasDependencyDeclarations, modulecheck/parsing/gradle/dsl/InvokesConfigurationNames {
+	public fun <init> (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;Ljava/io/File;Lmodulecheck/project/generation/PlatformPluginBuilder;Ljava/util/List;Lmodulecheck/project/ProjectProvider;Lmodulecheck/project/ProjectCache;Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;ZZLmodulecheck/parsing/source/AnvilGradlePlugin;Lorg/jetbrains/kotlin/config/JvmTarget;)V
+	public synthetic fun <init> (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;Ljava/io/File;Lmodulecheck/project/generation/PlatformPluginBuilder;Ljava/util/List;Lmodulecheck/project/ProjectProvider;Lmodulecheck/project/ProjectCache;Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;ZZLmodulecheck/parsing/source/AnvilGradlePlugin;Lorg/jetbrains/kotlin/config/JvmTarget;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun addDependency-DjjXWn0 (Ljava/lang/String;Lmodulecheck/project/McProject;ZZ)V
+	public static synthetic fun addDependency-DjjXWn0$default (Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Lmodulecheck/project/McProject;ZZILjava/lang/Object;)V
+	public final fun addExternalDependency-9A_UJks (Ljava/lang/String;Ljava/lang/String;Z)V
+	public static synthetic fun addExternalDependency-9A_UJks$default (Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun addJavaSource-I8fgWXk (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/io/File;
+	public static synthetic fun addJavaSource-I8fgWXk$default (Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/io/File;
+	public final fun addKotlinSource-I8fgWXk (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/io/File;
+	public static synthetic fun addKotlinSource-I8fgWXk$default (Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/io/File;
+	public final fun addLayoutFile-xDYCS68 (Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public static synthetic fun addLayoutFile-xDYCS68$default (Lmodulecheck/project/generation/McProjectBuilder;Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
+	public final fun addManifest-ppclhmc (Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Ljava/lang/String;)V
+	public static synthetic fun addManifest-ppclhmc$default (Lmodulecheck/project/generation/McProjectBuilder;Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
+	public final fun addResourceFile-xDYCS68 (Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public static synthetic fun addResourceFile-xDYCS68$default (Lmodulecheck/project/generation/McProjectBuilder;Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
+	public final fun addSource-ppclhmc (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public static synthetic fun addSource-ppclhmc$default (Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
+	public final fun addSourceSet-pJLvWNo (Ljava/lang/String;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/List;Ljava/util/List;)Lmodulecheck/project/generation/SourceSetBuilder;
+	public static synthetic fun addSourceSet-pJLvWNo$default (Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/project/generation/SourceSetBuilder;
+	public final fun executeDuringBuildActions ()V
+	public final fun getAnvilGradlePlugin ()Lmodulecheck/parsing/source/AnvilGradlePlugin;
+	public fun getBuildFile ()Ljava/io/File;
+	public fun getBuildFileParser ()Lmodulecheck/parsing/gradle/dsl/BuildFileParser;
+	public final fun getCodeGeneratorBindings ()Ljava/util/List;
+	public fun getConfigurations ()Lmodulecheck/model/dependency/Configurations;
+	public final fun getConfiguredProjectDependencyFactory ()Lmodulecheck/model/dependency/impl/RealConfiguredProjectDependencyFactory;
+	public final fun getDependencyModuleDescriptorAccess ()Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;
+	public fun getExternalDependencies ()Lmodulecheck/model/dependency/ExternalDependencies;
+	public fun getHasAGP ()Z
+	public fun getHasAnvil ()Z
+	public fun getHasKapt ()Z
+	public fun getHasTestFixturesPlugin ()Z
+	public final fun getJvmTarget ()Lorg/jetbrains/kotlin/config/JvmTarget;
+	public final fun getPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public final fun getPlatformPlugin ()Lmodulecheck/project/generation/PlatformPluginBuilder;
+	public final fun getProjectCache ()Lmodulecheck/project/ProjectCache;
+	public fun getProjectDependencies ()Lmodulecheck/model/dependency/ProjectDependencies;
+	public final fun getProjectDir ()Ljava/io/File;
+	public final fun getProjectProvider ()Lmodulecheck/project/ProjectProvider;
+	public final fun invoke (Ljava/io/File;Lkotlin/jvm/functions/Function0;)V
+	public final fun requireSourceSetExists-WkhsVnw (Ljava/lang/String;)V
+	public final fun setAnvilGradlePlugin (Lmodulecheck/parsing/source/AnvilGradlePlugin;)V
+	public fun setBuildFile (Ljava/io/File;)V
+	public fun setHasKapt (Z)V
+	public fun setHasTestFixturesPlugin (Z)V
+	public final fun setJvmTarget (Lorg/jetbrains/kotlin/config/JvmTarget;)V
+	public final fun setPath (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;)V
+	public final fun setProjectDir (Ljava/io/File;)V
+}
+
+public abstract interface class modulecheck/project/generation/PlatformPluginBuilder {
+	public abstract fun getConfigurations ()Ljava/util/Map;
+	public abstract fun getSourceSets ()Ljava/util/Map;
+	public abstract fun toPlugin (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lmodulecheck/model/dependency/ProjectDependencies;Lmodulecheck/model/dependency/ExternalDependencies;)Lmodulecheck/model/dependency/PlatformPlugin;
+}
+
+public abstract interface class modulecheck/project/generation/ProjectCollector {
+	public fun allProjects ()Ljava/util/List;
+	public fun androidApplication (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lmodulecheck/project/McProject;
+	public static synthetic fun androidApplication$default (Lmodulecheck/project/generation/ProjectCollector;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lmodulecheck/project/McProject;
+	public fun androidDynamicFeature (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lmodulecheck/project/McProject;
+	public static synthetic fun androidDynamicFeature$default (Lmodulecheck/project/generation/ProjectCollector;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lmodulecheck/project/McProject;
+	public fun androidLibrary (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lmodulecheck/project/McProject;
+	public static synthetic fun androidLibrary$default (Lmodulecheck/project/generation/ProjectCollector;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lmodulecheck/project/McProject;
+	public fun androidTest (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lmodulecheck/project/McProject;
+	public static synthetic fun androidTest$default (Lmodulecheck/project/generation/ProjectCollector;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lmodulecheck/project/McProject;
+	public fun editSimple (Lmodulecheck/project/McProject;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun editSimple$default (Lmodulecheck/project/generation/ProjectCollector;Lmodulecheck/project/McProject;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun editSimple$suspendImpl (Lmodulecheck/project/generation/ProjectCollector;Lmodulecheck/project/McProject;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getCodeGeneratorBindings ()Ljava/util/List;
+	public abstract fun getDependencyModuleDescriptorAccess ()Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;
+	public abstract fun getProjectCache ()Lmodulecheck/project/ProjectCache;
+	public fun getProjectProvider ()Lmodulecheck/project/ProjectProvider;
+	public abstract fun getRoot ()Ljava/io/File;
+	public fun invoke (Ljava/io/File;Lkotlin/jvm/functions/Function0;)V
+	public fun javaProject (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lmodulecheck/project/McProject;
+	public static synthetic fun javaProject$default (Lmodulecheck/project/generation/ProjectCollector;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lmodulecheck/project/McProject;
+	public fun kotlinProject (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lmodulecheck/project/McProject;
+	public static synthetic fun kotlinProject$default (Lmodulecheck/project/generation/ProjectCollector;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lmodulecheck/project/McProject;
+	public fun resolveReferences (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun resolveReferences$suspendImpl (Lmodulecheck/project/generation/ProjectCollector;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun simpleProject (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/project/McProject;
+	public static synthetic fun simpleProject$default (Lmodulecheck/project/generation/ProjectCollector;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/project/McProject;
+	public fun toBuilder (Lmodulecheck/model/dependency/PlatformPlugin;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun toBuilder$suspendImpl (Lmodulecheck/project/generation/ProjectCollector;Lmodulecheck/model/dependency/PlatformPlugin;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun toProjectBuilder (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun toProjectBuilder$suspendImpl (Lmodulecheck/project/generation/ProjectCollector;Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/project/generation/SourceSetBuilder {
+	public static final field Companion Lmodulecheck/project/generation/SourceSetBuilder$Companion;
+	public synthetic fun <init> (Ljava/lang/String;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-qrJCKeA ()Ljava/lang/String;
+	public final fun component10 ()Ljava/util/List;
+	public final fun component11 ()Ljava/util/List;
+	public final fun component12 ()Ljava/util/List;
+	public final fun component13 ()Lorg/jetbrains/kotlin/config/LanguageVersion;
+	public final fun component14 ()Lorg/jetbrains/kotlin/config/JvmTarget;
+	public final fun component2 ()Lmodulecheck/model/dependency/McConfiguration;
+	public final fun component3 ()Lmodulecheck/model/dependency/McConfiguration;
+	public final fun component4 ()Lmodulecheck/model/dependency/McConfiguration;
+	public final fun component5 ()Lmodulecheck/model/dependency/McConfiguration;
+	public final fun component6 ()Lmodulecheck/model/dependency/McConfiguration;
+	public final fun component7 ()Ljava/util/Set;
+	public final fun component8 ()Ljava/util/Set;
+	public final fun component9 ()Ljava/util/Set;
+	public final fun copy-gjJXz4U (Ljava/lang/String;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;)Lmodulecheck/project/generation/SourceSetBuilder;
+	public static synthetic fun copy-gjJXz4U$default (Lmodulecheck/project/generation/SourceSetBuilder;Ljava/lang/String;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/List;Ljava/util/List;Ljava/util/List;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;ILjava/lang/Object;)Lmodulecheck/project/generation/SourceSetBuilder;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnnotationProcessorConfiguration ()Lmodulecheck/model/dependency/McConfiguration;
+	public final fun getApiConfiguration ()Lmodulecheck/model/dependency/McConfiguration;
+	public final fun getClasspath ()Ljava/util/List;
+	public final fun getCompileOnlyConfiguration ()Lmodulecheck/model/dependency/McConfiguration;
+	public final fun getDownstream ()Ljava/util/List;
+	public final fun getImplementationConfiguration ()Lmodulecheck/model/dependency/McConfiguration;
+	public final fun getJvmFiles ()Ljava/util/Set;
+	public final fun getJvmTarget ()Lorg/jetbrains/kotlin/config/JvmTarget;
+	public final fun getKotlinLanguageVersion ()Lorg/jetbrains/kotlin/config/LanguageVersion;
+	public final fun getLayoutFiles ()Ljava/util/Set;
+	public final fun getName-qrJCKeA ()Ljava/lang/String;
+	public final fun getResourceFiles ()Ljava/util/Set;
+	public final fun getRuntimeOnlyConfiguration ()Lmodulecheck/model/dependency/McConfiguration;
+	public final fun getUpstream ()Ljava/util/List;
+	public fun hashCode ()I
+	public final fun setAnnotationProcessorConfiguration (Lmodulecheck/model/dependency/McConfiguration;)V
+	public final fun setApiConfiguration (Lmodulecheck/model/dependency/McConfiguration;)V
+	public final fun setClasspath (Ljava/util/List;)V
+	public final fun setCompileOnlyConfiguration (Lmodulecheck/model/dependency/McConfiguration;)V
+	public final fun setImplementationConfiguration (Lmodulecheck/model/dependency/McConfiguration;)V
+	public final fun setJvmFiles (Ljava/util/Set;)V
+	public final fun setJvmTarget (Lorg/jetbrains/kotlin/config/JvmTarget;)V
+	public final fun setKotlinLanguageVersion (Lorg/jetbrains/kotlin/config/LanguageVersion;)V
+	public final fun setLayoutFiles (Ljava/util/Set;)V
+	public final fun setName-WkhsVnw (Ljava/lang/String;)V
+	public final fun setResourceFiles (Ljava/util/Set;)V
+	public final fun setRuntimeOnlyConfiguration (Lmodulecheck/model/dependency/McConfiguration;)V
+	public final fun toSourceSet (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;)Lmodulecheck/model/dependency/McSourceSet;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/project/generation/SourceSetBuilder$Companion {
+	public final fun fromSourceSet (Lmodulecheck/model/dependency/McSourceSet;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/project/generation/SourceSetBuilderKt {
+	public static final fun maybeAddSourceSet-O-Uy7hw (Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/List;Ljava/util/List;Lorg/jetbrains/kotlin/config/JvmTarget;)Lmodulecheck/project/generation/SourceSetBuilder;
+	public static synthetic fun maybeAddSourceSet-O-Uy7hw$default (Lmodulecheck/project/generation/McProjectBuilder;Ljava/lang/String;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/List;Ljava/util/List;Lorg/jetbrains/kotlin/config/JvmTarget;ILjava/lang/Object;)Lmodulecheck/project/generation/SourceSetBuilder;
+	public static final fun populateDownstreams (Ljava/util/Map;)V
+	public static final fun populateSourceSets (Lmodulecheck/project/generation/McProjectBuilder;)V
+	public static final fun validateHierarchy (Ljava/util/Map;)V
+}
+

@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-model-dependency-impl"
+  published(
+    artifactId = "modulecheck-model-dependency-impl"
+  )
   anvil()
 }
 

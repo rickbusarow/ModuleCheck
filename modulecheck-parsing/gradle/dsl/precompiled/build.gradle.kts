@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-gradle-dsl-precompiled"
+  published(
+    artifactId = "modulecheck-parsing-gradle-dsl-precompiled"
+  )
   anvil()
 }
 

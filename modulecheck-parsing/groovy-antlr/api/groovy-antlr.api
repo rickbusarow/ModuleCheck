@@ -1,0 +1,32 @@
+public final class modulecheck/parsing/groovy/antlr/GroovyAndroidGradleParser : modulecheck/parsing/gradle/dsl/AndroidGradleParser {
+	public fun <init> ()V
+	public fun parse (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/groovy/antlr/GroovyDependenciesBlock : modulecheck/parsing/gradle/dsl/internal/AbstractDependenciesBlock {
+	public fun getFullText ()Ljava/lang/String;
+	public fun getLambdaContent ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParser {
+	public static final field Companion Lmodulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParser$Companion;
+	public fun <init> (Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/model/dependency/ProjectDependency$Factory;)V
+	public final fun parse (Ljava/io/File;)Ljava/util/List;
+}
+
+public final class modulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParser$Companion {
+	public final fun getBLOCK_BODY_REGEX ()Lkotlin/text/Regex;
+	public final fun getNO_INSPECTION_REGEX ()Lkotlin/text/Regex;
+}
+
+public final class modulecheck/parsing/groovy/antlr/GroovyPluginsBlock : modulecheck/parsing/gradle/dsl/internal/AbstractPluginsBlock {
+	public fun <init> (Lmodulecheck/reporting/logging/McLogger;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public fun getFullText ()Ljava/lang/String;
+	public fun getLambdaContent ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/groovy/antlr/GroovyPluginsBlockParser {
+	public fun <init> (Lmodulecheck/reporting/logging/McLogger;)V
+	public final fun parse (Ljava/io/File;)Lmodulecheck/parsing/groovy/antlr/GroovyPluginsBlock;
+}
+

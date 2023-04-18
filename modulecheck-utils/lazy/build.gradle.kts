@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-utils-lazy"
+  published(
+    artifactId = "modulecheck-utils-lazy"
+  )
 }
 
 dependencies {
