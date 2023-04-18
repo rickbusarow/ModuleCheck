@@ -80,10 +80,7 @@ class IndentScope(
     stringBuilder.appendLine(indent + c)
   }
 
-  /**
-   * Creates another layer of indentation by adding [tab] to [indent], then performing [action].
-   *
-   */
+  /** Creates another layer of indentation by adding [tab] to [indent], then performing [action]. */
   inline fun indent(
     tab: String = this.tab,
     action: IndentScope.() -> Unit

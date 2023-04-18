@@ -33,7 +33,6 @@ interface KotlinEnvironment : HasAnalysisResult {
   /**
    * Used to create Psi files without necessarily performing compiler analysis first.
    * This is only useful for Kotlin files, as Java Psi files require analysis first.
-   *
    */
   val lightPsiFactory: LazyDeferred<McPsiFileFactory>
 

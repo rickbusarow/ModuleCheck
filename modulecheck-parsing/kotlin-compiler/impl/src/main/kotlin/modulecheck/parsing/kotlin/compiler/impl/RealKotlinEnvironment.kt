@@ -250,9 +250,7 @@ class RealKotlinEnvironment(
     )
   }
 
-  /**
-   * Dagger implementation for [KotlinEnvironmentFactory]
-   */
+  /** Dagger implementation for [KotlinEnvironmentFactory] */
   @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor(
     private val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,

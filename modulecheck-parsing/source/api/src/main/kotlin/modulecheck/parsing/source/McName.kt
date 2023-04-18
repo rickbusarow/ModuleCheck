@@ -75,9 +75,7 @@ sealed interface McName : Comparable<McName> {
     return name.split('.').last() == str
   }
 
-  /**
-   * @return true if the last segment of this name matches [simpleName], otherwise false
-   */
+  /** @return true if the last segment of this name matches [simpleName], otherwise false */
   fun endsWithSimpleName(simpleName: SimpleName): Boolean {
     return name.split('.').last() == simpleName.name
   }

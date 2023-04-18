@@ -15,9 +15,7 @@
 
 package modulecheck.model.dependency
 
-/**
- * Cache of [configurations][McConfiguration], probably at the project level.
- */
+/** Cache of [configurations][McConfiguration], probably at the project level. */
 class Configurations(
   delegate: Map<ConfigurationName, McConfiguration>
 ) : Map<ConfigurationName, McConfiguration> by delegate {
@@ -68,12 +66,8 @@ data class McConfiguration(
   }
 }
 
-/**
- * convenience for `map { it.name }`
- */
+/** convenience for `map { it.name }` */
 fun Iterable<McConfiguration>.names(): List<ConfigurationName> = map { it.name }
 
-/**
- * convenience for `map { it.name }`
- */
+/** convenience for `map { it.name }` */
 fun Sequence<McConfiguration>.names(): Sequence<ConfigurationName> = map { it.name }

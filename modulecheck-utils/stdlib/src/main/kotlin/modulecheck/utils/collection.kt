@@ -29,9 +29,7 @@ fun <T> T.singletonList(): List<T> = listOf(this)
  */
 fun <T> T.singletonSet(): Set<T> = setOf(this)
 
-/**
- * shorthand for `filterTo(destination, predicate)`
- */
+/** shorthand for `filterTo(destination, predicate)` */
 inline fun <T> Iterable<T>.filterToSet(
   destination: MutableSet<T> = mutableSetOf(),
   predicate: (T) -> Boolean
@@ -101,16 +99,12 @@ public fun <T> Iterable<T>.sortedWithDescending(vararg selectors: (T) -> Compara
   return sortedWith(*selectors).reversed()
 }
 
-/**
- * shorthand for `values.flatten().distinct()`
- */
+/** shorthand for `values.flatten().distinct()` */
 fun <K : Any, T : Any> Map<K, Collection<T>>.allValues(): List<T> {
   return values.flatten().distinct()
 }
 
-/**
- * Creates a sequence of those [elements] which are not null
- */
+/** Creates a sequence of those [elements] which are not null */
 fun <T> sequenceOfNotNull(
   vararg elements: T?
 ): Sequence<T> = sequence {

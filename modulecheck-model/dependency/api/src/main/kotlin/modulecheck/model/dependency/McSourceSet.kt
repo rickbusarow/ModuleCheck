@@ -26,9 +26,7 @@ interface HasSourceSets {
   val sourceSets: SourceSets
 }
 
-/**
- * Cache of [sourceSets][McSourceSet], probably at the project level.
- */
+/** Cache of [sourceSets][McSourceSet], probably at the project level. */
 class SourceSets(
   delegate: Map<SourceSetName, McSourceSet>
 ) : Map<SourceSetName, McSourceSet> by delegate
@@ -198,9 +196,7 @@ fun Collection<McSourceSet>.sortedByInheritance(): Sequence<McSourceSet> {
   }
 }
 
-/**
- * Upstream source set names **not** including the receiver name.
- */
+/** Upstream source set names **not** including the receiver name. */
 fun SourceSetName.upstream(
   hasSourceSets: HasSourceSets
 ): List<SourceSetName> = hasSourceSets.sourceSets[this]

@@ -20,9 +20,7 @@ import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
 import java.io.FileNotFoundException
 
-/**
- * Creates Kotlin and Java Psi files using a shared [KotlinEnvironment]
- */
+/** Creates Kotlin and Java Psi files using a shared [KotlinEnvironment] */
 interface McPsiFileFactory {
 
   /**
@@ -42,9 +40,7 @@ interface McPsiFileFactory {
   /** Creates an instance of [McPsiFileFactory] */
   fun interface Factory {
 
-    /**
-     * @return an instance of [McPsiFileFactory] for the given [kotlinEnvironment]
-     */
+    /** @return an instance of [McPsiFileFactory] for the given [kotlinEnvironment] */
     fun create(kotlinEnvironment: KotlinEnvironment): McPsiFileFactory
   }
 }

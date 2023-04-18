@@ -37,9 +37,7 @@ fun TaskContainer.maybeNamed(
     .configureEach(configuration)
 }
 
-/**
- * code golf for `matching { it.name == taskName }`
- */
+/** code golf for `matching { it.name == taskName }` */
 fun TaskContainer.matchingName(
   taskName: String
 ): TaskCollection<Task> = matching { it.name == taskName }
@@ -53,9 +51,7 @@ fun <T : Task> TaskCollection<T>.dependOn(vararg objects: Any): TaskCollection<T
   }
 }
 
-/**
- * adds all [objects] as dependencies inside a configuration block, inside a `configure { }`
- */
+/** adds all [objects] as dependencies inside a configuration block, inside a `configure { }` */
 fun <T : Task> TaskProvider<T>.dependsOn(vararg objects: Any): TaskProvider<T> {
   return also { provider ->
     provider.configure { task ->

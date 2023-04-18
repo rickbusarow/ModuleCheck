@@ -36,9 +36,7 @@ var Project.artifactId: String?
     extras.set("artifactId", value)
   }
 
-/**
- * "1.6", "1.7", "1.8", etc.
- */
+/** "1.6", "1.7", "1.8", etc. */
 val Project.KOTLIN_API: String
   get() = libsCatalog.version("kotlinApi")
 
@@ -58,9 +56,7 @@ val Project.JVM_TARGET: String
 val Project.JDK: String
   get() = libsCatalog.version("jdk")
 
-/**
- * `6`, `8`, `11`, etc.
- */
+/** `6`, `8`, `11`, etc. */
 val Project.JVM_TARGET_INT: Int
   get() = JVM_TARGET.substringAfterLast('.').toInt()
 
