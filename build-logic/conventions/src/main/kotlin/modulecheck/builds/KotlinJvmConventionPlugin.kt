@@ -35,14 +35,14 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
         toolChain.languageVersion.set(JavaLanguageVersion.of(target.JDK))
       }
     }
-    target.tasks.withType(JavaCompile::class.java) { task ->
+    target.tasks.withType(JavaCompile::class.java).configureEach { task ->
       task.options.release.set(target.JVM_TARGET_INT)
       task.targetCompatibility = target.JVM_TARGET
     }
     target.extensions.configure(JavaPluginExtension::class.java) { extension ->
       extension.sourceCompatibility = JavaVersion.toVersion(target.JVM_TARGET)
     }
-    target.tasks.withType(KotlinCompile::class.java) { task ->
+    target.tasks.withType(KotlinCompile::class.java).configureEach { task ->
       task.kotlinOptions {
         allWarningsAsErrors = false
 
@@ -67,7 +67,7 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
 
     target.tasks.register("lintMain") { task ->
       task.doFirst {
-        target.tasks.withType(KotlinCompile::class.java) { compileTask ->
+        target.tasks.withType(KotlinCompile::class.java).configureEach { compileTask ->
           compileTask.kotlinOptions {
             allWarningsAsErrors = true
           }

@@ -84,7 +84,7 @@ fun Project.registerSimpleGenerationTaskAsDependency(
     tasks.maybeNamed(taskName) { dependsOn(taskProvider) }
   }
 
-  tasks.withType(KspTaskJvm::class.java) { it.dependsOn(taskProvider) }
+  tasks.withType(KspTaskJvm::class.java).configureEach { it.dependsOn(taskProvider) }
 
   // generate the build properties file during an IDE sync, so no more red squigglies
   rootProject.tasks.named("prepareKotlinBuildScriptModel") {

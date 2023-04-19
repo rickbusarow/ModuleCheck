@@ -25,7 +25,7 @@ import org.gradle.internal.classpath.Instrumented.systemProperty
 abstract class TestConventionPlugin : Plugin<Project> {
 
   override fun apply(target: Project) {
-    target.tasks.withType(Test::class.java) { task ->
+    target.tasks.withType(Test::class.java).configureEach { task ->
       task.useJUnitPlatform()
 
       task.testLogging {

@@ -26,7 +26,7 @@ mcbuild {
   anvil()
 }
 
-tasks.withType<KotlinCompile> {
+tasks.withType<KotlinCompile>().configureEach {
   kotlinOptions {
     freeCompilerArgs += "-opt-in=modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference"
   }
