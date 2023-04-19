@@ -197,11 +197,12 @@ private fun Project.configurePublish(
     }
 
     extensions.configure(PublishingExtension::class.java) { publishingExtension ->
-      publishingExtension.publications.withType(MavenPublication::class.java) { publication ->
-        publication.artifactId = artifactId
-        publication.pom.description.set(pomDescription)
-        publication.groupId = groupId
-      }
+      publishingExtension.publications.withType(MavenPublication::class.java)
+        .configureEach { publication ->
+          publication.artifactId = artifactId
+          publication.pom.description.set(pomDescription)
+          publication.groupId = groupId
+        }
     }
   }
 
@@ -209,13 +210,13 @@ private fun Project.configurePublish(
   registerSnapshotVersionCheckTask()
   configureSkipDokka()
 
-  tasks.withType(PublishToMavenRepository::class.java) {
+  tasks.withType(PublishToMavenRepository::class.java).configureEach {
     it.notCompatibleWithConfigurationCache("See https://github.com/gradle/gradle/issues/13468")
   }
-  tasks.withType(Jar::class.java) {
+  tasks.withType(Jar::class.java).configureEach {
     it.notCompatibleWithConfigurationCache("")
   }
-  tasks.withType(Sign::class.java) {
+  tasks.withType(Sign::class.java).configureEach {
     it.notCompatibleWithConfigurationCache("")
     // skip signing for -SNAPSHOT publishing
     it.onlyIf { !(version as String).endsWith("SNAPSHOT") }
@@ -353,7 +354,7 @@ private fun Project.configureSkipDokka() {
   tasks.matching { it.name == "javaDocReleaseGeneration" }.configureEach {
     it.onlyIf { !skipDokka }
   }
-  tasks.withType(AbstractDokkaLeafTask::class.java) {
+  tasks.withType(AbstractDokkaLeafTask::class.java).configureEach {
     it.onlyIf { !skipDokka }
   }
 

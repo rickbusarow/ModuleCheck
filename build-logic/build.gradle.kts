@@ -33,20 +33,20 @@ moduleCheck {
 val kotlinVersion = libs.versions.kotlin.get()
 allprojects {
 
-  plugins.withType(KotlinBasePlugin::class.java) {
+  plugins.withType(KotlinBasePlugin::class.java).configureEach {
     extensions.configure(KotlinJvmProjectExtension::class.java) {
       jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(libs.versions.jdk.get()))
       }
     }
   }
-  plugins.withType(JavaPlugin::class.java) {
+  plugins.withType(JavaPlugin::class.java).configureEach {
     extensions.configure(JavaPluginExtension::class.java) {
       sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
   }
 
-  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
 
       languageVersion = "1.6"
@@ -61,11 +61,11 @@ allprojects {
   }
 }
 
-tasks.withType<Delete> rootTask@{
+tasks.withType<Delete>().configureEach rootTask@{
 
   subprojects {
-    tasks.withType<Delete> subTask@{
-      this@rootTask.dependsOn(this@subTask)
+    tasks.withType<Delete>().forEach { subTask ->
+      this@rootTask.dependsOn(subTask)
     }
   }
 }
@@ -73,9 +73,9 @@ tasks.withType<Delete> rootTask@{
 tasks.named("test") rootTask@{
 
   subprojects {
-    tasks.withType<Test> subTask@{
-      useJUnitPlatform()
-      this@rootTask.dependsOn(this@subTask)
+    tasks.withType<Test>().forEach { subTask ->
+      subTask.useJUnitPlatform()
+      this@rootTask.dependsOn(subTask)
     }
   }
 }
