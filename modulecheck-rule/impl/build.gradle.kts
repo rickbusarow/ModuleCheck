@@ -38,6 +38,7 @@ dependencies {
   api(project(path = ":modulecheck-finding:impl-sort"))
   api(project(path = ":modulecheck-finding:name"))
   api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-rule:api"))

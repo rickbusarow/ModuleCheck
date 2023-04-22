@@ -52,7 +52,7 @@ internal data class ParsedFile(
         val memberDeclarations = mutableSetOf<QualifiedDeclaredName>()
         val enumDeclarations = mutableSetOf<QualifiedDeclaredName>()
 
-        compilationUnit.childrenRecursive()
+        compilationUnit.childrenBreadthFirst()
           .forEach { node ->
 
             when (node) {

@@ -35,6 +35,7 @@ dependencies {
   api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-utils:trace"))
   api(project(path = ":modulecheck-utils:trace"))
+  api(project(path = ":modulecheck-utils:trace"))
 
   implementation(project(path = ":modulecheck-api"))
   implementation(project(path = ":modulecheck-finding:impl"))
@@ -42,6 +43,7 @@ dependencies {
   implementation(project(path = ":modulecheck-model:dependency:api"))
   implementation(project(path = ":modulecheck-utils:coroutines:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
+  implementation(project(path = ":modulecheck-utils:trace"))
   implementation(project(path = ":modulecheck-utils:trace"))
 
   testImplementation(libs.bundles.hermit)

@@ -30,8 +30,9 @@ dependencies {
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
 
-  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-utils:coroutines:api"))
+
+  implementation(project(path = ":modulecheck-dagger"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)

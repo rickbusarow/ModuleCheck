@@ -27,6 +27,7 @@ import modulecheck.project.McProject
 import modulecheck.utils.cast
 import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.requireNotNull
+import modulecheck.utils.traversal.Traversals
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.PropertyDescriptor
 import org.jetbrains.kotlin.descriptors.VariableDescriptor
@@ -67,17 +68,63 @@ import kotlin.contracts.contract
 inline fun <reified T : PsiElement> PsiElement.isPartOf(): Boolean =
   getNonStrictParentOfType<T>() != null
 
-inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): List<T> {
-  return generateSequence(children.asSequence()) { children ->
-    children.toList()
-      .flatMap { it.children.toList() }
-      .takeIf { it.isNotEmpty() }
-      ?.asSequence()
-  }
-    .flatten()
-    .filterIsInstance<T>()
-    .toList()
+/**
+ * @return a sequence of child nodes of this [PsiElement] in depth-first
+ *   order. The sequence starts with the first child node of this [PsiElement],
+ *   followed by the first child node of the first child node, and so on.
+ */
+fun PsiElement.childrenDepthFirst(): Sequence<PsiElement> {
+  return Traversals.depthFirstTraversal(this) { children.toList() }
 }
+
+/**
+ * @return a sequence of child nodes of type [T] of this [PsiElement] in depth-first
+ *   order. The sequence starts with the first child node of this [PsiElement],
+ *   followed by the first child node of the first child node, and so on.
+ */
+inline fun <reified T : PsiElement> PsiElement.childrenOfTypeDepthFirst(): Sequence<T> {
+  return Traversals.depthFirstTraversal(this) { children.toList() }
+    .filterIsInstance<T>()
+}
+
+/**
+ * @param predicate stops visiting child nodes of the given node once this predicate returns false
+ * @return a sequence of child nodes of this [PsiElement] in depth-first order that
+ *   satisfy the given [predicate]. The sequence starts with the first child node of this
+ *   [PsiElement], followed by the first child node of the first child node, and so on.*/
+inline fun PsiElement.childrenDepthFirst(
+  crossinline predicate: (PsiElement) -> Boolean
+): Sequence<PsiElement> = Traversals.depthFirstTraversal(this) { children.filter(predicate) }
+
+/**
+ * @return a sequence of child nodes of type [T] of this [PsiElement] in breadth-first
+ *   order. The sequence starts with the first child node of this [PsiElement],
+ *   followed by the first child node of the second child node, and so on.
+ */
+inline fun <reified T : PsiElement> PsiElement.childrenOfTypeBreadthFirst(): Sequence<T> {
+  return Traversals.breadthFirstTraversal(this) { children.toList() }
+    .filterIsInstance<T>()
+}
+
+/**
+ * @return a sequence of child nodes of this [PsiElement] in breadth-first
+ *   order. The sequence starts with all the child nodes of this [PsiElement],
+ *   followed by all the child nodes of the first child node, and so on.
+ */
+fun PsiElement.childrenBreadthFirst(): Sequence<PsiElement> {
+  return Traversals.breadthFirstTraversal(this) { children.toList() }
+}
+
+/**
+ * @param [predicate] stops visiting child nodes of the parent
+ *   of the given node once this predicate returns false
+ * @return a sequence of child nodes of this [PsiElement] in breadth-first order that
+ *   satisfy the given [predicate]. The sequence starts with all the child nodes of this
+ *   [PsiElement], followed by all the child nodes of the first child node, and so on.
+ */
+inline fun PsiElement.childrenBreadthFirst(
+  crossinline predicate: (PsiElement) -> Boolean
+): Sequence<PsiElement> = Traversals.breadthFirstTraversal(this) { children.filter(predicate) }
 
 fun KotlinType?.requireReferenceName(): ReferenceName = requireNotNull()
   .getKotlinTypeFqName(false)

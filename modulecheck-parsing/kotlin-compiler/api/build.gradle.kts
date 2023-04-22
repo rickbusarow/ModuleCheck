@@ -27,11 +27,11 @@ dependencies {
   api(libs.kotlin.compiler)
   api(libs.kotlin.reflect)
 
-  api(project(path = ":modulecheck-utils:lazy"))
-
   compileOnly(gradleApi())
 
   compileOnly(libs.agp)
+
+  implementation(project(path = ":modulecheck-utils:lazy"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)

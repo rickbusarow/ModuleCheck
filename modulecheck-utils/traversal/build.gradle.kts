@@ -19,28 +19,20 @@ plugins {
 
 mcbuild {
   published(
-    artifactId = "modulecheck-gradle-platform-impl"
+    artifactId = "modulecheck-utils-traversal"
   )
-  anvil()
 }
 
 dependencies {
 
-  api(libs.javax.inject)
+  api(libs.kotlinx.coroutines.core)
+  api(libs.kotlinx.coroutines.jdk8)
+  api(libs.kotlinx.coroutines.jvm)
 
-  api(project(path = ":modulecheck-gradle:platforms:api"))
-  api(project(path = ":modulecheck-model:dependency:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
-
-  compileOnly(gradleApi())
-
-  compileOnly(libs.kotlin.gradle.plugin)
-  compileOnly(libs.kotlin.gradle.plugin.api)
-
-  implementation(project(path = ":modulecheck-dagger"))
-  implementation(project(path = ":modulecheck-utils:stdlib"))
+  implementation(project(":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
+  testImplementation(libs.square.turbine)
 }

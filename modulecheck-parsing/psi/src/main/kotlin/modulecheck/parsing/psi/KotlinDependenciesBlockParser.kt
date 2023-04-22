@@ -23,7 +23,7 @@ import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.gradle.dsl.ProjectAccessor
 import modulecheck.parsing.gradle.dsl.buildFileInvocationText
 import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
-import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
+import modulecheck.parsing.psi.internal.childrenOfTypeBreadthFirst
 import modulecheck.parsing.psi.internal.nameSafe
 import modulecheck.reporting.logging.McLogger
 import modulecheck.utils.requireNotNull
@@ -53,7 +53,7 @@ class KotlinDependenciesBlockParser @Inject constructor(
 
     val file = psiFileFactory.createKotlin(invokesConfigurationNames.buildFile)
 
-    val blocks = file.getChildrenOfTypeRecursive<KtCallExpression>()
+    return file.childrenOfTypeBreadthFirst<KtCallExpression>()
       .filter { it.nameSafe() == "dependencies" }
       .filterNot { it.inBuildscript() }
       .mapNotNull { fullBlock ->
@@ -99,9 +99,7 @@ class KotlinDependenciesBlockParser @Inject constructor(
           }
 
         block
-      }
-
-    return blocks
+      }.toList()
   }
 }
 
