@@ -43,9 +43,9 @@ fun KtPropertyAccessor.jvmNameOrNull(): String? = annotatedJvmNameOrNull()
 private fun KtAnnotated.annotatedJvmNameOrNull(): String? {
   return annotationEntries
     .firstOrNull { it.shortName?.asString() == "JvmName" }
-    ?.getChildrenOfTypeRecursive<KtValueArgumentList>()
+    ?.childrenOfTypeBreadthFirst<KtValueArgumentList>()
     ?.single()
-    ?.getChildrenOfTypeRecursive<KtLiteralStringTemplateEntry>()
+    ?.childrenOfTypeBreadthFirst<KtLiteralStringTemplateEntry>()
     ?.single()
     ?.text
 }

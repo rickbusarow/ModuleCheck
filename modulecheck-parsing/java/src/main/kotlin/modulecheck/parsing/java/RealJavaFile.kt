@@ -145,7 +145,7 @@ class RealJavaFile(
   private val typeReferenceNames: Set<String> by unsafeLazy {
 
     compilationUnit
-      .getChildrenOfTypeRecursive<ClassOrInterfaceType>()
+      .childrenOfTypeBreadthFirst<ClassOrInterfaceType>()
       // A qualified type like `com.Foo` will have a nested ClassOrInterfaceType of `com`.
       // Filter out those nested types, since they seem like they're always just noise.
       .filterNot { it.parentNode.getOrNull() is ClassOrInterfaceType }
@@ -183,7 +183,7 @@ class RealJavaFile(
 
   private val apiStrings by lazy {
 
-    compilationUnit.childrenRecursive()
+    compilationUnit.childrenBreadthFirst()
       // Only look at references which are inside public classes.  This includes nested classes
       // which may be (incorrectly) inside private or package-private classes.
       .filter { node ->
@@ -202,7 +202,7 @@ class RealJavaFile(
 
   private val refs = lazyDeferred {
     val methodNames = compilationUnit
-      .getChildrenOfTypeRecursive<MethodCallExpr>()
+      .childrenOfTypeBreadthFirst<MethodCallExpr>()
       .map { method ->
         method.qualifiedNameOrSimple()
       }
@@ -210,7 +210,7 @@ class RealJavaFile(
 
     // fully qualified property references
     val propertyNames = compilationUnit
-      .getChildrenOfTypeRecursive<FieldAccessExpr>()
+      .childrenOfTypeBreadthFirst<FieldAccessExpr>()
       // filter out the segments of larger qualified names, like `com.foo` from `com.foo.Bar`
       .filterNot { it.parentNode.getOrNull() is FieldAccessExpr }
       .filterNot { it.parentNode.getOrNull() is MethodCallExpr }
@@ -289,7 +289,7 @@ fun MethodDeclaration.apiReferences(): List<String> {
 
   val returnTypes: Sequence<String> = sequenceOf(type as? ClassOrInterfaceType)
     .filterNotNull()
-    .plus(type.getChildrenOfTypeRecursive())
+    .plus(type.childrenOfTypeBreadthFirst())
     .filterNot { it.parentNode.getOrNull() is ClassOrInterfaceType }
     .flatMap { classType ->
       classType.typeReferencesRecursive()

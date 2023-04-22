@@ -19,9 +19,9 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.callSiteName
+import modulecheck.parsing.psi.internal.childrenOfTypeBreadthFirst
 import modulecheck.parsing.psi.internal.fqNameSafe
 import modulecheck.parsing.psi.internal.getByNameOrIndex
-import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.identifier
 import modulecheck.parsing.psi.internal.isCompanionObject
 import modulecheck.parsing.psi.internal.isInCompanionObject
@@ -260,8 +260,7 @@ class RealKotlinFile(
 
   override val declarations: Set<QualifiedDeclaredName> by lazy {
 
-    psi.getChildrenOfTypeRecursive<KtNamedDeclaration>()
-      .asSequence()
+    psi.childrenOfTypeBreadthFirst<KtNamedDeclaration>()
       .filterNot { it.isPrivateOrInternal() }
       .filterNot {
         it.parents.filterIsInstance<KtModifierListOwner>()
@@ -334,7 +333,7 @@ class RealKotlinFile(
     val visitor = classOrObjectRecursiveVisitor vis@{ classOrObject ->
 
       val typeFqName = classOrObject.fqNameSafe() ?: return@vis
-      val annotated = classOrObject as?KtAnnotated ?: return@vis
+      val annotated = classOrObject as? KtAnnotated ?: return@vis
 
       annotated.annotationEntries.filter { annotationEntry ->
         val typeRef = annotationEntry.typeReference?.text ?: return@filter false

@@ -1,3 +1,11 @@
+public final class modulecheck/parsing/groovy/antlr/ExtensionsKt {
+	public static final fun children (Lgroovyjarjarantlr4/v4/runtime/tree/Tree;)Lkotlin/sequences/Sequence;
+	public static final fun childrenBreadthFirst (Lgroovyjarjarantlr4/v4/runtime/tree/Tree;)Lkotlin/sequences/Sequence;
+	public static final fun childrenBreadthFirst (Lgroovyjarjarantlr4/v4/runtime/tree/Tree;Lkotlin/jvm/functions/Function1;)Lkotlin/sequences/Sequence;
+	public static final fun childrenDepthFirst (Lgroovyjarjarantlr4/v4/runtime/tree/Tree;)Lkotlin/sequences/Sequence;
+	public static final fun childrenDepthFirst (Lgroovyjarjarantlr4/v4/runtime/tree/Tree;Lkotlin/jvm/functions/Function1;)Lkotlin/sequences/Sequence;
+}
+
 public final class modulecheck/parsing/groovy/antlr/GroovyAndroidGradleParser : modulecheck/parsing/gradle/dsl/AndroidGradleParser {
 	public fun <init> ()V
 	public fun parse (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

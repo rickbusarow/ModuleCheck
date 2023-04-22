@@ -30,10 +30,12 @@ dependencies {
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
 
   implementation(libs.graphviz.java.min)
   implementation(libs.rickBusarow.dispatch.core)
 
+  implementation(project(path = ":modulecheck-model:dependency:api"))
   implementation(project(path = ":modulecheck-model:dependency:api"))
   implementation(project(path = ":modulecheck-project:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))

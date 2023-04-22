@@ -20,7 +20,7 @@ import io.kotest.matchers.types.shouldBeTypeOf
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.internal.isKtFile
-import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
+import modulecheck.parsing.psi.internal.childrenOfTypeBreadthFirst
 import modulecheck.project.test.ProjectTest
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.js.descriptorUtils.getKotlinTypeFqName
@@ -69,7 +69,7 @@ class RealKotlinEnvironmentTest : ProjectTest() {
 
     val ktFile = kotlinEnvironment.ktFile(sourceSet.jvmFiles.single())
 
-    val property = ktFile.getChildrenOfTypeRecursive<KtProperty>().single()
+    val property = ktFile.childrenOfTypeBreadthFirst<KtProperty>().single()
     val propertyDescriptor = bindingContext[BindingContext.VARIABLE, property]!!
 
     val propertyType = propertyDescriptor.returnType!!
@@ -111,7 +111,7 @@ class RealKotlinEnvironmentTest : ProjectTest() {
 
     val ktFile = kotlinEnvironment.ktFile(sourceSet.jvmFiles.single())
 
-    val property = ktFile.getChildrenOfTypeRecursive<KtProperty>().first()
+    val property = ktFile.childrenOfTypeBreadthFirst<KtProperty>().first()
 
     val propertyDescriptor = bindingContext[BindingContext.VARIABLE, property]!!
 
@@ -155,7 +155,7 @@ class RealKotlinEnvironmentTest : ProjectTest() {
 
       val ktFile = kotlinEnvironment.ktFile(sourceSet.jvmFiles.single())
 
-      val property = ktFile.getChildrenOfTypeRecursive<KtProperty>().single()
+      val property = ktFile.childrenOfTypeBreadthFirst<KtProperty>().single()
       val propertyDescriptor = bindingContext[BindingContext.VARIABLE, property]!!
 
       val propertyType = propertyDescriptor.returnType!!
@@ -196,7 +196,7 @@ class RealKotlinEnvironmentTest : ProjectTest() {
 
     val ktFile = kotlinEnvironment.ktFile(sourceSet.jvmFiles.single { it.isKtFile() })
 
-    val property = ktFile.getChildrenOfTypeRecursive<KtProperty>().single()
+    val property = ktFile.childrenOfTypeBreadthFirst<KtProperty>().single()
     val propertyDescriptor = bindingContext[BindingContext.VARIABLE, property]!!
 
     val propertyType = propertyDescriptor.returnType!!
@@ -270,7 +270,7 @@ class RealKotlinEnvironmentTest : ProjectTest() {
 
     val ktFile = kotlinEnvironment.ktFile(sourceSet.jvmFiles.single())
 
-    val property = ktFile.getChildrenOfTypeRecursive<KtProperty>().single()
+    val property = ktFile.childrenOfTypeBreadthFirst<KtProperty>().single()
     val propertyDescriptor = bindingContext[BindingContext.VARIABLE, property]!!
 
     val propertyType = propertyDescriptor.returnType!!

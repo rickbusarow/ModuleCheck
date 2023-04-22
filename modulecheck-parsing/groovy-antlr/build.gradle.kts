@@ -40,6 +40,7 @@ dependencies {
   implementation(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-utils:stdlib"))
+  implementation(project(path = ":modulecheck-utils:traversal"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)

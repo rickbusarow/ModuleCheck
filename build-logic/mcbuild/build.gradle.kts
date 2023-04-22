@@ -45,7 +45,6 @@ dependencies {
 
   api(libs.square.moshi)
 
-  api(project(path = ":artifacts-check"))
   api(project(path = ":conventions"))
   api(project(path = ":versions-matrix"))
 
@@ -71,6 +70,8 @@ dependencies {
   implementation(libs.square.anvil.gradle)
   implementation(libs.square.kotlinPoet)
   implementation(libs.vanniktech.publish)
+
+  implementation(project(path = ":artifacts-check"))
 
   ksp(libs.square.moshi.codegen)
 }

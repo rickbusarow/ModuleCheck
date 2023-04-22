@@ -25,7 +25,9 @@ public final class modulecheck/parsing/java/RealJavaFileKt {
 }
 
 public final class modulecheck/parsing/java/VisitorKt {
-	public static final fun childrenRecursive (Lcom/github/javaparser/ast/Node;)Lkotlin/sequences/Sequence;
+	public static final fun childrenBreadthFirst (Lcom/github/javaparser/ast/Node;)Lkotlin/sequences/Sequence;
+	public static final fun childrenBreadthFirst (Lcom/github/javaparser/ast/Node;Lkotlin/jvm/functions/Function1;)Lkotlin/sequences/Sequence;
+	public static final fun childrenDepthFirst (Lcom/github/javaparser/ast/Node;Lkotlin/jvm/functions/Function1;)Lkotlin/sequences/Sequence;
 	public static final fun fqNameOrNull (Lcom/github/javaparser/ast/Node;Ljava/util/List;)Ljava/lang/String;
 	public static final fun simpleName (Lcom/github/javaparser/ast/Node;)Ljava/lang/String;
 }

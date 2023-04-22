@@ -118,6 +118,10 @@ public final class modulecheck/parsing/psi/internal/PsiElementKt {
 	public static final fun callSiteName (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Ljava/lang/String;
 	public static final fun canResolveDeclaredName-Hc0XbgE (Lmodulecheck/project/McProject;Lmodulecheck/parsing/source/QualifiedDeclaredName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun canResolveReferenceName-Hc0XbgE (Lmodulecheck/project/McProject;Lmodulecheck/parsing/source/ReferenceName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun childrenBreadthFirst (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Lkotlin/sequences/Sequence;
+	public static final fun childrenBreadthFirst (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;Lkotlin/jvm/functions/Function1;)Lkotlin/sequences/Sequence;
+	public static final fun childrenDepthFirst (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Lkotlin/sequences/Sequence;
+	public static final fun childrenDepthFirst (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;Lkotlin/jvm/functions/Function1;)Lkotlin/sequences/Sequence;
 	public static final fun declaredNameOrNull-Hc0XbgE (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;Lmodulecheck/project/McProject;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun file (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Ljava/io/File;
 	public static final fun fqNameSafe (Lorg/jetbrains/kotlin/psi/KtNamedDeclaration;)Lorg/jetbrains/kotlin/name/FqName;

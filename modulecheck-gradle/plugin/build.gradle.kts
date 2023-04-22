@@ -103,7 +103,6 @@ dependencies {
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-reporting:logging:api"))
   api(project(path = ":modulecheck-rule:api"))
-  api(project(path = ":modulecheck-rule:impl-factory"))
   api(project(path = ":modulecheck-runtime:api"))
 
   compileOnly(gradleApi())
@@ -128,6 +127,7 @@ dependencies {
   implementation(project(path = ":modulecheck-parsing:source:api"))
   implementation(project(path = ":modulecheck-project:impl"))
   implementation(project(path = ":modulecheck-rule:impl"))
+  implementation(project(path = ":modulecheck-rule:impl-factory"))
   implementation(project(path = ":modulecheck-utils:coroutines:impl"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 

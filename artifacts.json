@@ -280,6 +280,14 @@
     "javaVersion": "11"
   },
   {
+    "gradlePath": ":modulecheck-utils:traversal",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-utils-traversal",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
     "gradlePath": ":modulecheck-gradle:platforms:api",
     "group": "com.rickbusarow.modulecheck",
     "artifactId": "modulecheck-gradle-platform-api",

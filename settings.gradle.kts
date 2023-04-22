@@ -138,5 +138,6 @@ include(
   ":modulecheck-utils:lazy",
   ":modulecheck-utils:stdlib",
   ":modulecheck-utils:trace",
-  ":modulecheck-utils:trace-testing"
+  ":modulecheck-utils:trace-testing",
+  ":modulecheck-utils:traversal"
 )

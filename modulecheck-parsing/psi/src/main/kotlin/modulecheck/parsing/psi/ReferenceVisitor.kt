@@ -16,7 +16,7 @@
 package modulecheck.parsing.psi
 
 import kotlinx.coroutines.runBlocking
-import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
+import modulecheck.parsing.psi.internal.childrenOfTypeBreadthFirst
 import modulecheck.parsing.psi.internal.hasAnnotation
 import modulecheck.parsing.psi.internal.isPartOf
 import modulecheck.parsing.psi.internal.isPrivateOrInternal
@@ -147,15 +147,15 @@ class ReferenceVisitor : KtTreeVisitorVoid() {
       }
     )
       .plus(
-        getChildrenOfTypeRecursive<KtTypeReference>()
+        childrenOfTypeBreadthFirst<KtTypeReference>()
           .filterNot { it.isFunctionalExpression() }
       )
       .plus(
-        getChildrenOfTypeRecursive<KtNameReferenceExpression>()
+        childrenOfTypeBreadthFirst<KtNameReferenceExpression>()
           .filterNot { it.isFunctionalExpression() }
       )
       .plus(
-        getChildrenOfTypeRecursive<KtDotQualifiedExpression>()
+        childrenOfTypeBreadthFirst<KtDotQualifiedExpression>()
           .filterNot { it.isFunctionalExpression() }
       )
       .toSet()

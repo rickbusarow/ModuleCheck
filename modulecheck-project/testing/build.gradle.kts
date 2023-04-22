@@ -29,7 +29,6 @@ dependencies {
   api(libs.bundles.hermit)
   api(libs.kotlinx.coroutines.debug)
 
-  api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-internal-testing"))
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
@@ -44,6 +43,7 @@ dependencies {
   implementation(libs.bundles.kotest)
   implementation(libs.kotlin.reflect)
 
+  implementation(project(path = ":modulecheck-config:api"))
   implementation(project(path = ":modulecheck-config:impl"))
   implementation(project(path = ":modulecheck-model:dependency:impl"))
 }
