@@ -20,6 +20,7 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.testing.Test
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import kotlin.math.ceil
 
 abstract class ShardTestTask : Test() {
@@ -43,18 +44,30 @@ abstract class ShardTestTask : Test() {
     val startIndex = testsPerShard * (shardNumber.get() - 1)
     val endIndex = minOf(testClassCount, startIndex + testsPerShard)
 
-    val testClasses = testClassesDirs.asFileTree.matching {
+    testLogging.events(
+      TestLogEvent.FAILED,
+      TestLogEvent.STARTED,
+      TestLogEvent.PASSED,
+      TestLogEvent.SKIPPED
+    )
+
+    testClassesDirs.asFileTree.matching {
       include("**/*Test.class")
     }.files.asSequence()
       .sorted()
       .map { file -> file.name.replace(".class", "") }
       .drop(startIndex)
       .take(endIndex - startIndex)
-      .toList()
+      .also {
 
-    testClasses.forEach {
-      this@ShardTestTask.filter.includeTest(it, null)
-    }
+        println(
+          "###### integration test shard ${shardNumber.get()} of ${totalShards.get()} includes:\n" +
+            it.joinToString("\n")
+        )
+      }
+      .forEach {
+        this@ShardTestTask.filter.includeTest(it, null)
+      }
 
     filterWasSet = true
   }
