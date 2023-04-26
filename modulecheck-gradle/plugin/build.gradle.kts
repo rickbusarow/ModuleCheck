@@ -182,11 +182,11 @@ val integrationTestTask = tasks.register("integrationTest", Test::class) {
   dependsOn(":publishToMavenLocalNoDokka")
 }
 
-(1..3).forEach {
+(1..4).forEach {
 
   tasks.register("integrationTestShard$it", ShardTestTask::class) {
     shardNumber.set(it)
-    totalShards.set(3)
+    totalShards.set(4)
     testClassesDirs = integrationTest.get().output.classesDirs
     classpath = integrationTest.get().runtimeClasspath
     doFirst {

@@ -662,6 +662,46 @@ jobs:
           report_paths: '**/build/**/TEST-*.xml'
           check_name: Integration Test Results - Windows
 
+  integration-tests-windows-shard-4:
+
+    runs-on: windows-latest
+    needs: integration-tests-windows-setup
+
+    steps:
+
+      - name: check out
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: integration tests
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            integrationTestShard4
+            "${{ env.windowsGradleArgs }}"
+            -Pmodulecheck.exhaustive=false
+          cache-read-only: false
+
+      - name: Archive integration test results
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: integration-test-results-windows
+          path: ./**/build/reports/tests/
+
+      - name: Integration test results
+        uses: mikepenz/action-junit-report@v3
+        if: failure()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          report_paths: '**/build/**/TEST-*.xml'
+          check_name: Integration Test Results - Windows
+
   all-checks:
     if: always()
     runs-on: ubuntu-latest
@@ -671,6 +711,7 @@ jobs:
       - integration-tests-windows-shard-1
       - integration-tests-windows-shard-2
       - integration-tests-windows-shard-3
+      - integration-tests-windows-shard-4
       - ktlint
       - modulecheck
       - publish-local-ubuntu
