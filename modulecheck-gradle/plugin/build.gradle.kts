@@ -13,6 +13,23 @@
  * limitations under the License.
  */
 
+import modulecheck.builds.ShardTestTask
+
+/*
+ * Copyright (C) 2021-2023 Rick Busarow
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 plugins {
   id("mcbuild")
   id("com.gradle.plugin-publish")
@@ -162,7 +179,21 @@ val integrationTestTask = tasks.register("integrationTest", Test::class) {
   val integrationTestSourceSet = java.sourceSets["integrationTest"]
   testClassesDirs = integrationTestSourceSet.output.classesDirs
   classpath = integrationTestSourceSet.runtimeClasspath
-  dependsOn(rootProject.tasks.matching { it.name == "publishToMavenLocalNoDokka" })
+  dependsOn(":publishToMavenLocalNoDokka")
+}
+
+(1..3).forEach {
+
+  tasks.register("integrationTestShard$it", ShardTestTask::class) {
+    shardNumber.set(it)
+    totalShards.set(3)
+    testClassesDirs = integrationTest.get().output.classesDirs
+    classpath = integrationTest.get().runtimeClasspath
+    doFirst {
+      setFilter()
+    }
+    dependsOn("integrationTestClasses", ":publishToMavenLocalNoDokka")
+  }
 }
 
 tasks.matching { it.name == "check" }.configureEach {

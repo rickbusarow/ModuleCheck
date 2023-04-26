@@ -46,10 +46,6 @@ gradlePlugin {
       id = "mcbuild.dokka"
       implementationClass = "modulecheck.builds.DokkaConventionPlugin"
     }
-    create("mcbuild.java-library") {
-      id = "mcbuild.java-library"
-      implementationClass = "modulecheck.builds.JavaLibraryConventionPlugin"
-    }
     create("mcbuild.kotlin") {
       id = "mcbuild.kotlin"
       implementationClass = "modulecheck.builds.KotlinJvmConventionPlugin"
