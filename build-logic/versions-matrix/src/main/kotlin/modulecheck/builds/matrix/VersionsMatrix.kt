@@ -26,7 +26,7 @@ class VersionsMatrix(
   internal val gradleListDefault = listOf("7.5.1", "7.6.1", "8.0.2", "8.1.1")
   internal val agpListDefault = listOf("7.3.1", "7.4.2", "8.0.0")
   internal val anvilListDefault = listOf("2.4.5")
-  internal val kotlinListDefault = listOf("1.8.0", "1.8.10", "1.8.20")
+  internal val kotlinListDefault = listOf("1.8.0", "1.8.10", "1.8.21")
 
   val gradleList = gradleArg?.singletonList() ?: gradleListDefault
   val agpList = agpArg?.singletonList() ?: agpListDefault
