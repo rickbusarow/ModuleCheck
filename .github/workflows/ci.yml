@@ -307,12 +307,15 @@ jobs:
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
-  unit-tests-macos:
-
-    runs-on: macos-latest
-
+  unit-tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        task: [ testShard1, testShard2, testShard3, testShard4 ]
+        runner: [ ubuntu-latest, windows-latest ]
+    runs-on: ${{ matrix.runner }}
     steps:
-      - name: check out with token
+      - name: check out
         uses: actions/checkout@v3
 
       - name: Set up JDK
@@ -321,10 +324,27 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: all tests
+      - name: tests - windows
+        if: runner.os == 'Windows'
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: test "${{ env.macosGradleArgs }}"
+          arguments: ${{ matrix.task }} ${{ env.windowsGradleArgs }}
+          cache-read-only: false
+          gradle-home-cache-cleanup: true
+
+      - name: tests - macos
+        if: runner.os == 'macOS'
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: ${{ matrix.task }} ${{ env.macosGradleArgs }}
+          cache-read-only: false
+          gradle-home-cache-cleanup: true
+
+      - name: tests - ubuntu
+        if: runner.os == 'Linux'
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: ${{ matrix.task }} ${{ env.ubuntuGradleArgs }}
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
@@ -341,7 +361,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           report_paths: '**/build/**/TEST-*.xml'
-          check_name: Unit Test Results - macos
+          check_name: Unit Test Results - ${{runner.os}}
 
   publish-local-ubuntu:
 
@@ -364,7 +384,7 @@ jobs:
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
-  integration-tests-matrix-ubuntu:
+  integration-tests-ubuntu:
 
     runs-on: ubuntu-latest
     needs: publish-local-ubuntu
@@ -418,43 +438,6 @@ jobs:
           report_paths: '**/build/**/TEST-*.xml'
           check_name: Integration Test Results - macos
 
-  unit-tests-matrix-windows:
-
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [ testShard1, testShard2, testShard3 ]
-
-    steps:
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-      - name: tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: ${{ matrix.shard }} "${{ env.windowsGradleArgs }}"
-          cache-read-only: false
-          gradle-home-cache-cleanup: true
-      - name: Archive test results
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: test-results-windows
-          path: ./**/build/reports/tests/
-      - name: Unit test results
-        uses: mikepenz/action-junit-report@v3
-        if: failure()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          report_paths: '**/build/**/TEST-*.xml'
-          check_name: Unit Test Results - Windows
-
   integration-tests-windows-setup:
 
     runs-on: windows-latest
@@ -477,7 +460,7 @@ jobs:
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
-  integration-tests-matrix-windows:
+  integration-tests-windows:
 
     runs-on: windows-latest
     needs: integration-tests-windows-setup
@@ -524,12 +507,11 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     needs:
-      - integration-tests-matrix-ubuntu
-      - integration-tests-matrix-windows
+      - integration-tests-ubuntu
+      - integration-tests-windows
       - publish-local-ubuntu
       - static-analysis
-      - unit-tests-macos
-      - unit-tests-matrix-windows
+      - unit-tests
       - website
     steps:
       - name: require that all other jobs have passed
