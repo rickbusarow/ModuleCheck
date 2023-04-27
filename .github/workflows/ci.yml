@@ -17,7 +17,7 @@ jobs:
 
   static-analysis:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: check out with token (used by forks)
         uses: actions/checkout@v3
@@ -85,56 +85,6 @@ jobs:
           commit_message: update dependency-guard baseline
           commit_options: '--no-verify --signoff'
 
-      - name: artifacts check
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: artifactsCheck
-          cache-read-only: false
-          gradle-home-cache-cleanup: true
-
-      - name: detektAll
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: detektAll
-          cache-read-only: false
-          gradle-home-cache-cleanup: true
-
-      - name: merge detekt SARIF reports
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: detektReportMerge
-          cache-read-only: false
-          gradle-home-cache-cleanup: true
-
-      - name: Upload SARIF to Github using the upload-sarif action
-        uses: github/codeql-action/upload-sarif@v2
-        if: success() || failure()
-        with:
-          sarif_file: build/reports/detekt/merged.sarif
-
-  ktlint:
-
-    runs-on: ubuntu-latest
-    if: github.actor != 'renovate[bot]'
-    steps:
-      - name: check out with token (used by forks)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
       - name: KtLint format (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
         uses: gradle/gradle-build-action@v2
@@ -158,29 +108,6 @@ jobs:
           arguments: ktlintCheck
           cache-read-only: false
           gradle-home-cache-cleanup: true
-
-  modulecheck:
-
-    runs-on: ubuntu-latest
-    if: github.actor != 'renovate[bot]'
-    steps:
-      - name: check out with token (used by forks)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
 
       - name: ModuleCheck with auto-correct (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
@@ -206,29 +133,6 @@ jobs:
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
-  doks:
-
-    runs-on: ubuntu-latest
-    if: github.actor != 'renovate[bot]'
-    steps:
-      - name: check out with token (used by forks)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
       - name: Doks with auto-correct (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
         uses: gradle/gradle-build-action@v2
@@ -252,29 +156,6 @@ jobs:
           arguments: doksCheck
           cache-read-only: false
           gradle-home-cache-cleanup: true
-
-  versioning:
-
-    runs-on: ubuntu-latest
-    if: github.actor != 'renovate[bot]'
-    steps:
-      - name: check out with token (used by forks)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
 
       - name: Check that the version is a -SNAPSHOT version
         uses: gradle/gradle-build-action@v2
@@ -343,6 +224,33 @@ jobs:
           commit_message: update website changelog
           commit_options: '--no-verify --signoff'
 
+      - name: artifacts check
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: artifactsCheck
+          cache-read-only: false
+          gradle-home-cache-cleanup: true
+
+      - name: detektAll
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: detektAll "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+          gradle-home-cache-cleanup: true
+
+      - name: merge detekt SARIF reports
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: detektReportMerge
+          cache-read-only: false
+          gradle-home-cache-cleanup: true
+
+      - name: Upload SARIF to Github using the upload-sarif action
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: build/reports/detekt/merged.sarif
+
   website:
     name: build website
     runs-on: macos-latest
@@ -399,7 +307,7 @@ jobs:
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
-  tests-macos:
+  unit-tests-macos:
 
     runs-on: macos-latest
 
@@ -510,71 +418,18 @@ jobs:
           report_paths: '**/build/**/TEST-*.xml'
           check_name: Integration Test Results - macos
 
-  tests-windows-shard-1:
-    runs-on: windows-latest
-    steps:
-      - name: check out with token
-        uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-      - name: tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: testShard1 "${{ env.windowsGradleArgs }}"
-          cache-read-only: false
-          gradle-home-cache-cleanup: true
-      - name: Archive test results
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: test-results-windows
-          path: ./**/build/reports/tests/
-      - name: Unit test results
-        uses: mikepenz/action-junit-report@v3
-        if: failure()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          report_paths: '**/build/**/TEST-*.xml'
-          check_name: Unit Test Results - Windows
+  unit-tests-matrix-windows:
 
-  tests-windows-shard-2:
     runs-on: windows-latest
-    steps:
-      - name: check out with token
-        uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-      - name: tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: testShard2 "${{ env.windowsGradleArgs }}"
-          cache-read-only: false
-          gradle-home-cache-cleanup: true
-      - name: Archive test results
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: test-results-windows
-          path: ./**/build/reports/tests/
-      - name: Unit test results
-        uses: mikepenz/action-junit-report@v3
-        if: failure()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          report_paths: '**/build/**/TEST-*.xml'
-          check_name: Unit Test Results - Windows
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [ testShard1, testShard2, testShard3 ]
 
-  tests-windows-shard-3:
-    runs-on: windows-latest
     steps:
-      - name: check out with token
+      - name: check out
         uses: actions/checkout@v3
+
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
@@ -583,7 +438,7 @@ jobs:
       - name: tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: testShard3 "${{ env.windowsGradleArgs }}"
+          arguments: ${{ matrix.shard }} "${{ env.windowsGradleArgs }}"
           cache-read-only: false
           gradle-home-cache-cleanup: true
       - name: Archive test results
@@ -622,13 +477,16 @@ jobs:
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
-  integration-tests-windows-shard-1:
+  integration-tests-matrix-windows:
 
     runs-on: windows-latest
     needs: integration-tests-windows-setup
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [ integrationTestShard1, integrationTestShard2, integrationTestShard3, integrationTestShard4 ]
 
     steps:
-
       - name: check out
         uses: actions/checkout@v3
 
@@ -637,135 +495,11 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-
-      - name: integration tests
+      - name: tests
         uses: gradle/gradle-build-action@v2
         with:
           arguments: |
-            integrationTestShard1
-            "${{ env.windowsGradleArgs }}"
-            -Pmodulecheck.exhaustive=false
-          cache-read-only: false
-          gradle-home-cache-cleanup: true
-
-      - name: Archive integration test results
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: integration-test-results-windows
-          path: ./**/build/reports/tests/
-
-      - name: Integration test results
-        uses: mikepenz/action-junit-report@v3
-        if: failure()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          report_paths: '**/build/**/TEST-*.xml'
-          check_name: Integration Test Results - Windows
-
-  integration-tests-windows-shard-2:
-
-    runs-on: windows-latest
-    needs: integration-tests-windows-setup
-
-    steps:
-
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: integration tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: |
-            integrationTestShard2
-            "${{ env.windowsGradleArgs }}"
-            -Pmodulecheck.exhaustive=false
-          cache-read-only: false
-          gradle-home-cache-cleanup: true
-
-      - name: Archive integration test results
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: integration-test-results-windows
-          path: ./**/build/reports/tests/
-
-      - name: Integration test results
-        uses: mikepenz/action-junit-report@v3
-        if: failure()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          report_paths: '**/build/**/TEST-*.xml'
-          check_name: Integration Test Results - Windows
-
-  integration-tests-windows-shard-3:
-
-    runs-on: windows-latest
-    needs: integration-tests-windows-setup
-
-    steps:
-
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: integration tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: |
-            integrationTestShard3
-            "${{ env.windowsGradleArgs }}"
-            -Pmodulecheck.exhaustive=false
-          cache-read-only: false
-          gradle-home-cache-cleanup: true
-
-      - name: Archive integration test results
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: integration-test-results-windows
-          path: ./**/build/reports/tests/
-
-      - name: Integration test results
-        uses: mikepenz/action-junit-report@v3
-        if: failure()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          report_paths: '**/build/**/TEST-*.xml'
-          check_name: Integration Test Results - Windows
-
-  integration-tests-windows-shard-4:
-
-    runs-on: windows-latest
-    needs: integration-tests-windows-setup
-
-    steps:
-
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: integration tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: |
-            integrationTestShard4
+            ${{ matrix.shard }}
             "${{ env.windowsGradleArgs }}"
             -Pmodulecheck.exhaustive=false
           cache-read-only: false
@@ -790,21 +524,12 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     needs:
-      - doks
       - integration-tests-matrix-ubuntu
-      - integration-tests-windows-shard-1
-      - integration-tests-windows-shard-2
-      - integration-tests-windows-shard-3
-      - integration-tests-windows-shard-4
-      - ktlint
-      - modulecheck
+      - integration-tests-matrix-windows
       - publish-local-ubuntu
       - static-analysis
-      - tests-macos
-      - tests-windows-shard-1
-      - tests-windows-shard-2
-      - tests-windows-shard-3
-      - versioning
+      - unit-tests-macos
+      - unit-tests-matrix-windows
       - website
     steps:
       - name: require that all other jobs have passed
