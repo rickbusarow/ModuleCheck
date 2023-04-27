@@ -23,31 +23,15 @@ import org.gradle.api.internal.GradleInternal
 import org.gradle.api.internal.project.ProjectInternal
 import org.gradle.api.internal.project.ProjectRegistry
 import org.gradle.api.invocation.Gradle
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.PluginContainer
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.composite.internal.DefaultIncludedBuild
 import org.gradle.composite.internal.DefaultIncludedBuild.IncludedBuildImpl
 
-/**
- * Determines if this project is the root project **and** root
- * of a composite build, if it's part of a composite build.
- *
- * A composite build is a build using 'includeBuild(...)' in settings.gradle[.kts].
- * In composite builds, the root of an included build is also a `rootProject`
- * inside that included build. So within that composite build, there are
- * multiple projects for which `project == rootProject` would return true.
- *
- * The Project property [gradle][org.gradle.api.Project.getGradle] refers to the specific
- * [gradle][org.gradle.api.invocation.Gradle] instance in that invocation of `./gradlew`,
- * and the only time [gradle.parent][org.gradle.api.invocation.Gradle.getParent]
- * is null is when it's at the true root of that tree.
- *
- * @return true if this project is the root of the entire build, else false
- */
-fun Project.isRootOfComposite(): Boolean {
-  return this == rootProject && gradle.parent == null
-}
+val Project.javaExtension: JavaPluginExtension
+  get() = extensions.getByType(JavaPluginExtension::class.java)
 
 fun PluginContainer.applyOnce(id: String) {
   if (!hasPlugin(id)) {
@@ -124,7 +108,6 @@ fun IncludedBuild.requireProjectRegistry(): ProjectRegistry<ProjectInternal> {
 
 /**
  * @return all projects from all included builds
- * @since 0.10.0
  */
 fun Gradle.allIncludedProjects(): List<ProjectInternal> {
   return includedBuilds.flatMap { it.allProjects() }
@@ -135,8 +118,6 @@ fun Gradle.allIncludedProjects(): List<ProjectInternal> {
  * any tasks with a matching name, and return them all.
  *
  * Note that this forces the included build to configure.
- *
- * @since 0.10.0
  */
 fun Gradle.includedAllProjectsTasks(taskName: String): List<TaskCollection<Task>> {
   return allIncludedProjects().map { it.tasks.matchingName(taskName) }
@@ -149,8 +130,6 @@ fun Gradle.includedAllProjectsTasks(taskName: String): List<TaskCollection<Task>
  * that the standard `task` version will throw an exception if the task is not registered.
  *
  * Note that this forces the included build to configure.
- *
- * @since 0.10.0
  */
 fun Gradle.includedRootProjectsTasks(taskName: String): List<TaskCollection<Task>> {
   return includedBuilds.mapNotNull { included ->
@@ -168,9 +147,14 @@ fun Gradle.includedRootProjectsTasks(taskName: String): List<TaskCollection<Task
 /**
  * Determines whether the receiver project is the "real" root of this
  * composite build, as opposed to the root projects of included builds.
- *
- * @since 0.10.0
  */
 fun Project.isRealRootProject(): Boolean {
   return (gradle as GradleInternal).isRootBuild && this == rootProject
+}
+
+/**
+ * `rootProject == this`
+ */
+fun Project.isRootProject(): Boolean {
+  return rootProject == this
 }

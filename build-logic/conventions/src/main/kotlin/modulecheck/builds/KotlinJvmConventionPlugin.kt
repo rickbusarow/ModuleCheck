@@ -76,8 +76,12 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
       task.finalizedBy(target.tasks.withType(KotlinCompile::class.java))
     }
 
-    target.tasks.register("testJvm") { it.dependsOn("test") }
-    target.tasks.register("buildTests") { it.dependsOn("testClasses") }
+    target.tasks.register("testJvm").dependsOn("test")
+    target.tasks.register("buildTests").dependsOn("testClasses")
+    target.tasks.register("buildAll").dependsOn(
+      target.provider { target.javaExtension.sourceSets.map { it.classesTaskName } }
+    )
+
     target.tasks.register("moveJavaSrcToKotlin") { task ->
 
       task.doLast {
