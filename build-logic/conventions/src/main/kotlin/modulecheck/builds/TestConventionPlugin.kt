@@ -83,7 +83,7 @@ abstract class TestConventionPlugin : Plugin<Project> {
 
     if (target.isRootProject()) {
 
-      val shardCount = 3
+      val shardCount = 4
       val shardTasks = (1..shardCount)
         .map { index -> target.tasks.register("testShard$index", Test::class.java) }
 
