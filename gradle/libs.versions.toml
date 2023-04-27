@@ -131,7 +131,7 @@ antlr-runtime = { module = "org.antlr:antlr4-runtime", version.ref = "antlr" }
 benManes-versions = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "benManes-versions" }
 benManes-caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "benManes-caffeine" }
 
-buildconfig = { module = "com.github.gmazzo:gradle-buildconfig-plugin", version.ref = "buildconfig" }
+buildconfig = { module = "com.github.gmazzo.buildconfig:plugin", version.ref = "buildconfig" }
 
 classgraph = { module = "io.github.classgraph:classgraph", version.ref = "classgraph" }
 
