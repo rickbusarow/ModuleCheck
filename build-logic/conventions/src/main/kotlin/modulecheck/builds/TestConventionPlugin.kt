@@ -80,5 +80,54 @@ abstract class TestConventionPlugin : Plugin<Project> {
         task.maxParallelForks = Runtime.getRuntime().availableProcessors()
       }
     }
+
+    if (target.isRootProject()) {
+
+      val shardCount = 3
+      val shardTasks = (1..shardCount)
+        .map { index -> target.tasks.register("testShard$index", Test::class.java) }
+
+      // Assign each project to a shard
+      val shardAssignments by lazy {
+
+        val testAnnotationRegex = "@Test(?!Factory)".toRegex()
+        val testFactoryAnnotationRegex = "@TestFactory".toRegex()
+
+        // Calculate the cost of each project's tests
+        val projectTestCosts = target.subprojects
+          .associateWith { project ->
+            project.file("src/test")
+              .walkTopDown()
+              .filter { it.isFile && it.extension == "kt" }
+              .sumOf { file ->
+                val fileText = file.readText()
+                val testAnnotationCount = testAnnotationRegex.findAll(fileText).count()
+                val testFactoryAnnotationCount =
+                  testFactoryAnnotationRegex.findAll(fileText).count()
+                testAnnotationCount + (testFactoryAnnotationCount * 2)
+              }
+          }
+
+        // Sort the projects by descending test cost
+        val sortedProjects = projectTestCosts.keys
+          .sortedByDescending { projectTestCosts[it] }
+
+        var shardIndex = 0
+
+        sortedProjects.groupBy { shardIndex++ % shardCount }
+      }
+
+      // Add dependencies to the shard tasks
+      shardTasks.forEachIndexed { shardIndex, shardTask ->
+
+        shardTask.configure { task ->
+
+          val assignedTests = shardAssignments.getValue(shardIndex)
+            .map { project -> project.tasks.matchingName("test") }
+
+          task.dependsOn(assignedTests)
+        }
+      }
+    }
   }
 }
