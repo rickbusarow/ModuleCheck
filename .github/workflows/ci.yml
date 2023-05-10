@@ -311,9 +311,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        runner: [ ubuntu, windows ]
         task: [ testShard1, testShard2, testShard3, testShard4 ]
-        runner: [ ubuntu-latest, windows-latest ]
-    runs-on: ${{ matrix.runner }}
+    runs-on: ${{ matrix.runner }}-latest
     steps:
       - name: check out
         uses: actions/checkout@v3
@@ -363,31 +363,9 @@ jobs:
           report_paths: '**/build/**/TEST-*.xml'
           check_name: Unit Test Results - ${{runner.os}}
 
-  publish-local-ubuntu:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: publishToMavenLocalNoDokka integrationTestClasses
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: publishToMavenLocalNoDokka integrationTestClasses "${{ env.ubuntuGradleArgs }}"
-          cache-read-only: false
-          gradle-home-cache-cleanup: true
-
   integration-tests-ubuntu:
 
     runs-on: ubuntu-latest
-    needs: publish-local-ubuntu
 
     strategy:
       fail-fast: false
@@ -418,6 +396,13 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      - name: publishToMavenLocalNoDokka integrationTestClasses
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: publishToMavenLocalNoDokka integrationTestClasses "${{ env.ubuntuGradleArgs }}"
+          cache-read-only: false
+          gradle-home-cache-cleanup: true
+
       - name: integration tests
         uses: gradle/gradle-build-action@v2
         with:
@@ -438,12 +423,15 @@ jobs:
           report_paths: '**/build/**/TEST-*.xml'
           check_name: Integration Test Results - macos
 
-  integration-tests-windows-setup:
+  integration-tests-windows:
 
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [ integrationTestShard1, integrationTestShard2, integrationTestShard3, integrationTestShard4 ]
 
     steps:
-
       - name: check out
         uses: actions/checkout@v3
 
@@ -460,24 +448,6 @@ jobs:
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
-  integration-tests-windows:
-
-    runs-on: windows-latest
-    needs: integration-tests-windows-setup
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [ integrationTestShard1, integrationTestShard2, integrationTestShard3, integrationTestShard4 ]
-
-    steps:
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
       - name: tests
         uses: gradle/gradle-build-action@v2
         with:
@@ -509,7 +479,6 @@ jobs:
     needs:
       - integration-tests-ubuntu
       - integration-tests-windows
-      - publish-local-ubuntu
       - static-analysis
       - unit-tests
       - website
