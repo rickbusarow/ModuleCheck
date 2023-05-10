@@ -26,6 +26,7 @@ abstract class TestConventionPlugin : Plugin<Project> {
 
   override fun apply(target: Project) {
     target.tasks.withType(Test::class.java).configureEach { task ->
+      task.maxHeapSize = "1g"
       task.useJUnitPlatform()
 
       task.testLogging {
@@ -49,6 +50,8 @@ abstract class TestConventionPlugin : Plugin<Project> {
       if (ci) {
         // defaults to 512m.
         task.maxHeapSize = "1g"
+        // Allow JUnit4 tests to run in parallel
+        task.maxParallelForks = 1
       } else {
         task.maxHeapSize = "4g"
 
