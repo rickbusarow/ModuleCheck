@@ -304,7 +304,7 @@ square-wire-runtime = { module = "com.squareup.wire:wire-runtime", version.ref =
 square-wire-schema = { module = "com.squareup.wire:wire-schema", version.ref = "square-wire" }
 square-wire-schema-tests = { module = "com.squareup.wire:wire-schema-tests", version.ref = "square-wire" }
 
-square-turbine = "app.cash.turbine:turbine:0.12.3"
+square-turbine = "app.cash.turbine:turbine:0.13.0"
 
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 
