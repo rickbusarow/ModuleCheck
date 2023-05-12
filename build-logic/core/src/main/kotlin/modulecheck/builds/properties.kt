@@ -69,9 +69,9 @@ fun <T> Property<T>.getOrNullFinal(): T? {
   return orNull
 }
 
-@PublishedApi
-internal fun <T> Property<T>.getFinal(): T {
+fun <T> Property<T>.getFinal(): T {
   finalizeValueOnRead()
+  disallowChanges()
   return get()
 }
 

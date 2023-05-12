@@ -41,7 +41,7 @@ jobs:
         if: github.actor != 'renovate[bot]'
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: versionsMatrixYamlCheck
+          arguments: versionsMatrixYamlCheck unitTestShardMatrixYamlCheck
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
@@ -49,7 +49,7 @@ jobs:
         if: github.actor == 'renovate[bot]'
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: versionsMatrixGenerateYaml
+          arguments: versionsMatrixGenerateYaml unitTestShardMatrixGenerateYaml
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
@@ -312,7 +312,9 @@ jobs:
       fail-fast: false
       matrix:
         runner: [ ubuntu, windows ]
-        task: [ testShard1, testShard2, testShard3, testShard4 ]
+        ### <start-unit-test-shards>
+        shardNum: [ 1, 2, 3, 4, 5, 6 ]
+        ### <end-unit-test-shards>
     runs-on: ${{ matrix.runner }}-latest
     steps:
       - name: check out
@@ -328,7 +330,7 @@ jobs:
         if: runner.os == 'Windows'
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: ${{ matrix.task }} ${{ env.windowsGradleArgs }}
+          arguments: testShard${{ matrix.shardNum }} ${{ env.windowsGradleArgs }}
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
@@ -336,7 +338,7 @@ jobs:
         if: runner.os == 'macOS'
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: ${{ matrix.task }} ${{ env.macosGradleArgs }}
+          arguments: testShard${{ matrix.shardNum }} ${{ env.macosGradleArgs }}
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
@@ -344,7 +346,7 @@ jobs:
         if: runner.os == 'Linux'
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: ${{ matrix.task }} ${{ env.ubuntuGradleArgs }}
+          arguments: testShard${{ matrix.shardNum }} ${{ env.ubuntuGradleArgs }}
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
@@ -369,7 +371,7 @@ jobs:
 
     strategy:
       fail-fast: false
-      ### <start-matrix>
+      ### <start-versions-matrix>
       matrix:
         kotlin-version: [ 1.8.0, 1.8.10, 1.8.21 ]
         gradle-version: [ 7.5.1, 7.6.1, 8.0.2, 8.1.1 ]
@@ -384,7 +386,7 @@ jobs:
             agp-version: 8.0.1
           - gradle-version: 7.6.1
             agp-version: 8.0.1
-      ### <end-matrix>
+      ### <end-versions-matrix>
 
     steps:
       - name: check out

@@ -20,6 +20,8 @@ plugins {
 
 dependencies {
 
+  api(libs.java.diff.utils)
+
   compileOnly(gradleApi())
 
   compileOnly(libs.kotlin.gradle.plugin)
