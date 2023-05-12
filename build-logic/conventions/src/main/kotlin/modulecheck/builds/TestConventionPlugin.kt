@@ -15,12 +15,15 @@
 
 package modulecheck.builds
 
+import modulecheck.builds.shards.UnitTestShardMatrixYamlCheckTask
+import modulecheck.builds.shards.UnitTestShardMatrixYamlGenerateTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.internal.classpath.Instrumented.systemProperty
+import org.gradle.language.base.plugins.LifecycleBasePlugin
 
 abstract class TestConventionPlugin : Plugin<Project> {
 
@@ -86,11 +89,16 @@ abstract class TestConventionPlugin : Plugin<Project> {
 
     if (target.isRootProject()) {
 
-      val shardCount = 4
+      @Suppress("MagicNumber")
+      val shardCount = 6
       val shardTasks = (1..shardCount)
         .map { index -> target.tasks.register("testShard$index", Test::class.java) }
 
-      // Assign each project to a shard
+      registerYamlShardsTasks(target, shardCount)
+
+      // Assign each project to a shard.
+      // It's lazy so that the work only happens at task configuration time, but it's outside the
+      // task configuration block so that it only happens once.
       val shardAssignments by lazy {
 
         val testAnnotationRegex = "@Test(?!Factory)".toRegex()
@@ -111,9 +119,14 @@ abstract class TestConventionPlugin : Plugin<Project> {
               }
           }
 
-        // Sort the projects by descending test cost
+        // Sort the projects by descending test cost, then fall back to the project paths
+        // The path sort is just so that the shard composition is stable.  If the shard composition
+        // isn't stable, the shard tasks may not be up-to-date and build caching in CI is broken.
         val sortedProjects = projectTestCosts.keys
-          .sortedByDescending { projectTestCosts[it] }
+          .sortedWith(compareBy(
+            { projectTestCosts.getValue(it) },
+            { it.path }
+          ))
 
         var shardIndex = 0
 
@@ -132,5 +145,39 @@ abstract class TestConventionPlugin : Plugin<Project> {
         }
       }
     }
+  }
+
+  private fun registerYamlShardsTasks(target: Project, shardCount: Int) {
+    val ciFile = target.file(".github/workflows/ci.yml")
+
+    require(ciFile.exists()) {
+      "Could not resolve '$ciFile'.  Only add the ci/yaml matrix tasks to the root project."
+    }
+
+    val unitTestShardMatrixGenerateYaml = target.tasks.register(
+      "unitTestShardMatrixGenerateYaml",
+      UnitTestShardMatrixYamlGenerateTask::class.java
+    ) { task ->
+      task.yamlFile.set(ciFile)
+      task.numShards.set(shardCount)
+      task.startTagProperty.set("### <start-unit-test-shards>")
+      task.endTagProperty.set("### <end-unit-test-shards>")
+    }
+
+    target.tasks.named("fix").dependsOn(unitTestShardMatrixGenerateYaml)
+    val unitTestShardMatrixYamlCheck = target.tasks.register(
+      "unitTestShardMatrixYamlCheck",
+      UnitTestShardMatrixYamlCheckTask::class.java
+    ) { task ->
+      task.yamlFile.set(ciFile)
+      task.numShards.set(shardCount)
+      task.startTagProperty.set("### <start-unit-test-shards>")
+      task.endTagProperty.set("### <end-unit-test-shards>")
+      task.mustRunAfter(unitTestShardMatrixGenerateYaml)
+    }
+
+    // Automatically run `versionsMatrixYamlCheck` when running `check`
+    target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME)
+      .dependsOn(unitTestShardMatrixYamlCheck)
   }
 }

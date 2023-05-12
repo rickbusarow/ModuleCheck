@@ -54,6 +54,7 @@ graphviz = "0.18.1"
 groovy = "3.0.17"
 jUnit = "5.9.3"
 jackson = "2.13.0"
+java-diff-utils = "4.12"
 javaParser = "3.25.3"
 jetbrains-markdown = "0.4.1"
 jmailen-kotlinter = "3.14.0"
@@ -179,6 +180,8 @@ graphviz-kotlin = { module = "guru.nidi:graphviz-kotlin", version.ref = "graphvi
 
 groovy = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }
 groovyXml = { module = "org.codehaus.groovy:groovy-xml", version.ref = "groovy" }
+
+java-diff-utils = { module = "io.github.java-diff-utils:java-diff-utils", version.ref = "java-diff-utils" }
 
 javaParser-core = { module = "com.github.javaparser:javaparser-core", version.ref = "javaParser" }
 javaParser-symbols = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaParser" }
