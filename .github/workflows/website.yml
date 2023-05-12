@@ -8,12 +8,44 @@ on:
   workflow_dispatch:
 
 env:
-  gradleArgs: '-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
+  macosGradleArgs: '-Dorg.gradle.jvmargs=-Xmx10g'
+  ubuntuGradleArgs: '-Dorg.gradle.jvmargs=-Xmx5g'
+  windowsGradleArgs: '-Dorg.gradle.jvmargs=-Xmx5g'
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+
+  dokka-partials:
+
+    name: dokkaHtmlPartial shards
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ### <start-dokka-partial-shards>
+        shardNum: [ 1, 2, 3, 4 ]
+        ### <end-dokka-partial-shards>
+
+    steps:
+      - name: check out
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: dokka partial shard
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: dokkaHtmlPartialShard${{ matrix.shardNum }} "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+          gradle-home-cache-cleanup: true
+
   publish:
     runs-on: macos-latest
+    needs:
+      - dokka-partials
     steps:
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -38,23 +70,19 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
 
-      - name: compileKotlin
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: compileKotlin "${{ env.gradleArgs }}"
-          cache-read-only: false
-
       - name: dokkaHtmlMultiModule
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: dokkaHtmlMultiModule "${{ env.gradleArgs }}"
+          arguments: dokkaHtmlMultiModule "${{ env.macosGradleArgs }}"
           cache-read-only: false
+          gradle-home-cache-cleanup: true
 
-      - name: build website
+      - name: buildSite
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: buildSite "${{ env.gradleArgs }}"
+          arguments: buildSite "${{ env.macosGradleArgs }}"
           cache-read-only: false
+          gradle-home-cache-cleanup: true
 
       - name: Deploy to GitHub Pages
         if: success()

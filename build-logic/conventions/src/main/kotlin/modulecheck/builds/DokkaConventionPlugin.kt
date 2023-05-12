@@ -81,13 +81,22 @@ abstract class DokkaConventionPlugin : Plugin<Project> {
     if (target.isRootProject()) {
 
       @Suppress("MagicNumber")
-      val shardCount = 5
+      val shardCount = 4
 
       target.registerYamlShardsTasks(
         shardCount = shardCount,
         startTagName = "### <start-dokka-partial-shards>",
         endTagName = "### <end-dokka-partial-shards>",
-        taskNamePart = "dokkaHtmlPartial"
+        taskNamePart = "dokkaHtmlPartialCi",
+        yamlFile = target.rootProject.file(".github/workflows/ci.yml")
+      )
+
+      target.registerYamlShardsTasks(
+        shardCount = shardCount,
+        startTagName = "### <start-dokka-partial-shards>",
+        endTagName = "### <end-dokka-partial-shards>",
+        taskNamePart = "dokkaHtmlPartialWebsite",
+        yamlFile = target.rootProject.file(".github/workflows/website.yml")
       )
 
       // Assign each project to a shard.

@@ -50,9 +50,9 @@ abstract class TestConventionPlugin : Plugin<Project> {
       val ci = System.getenv("CI")?.toBoolean() == true
       if (ci) {
         // defaults to 512m.
-        task.maxHeapSize = "1g"
+        task.maxHeapSize = "2g"
         // Allow JUnit4 tests to run in parallel
-        task.maxParallelForks = 1
+        task.maxParallelForks = 2
       } else {
         task.maxHeapSize = "4g"
 
@@ -94,7 +94,8 @@ abstract class TestConventionPlugin : Plugin<Project> {
         shardCount = shardCount,
         startTagName = "### <start-unit-test-shards>",
         endTagName = "### <end-unit-test-shards>",
-        taskNamePart = "unitTest"
+        taskNamePart = "unitTest",
+        yamlFile = target.rootProject.file(".github/workflows/ci.yml")
       )
 
       // Assign each project to a shard.

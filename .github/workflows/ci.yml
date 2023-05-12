@@ -259,7 +259,7 @@ jobs:
       fail-fast: false
       matrix:
         ### <start-dokka-partial-shards>
-        shardNum: [ 1, 2, 3, 4, 5 ]
+        shardNum: [ 1, 2, 3, 4 ]
         ### <end-dokka-partial-shards>
 
     steps:
@@ -377,7 +377,7 @@ jobs:
         uses: actions/upload-artifact@v3
         if: failure()
         with:
-          name: test-results-macos
+          name: test-results
           path: ./**/build/reports/tests/
 
       - name: Unit test results
@@ -446,7 +446,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           report_paths: '**/build/**/TEST-*.xml'
-          check_name: Integration Test Results - macos
+          check_name: Integration Test Results
 
   integration-tests-windows:
 
