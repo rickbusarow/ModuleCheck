@@ -27,9 +27,10 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.VerificationTask
 import org.gradle.internal.logging.text.StyledTextOutput
 import org.gradle.language.base.plugins.LifecycleBasePlugin
+import java.io.File
 import javax.inject.Inject
 
-abstract class UnitTestShardMatrixYamlCheckTask @Inject constructor(
+abstract class ShardMatrixYamlCheckTask @Inject constructor(
   objectFactory: ObjectFactory
 ) : BaseYamlMatrixTask(objectFactory), VerificationTask {
 
@@ -77,19 +78,19 @@ fun Project.registerYamlShardsTasks(
   shardCount: Int,
   startTagName: String,
   endTagName: String,
-  taskNamePart: String
+  taskNamePart: String,
+  yamlFile: File
 ) {
-  val ciFile = rootProject.file(".github/workflows/ci.yml")
 
-  require(ciFile.exists()) {
-    "Could not resolve '$ciFile'."
+  require(yamlFile.exists()) {
+    "Could not resolve '$yamlFile'."
   }
 
   val updateTask = tasks.register(
     "${taskNamePart}ShardMatrixGenerateYaml",
-    UnitTestShardMatrixYamlGenerateTask::class.java
+    ShardMatrixYamlGenerateTask::class.java
   ) { task ->
-    task.yamlFile.set(ciFile)
+    task.yamlFile.set(yamlFile)
     task.numShards.set(shardCount)
     task.startTagProperty.set(startTagName)
     task.endTagProperty.set(endTagName)
@@ -99,9 +100,9 @@ fun Project.registerYamlShardsTasks(
 
   val checkTask = tasks.register(
     "${taskNamePart}ShardMatrixYamlCheck",
-    UnitTestShardMatrixYamlCheckTask::class.java
+    ShardMatrixYamlCheckTask::class.java
   ) { task ->
-    task.yamlFile.set(ciFile)
+    task.yamlFile.set(yamlFile)
     task.numShards.set(shardCount)
     task.startTagProperty.set(startTagName)
     task.endTagProperty.set(endTagName)
@@ -113,7 +114,7 @@ fun Project.registerYamlShardsTasks(
   tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME).dependsOn(checkTask)
 }
 
-abstract class UnitTestShardMatrixYamlGenerateTask @Inject constructor(
+abstract class ShardMatrixYamlGenerateTask @Inject constructor(
   objectFactory: ObjectFactory
 ) : BaseYamlMatrixTask(objectFactory) {
 

@@ -7,11 +7,13 @@ on:
       - main
 
 env:
-  gradleArgs: '-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
+  macosGradleArgs: '-Dorg.gradle.jvmargs=-Xmx10g'
+  ubuntuGradleArgs: '-Dorg.gradle.jvmargs=-Xmx5g'
+  windowsGradleArgs: '-Dorg.gradle.jvmargs=-Xmx5g'
 
 jobs:
   publish-snapshot:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     if: github.repository == 'RBusarow/ModuleCheck'
     timeout-minutes: 30
 
@@ -29,17 +31,17 @@ jobs:
       - name: Compile Kotlin
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: compileKotlin "${{ env.gradleArgs }}"
+          arguments: compileKotlin "${{ env.ubuntuGradleArgs }}"
 
       - name: Dokka & JavadocJar
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: dokkaJavadocJar "${{ env.gradleArgs }}"
+          arguments: dokkaJavadocJar "${{ env.ubuntuGradleArgs }}"
 
       - name: Publish Snapshots
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: publish "${{ env.gradleArgs }}"
+          arguments: publish "${{ env.ubuntuGradleArgs }}"
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}

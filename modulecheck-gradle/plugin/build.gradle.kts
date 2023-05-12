@@ -187,7 +187,8 @@ registerYamlShardsTasks(
   shardCount = shardCount,
   startTagName = "### <start-integration-test-shards>",
   endTagName = "### <end-integration-test-shards>",
-  taskNamePart = "integrationTest"
+  taskNamePart = "integrationTest",
+  yamlFile = rootProject.file(".github/workflows/ci.yml")
 )
 
 tasks.matching { it.name == "check" }.configureEach {
