@@ -16,13 +16,17 @@
 package modulecheck.builds.shards
 
 import modulecheck.builds.BaseYamlMatrixTask
+import modulecheck.builds.dependsOn
 import modulecheck.builds.diffString
+import modulecheck.builds.getFinal
+import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.VerificationTask
 import org.gradle.internal.logging.text.StyledTextOutput
+import org.gradle.language.base.plugins.LifecycleBasePlugin
 import javax.inject.Inject
 
 abstract class UnitTestShardMatrixYamlCheckTask @Inject constructor(
@@ -31,6 +35,9 @@ abstract class UnitTestShardMatrixYamlCheckTask @Inject constructor(
 
   @get:Input
   abstract val numShards: Property<Int>
+
+  @get:Input
+  abstract val updateTaskName: Property<String>
 
   @TaskAction
   fun check() {
@@ -49,8 +56,8 @@ abstract class UnitTestShardMatrixYamlCheckTask @Inject constructor(
     }
 
     if (ciText != newText) {
-      val message = "The unit test shard matrix in the CI file is out of date.  " +
-        "Run ./gradlew unitTestShardMatrixGenerateYaml to automatically update." +
+      val message = "The test shard matrix in the CI file is out of date.  " +
+        "Run ./gradlew ${updateTaskName.getFinal()} to automatically update." +
         "\n\tfile://${yamlFile.get()}"
 
       createStyledOutput()
@@ -64,6 +71,46 @@ abstract class UnitTestShardMatrixYamlCheckTask @Inject constructor(
       require(false)
     }
   }
+}
+
+fun Project.registerYamlShardsTasks(
+  shardCount: Int,
+  startTagName: String,
+  endTagName: String,
+  taskNamePart: String
+) {
+  val ciFile = rootProject.file(".github/workflows/ci.yml")
+
+  require(ciFile.exists()) {
+    "Could not resolve '$ciFile'."
+  }
+
+  val updateTask = tasks.register(
+    "${taskNamePart}ShardMatrixGenerateYaml",
+    UnitTestShardMatrixYamlGenerateTask::class.java
+  ) { task ->
+    task.yamlFile.set(ciFile)
+    task.numShards.set(shardCount)
+    task.startTagProperty.set(startTagName)
+    task.endTagProperty.set(endTagName)
+  }
+
+  tasks.named("fix").dependsOn(updateTask)
+
+  val checkTask = tasks.register(
+    "${taskNamePart}ShardMatrixYamlCheck",
+    UnitTestShardMatrixYamlCheckTask::class.java
+  ) { task ->
+    task.yamlFile.set(ciFile)
+    task.numShards.set(shardCount)
+    task.startTagProperty.set(startTagName)
+    task.endTagProperty.set(endTagName)
+    task.updateTaskName.set(updateTask.name)
+    task.mustRunAfter(updateTask)
+  }
+
+  // Automatically run the check task when running `check`
+  tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME).dependsOn(checkTask)
 }
 
 abstract class UnitTestShardMatrixYamlGenerateTask @Inject constructor(
@@ -93,7 +140,7 @@ abstract class UnitTestShardMatrixYamlGenerateTask @Inject constructor(
 
       ciFile.writeText(newText)
 
-      val message = "Updated the unit test shard matrix in the CI file." +
+      val message = "Updated the test shard matrix in the CI file." +
         "\n\tfile://${yamlFile.get()}"
 
       createStyledOutput()

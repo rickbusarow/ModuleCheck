@@ -14,21 +14,7 @@
  */
 
 import modulecheck.builds.ShardTestTask
-
-/*
- * Copyright (C) 2021-2023 Rick Busarow
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+import modulecheck.builds.shards.registerYamlShardsTasks
 
 plugins {
   id("mcbuild")
@@ -182,11 +168,12 @@ val integrationTestTask = tasks.register("integrationTest", Test::class) {
   dependsOn(":publishToMavenLocalNoDokka")
 }
 
-(1..4).forEach {
+val shardCount = 6
+(1..shardCount).forEach {
 
   tasks.register("integrationTestShard$it", ShardTestTask::class) {
     shardNumber.set(it)
-    totalShards.set(4)
+    totalShards.set(shardCount)
     testClassesDirs = integrationTest.get().output.classesDirs
     classpath = integrationTest.get().runtimeClasspath
     doFirst {
@@ -195,6 +182,13 @@ val integrationTestTask = tasks.register("integrationTest", Test::class) {
     dependsOn("integrationTestClasses", ":publishToMavenLocalNoDokka")
   }
 }
+
+registerYamlShardsTasks(
+  shardCount = shardCount,
+  startTagName = "### <start-integration-test-shards>",
+  endTagName = "### <end-integration-test-shards>",
+  taskNamePart = "integrationTest"
+)
 
 tasks.matching { it.name == "check" }.configureEach {
   dependsOn(integrationTestTask)
