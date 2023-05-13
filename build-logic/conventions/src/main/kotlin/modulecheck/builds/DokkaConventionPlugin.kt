@@ -15,10 +15,8 @@
 
 package modulecheck.builds
 
-import modulecheck.builds.shards.registerYamlShardsTasks
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.ProjectDependency
 import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.tasks.FormatTask
@@ -78,71 +76,5 @@ abstract class DokkaConventionPlugin : Plugin<Project> {
       }
     }
 
-    if (target.isRootProject()) {
-
-      @Suppress("MagicNumber")
-      val shardCount = 4
-
-      target.registerYamlShardsTasks(
-        shardCount = shardCount,
-        startTagName = "### <start-dokka-partial-shards>",
-        endTagName = "### <end-dokka-partial-shards>",
-        taskNamePart = "dokkaHtmlPartialCi",
-        yamlFile = target.rootProject.file(".github/workflows/ci.yml")
-      )
-
-      target.registerYamlShardsTasks(
-        shardCount = shardCount,
-        startTagName = "### <start-dokka-partial-shards>",
-        endTagName = "### <end-dokka-partial-shards>",
-        taskNamePart = "dokkaHtmlPartialWebsite",
-        yamlFile = target.rootProject.file(".github/workflows/website.yml")
-      )
-
-      // Assign each project to a shard.
-      // It's lazy so that the work only happens at task configuration time, but it's outside the
-      // task configuration block so that it only happens once.
-      val shardAssignments by lazy {
-
-        // count how many project dependencies each project has
-        val projectCosts = target.subprojects
-          .associateWith { project ->
-            project
-              .configurations
-              .flatMap { it.dependencies.filterIsInstance<ProjectDependency>() }
-              .size
-          }
-
-        // Sort the projects by descending cost, then fall back to the project paths The path sort
-        // is just so that the shard composition is stable.  If the shard composition isn't
-        // stable, the shard tasks may not be up-to-date and build caching in CI is broken.
-        val sortedProjects = projectCosts.keys
-          .sortedWith(compareBy(
-            { projectCosts.getValue(it) },
-            { it.path }
-          ))
-
-        var shardIndex = 0
-
-        sortedProjects.groupBy { (shardIndex++ % shardCount) + 1 }
-      }
-
-      (1..shardCount).map { shardIndex ->
-
-        target.tasks.register(
-          "dokkaHtmlPartialShard$shardIndex",
-          ModuleCheckBuildTask::class.java
-        ) { task ->
-
-          val assignedTasks = shardAssignments
-            .getValue(shardIndex)
-            .map { project ->
-              project.tasks.matchingName("dokkaHtmlPartial")
-            }
-
-          task.dependsOn(assignedTasks)
-        }
-      }
-    }
   }
 }
