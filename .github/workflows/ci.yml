@@ -13,7 +13,7 @@ env:
   GRADLE_OPTS_UBUNTU: -Xmx5g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.ref }}-${{ github.head_ref }}
   cancel-in-progress: true
 
 jobs:
@@ -45,164 +45,123 @@ jobs:
           restore-cache-key: build-logic-jar
           write-cache-key: main-build-artifacts
 
-  static-analysis:
+  ktlint:
     needs:
       - build-logic
     runs-on: ubuntu-latest
     steps:
-      - name: check out with token (used by forks)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
+      - uses: actions/checkout@v3
+      - name: ktlint
+        uses: ./.github/actions/gradle-task-with-commit
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
-
-      - name: ci versions matrix check (used by everyone but Renovate)
-        if: github.actor != 'renovate[bot]'
-        uses: ./.github/actions/gradle-task
-        with:
-          task: versionsMatrixYamlCheck unitTestShardMatrixYamlCheck
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: ktlintFormat
+          check-task: ktlintCheck
           restore-cache-key: build-logic-jar
 
-      - name: ci versions matrix update (used by main repo)
-        if: github.actor == 'renovate[bot]'
-        uses: ./.github/actions/gradle-task
+  ci-matrices:
+    needs:
+      - build-logic
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: ci-matrices
+        uses: ./.github/actions/gradle-task-with-commit
         with:
-          task: versionsMatrixYamlUpdate unitTestShardMatrixYamlUpdate
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: versionsMatrixYamlUpdate unitTestShardMatrixYamlUpdate
+          check-task: versionsMatrixYamlCheck unitTestShardMatrixYamlCheck
           restore-cache-key: build-logic-jar
 
-      # If the versions matrix was just updated, commit and push those changes.
-      - name: commit dependency-guard baseline changes (used by main repo)
-        if: github.actor == 'renovate[bot]'
-        uses: stefanzweifel/git-auto-commit-action@v4
+  dependency-guard:
+    needs:
+      - build-logic
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: dependency-guard
+        uses: ./.github/actions/gradle-task-with-commit
         with:
-          commit_message: update versions matrix in yaml
-          commit_options: '--no-verify --signoff'
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: dependencyGuardBaseline
+          check-task: dependencyGuard
+          restore-cache-key: build-logic-jar
 
-      - name: dependency-guard check (used by everyone but Renovate)
-        if: github.actor != 'renovate[bot]'
-        run: ./gradlew dependencyGuard --refresh-dependencies
-
-      - name: dependency-guard baseline (used by Renovate)
-        if: github.actor == 'renovate[bot]'
-        run: ./gradlew dependencyGuardBaseline --refresh-dependencies
-
-      # If dependency-guard generated changes, commit and push those changes.
-      - name: commit dependency-guard baseline changes (used by main repo)
-        if: github.actor == 'renovate[bot]'
-        uses: stefanzweifel/git-auto-commit-action@v4
+  moduleCheck:
+    needs:
+      - build-logic
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: moduleCheck
+        uses: ./.github/actions/gradle-task-with-commit
         with:
-          commit_message: update dependency-guard baseline
-          commit_options: '--no-verify --signoff'
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: moduleCheckAuto
+          check-task: moduleCheck
+          restore-cache-key: build-logic-jar
 
-      - name: KtLint format (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew ktlintFormat
-
-      # If KtLint generated changes, commit and push those changes.
-      - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: stefanzweifel/git-auto-commit-action@v4
+  doks:
+    needs:
+      - build-logic
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: doks
+        uses: ./.github/actions/gradle-task-with-commit
         with:
-          commit_message: Apply KtLint format
-          commit_options: '--no-verify --signoff'
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: doks
+          check-task: doksCheck
+          restore-cache-key: build-logic-jar
 
-      - name: KtLint check (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
-        run: ./gradlew ktlintCheck
-
-      - name: ModuleCheck with auto-correct (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew moduleCheckAuto
-
-      # If KtLint generated changes, commit and push those changes.
-      - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: stefanzweifel/git-auto-commit-action@v4
+  website-versioning:
+    needs:
+      - build-logic
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: website versioning
+        uses: ./.github/actions/gradle-task-with-commit
         with:
-          commit_message: Apply ModuleCheck fixes
-          commit_options: '--no-verify --signoff'
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: updateWebsiteNextDocsVersionRefs updateWebsitePackageJsonVersion updateWebsiteChangelog
+          check-task: checkWebsiteNextDocsVersionRefs checkWebsitePackageJsonVersion
+          restore-cache-key: build-logic-jar
 
-      - name: ModuleCheck check (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
-        run: ./gradlew moduleCheck
-
-      - name: Doks with auto-correct (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew doks
-
-      # If Doks generated changes, commit and push those changes.
-      - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: stefanzweifel/git-auto-commit-action@v4
+  artifacts-check:
+    needs:
+      - build-logic
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: artifacts-check
+        uses: ./.github/actions/gradle-task-with-commit
         with:
-          commit_message: Apply Doks updates
-          commit_options: '--no-verify --signoff'
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: artifactsDump
+          check-task: artifactsCheck
+          restore-cache-key: build-logic-jar
 
-      - name: Doks check (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
-        run: ./gradlew doksCheck
-
-      - name: Check that the version is a -SNAPSHOT version
-        run: ./gradlew checkVersionIsSnapshot
-
-      - name: Sync versions in website docs (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew updateWebsiteNextDocsVersionRefs
-
-      - name: Check versions in website docs (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
-        run: ./gradlew checkWebsiteNextDocsVersionRefs
-
-      - name: commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+  check-version-is-snapshot:
+    needs:
+      - build-logic
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: check version is snapshot
+        uses: ./.github/actions/gradle-task
         with:
-          commit_message: update docs versions
-          commit_options: '--no-verify --signoff'
-
-      - name: Update version in website package.json (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew updateWebsitePackageJsonVersion
-
-      - name: Check version in website package.json (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
-        run: ./gradlew checkWebsitePackageJsonVersion
-
-      - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: update website versions
-          commit_options: '--no-verify --signoff'
-
-      - name: Update website changelog from root CHANGELOG (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew updateWebsiteChangelog
-
-      - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: update website changelog
-          commit_options: '--no-verify --signoff'
-
-      - name: artifacts check
-        run: ./gradlew artifactsCheck
+          task: checkVersionIsSnapshot
+          restore-cache-key: build-logic-jar
 
   detekt:
     needs:
       - build-all
     runs-on: macos-latest
     steps:
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: main build
+      - uses: actions/checkout@v3
+      - name: detektAll
         uses: ./.github/actions/gradle-task
         with:
           task: detektAll
@@ -299,25 +258,9 @@ jobs:
           report_paths: '**/build/**/TEST-*.xml'
           check_name: Unit Test Results - ${{runner.os}}
 
-  publish-local:
-    needs:
-      - build-all
-    runs-on: macos-latest
-    steps:
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: publish locally
-        uses: ./.github/actions/gradle-task
-        with:
-          task: publishToMavenLocalNoDokka integrationTestClasses
-          restore-cache-key: main-build-artifacts
-          write-cache-key: local-m2
-
   integration-tests-ubuntu:
     needs:
       - build-all
-      - publish-local
     strategy:
       fail-fast: false
       ### <start-versions-matrix>
@@ -338,10 +281,8 @@ jobs:
       ### <end-versions-matrix>
     runs-on: ubuntu-latest
     steps:
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: integration tests
+      - uses: actions/checkout@v3
+      - name: integration-tests
         uses: ./.github/actions/gradle-task
         with:
           task: |
@@ -351,7 +292,7 @@ jobs:
               -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }}
               -Pmodulecheck.anvilVersion=${{ matrix.anvil-version }}
               -Pmodulecheck.exhaustive=false
-          restore-cache-key: local-m2
+          restore-cache-key: main-build-artifacts
 
       - name: Unit test results
         uses: mikepenz/action-junit-report@v3
@@ -364,7 +305,6 @@ jobs:
   integration-tests-windows:
     needs:
       - build-all
-      - publish-local
     strategy:
       fail-fast: false
       matrix:
@@ -373,14 +313,12 @@ jobs:
         ### <end-integration-test-shards>
     runs-on: windows-latest
     steps:
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: tests
+      - uses: actions/checkout@v3
+      - name: integration-tests-windows
         uses: ./.github/actions/gradle-task
         with:
           task: integrationTestShard${{ matrix.shardNum }} -Pmodulecheck.exhaustive=false
-          restore-cache-key: local-m2
+          restore-cache-key: main-build-artifacts
 
       - name: Archive integration test results
         uses: actions/upload-artifact@v3
@@ -398,18 +336,24 @@ jobs:
           check_name: Integration Test Results - Windows
 
   all-checks:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion != 'cancelled' }}
+    runs-on: ubuntu-latest
     needs:
+      - artifacts-check
       - build-website
+      - ci-matrices
+      - dependency-guard
       - detekt
+      - check-version-is-snapshot
+      - doks
       - integration-tests-ubuntu
       - integration-tests-windows
-      - static-analysis
+      - ktlint
+      - moduleCheck
       - unit-tests
-    if: always()
-    runs-on: ubuntu-latest
+      - website-versioning
     steps:
       - name: require that all other jobs have passed
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: doks, ktlint, modulecheck, versioning
           jobs: ${{ toJSON(needs) }}

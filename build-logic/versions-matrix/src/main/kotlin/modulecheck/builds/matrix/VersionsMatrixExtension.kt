@@ -67,7 +67,7 @@ private fun Project.setUpGeneration(
     task.outDir.set(generatedDirPath)
 
     // auto-update the ci.yml file whenever re-generating the class
-    task.dependsOn(rootProject.tasks.named("versionsMatrixGenerateYaml"))
+    task.dependsOn(rootProject.tasks.named("versionsMatrixYamlUpdate"))
   }
 
   registerSimpleGenerationTaskAsDependency(sourceSetName, versionsMatrixGenerateFactory)
