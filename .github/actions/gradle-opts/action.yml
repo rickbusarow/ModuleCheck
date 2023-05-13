@@ -1,0 +1,5 @@
+name: Set GRADLE_OPTS
+description: Sets GRADLE_OPTS based on runner OS
+runs:
+  using: "node16"
+  main: "dist/index.js"

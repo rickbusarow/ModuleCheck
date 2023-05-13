@@ -5,9 +5,9 @@ on:
   workflow_dispatch:
 
 env:
-  macosGradleArgs: '-Dorg.gradle.jvmargs=-Xmx10g'
-  ubuntuGradleArgs: '-Dorg.gradle.jvmargs=-Xmx5g'
-  windowsGradleArgs: '-Dorg.gradle.jvmargs=-Xmx5g'
+  GRADLE_OPTS_WINDOWS: -Xmx5g -XX:MaxMetaspaceSize=756m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dkotlin.incremental=false
+  GRADLE_OPTS_MACOS: -Xmx10g -XX:MaxMetaspaceSize=756m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dkotlin.incremental=false
+  GRADLE_OPTS_UBUNTU: -Xmx5g -XX:MaxMetaspaceSize=756m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dkotlin.incremental=false
 
 concurrency:
   group: ci-${{ github.ref }}-${{ github.head_ref }}
@@ -17,7 +17,7 @@ jobs:
 
   static-analysis:
 
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: check out with token (used by forks)
         uses: actions/checkout@v3
@@ -36,6 +36,9 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
+
+      - name: Set GRADLE_OPTS for OS
+        uses: ./.github/actions/gradle-opts
 
       - name: ci versions matrix check (used by everyone but Renovate)
         if: github.actor != 'renovate[bot]'
@@ -231,10 +234,35 @@ jobs:
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
+  detekt:
+
+    runs-on: macos-latest
+    steps:
+      - name: check out with token (used by forks)
+        uses: actions/checkout@v3
+        if: github.event.pull_request.head.repo.full_name != github.repository
+
+      - name: check out with PAT (used by main repo)
+        uses: actions/checkout@v3
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set GRADLE_OPTS for OS
+        uses: ./.github/actions/gradle-opts
+
       - name: detektAll
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: detektAll "${{ env.macosGradleArgs }}"
+          arguments: detektAll
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
@@ -279,17 +307,20 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      - name: Set GRADLE_OPTS for OS
+        uses: ./.github/actions/gradle-opts
+
       - name: dokkaHtmlMultiModule
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: dokkaHtmlMultiModule "${{ env.macosGradleArgs }}"
+          arguments: dokkaHtmlMultiModule
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
       - name: buildSite
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: buildSite "${{ env.macosGradleArgs }}"
+          arguments: buildSite
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
@@ -319,27 +350,13 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: tests - windows
-        if: runner.os == 'Windows'
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: testShard${{ matrix.shardNum }} ${{ env.windowsGradleArgs }}
-          cache-read-only: false
-          gradle-home-cache-cleanup: true
+      - name: Set GRADLE_OPTS for OS
+        uses: ./.github/actions/gradle-opts
 
-      - name: tests - macos
-        if: runner.os == 'macOS'
+      - name: tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: testShard${{ matrix.shardNum }} ${{ env.macosGradleArgs }}
-          cache-read-only: false
-          gradle-home-cache-cleanup: true
-
-      - name: tests - ubuntu
-        if: runner.os == 'Linux'
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: testShard${{ matrix.shardNum }} ${{ env.ubuntuGradleArgs }}
+          arguments: testShard${{ matrix.shardNum }}
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
@@ -391,10 +408,13 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      - name: Set GRADLE_OPTS for OS
+        uses: ./.github/actions/gradle-opts
+
       - name: publishToMavenLocalNoDokka integrationTestClasses
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: publishToMavenLocalNoDokka integrationTestClasses "${{ env.ubuntuGradleArgs }}"
+          arguments: publishToMavenLocalNoDokka integrationTestClasses
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
@@ -403,7 +423,6 @@ jobs:
         with:
           arguments: |
             integrationTest
-            "${{ env.ubuntuGradleArgs }}"
             -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }}
             -Pmodulecheck.agpVersion=${{ matrix.agp-version }}
             -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }}
@@ -438,10 +457,13 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      - name: Set GRADLE_OPTS for OS
+        uses: ./.github/actions/gradle-opts
+
       - name: publishToMavenLocal
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: publishToMavenLocalNoDokka "${{ env.windowsGradleArgs }}"
+          arguments: publishToMavenLocalNoDokka
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
@@ -450,7 +472,6 @@ jobs:
         with:
           arguments: |
             integrationTestShard${{ matrix.shardNum }}
-            "${{ env.windowsGradleArgs }}"
             -Pmodulecheck.exhaustive=false
           cache-read-only: false
           gradle-home-cache-cleanup: true
@@ -474,6 +495,7 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     needs:
+      - detekt
       - integration-tests-ubuntu
       - integration-tests-windows
       - static-analysis
