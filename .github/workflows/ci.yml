@@ -251,38 +251,8 @@ jobs:
         with:
           sarif_file: build/reports/detekt/merged.sarif
 
-  dokka-partials:
-
-    name: dokkaHtmlPartial shards
-    runs-on: macos-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        ### <start-dokka-partial-shards>
-        shardNum: [ 1, 2, 3, 4 ]
-        ### <end-dokka-partial-shards>
-
-    steps:
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: dokka partial shard
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: dokkaHtmlPartialShard${{ matrix.shardNum }} "${{ env.macosGradleArgs }}"
-          cache-read-only: false
-          gradle-home-cache-cleanup: true
-
   website:
     name: build website
-    needs:
-      - dokka-partials
     runs-on: macos-latest
     steps:
 
