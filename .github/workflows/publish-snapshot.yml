@@ -7,9 +7,21 @@ on:
       - main
 
 env:
-  macosGradleArgs: '-Dorg.gradle.jvmargs=-Xmx10g'
-  ubuntuGradleArgs: '-Dorg.gradle.jvmargs=-Xmx5g'
-  windowsGradleArgs: '-Dorg.gradle.jvmargs=-Xmx5g'
+  GRADLE_OPTS_WINDOWS: >
+    -Dorg.gradle.jvmargs=" -Xmx3g -XX:MaxMetaspaceSize=756m -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+    -Dorg.gradle.configureondemand=false
+    -Dorg.gradle.parallel=false
+    -Dkotlin.incremental=false
+  GRADLE_OPTS_MACOS: >
+    -Dorg.gradle.jvmargs=" -Xmx10g -XX:MaxMetaspaceSize=756m -XX:MaxPermSize=4096m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+    -Dorg.gradle.configureondemand=false
+    -Dorg.gradle.parallel=false
+    -Dkotlin.incremental=false
+  GRADLE_OPTS_UBUNTU: >
+    -Dorg.gradle.jvmargs=" -Xmx5g -XX:MaxMetaspaceSize=756m -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+    -Dorg.gradle.configureondemand=false
+    -Dorg.gradle.parallel=false
+    -Dkotlin.incremental=false
 
 jobs:
   publish-snapshot:
@@ -22,7 +34,10 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
+
+      - name: Set GRADLE_OPTS for OS
+        uses: ./.github/actions/gradle-opts
 
       # break the publishing builds down a little into smaller steps
       # because gradle-build-action's caching is all-or-nothing.  If the full publish task
@@ -31,17 +46,17 @@ jobs:
       - name: Compile Kotlin
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: compileKotlin "${{ env.ubuntuGradleArgs }}"
+          arguments: compileKotlin
 
       - name: Dokka & JavadocJar
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: dokkaJavadocJar "${{ env.ubuntuGradleArgs }}"
+          arguments: dokkaJavadocJar
 
       - name: Publish Snapshots
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: publish "${{ env.ubuntuGradleArgs }}"
+          arguments: publish
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
