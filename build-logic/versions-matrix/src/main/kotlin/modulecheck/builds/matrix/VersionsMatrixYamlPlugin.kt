@@ -33,8 +33,8 @@ abstract class VersionsMatrixYamlPlugin : Plugin<Project> {
     require(ciFile.exists()) {
       "Could not resolve '$ciFile'.  Only add the ci/yaml matrix tasks to the root project."
     }
-    val versionsMatrixGenerateYaml = target.tasks.register(
-      "versionsMatrixGenerateYaml",
+    val versionsMatrixYamlUpdate = target.tasks.register(
+      "versionsMatrixYamlUpdate",
       VersionsMatrixYamlGenerateTask::class.java
     ) { task ->
       task.yamlFile.set(ciFile)
@@ -42,7 +42,7 @@ abstract class VersionsMatrixYamlPlugin : Plugin<Project> {
       task.endTagProperty.set("### <end-versions-matrix>")
     }
 
-    target.tasks.named("fix").dependsOn(versionsMatrixGenerateYaml)
+    target.tasks.named("fix").dependsOn(versionsMatrixYamlUpdate)
 
     val versionsMatrixYamlCheck = target.tasks.register(
       "versionsMatrixYamlCheck",
@@ -51,7 +51,7 @@ abstract class VersionsMatrixYamlPlugin : Plugin<Project> {
       task.yamlFile.set(ciFile)
       task.startTagProperty.set("### <start-versions-matrix>")
       task.endTagProperty.set("### <end-versions-matrix>")
-      task.mustRunAfter(versionsMatrixGenerateYaml)
+      task.mustRunAfter(versionsMatrixYamlUpdate)
     }
 
     // Automatically run `versionsMatrixYamlCheck` when running `check`

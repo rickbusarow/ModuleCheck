@@ -87,8 +87,8 @@ fun Project.registerYamlShardsTasks(
   }
 
   val updateTask = tasks.register(
-    "${taskNamePart}ShardMatrixGenerateYaml",
-    ShardMatrixYamlGenerateTask::class.java
+    "${taskNamePart}ShardMatrixYamlUpdate",
+    ShardMatrixYamlUpdateTask::class.java
   ) { task ->
     task.yamlFile.set(yamlFile)
     task.numShards.set(shardCount)
@@ -114,7 +114,7 @@ fun Project.registerYamlShardsTasks(
   tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME).dependsOn(checkTask)
 }
 
-abstract class ShardMatrixYamlGenerateTask @Inject constructor(
+abstract class ShardMatrixYamlUpdateTask @Inject constructor(
   objectFactory: ObjectFactory
 ) : BaseYamlMatrixTask(objectFactory) {
 

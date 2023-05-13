@@ -45,7 +45,7 @@ abstract class VersionsMatrixYamlCheckTask @Inject constructor(
 
     if (ciText != newText) {
       val message = "The versions matrix in the CI file is out of date.  " +
-        "Run ./gradlew versionsMatrixGenerateYaml to automatically update." +
+        "Run ./gradlew versionsMatrixYamlUpdate to automatically update." +
         "\n\tfile://${yamlFile.get()}"
 
       createStyledOutput()
