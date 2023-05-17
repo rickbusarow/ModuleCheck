@@ -5,18 +5,83 @@ on:
   workflow_dispatch:
 
 env:
-  GRADLE_OPTS_WINDOWS: -Xmx5g -XX:MaxMetaspaceSize=756m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dkotlin.incremental=false
-  GRADLE_OPTS_MACOS: -Xmx10g -XX:MaxMetaspaceSize=756m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dkotlin.incremental=false
-  GRADLE_OPTS_UBUNTU: -Xmx5g -XX:MaxMetaspaceSize=756m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dkotlin.incremental=false
+  #  GRADLE_OPTS_WINDOWS: -Xmx5g -XX:MaxMetaspaceSize=756m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false
+  GRADLE_OPTS_WINDOWS: -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false
+  GRADLE_OPTS_MACOS: -Xmx10g -XX:MaxMetaspaceSize=756m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false
+  GRADLE_OPTS_UBUNTU: -Xmx5g -XX:MaxMetaspaceSize=756m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false
 
 concurrency:
-  group: ci-${{ github.ref }}-${{ github.head_ref }}
+  group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
 
-  static-analysis:
+  build-logic:
+    runs-on: macos-latest
+    steps:
+      - name: check out with token
+        uses: actions/checkout@v3
 
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set GRADLE_OPTS for OS
+        uses: ./.github/actions/gradle-opts
+
+      - name: cache build-logic
+        uses: actions/cache@v3
+        with:
+          path: 'build-logic/**/build/'
+          key: build-logic-jar
+          enableCrossOsArchive: true
+
+      - name: build build-logic
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :build-logic:compileKotlin :build-logic:jar
+
+  build-all:
+    needs:
+      - build-logic
+    runs-on: macos-latest
+    steps:
+      - name: check out with token
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set GRADLE_OPTS for OS
+        uses: ./.github/actions/gradle-opts
+
+      - name: restore build-logic
+        uses: actions/cache/restore@v3
+        with:
+          path: build-logic/**/build/
+          key: build-logic-jar
+          enableCrossOsArchive: true
+
+      - name: cache main build
+        uses: actions/cache@v3
+        with:
+          path: '**/build'
+          key: main-build-artifacts
+          enableCrossOsArchive: true
+
+      - name: main build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: jar compileKotlin
+
+  static-analysis:
+    needs:
+      - build-logic
     runs-on: ubuntu-latest
     steps:
       - name: check out with token (used by forks)
@@ -39,6 +104,13 @@ jobs:
 
       - name: Set GRADLE_OPTS for OS
         uses: ./.github/actions/gradle-opts
+
+      - name: restore build-logic
+        uses: actions/cache/restore@v3
+        with:
+          path: build-logic/**/build/
+          key: build-logic-jar
+          enableCrossOsArchive: true
 
       - name: ci versions matrix check (used by everyone but Renovate)
         if: github.actor != 'renovate[bot]'
@@ -235,7 +307,8 @@ jobs:
           gradle-home-cache-cleanup: true
 
   detekt:
-
+    needs:
+      - build-all
     runs-on: macos-latest
     steps:
       - name: check out with token (used by forks)
@@ -259,6 +332,13 @@ jobs:
       - name: Set GRADLE_OPTS for OS
         uses: ./.github/actions/gradle-opts
 
+      - name: restore main build cache
+        uses: actions/cache/restore@v3
+        with:
+          path: '**/build'
+          key: main-build-artifacts
+          enableCrossOsArchive: true
+
       - name: detektAll
         uses: gradle/gradle-build-action@v2
         with:
@@ -279,8 +359,9 @@ jobs:
         with:
           sarif_file: build/reports/detekt/merged.sarif
 
-  website:
-    name: build website
+  build-website:
+    needs:
+      - build-all
     runs-on: macos-latest
     steps:
 
@@ -310,6 +391,20 @@ jobs:
       - name: Set GRADLE_OPTS for OS
         uses: ./.github/actions/gradle-opts
 
+      - name: restore main build cache
+        uses: actions/cache/restore@v3
+        with:
+          path: '**/build'
+          key: main-build-artifacts
+          enableCrossOsArchive: true
+
+      - name: dokka cache
+        uses: actions/cache@v3
+        with:
+          path: '**/build/dokka'
+          key: dokka-build-artifacts
+          enableCrossOsArchive: true
+
       - name: dokkaHtmlMultiModule
         uses: gradle/gradle-build-action@v2
         with:
@@ -332,6 +427,8 @@ jobs:
           gradle-home-cache-cleanup: true
 
   unit-tests:
+    needs:
+      - build-all
     strategy:
       fail-fast: false
       matrix:
@@ -352,6 +449,13 @@ jobs:
 
       - name: Set GRADLE_OPTS for OS
         uses: ./.github/actions/gradle-opts
+
+      - name: restore main build cache
+        uses: actions/cache/restore@v3
+        with:
+          path: '**/build'
+          key: main-build-artifacts
+          enableCrossOsArchive: true
 
       - name: tests
         uses: gradle/gradle-build-action@v2
@@ -376,9 +480,8 @@ jobs:
           check_name: Unit Test Results - ${{runner.os}}
 
   integration-tests-ubuntu:
-
-    runs-on: ubuntu-latest
-
+    needs:
+      - build-all
     strategy:
       fail-fast: false
       ### <start-versions-matrix>
@@ -397,7 +500,7 @@ jobs:
           - gradle-version: 7.6.1
             agp-version: 8.0.1
       ### <end-versions-matrix>
-
+    runs-on: ubuntu-latest
     steps:
       - name: check out
         uses: actions/checkout@v3
@@ -410,6 +513,13 @@ jobs:
 
       - name: Set GRADLE_OPTS for OS
         uses: ./.github/actions/gradle-opts
+
+      - name: restore main build cache
+        uses: actions/cache/restore@v3
+        with:
+          path: '**/build'
+          key: main-build-artifacts
+          enableCrossOsArchive: true
 
       - name: publishToMavenLocalNoDokka integrationTestClasses
         uses: gradle/gradle-build-action@v2
@@ -438,15 +548,15 @@ jobs:
           check_name: Integration Test Results
 
   integration-tests-windows:
-
-    runs-on: windows-latest
+    needs:
+      - build-all
     strategy:
       fail-fast: false
       matrix:
         ### <start-integration-test-shards>
         shardNum: [ 1, 2, 3, 4, 5, 6 ]
         ### <end-integration-test-shards>
-
+    runs-on: windows-latest
     steps:
       - name: check out
         uses: actions/checkout@v3
@@ -459,6 +569,13 @@ jobs:
 
       - name: Set GRADLE_OPTS for OS
         uses: ./.github/actions/gradle-opts
+
+      - name: restore main build cache
+        uses: actions/cache/restore@v3
+        with:
+          path: '**/build'
+          key: main-build-artifacts
+          enableCrossOsArchive: true
 
       - name: publishToMavenLocal
         uses: gradle/gradle-build-action@v2
@@ -492,15 +609,14 @@ jobs:
           check_name: Integration Test Results - Windows
 
   all-checks:
-    if: always()
-    runs-on: ubuntu-latest
     needs:
+      - build-website
       - detekt
       - integration-tests-ubuntu
       - integration-tests-windows
       - static-analysis
       - unit-tests
-      - website
+    runs-on: ubuntu-latest
     steps:
       - name: require that all other jobs have passed
         uses: re-actors/alls-green@release/v1

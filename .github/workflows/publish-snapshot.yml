@@ -24,10 +24,75 @@ env:
     -Dkotlin.incremental=false
 
 jobs:
-  publish-snapshot:
+
+  build-logic:
     runs-on: ubuntu-latest
+    steps:
+      - name: check out with token
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set GRADLE_OPTS for OS
+        uses: ./.github/actions/gradle-opts
+
+      - name: cache build-logic
+        uses: actions/cache@v3
+        with:
+          path: 'build-logic/**/build/'
+          key: build-logic-jar
+          enableCrossOsArchive: true
+
+      - name: build build-logic
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: :build-logic:compileKotlin :build-logic:jar
+
+  build-all:
+    needs:
+      - build-logic
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out with token
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set GRADLE_OPTS for OS
+        uses: ./.github/actions/gradle-opts
+
+      - name: restore build-logic
+        uses: actions/cache/restore@v3
+        with:
+          path: build-logic/**/build/
+          key: build-logic-jar
+          enableCrossOsArchive: true
+
+      - name: cache main build
+        uses: actions/cache@v3
+        with:
+          path: '**/build'
+          key: main-build-artifacts
+          enableCrossOsArchive: true
+
+      - name: main build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: jar compileKotlin
+
+  publish-snapshot:
+    needs:
+      - build-all
     if: github.repository == 'RBusarow/ModuleCheck'
-    timeout-minutes: 30
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
