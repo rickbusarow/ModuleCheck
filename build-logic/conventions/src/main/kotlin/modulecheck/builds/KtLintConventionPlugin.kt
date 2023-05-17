@@ -42,19 +42,19 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
       target.addRootProjectDelegateTasks()
     }
 
-    target.tasks.named("lintKotlin").configure {
+    target.tasks.named("lintKotlin") {
       it.mustRunAfter(target.tasks.named("formatKotlin"))
     }
 
     if (target == target.rootProject) {
       target.addGradleScriptTasks(target.tasks, taskNameQualifier = "")
 
-      target.tasks.named("lintKotlin").configure { rootLint ->
+      target.tasks.named("lintKotlin") { rootLint ->
         target.subprojects { sub ->
           rootLint.dependsOn(sub.tasks.matchingName("lintKotlin"))
         }
       }
-      target.tasks.named("formatKotlin").configure { rootLint ->
+      target.tasks.named("formatKotlin") { rootLint ->
         target.subprojects { sub ->
           rootLint.dependsOn(sub.tasks.matchingName("formatKotlin"))
         }
@@ -65,6 +65,15 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
 
       target.tasks.withType(ConfigurableKtLintTask::class.java).configureEach { task ->
         excludeGenerated(task, target)
+
+        if (task.name.contains("GeneratedByKsp")) {
+          task.enabled = false
+          // Just disabling the task is not enough to remove its dependencies from the task graph.
+          // The output of the KSP tasks is part of this task's source, so its source must be
+          // cleared.
+          task.setSource(emptyList<String>())
+          task.dependsOn.clear()
+        }
       }
     }
   }
