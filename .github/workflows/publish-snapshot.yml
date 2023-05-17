@@ -7,21 +7,9 @@ on:
       - main
 
 env:
-  GRADLE_OPTS_WINDOWS: >
-    -Dorg.gradle.jvmargs=" -Xmx3g -XX:MaxMetaspaceSize=756m -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
-    -Dorg.gradle.configureondemand=false
-    -Dorg.gradle.parallel=false
-    -Dkotlin.incremental=false
-  GRADLE_OPTS_MACOS: >
-    -Dorg.gradle.jvmargs=" -Xmx10g -XX:MaxMetaspaceSize=756m -XX:MaxPermSize=4096m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
-    -Dorg.gradle.configureondemand=false
-    -Dorg.gradle.parallel=false
-    -Dkotlin.incremental=false
-  GRADLE_OPTS_UBUNTU: >
-    -Dorg.gradle.jvmargs=" -Xmx5g -XX:MaxMetaspaceSize=756m -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
-    -Dorg.gradle.configureondemand=false
-    -Dorg.gradle.parallel=false
-    -Dkotlin.incremental=false
+  GRADLE_OPTS_WINDOWS: -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dorg.gradle.daemon=false -Dkotlin.daemon=false
+  GRADLE_OPTS_MACOS: -Xmx10g -XX:MaxMetaspaceSize=756m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dorg.gradle.daemon=false -Dkotlin.daemon=false
+  GRADLE_OPTS_UBUNTU: -Xmx5g -XX:MaxMetaspaceSize=756m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dorg.gradle.daemon=false -Dkotlin.daemon=false
 
 jobs:
 
@@ -43,7 +31,10 @@ jobs:
       - name: cache build-logic
         uses: actions/cache@v3
         with:
-          path: 'build-logic/**/build/'
+          path: |
+            './**/build/'
+            '../../../.gradle/caches'
+            '../../../.gradle/wrapper'
           key: build-logic-jar
           enableCrossOsArchive: true
 
@@ -72,14 +63,20 @@ jobs:
       - name: restore build-logic
         uses: actions/cache/restore@v3
         with:
-          path: build-logic/**/build/
+          path: |
+            './**/build/'
+            '../../../.gradle/caches'
+            '../../../.gradle/wrapper'
           key: build-logic-jar
           enableCrossOsArchive: true
 
       - name: cache main build
         uses: actions/cache@v3
         with:
-          path: '**/build'
+          path: |
+            './**/build/'
+            '../../../.gradle/caches'
+            '../../../.gradle/wrapper'
           key: main-build-artifacts
           enableCrossOsArchive: true
 
@@ -104,9 +101,15 @@ jobs:
       - name: Set GRADLE_OPTS for OS
         uses: ./.github/actions/gradle-opts
 
-      # break the publishing builds down a little into smaller steps
-      # because gradle-build-action's caching is all-or-nothing.  If the full publish task
-      # takes too long and times out, no cache is retained.
+      - name: restore main build cache
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            './**/build/'
+            '../../../.gradle/caches'
+            '../../../.gradle/wrapper'
+          key: main-build-artifacts
+          enableCrossOsArchive: true
 
       - name: Compile Kotlin
         uses: gradle/gradle-build-action@v2
