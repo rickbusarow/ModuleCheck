@@ -50,9 +50,9 @@ abstract class TestConventionPlugin : Plugin<Project> {
       val ci = System.getenv("CI")?.toBoolean() == true
       if (ci) {
         // defaults to 512m.
-        task.maxHeapSize = "2g"
+        task.maxHeapSize = "512m"
         // Allow JUnit4 tests to run in parallel
-        task.maxParallelForks = 2
+        task.maxParallelForks = Runtime.getRuntime().availableProcessors() / 2
       } else {
         task.maxHeapSize = "4g"
 
