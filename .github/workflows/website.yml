@@ -140,6 +140,16 @@ jobs:
           cache-read-only: false
           gradle-home-cache-cleanup: true
 
+      - name: website build cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            website/.docusaurus
+            website/build
+            website/node_modules
+          key: website-build
+          enableCrossOsArchive: true
+
       - name: buildSite
         uses: gradle/gradle-build-action@v2
         with:
