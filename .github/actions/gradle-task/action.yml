@@ -13,10 +13,10 @@ inputs:
     default: 'zulu'
   restore-cache-key:
     description: 'The unique identifier for the associated cache.  Any other consumers or producers for this cache must use the same name.'
-    required: false
+    default: 'null'
   write-cache-key:
     description: 'The unique identifier for the associated cache.  Any other consumers or producers for this cache must use the same name.'
-    required: false
+    default: 'null'
 
 runs:
   using: 'composite'
@@ -31,26 +31,47 @@ runs:
     - name: Set GRADLE_OPTS for OS
       uses: ./.github/actions/gradle-opts
 
-    - name: restore cache for ${{inputs.restore-cache-key}}
-      if: ${{inputs.restore-cache-key}} != ''
+    - name: Gradle build action
+      uses: gradle/gradle-build-action@v2
+      with:
+        cache-read-only: false
+        gradle-home-cache-cleanup: true
+
+    - name: check-write-cache-hit ${{inputs.write-cache-key}}
+      id: check-write-cache-hit
+      if: ${{inputs.write-cache-key}} != 'null'
       uses: actions/cache/restore@v3
       with:
         path: |
-          './**/build/'
-          '../../../.gradle/caches'
-          '../../../.gradle/wrapper'
-        key: ${{inputs.restore-cache-key}}
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+          ~/.m2
+        key: ${{inputs.write-cache-key}}-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('libs.versions.toml') }}-${{ hashFiles('**/gradle.properties') }}
+        enableCrossOsArchive: true
+        lookup-only: true
+
+    - name: restore cache for ${{inputs.restore-cache-key}}
+      if: ${{inputs.restore-cache-key}} != 'null' && steps.check-write-cache-hit.outputs.cache-hit != 'true'
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+          ~/.m2
+        key: ${{inputs.restore-cache-key}}-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('libs.versions.toml') }}-${{ hashFiles('**/gradle.properties') }}
+        restore-keys: ${{inputs.restore-cache-key}}
         enableCrossOsArchive: true
 
     - name: set up cache for ${{inputs.write-cache-key}}
-      if: ${{inputs.write-cache-key}} != ''
+      if: ${{inputs.write-cache-key}} != 'null' && steps.check-write-cache-hit.outputs.cache-hit != 'true'
       uses: actions/cache@v3
       with:
         path: |
-          './**/build/'
-          '../../../.gradle/caches'
-          '../../../.gradle/wrapper'
-        key: ${{inputs.write-cache-key}}
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+          ~/.m2
+        key: ${{inputs.write-cache-key}}-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('libs.versions.toml') }}-${{ hashFiles('**/gradle.properties') }}
+        restore-keys: ${{inputs.write-cache-key}}
         enableCrossOsArchive: true
 
     - uses: gradle/wrapper-validation-action@v1

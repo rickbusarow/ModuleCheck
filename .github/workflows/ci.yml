@@ -5,9 +5,12 @@ on:
   workflow_dispatch:
 
 env:
-  GRADLE_OPTS_WINDOWS: -Xmx4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
-  GRADLE_OPTS_MACOS: -Xmx10g -XX:MaxMetaspaceSize=756m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
-  GRADLE_OPTS_UBUNTU: -Xmx5g -XX:MaxMetaspaceSize=756m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
+  # '-XX:MaxMetaspaceSize=1g' must be set because Gradle sets it to 256m,
+  # but that setting is removed when setting custom jvmArgs and the default from the JVM is unbound
+  # see https://github.com/gradle/gradle/issues/19750
+  GRADLE_OPTS_WINDOWS: -Xmx4g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
+  GRADLE_OPTS_MACOS: -Xmx10g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
+  GRADLE_OPTS_UBUNTU: -Xmx5g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -59,32 +62,19 @@ jobs:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fetch-depth: 0
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: Set GRADLE_OPTS for OS
-        uses: ./.github/actions/gradle-opts
-
-      - name: restore build-logic
-        uses: actions/cache/restore@v3
-        with:
-          path: |
-            './**/build/'
-            '../../../.gradle/caches'
-            '../../../.gradle/wrapper'
-          key: build-logic-jar
-          enableCrossOsArchive: true
-
       - name: ci versions matrix check (used by everyone but Renovate)
         if: github.actor != 'renovate[bot]'
-        run: ./gradlew versionsMatrixYamlCheck unitTestShardMatrixYamlCheck
+        uses: ./.github/actions/gradle-task
+        with:
+          task: versionsMatrixYamlCheck unitTestShardMatrixYamlCheck
+          restore-cache-key: build-logic-jar
 
-      - name: ci versions matrix update (used by Renovate)
+      - name: ci versions matrix update (used by main repo)
         if: github.actor == 'renovate[bot]'
-        run: ./gradlew versionsMatrixGenerateYaml unitTestShardMatrixGenerateYaml
+        uses: ./.github/actions/gradle-task
+        with:
+          task: versionsMatrixYamlUpdate unitTestShardMatrixYamlUpdate
+          restore-cache-key: build-logic-jar
 
       # If the versions matrix was just updated, commit and push those changes.
       - name: commit dependency-guard baseline changes (used by main repo)
@@ -235,6 +225,23 @@ jobs:
       - name: check out
         uses: actions/checkout@v3
 
+      - name: dokkaHtmlMultiModule
+        uses: ./.github/actions/gradle-task
+        with:
+          task: dokkaHtmlMultiModule
+          restore-cache-key: main-build-artifacts
+          write-cache-key: dokka-build-artifacts
+
+      - name: website build cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            website/.docusaurus
+            website/build
+            website/node_modules
+          key: website-build
+          enableCrossOsArchive: true
+
       # Node is required for npm
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -246,13 +253,6 @@ jobs:
       - name: Install Yarn
         working-directory: website
         run: yarn install --frozen-lockfile
-
-      - name: main build
-        uses: ./.github/actions/gradle-task
-        with:
-          task: dokkaHtmlMultiModule
-          restore-cache-key: main-build-artifacts
-          write-cache-key: dokka-build-artifacts
 
       - name: build website
         uses: ./.github/actions/gradle-task
@@ -299,9 +299,25 @@ jobs:
           report_paths: '**/build/**/TEST-*.xml'
           check_name: Unit Test Results - ${{runner.os}}
 
+  publish-local:
+    needs:
+      - build-all
+    runs-on: macos-latest
+    steps:
+      - name: check out
+        uses: actions/checkout@v3
+
+      - name: publish locally
+        uses: ./.github/actions/gradle-task
+        with:
+          task: publishToMavenLocalNoDokka integrationTestClasses
+          restore-cache-key: main-build-artifacts
+          write-cache-key: local-m2
+
   integration-tests-ubuntu:
     needs:
       - build-all
+      - publish-local
     strategy:
       fail-fast: false
       ### <start-versions-matrix>
@@ -325,20 +341,17 @@ jobs:
       - name: check out
         uses: actions/checkout@v3
 
-      - name: publish locally
+      - name: integration tests
         uses: ./.github/actions/gradle-task
         with:
-          task: publishToMavenLocalNoDokka integrationTestClasses
-          restore-cache-key: main-build-artifacts
-
-      - name: integration tests
-        run: |
-          ./gradlew integrationTest \
-            -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }} \
-            -Pmodulecheck.agpVersion=${{ matrix.agp-version }} \
-            -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }} \
-            -Pmodulecheck.anvilVersion=${{ matrix.anvil-version }} \
-            -Pmodulecheck.exhaustive=false
+          task: |
+            integrationTest
+              -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }}
+              -Pmodulecheck.agpVersion=${{ matrix.agp-version }}
+              -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }}
+              -Pmodulecheck.anvilVersion=${{ matrix.anvil-version }}
+              -Pmodulecheck.exhaustive=false
+          restore-cache-key: local-m2
 
       - name: Unit test results
         uses: mikepenz/action-junit-report@v3
@@ -351,6 +364,7 @@ jobs:
   integration-tests-windows:
     needs:
       - build-all
+      - publish-local
     strategy:
       fail-fast: false
       matrix:
@@ -362,14 +376,11 @@ jobs:
       - name: check out
         uses: actions/checkout@v3
 
-      - name: publish locally
+      - name: tests
         uses: ./.github/actions/gradle-task
         with:
-          task: publishToMavenLocalNoDokka integrationTestClasses
-          restore-cache-key: main-build-artifacts
-
-      - name: tests
-        run: ./gradlew integrationTestShard${{ matrix.shardNum }} -Pmodulecheck.exhaustive=false
+          task: integrationTestShard${{ matrix.shardNum }} -Pmodulecheck.exhaustive=false
+          restore-cache-key: local-m2
 
       - name: Archive integration test results
         uses: actions/upload-artifact@v3
