@@ -15,10 +15,10 @@
 :modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-core -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -38,10 +38,10 @@
 :modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-core -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-dagger -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.21
@@ -84,12 +84,12 @@
 :modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
-:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.0
-:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.0
+:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
+:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1
+:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1
 :modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-internal-testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-api:5.9.3
 :modulecheck-internal-testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-engine:5.9.3
@@ -111,10 +111,10 @@
 :modulecheck-config:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-config:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-config:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-config:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-config:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-config:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-config:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-config:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-config:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-config:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-config:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-config:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-config:fake -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -128,10 +128,10 @@
 :modulecheck-config:fake -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-config:fake -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-config:fake -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-config:fake -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-config:fake -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-config:fake -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-config:fake -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-config:fake -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-config:fake -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-config:fake -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-config:fake -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-config:fake -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-config:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -145,10 +145,10 @@
 :modulecheck-config:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-config:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-config:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-config:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-config:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-config:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-config:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-config:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-config:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-config:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-config:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-config:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-finding:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -166,10 +166,10 @@
 :modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-finding:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-finding:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -187,10 +187,10 @@
 :modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-finding:impl-android -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -208,10 +208,10 @@
 :modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-finding:impl-sort -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -229,19 +229,19 @@
 :modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.21
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
+:modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -282,10 +282,10 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.slf4j:jcl-over-slf4j:1.7.30
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.slf4j:jul-to-slf4j:1.7.30
@@ -305,10 +305,10 @@
 :modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.ibm.icu:icu4j:71.1
@@ -329,10 +329,10 @@
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:java -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -358,10 +358,10 @@
 :modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:psi -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -380,10 +380,10 @@
 :modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -418,10 +418,10 @@
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-project:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -439,10 +439,10 @@
 :modulecheck-project:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-project:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-project:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-project:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-project:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-project:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-project:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-project:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-project:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-project:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-project:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-project:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-project:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -462,10 +462,10 @@
 :modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-project:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-project:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -525,13 +525,13 @@
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.7.0
-:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
-:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.0
-:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.0
+:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.7.1
+:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
+:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1
+:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-project:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-api:5.9.3
 :modulecheck-project:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-engine:5.9.3
@@ -598,12 +598,12 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
-:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.0
-:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.0
+:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
+:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1
+:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-project-generation:api -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-api:5.9.3
 :modulecheck-project-generation:api -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-engine:5.9.3
@@ -629,10 +629,10 @@
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- org.unbescape:unbescape:1.1.6.RELEASE
 
@@ -653,10 +653,10 @@
 :modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-reporting:graphviz -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -679,10 +679,10 @@
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.slf4j:jcl-over-slf4j:1.7.30
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.slf4j:jul-to-slf4j:1.7.30
@@ -705,10 +705,10 @@
 :modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-rule:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -726,10 +726,10 @@
 :modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-rule:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-rule:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -749,10 +749,10 @@
 :modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-rule:impl-factory -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -772,10 +772,10 @@
 :modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-rule:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -798,10 +798,10 @@
 :modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-runtime:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -826,10 +826,10 @@
 :modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-runtime:api -- runtimeClasspath -- org.slf4j:jcl-over-slf4j:1.7.30
 :modulecheck-runtime:api -- runtimeClasspath -- org.slf4j:jul-to-slf4j:1.7.30
@@ -898,13 +898,13 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.7.0
-:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
-:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.0
-:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.0
+:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.7.1
+:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
+:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1
+:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-runtime:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-api:5.9.3
 :modulecheck-runtime:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-engine:5.9.3
@@ -933,10 +933,10 @@
 :modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-utils:lazy -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -949,19 +949,19 @@
 :modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-utils:stdlib -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.21
 :modulecheck-utils:stdlib -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-utils:stdlib -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-utils:stdlib -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-utils:stdlib -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-utils:stdlib -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-utils:stdlib -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
+:modulecheck-utils:stdlib -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-utils:stdlib -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-utils:stdlib -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
 :modulecheck-utils:stdlib -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-utils:trace -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -969,9 +969,9 @@
 :modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
+:modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
 :modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-utils:trace-testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -979,19 +979,19 @@
 :modulecheck-utils:trace-testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-utils:trace-testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-utils:trace-testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-utils:trace-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-utils:trace-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-utils:trace-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
+:modulecheck-utils:trace-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-utils:trace-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-utils:trace-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
 :modulecheck-utils:trace-testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-utils:traversal -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.21
 :modulecheck-utils:traversal -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-utils:traversal -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-utils:traversal -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-utils:traversal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-utils:traversal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-utils:traversal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-utils:traversal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-utils:traversal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-utils:traversal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-utils:traversal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-utils:traversal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-utils:traversal -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-gradle:platforms:api -- runtimeClasspath -- javax.inject:javax.inject:1
@@ -1006,10 +1006,10 @@
 :modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-gradle:platforms:impl -- runtimeClasspath -- javax.inject:javax.inject:1
@@ -1024,10 +1024,10 @@
 :modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- javax.inject:javax.inject:1
@@ -1042,10 +1042,10 @@
 :modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- javax.inject:javax.inject:1
@@ -1060,10 +1060,10 @@
 :modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-model:dependency:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -1077,10 +1077,10 @@
 :modulecheck-model:dependency:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-model:dependency:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-model:dependency:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-model:dependency:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-model:dependency:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-model:dependency:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-model:dependency:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-model:dependency:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-model:dependency:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-model:dependency:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-model:dependency:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-model:dependency:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-model:dependency:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -1094,19 +1094,19 @@
 :modulecheck-model:dependency:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-model:dependency:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-model:dependency:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-model:dependency:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-model:dependency:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-model:dependency:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-model:dependency:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-model:dependency:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-model:dependency:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-model:dependency:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-model:dependency:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-model:dependency:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-model:sourceset:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.21
 :modulecheck-model:sourceset:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-model:sourceset:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-model:sourceset:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-model:sourceset:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-model:sourceset:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-model:sourceset:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
+:modulecheck-model:sourceset:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-model:sourceset:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-model:sourceset:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
 :modulecheck-model:sourceset:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -1119,10 +1119,10 @@
 :modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -1142,10 +1142,10 @@
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:source:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -1159,10 +1159,10 @@
 :modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:source:testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
@@ -1200,12 +1200,12 @@
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
-:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.0
-:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.0
+:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
+:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1
+:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-api:5.9.3
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-engine:5.9.3
@@ -1232,10 +1232,10 @@
 :modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-utils:coroutines:impl -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -1243,10 +1243,10 @@
 :modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -1260,10 +1260,10 @@
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -1277,10 +1277,10 @@
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -1294,10 +1294,10 @@
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -1311,10 +1311,10 @@
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:gradle:model:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -1328,10 +1328,10 @@
 :modulecheck-parsing:gradle:model:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:gradle:model:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:gradle:model:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:gradle:model:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:gradle:model:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:gradle:model:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:gradle:model:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:gradle:model:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:gradle:model:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:gradle:model:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:gradle:model:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:gradle:model:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
 :modulecheck-parsing:gradle:model:impl-typesafe -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -1345,8 +1345,8 @@
 :modulecheck-parsing:gradle:model:impl-typesafe -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21
 :modulecheck-parsing:gradle:model:impl-typesafe -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21
 :modulecheck-parsing:gradle:model:impl-typesafe -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.21
-:modulecheck-parsing:gradle:model:impl-typesafe -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.0
-:modulecheck-parsing:gradle:model:impl-typesafe -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0
-:modulecheck-parsing:gradle:model:impl-typesafe -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0
-:modulecheck-parsing:gradle:model:impl-typesafe -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.0
+:modulecheck-parsing:gradle:model:impl-typesafe -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
+:modulecheck-parsing:gradle:model:impl-typesafe -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
+:modulecheck-parsing:gradle:model:impl-typesafe -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
+:modulecheck-parsing:gradle:model:impl-typesafe -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:gradle:model:impl-typesafe -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
