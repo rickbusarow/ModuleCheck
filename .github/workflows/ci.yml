@@ -336,7 +336,7 @@ jobs:
           check_name: Integration Test Results - Windows
 
   all-checks:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion != 'cancelled' }}
+    if: always()
     runs-on: ubuntu-latest
     needs:
       - artifacts-check
