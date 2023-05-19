@@ -257,7 +257,7 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.ibm.icu:icu4j:71.1
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.anvil:annotations:2.4.5
-:modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.moshi:moshi:1.14.0
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.okio:okio:2.10.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- guru.nidi:graphviz-java-min-deps:0.18.1
 :modulecheck-gradle:plugin -- runtimeClasspath -- guru.nidi:graphviz-java:0.18.1
@@ -691,7 +691,7 @@
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-reporting:sarif -- runtimeClasspath -- com.squareup.moshi:moshi:1.14.0
+:modulecheck-reporting:sarif -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.squareup.okio:okio:2.10.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
@@ -808,7 +808,7 @@
 :modulecheck-runtime:api -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-runtime:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-runtime:api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-runtime:api -- runtimeClasspath -- com.squareup.moshi:moshi:1.14.0
+:modulecheck-runtime:api -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.0
 :modulecheck-runtime:api -- runtimeClasspath -- com.squareup.okio:okio:2.10.0
 :modulecheck-runtime:api -- runtimeClasspath -- guru.nidi:graphviz-java-min-deps:0.18.1
 :modulecheck-runtime:api -- runtimeClasspath -- guru.nidi:graphviz-java:0.18.1
@@ -854,7 +854,7 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-coroutines:0.9.6
 :modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-junit5:0.9.6
 :modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.anvil:annotations:2.4.5
-:modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.moshi:moshi:1.14.0
+:modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.0
 :modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.okio:okio:2.10.0
 :modulecheck-runtime:testing -- runtimeClasspath -- guru.nidi:graphviz-java-min-deps:0.18.1
 :modulecheck-runtime:testing -- runtimeClasspath -- guru.nidi:graphviz-java:0.18.1
