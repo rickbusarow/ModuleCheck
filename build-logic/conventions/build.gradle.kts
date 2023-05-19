@@ -71,18 +71,6 @@ gradlePlugin {
 
 dependencies {
 
-  implementation(libs.google.dagger.api)
-  implementation(libs.google.ksp)
-  implementation(libs.gradle.plugin.publish)
-  implementation(libs.jmailen.kotlinter)
-  implementation(libs.dokka.gradle)
-  implementation(libs.dropbox.dependencyGuard)
-  implementation(libs.kotlin.compiler)
-  implementation(libs.square.anvil.gradle)
-  implementation(libs.square.kotlinPoet)
-  implementation(libs.vanniktech.publish)
-
-  ksp(libs.square.moshi.codegen)
   api(libs.square.moshi)
 
   api(project(path = ":core"))
@@ -93,6 +81,14 @@ dependencies {
 
   implementation(libs.benManes.versions)
   implementation(libs.buildconfig)
+  implementation(libs.detekt.gradle)
+  implementation(libs.dokka.gradle)
+  implementation(libs.dropbox.dependencyGuard)
+  implementation(libs.google.dagger.api)
+  implementation(libs.google.ksp)
+  implementation(libs.gradle.plugin.publish)
+  implementation(libs.jmailen.kotlinter)
+  implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.gradle.plugin)
   implementation(libs.kotlin.reflect)
   implementation(libs.kotlin.stdlib.common)
@@ -102,5 +98,9 @@ dependencies {
   implementation(libs.kotlinx.knit)
   implementation(libs.rickBusarow.ktrules)
   implementation(libs.scabbard)
-  implementation(libs.detekt.gradle)
+  implementation(libs.square.anvil.gradle)
+  implementation(libs.square.kotlinPoet)
+  implementation(libs.vanniktech.publish)
+
+  ksp(libs.square.moshi.codegen)
 }
