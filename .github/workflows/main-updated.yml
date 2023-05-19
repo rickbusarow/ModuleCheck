@@ -70,6 +70,7 @@ jobs:
   publish-website:
     needs:
       - build-logic
+      - build-all
     runs-on: macos-latest
     steps:
       - name: check out

@@ -46,7 +46,7 @@ runs:
           ~/.gradle/caches
           ~/.gradle/wrapper
           ~/.m2
-        key: ${{inputs.write-cache-key}}-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('libs.versions.toml') }}-${{ hashFiles('**/gradle.properties') }}
+        key: ${{inputs.write-cache-key}}-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/libs.versions.toml') }}-${{ hashFiles('**/gradle.properties') }}
         enableCrossOsArchive: true
         lookup-only: true
 
@@ -58,7 +58,7 @@ runs:
           ~/.gradle/caches
           ~/.gradle/wrapper
           ~/.m2
-        key: ${{inputs.restore-cache-key}}-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('libs.versions.toml') }}-${{ hashFiles('**/gradle.properties') }}
+        key: ${{inputs.restore-cache-key}}-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/libs.versions.toml') }}-${{ hashFiles('**/gradle.properties') }}
         restore-keys: ${{inputs.restore-cache-key}}
         enableCrossOsArchive: true
 
@@ -70,7 +70,7 @@ runs:
           ~/.gradle/caches
           ~/.gradle/wrapper
           ~/.m2
-        key: ${{inputs.write-cache-key}}-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('libs.versions.toml') }}-${{ hashFiles('**/gradle.properties') }}
+        key: ${{inputs.write-cache-key}}-${{ hashFiles('**/*.gradle.kts') }}-${{ hashFiles('**/libs.versions.toml') }}-${{ hashFiles('**/gradle.properties') }}
         restore-keys: ${{inputs.write-cache-key}}
         enableCrossOsArchive: true
 
