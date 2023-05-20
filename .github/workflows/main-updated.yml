@@ -28,8 +28,6 @@ jobs:
           write-cache-key: build-logic-jar
 
   build-all:
-    needs:
-      - build-logic
     runs-on: macos-latest
     steps:
       - name: check out
@@ -69,7 +67,6 @@ jobs:
 
   publish-website:
     needs:
-      - build-logic
       - build-all
     runs-on: macos-latest
     steps:
