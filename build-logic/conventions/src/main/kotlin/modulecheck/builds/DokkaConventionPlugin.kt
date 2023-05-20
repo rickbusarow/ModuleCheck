@@ -15,9 +15,20 @@
 
 package modulecheck.builds
 
+import com.vanniktech.maven.publish.tasks.JavadocJar
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
+import org.gradle.api.tasks.TaskCollection
+import org.gradle.language.base.plugins.LifecycleBasePlugin
+import org.jetbrains.dokka.DokkaConfiguration
 import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
+import org.jetbrains.dokka.gradle.AbstractDokkaTask
+import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
+import org.jetbrains.dokka.versioning.VersioningConfiguration
+import org.jetbrains.dokka.versioning.VersioningPlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.tasks.FormatTask
 import org.jmailen.gradle.kotlinter.tasks.LintTask
@@ -28,53 +39,137 @@ abstract class DokkaConventionPlugin : Plugin<Project> {
 
     target.plugins.applyOnce("org.jetbrains.dokka")
 
-    target.tasks.withType(AbstractDokkaLeafTask::class.java).configureEach { task ->
+    target.tasks.withType(AbstractDokkaLeafTask::class.java).configureEach { dokkaTask ->
 
       // Dokka doesn't support configuration caching
-      task.notCompatibleWithConfigurationCache("Dokka doesn't support configuration caching")
+      dokkaTask.notCompatibleWithConfigurationCache("Dokka doesn't support configuration caching")
 
-      // Dokka uses their outputs but doesn't explicitly depend upon them.
-      task.mustRunAfter(target.tasks.withType(KotlinCompile::class.java))
-      task.mustRunAfter(target.tasks.withType(LintTask::class.java))
-      task.mustRunAfter(target.tasks.withType(FormatTask::class.java))
+      dokkaTask.setMustRunAfter(target)
 
-      // The default moduleName for each module in the module list is its unqualified "name",
-      // meaning the list would be full of "api", "impl", etc.  Instead, use the module's maven
-      // artifact ID, if it has one, or default to its full Gradle path for internal modules.
-      val fullModuleName = target.artifactId ?: target.path.removePrefix(":")
-      task.moduleName.set(fullModuleName)
+      val fullModuleName = target.path.removePrefix(":")
+      dokkaTask.moduleName.set(fullModuleName)
 
-      if (!target.isRootProject()) {
-        task.dokkaSourceSets.getByName("main") { builder ->
-
-          builder.samples.setFrom(
-            target.fileTree(target.projectDir) { tree ->
-              tree.include("samples/**")
-            }
-          )
-
-          val readmeFile = target.file("${target.projectDir}/README.md")
-
-          if (readmeFile.exists()) {
-            builder.includes.from(readmeFile)
-          }
-
-          builder.sourceLink { sourceLinkBuilder ->
-            sourceLinkBuilder.localDirectory.set(target.file("src/main"))
-
-            val modulePath = target.path.replace(":", "/")
-              .replaceFirst("/", "")
-
-            // URL showing where the source code can be accessed through the web browser
-            sourceLinkBuilder.remoteUrl.set(
-              URL("https://github.com/RBusarow/ModuleCheck/blob/main/$modulePath/src/main")
-            )
-            // Suffix which is used to append the line number to the URL. Use #L for GitHub
-            sourceLinkBuilder.remoteLineSuffix.set("#L")
-          }
-        }
+      if (target != target.rootProject && target.file("src/main").exists()) {
+        dokkaTask.configureSourceSets(target)
       }
     }
 
+    target.dependencies.add(
+      "dokkaPlugin",
+      target.libsCatalog.dependency("dokka-versioning")
+    )
+
+    fun TaskCollection<out AbstractDokkaTask>.configureVersioning() = configureEach { task ->
+
+      val dokkaArchiveBuildDir = target.rootDir.resolve("build/tmp/dokka-archive")
+
+      require(task is DokkaTaskPartial || task is DokkaMultiModuleTask) {
+        """
+        DO NOT JUST CONFIGURE `AbstractDokkaTask`!!!
+        This will bundle the full dokka archive (all versions) into the javadoc.jar for every single
+        module, which currently adds about 8MB per version in the archive. Set up versioning for the
+        Multi-Module tasks ONLY. (DokkaTaskPartial is part of the multi-module tasks).
+        """.trimIndent()
+      }
+
+      task.pluginConfiguration<VersioningPlugin, VersioningConfiguration> {
+        version = VERSION_NAME
+        olderVersionsDir = dokkaArchiveBuildDir
+        renderVersionsNavigationOnAllPages = true
+      }
+    }
+
+    target.tasks.withType(DokkaTaskPartial::class.java).configureVersioning()
+    target.tasks.withType(DokkaMultiModuleTask::class.java).configureVersioning()
+
+    target.plugins.withType(MavenPublishPlugin::class.java).configureEach {
+
+      val checkJavadocJarIsNotVersioned = target.tasks
+        .register(
+          "checkJavadocJarIsNotVersioned",
+          ModuleCheckBuildTask::class.java
+        ) { task ->
+          task.description =
+            "Ensures that generated javadoc.jar artifacts don't include old Dokka versions"
+          task.group = "dokka versioning"
+
+          val javadocTasks = target.tasks.withType(JavadocJar::class.java)
+          task.dependsOn(javadocTasks)
+
+          task.inputs.files(javadocTasks.map { it.outputs })
+
+          val zipTrees = javadocTasks.map { target.zipTree(it.archiveFile) }
+
+          task.doLast {
+
+            val jsonReg = """older\/($SEMVER_REGEX)\/version\.json""".toRegex()
+
+            val versions = zipTrees.flatMap { tree ->
+              tree
+                .filter { it.path.startsWith("older/") }
+                .filter { it.isFile }
+                .mapNotNull { jsonReg.find(it.path)?.groupValues?.get(1) }
+            }
+
+            if (versions.isNotEmpty()) {
+              throw GradleException("Found old Dokka versions in javadoc.jar: $versions")
+            }
+          }
+        }
+
+      target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME)
+        .dependsOn(checkJavadocJarIsNotVersioned)
+    }
+  }
+
+  private fun AbstractDokkaLeafTask.setMustRunAfter(target: Project) {
+
+    // Dokka uses their outputs but doesn't explicitly depend upon them.
+    mustRunAfter(target.tasks.withType(KotlinCompile::class.java))
+    mustRunAfter(target.tasks.withType(LintTask::class.java))
+    mustRunAfter(target.tasks.withType(FormatTask::class.java))
+    mustRunAfter(target.tasks.matchingName("generateProtos"))
+  }
+
+  private fun AbstractDokkaLeafTask.configureSourceSets(target: Project) {
+
+    dokkaSourceSets.named("main") { sourceSet ->
+
+      sourceSet.documentedVisibilities.set(
+        setOf(
+          DokkaConfiguration.Visibility.PUBLIC,
+          DokkaConfiguration.Visibility.PRIVATE,
+          DokkaConfiguration.Visibility.PROTECTED,
+          DokkaConfiguration.Visibility.INTERNAL,
+          DokkaConfiguration.Visibility.PACKAGE
+        )
+      )
+
+      sourceSet.languageVersion.set(target.KOTLIN_API)
+      sourceSet.jdkVersion.set(target.JVM_TARGET_INT)
+
+      // include all project sources when resolving kdoc samples
+      sourceSet.samples.setFrom(target.fileTree(target.file("src")))
+
+      val readmeFile = target.projectDir.resolve("README.md")
+
+      if (readmeFile.exists()) {
+        sourceSet.includes.from(readmeFile)
+      }
+
+      sourceSet.sourceLink { sourceLinkBuilder ->
+        sourceLinkBuilder.localDirectory.set(target.file("src/main"))
+
+        val modulePath = project.path.replace(":", "/")
+          .replaceFirst("/", "")
+
+        // URL showing where the source code can be accessed through the web browser
+        sourceLinkBuilder.remoteUrl.set(
+          URL("https://github.com/RBusarow/ModuleCheck/blob/main/$modulePath/src/main")
+        )
+        // Suffix which is used to append the line number to the URL. Use #L for GitHub
+        sourceLinkBuilder.remoteLineSuffix.set("#L")
+      }
+    }
   }
 }

@@ -40,6 +40,9 @@ trap 'echo "\"${last_command}\" command filed with exit code $?."' EXIT
 # Copy the CHANGELOG from project root to the website dir and update its formatting
 ./gradlew updateWebsiteChangelog
 
+# Capture a snapshot of the current version's dokka api docs
+./gradlew dokkaHtmlMultiModule syncDokkaToArchive
+
 echo
 echo ' ___ _   _  ___ ___ ___  ___ ___'
 echo '/ __| | | |/ __/ __/ _ \/ __/ __|'

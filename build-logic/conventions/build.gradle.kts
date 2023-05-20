@@ -46,6 +46,10 @@ gradlePlugin {
       id = "mcbuild.dokka"
       implementationClass = "modulecheck.builds.DokkaConventionPlugin"
     }
+    create("mcbuild.dokka-version-archive") {
+      id = "mcbuild.dokka-version-archive"
+      implementationClass = "modulecheck.builds.DokkaVersionArchivePlugin"
+    }
     create("mcbuild.kotlin") {
       id = "mcbuild.kotlin"
       implementationClass = "modulecheck.builds.KotlinJvmConventionPlugin"
@@ -83,6 +87,7 @@ dependencies {
   implementation(libs.buildconfig)
   implementation(libs.detekt.gradle)
   implementation(libs.dokka.gradle)
+  implementation(libs.dokka.versioning)
   implementation(libs.dropbox.dependencyGuard)
   implementation(libs.google.dagger.api)
   implementation(libs.google.ksp)
