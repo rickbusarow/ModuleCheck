@@ -46,6 +46,7 @@ abstract class McBuildRootPlugin : Plugin<Project> {
     target.plugins.apply(ArtifactsPlugin::class.java)
     target.plugins.apply(BenManesVersionsPlugin::class.java)
     target.plugins.apply(DependencyGuardAggregatePlugin::class.java)
+    target.plugins.apply(DokkaVersionArchivePlugin::class.java)
     target.plugins.apply(KnitConventionPlugin::class.java)
     target.plugins.apply(VersionsMatrixYamlPlugin::class.java)
     target.plugins.apply(WebsitePlugin::class.java)
