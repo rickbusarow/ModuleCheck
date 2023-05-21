@@ -42,6 +42,13 @@ plugins {
   id("com.gradle.enterprise").version("3.13.2")
 }
 
+val isCI = System.getenv("CI")?.toBoolean() == true
+
+if (isCI) {
+  printCiEnvironment()
+}
+
+
 gradleEnterprise {
   buildScan {
 
@@ -50,19 +57,18 @@ gradleEnterprise {
 
     publishAlways()
 
-    tag(if (System.getenv("CI").isNullOrBlank()) "Local" else "CI")
+    tag(if (isCI) "CI" else "Local")
 
-    val githubActionID = System.getenv("GITHUB_ACTION")
+    val gitHubActions = System.getenv("GITHUB_ACTIONS")?.toBoolean() ?: false
 
-    if (!githubActionID.isNullOrBlank()) {
+    if (gitHubActions) {
+      // ex: `octocat/Hello-World` as in github.com/octocat/Hello-World
+      val repository = System.getenv("GITHUB_REPOSITORY")!!
+      val runId = System.getenv("GITHUB_RUN_ID")!!
+
       link(
-        "WorkflowURL",
-        "https://github.com/" +
-          System.getenv("GITHUB_REPOSITORY") +
-          "/pull/" +
-          System.getenv("PR_NUMBER") +
-          "/checks?check_run_id=" +
-          System.getenv("GITHUB_RUN_ID")
+        "GitHub Action Run",
+        "https://github.com/$repository/actions/runs/$runId"
       )
     }
   }
@@ -141,3 +147,23 @@ include(
   ":modulecheck-utils:trace-testing",
   ":modulecheck-utils:traversal"
 )
+
+fun printCiEnvironment() {
+  fun Long.gigabytes(): String {
+    return "%.1f GB".format(toDouble() / (1024 * 1024 * 1024))
+  }
+  println(
+    """
+    ╔══════════════════════════════════════════════════════════════════════════════╗
+    ║                                CI environment                                ║
+    ║                                                                              ║
+    ║                     OS - ${System.getProperty("os.name")}                    ║
+    ║   available processors - ${Runtime.getRuntime().availableProcessors()}       ║
+    ║                                                                              ║
+    ║           total memory - ${Runtime.getRuntime().totalMemory().gigabytes()}   ║
+    ║            free memory - ${Runtime.getRuntime().freeMemory().gigabytes()}    ║
+    ║             max memory - ${Runtime.getRuntime().maxMemory().gigabytes()}     ║
+    ╚══════════════════════════════════════════════════════════════════════════════╝
+    """.trimIndent()
+  )
+}
