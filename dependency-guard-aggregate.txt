@@ -254,7 +254,7 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.guava:guava:31.1-jre
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.j2objc:j2objc-annotations:1.3
-:modulecheck-gradle:plugin -- runtimeClasspath -- com.ibm.icu:icu4j:71.1
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.anvil:annotations:2.4.5
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.0
@@ -267,8 +267,8 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:ST4:4.3.4
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:antlr-runtime:3.5.3
-:modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:antlr4-runtime:4.12.0
-:modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:antlr4:4.12.0
+:modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.0
+:modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:antlr4:4.13.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.17
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.17
@@ -311,14 +311,14 @@
 :modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
 :modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
-:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.ibm.icu:icu4j:71.1
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:ST4:4.3.4
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:antlr-runtime:3.5.3
-:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:antlr4-runtime:4.12.0
-:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:antlr4:4.12.0
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.0
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:antlr4:4.13.0
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.17
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.21
@@ -395,7 +395,7 @@
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.google.guava:guava:31.1-jre
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.google.j2objc:j2objc-annotations:1.3
-:modulecheck-parsing:wiring -- runtimeClasspath -- com.ibm.icu:icu4j:71.1
+:modulecheck-parsing:wiring -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-parsing:wiring -- runtimeClasspath -- javax.inject:javax.inject:1
 :modulecheck-parsing:wiring -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -403,8 +403,8 @@
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:ST4:4.3.4
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:antlr-runtime:3.5.3
-:modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:antlr4-runtime:4.12.0
-:modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:antlr4:4.12.0
+:modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.0
+:modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:antlr4:4.13.0
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.17
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.17
@@ -479,7 +479,7 @@
 :modulecheck-project:testing -- runtimeClasspath -- com.google.guava:guava:31.1-jre
 :modulecheck-project:testing -- runtimeClasspath -- com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 :modulecheck-project:testing -- runtimeClasspath -- com.google.j2objc:j2objc-annotations:1.3
-:modulecheck-project:testing -- runtimeClasspath -- com.ibm.icu:icu4j:71.1
+:modulecheck-project:testing -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-project:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-project:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-test:1.0.0-beta10
 :modulecheck-project:testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-core:0.9.6
@@ -510,8 +510,8 @@
 :modulecheck-project:testing -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-project:testing -- runtimeClasspath -- org.antlr:ST4:4.3.4
 :modulecheck-project:testing -- runtimeClasspath -- org.antlr:antlr-runtime:3.5.3
-:modulecheck-project:testing -- runtimeClasspath -- org.antlr:antlr4-runtime:4.12.0
-:modulecheck-project:testing -- runtimeClasspath -- org.antlr:antlr4:4.12.0
+:modulecheck-project:testing -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.0
+:modulecheck-project:testing -- runtimeClasspath -- org.antlr:antlr4:4.13.0
 :modulecheck-project:testing -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-project:testing -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.17
 :modulecheck-project:testing -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.17
@@ -553,7 +553,7 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.guava:guava:31.1-jre
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.j2objc:j2objc-annotations:1.3
-:modulecheck-project-generation:api -- runtimeClasspath -- com.ibm.icu:icu4j:71.1
+:modulecheck-project-generation:api -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-project-generation:api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-project-generation:api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-test:1.0.0-beta10
 :modulecheck-project-generation:api -- runtimeClasspath -- com.rickbusarow.hermit:hermit-core:0.9.6
@@ -583,8 +583,8 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:ST4:4.3.4
 :modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:antlr-runtime:3.5.3
-:modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:antlr4-runtime:4.12.0
-:modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:antlr4:4.12.0
+:modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.0
+:modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:antlr4:4.13.0
 :modulecheck-project-generation:api -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-project-generation:api -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.17
 :modulecheck-project-generation:api -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.17
@@ -847,7 +847,7 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.guava:guava:31.1-jre
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.j2objc:j2objc-annotations:1.3
-:modulecheck-runtime:testing -- runtimeClasspath -- com.ibm.icu:icu4j:71.1
+:modulecheck-runtime:testing -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-test:1.0.0-beta10
 :modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-core:0.9.6
@@ -883,8 +883,8 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:ST4:4.3.4
 :modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:antlr-runtime:3.5.3
-:modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:antlr4-runtime:4.12.0
-:modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:antlr4:4.12.0
+:modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.0
+:modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:antlr4:4.13.0
 :modulecheck-runtime:testing -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-runtime:testing -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.17
 :modulecheck-runtime:testing -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.17
