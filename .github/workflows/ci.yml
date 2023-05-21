@@ -10,18 +10,6 @@ concurrency:
 
 jobs:
 
-  build-logic:
-    runs-on: macos-latest
-    steps:
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: build build-logic
-        uses: ./.github/actions/gradle-task
-        with:
-          task: :build-logic:compileKotlin :build-logic:jar
-          write-cache-key: build-logic-jar
-
   build-all:
     runs-on: macos-latest
     steps:
@@ -47,8 +35,6 @@ jobs:
           commit-message: 're-package the gradle-opts action'
 
   ktlint:
-    needs:
-      - build-logic
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -58,11 +44,8 @@ jobs:
           personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fix-task: ktlintFormat
           check-task: ktlintCheck
-          restore-cache-key: build-logic-jar
 
   ci-matrices:
-    needs:
-      - build-logic
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -72,11 +55,8 @@ jobs:
           personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fix-task: versionsMatrixYamlUpdate unitTestShardMatrixYamlUpdate
           check-task: versionsMatrixYamlCheck unitTestShardMatrixYamlCheck
-          restore-cache-key: build-logic-jar
 
   dependency-guard:
-    needs:
-      - build-logic
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -86,11 +66,8 @@ jobs:
           personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fix-task: dependencyGuardBaseline
           check-task: dependencyGuard
-          restore-cache-key: build-logic-jar
 
   moduleCheck:
-    needs:
-      - build-logic
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -100,11 +77,8 @@ jobs:
           personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fix-task: moduleCheckAuto
           check-task: moduleCheck
-          restore-cache-key: build-logic-jar
 
   doks:
-    needs:
-      - build-logic
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -114,11 +88,8 @@ jobs:
           personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fix-task: doks
           check-task: doksCheck
-          restore-cache-key: build-logic-jar
 
   website-versioning:
-    needs:
-      - build-logic
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -128,11 +99,8 @@ jobs:
           personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fix-task: updateWebsiteNextDocsVersionRefs updateWebsitePackageJsonVersion updateWebsiteChangelog
           check-task: checkWebsiteNextDocsVersionRefs checkWebsitePackageJsonVersion
-          restore-cache-key: build-logic-jar
 
   artifacts-check:
-    needs:
-      - build-logic
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -142,11 +110,8 @@ jobs:
           personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fix-task: artifactsDump
           check-task: artifactsCheck
-          restore-cache-key: build-logic-jar
 
   check-version-is-snapshot:
-    needs:
-      - build-logic
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -154,7 +119,6 @@ jobs:
         uses: ./.github/actions/gradle-task
         with:
           task: checkVersionIsSnapshot
-          restore-cache-key: build-logic-jar
 
   detekt:
     needs:
