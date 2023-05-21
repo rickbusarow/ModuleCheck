@@ -20,21 +20,32 @@ try {
   const runnerOS = process.env.RUNNER_OS;
   let gradleOpts;
 
+  let gradleArgs = '-Dfile.encoding=UTF-8 ' +
+      '-Dorg.gradle.configureondemand=false ' +
+      '-Dorg.gradle.daemon=false ' +
+      '-Dkotlin.compiler.execution.strategy=in-process ' +
+      '-Dkotlin.incremental=false';
+
+  let jvmArgs;
+
   switch (runnerOS) {
     case 'macOS':
-      gradleOpts = process.env.GRADLE_OPTS_MACOS;
+      jvmArgs = '-Xmx10g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError';
       break;
     case 'Linux':
-      gradleOpts = process.env.GRADLE_OPTS_UBUNTU;
+      jvmArgs = '-Xmx4g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError';
       break;
     case 'Windows':
-      gradleOpts = process.env.GRADLE_OPTS_WINDOWS;
+      jvmArgs = '-Xmx4g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError';
       break;
     default:
       throw new Error(`Unsupported runner OS: ${runnerOS}`);
   }
 
-  core.exportVariable('GRADLE_OPTS', gradleOpts);
+  let gradleJvmArgs = '-Dorg.gradle.jvmargs=\'' + jvmArgs + '\'';
+
+  core.exportVariable('GRADLE_ARGS', gradleArgs);
+  core.exportVariable('GRADLE_JVM_ARGS', jvmArgs);
 } catch (error) {
   core.setFailed(error.message);
 }

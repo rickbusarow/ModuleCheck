@@ -75,3 +75,5 @@ libs/
 
 # auto-generated from the root .editorconfig in order to add extra disabled rules
 build-logic/.editorconfig
+
+**/node_modules/

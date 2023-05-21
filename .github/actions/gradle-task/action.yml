@@ -28,7 +28,7 @@ runs:
         distribution: ${{ inputs.distribution }}
         java-version: ${{ inputs.java-version }}
 
-    - name: Set GRADLE_OPTS for OS
+    - name: Set GRADLE_ARGS for OS
       uses: ./.github/actions/gradle-opts
 
     - name: Gradle build action
@@ -76,6 +76,13 @@ runs:
     - name: Run ${{ inputs.task }}
       uses: gradle/gradle-build-action@v2
       with:
-        arguments: ${{ inputs.task }}
+        arguments: ${{ env.GRADLE_ARGS }} ${{ inputs.task }} '-Dorg.gradle.jvmargs=${{ env.GRADLE_JVM_ARGS }}'
         cache-read-only: false
         gradle-home-cache-cleanup: true
+
+    - name: Upload heap dump
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: heap-dump
+        path: ${{ github.workspace }}/**/*{.hprof,.log}

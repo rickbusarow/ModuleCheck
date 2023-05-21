@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #
 # Copyright (C) 2021-2023 Rick Busarow
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,13 +14,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-org.gradle.jvmargs=-Xmx12g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError
-org.gradle.daemon=true
-org.gradle.caching=true
-org.gradle.parallel=true
-org.gradle.vfs.watch=true
-android.useAndroidX=true
-kotlin.code.style=official
-kotlin.caching.enabled=true
-kotlin.incremental=true
-kapt.include.compile.classpath=false
+
+# Ensure that `ncc` is installed
+if ! type "ncc" > /dev/null; then
+  npm i -g @vercel/ncc
+fi
+
+# Clean up any existing output directory
+rm -rf dist
+
+npm install
+
+ncc build src/index.js --license licenses.txt
+
+# Remove unnecessary files
+rm -rf dist/node_modules
+
+echo "Package created successfully in the 'dist' directory."
