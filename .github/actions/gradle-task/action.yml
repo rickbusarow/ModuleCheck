@@ -28,8 +28,9 @@ runs:
         distribution: ${{ inputs.distribution }}
         java-version: ${{ inputs.java-version }}
 
-    - name: Set GRADLE_ARGS for OS
-      uses: ./.github/actions/gradle-opts
+    - name: Set Gradle Args for runner OS
+      id: gradle-args
+      uses: ./.github/actions/gradle-args
 
     - name: Gradle build action
       uses: gradle/gradle-build-action@v2
@@ -76,7 +77,10 @@ runs:
     - name: Run ${{ inputs.task }}
       uses: gradle/gradle-build-action@v2
       with:
-        arguments: ${{ env.GRADLE_ARGS }} ${{ inputs.task }} '-Dorg.gradle.jvmargs=${{ env.GRADLE_JVM_ARGS }}'
+        # These arguments probably need to be on a single line. If they're defined with wrapping
+        # (using `|`), something along the way to the actual CLI invocation gets confused and the
+        # jvmargs list winds up getting parsed as a single argument.
+        arguments: ${{ steps.gradle-args.outputs.gradle-property-args }} ${{ inputs.task }} '-Dorg.gradle.jvmargs=${{ steps.gradle-args.outputs.gradle-jvm-args }}'
         cache-read-only: false
         gradle-home-cache-cleanup: true
 

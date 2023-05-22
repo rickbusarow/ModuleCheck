@@ -48,7 +48,6 @@ if (isCI) {
   printCiEnvironment()
 }
 
-
 gradleEnterprise {
   buildScan {
 
@@ -150,19 +149,25 @@ include(
 
 fun printCiEnvironment() {
   fun Long.gigabytes(): String {
-    return "%.1f GB".format(toDouble() / (1024 * 1024 * 1024))
+    return "%.1f GB".format(toDouble() / (1024 * 1024 * 1024)).padEnd(52)
   }
+
+  val os = System.getProperty("os.name").toString().padEnd(52)
+  val processors = Runtime.getRuntime().availableProcessors().toString().padEnd(52)
+  val totalMemory = Runtime.getRuntime().totalMemory().gigabytes()
+  val freeMemory = Runtime.getRuntime().freeMemory().gigabytes()
+  val maxMemory = Runtime.getRuntime().maxMemory().gigabytes()
   println(
     """
     ╔══════════════════════════════════════════════════════════════════════════════╗
     ║                                CI environment                                ║
     ║                                                                              ║
-    ║                     OS - ${System.getProperty("os.name")}                    ║
-    ║   available processors - ${Runtime.getRuntime().availableProcessors()}       ║
+    ║                     OS - $os║
+    ║   available processors - $processors║
     ║                                                                              ║
-    ║           total memory - ${Runtime.getRuntime().totalMemory().gigabytes()}   ║
-    ║            free memory - ${Runtime.getRuntime().freeMemory().gigabytes()}    ║
-    ║             max memory - ${Runtime.getRuntime().maxMemory().gigabytes()}     ║
+    ║           total memory - $totalMemory║
+    ║            free memory - $freeMemory║
+    ║             max memory - $maxMemory║
     ╚══════════════════════════════════════════════════════════════════════════════╝
     """.trimIndent()
   )
