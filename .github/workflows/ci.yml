@@ -22,18 +22,6 @@ jobs:
           task: jar compileKotlin
           write-cache-key: main-build-artifacts
 
-  repackage-gradle-args-action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: repackage the gradle-opts action
-        uses: ./.github/actions/shell-command-with-commit
-        with:
-          working-directory: ./.github/actions/gradle-opts
-          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fix-command: ./repackage.sh
-          commit-message: 're-package the gradle-opts action'
-
   ktlint:
     runs-on: ubuntu-latest
     steps:
@@ -315,7 +303,6 @@ jobs:
       - integration-tests-windows
       - ktlint
       - moduleCheck
-      - repackage-gradle-args-action
       - unit-tests
       - website-versioning
     steps:
