@@ -49,9 +49,9 @@ data class Depths(
       .distinct()
       .map { it.depthForSourceSetName(SourceSetName.MAIN) }
       .groupBy { it.depth }
-      .let {
-        val max = it.keys.maxOrNull() ?: -1
-        max to it[max].orEmpty()
+      .let { map ->
+        val max = map.keys.maxOrNull() ?: -1
+        max to map[max].orEmpty()
       }
 
     return ProjectDepth(

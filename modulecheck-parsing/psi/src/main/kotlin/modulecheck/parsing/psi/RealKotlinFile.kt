@@ -229,11 +229,11 @@ class RealKotlinFile(
             kotlin(nameAsString)
           }
 
-          jvmNames.forEach {
-            java("$parentFqName.$it")
+          jvmNames.forEach { name ->
+            java("$parentFqName.$name")
             // The IDE gives warnings about "static member [...] accessed via instance reference"
             // and hides this name from code completion, but it's technically still functional.
-            java("$parentFqName.INSTANCE.$it")
+            java("$parentFqName.INSTANCE.$name")
           }
         }
 

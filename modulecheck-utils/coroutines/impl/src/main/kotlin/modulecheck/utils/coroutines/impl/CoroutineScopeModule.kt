@@ -30,7 +30,7 @@ import modulecheck.dagger.SingleIn
 import modulecheck.dagger.TaskScope
 import modulecheck.utils.coroutines.LimitedDispatcher
 
-@Suppress("UndocumentedPublicFunction", "UndocumentedPublicClass")
+@Suppress("UndocumentedPublicFunction", "UndocumentedPublicClass", "InjectDispatcher")
 @Module
 @ContributesTo(TaskScope::class)
 object CoroutineScopeModule {

@@ -63,16 +63,16 @@ abstract class BaseGradleTest :
   @Suppress("VariableNaming")
   val DEFAULT_BUILD_FILE by resets {
     """
-    buildscript {
-      dependencies {
-        classpath("com.android.tools.build:gradle:$agpVersion")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+      buildscript {
+        dependencies {
+          classpath("com.android.tools.build:gradle:$agpVersion")
+          classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        }
       }
-    }
 
-    plugins {
-      id("com.rickbusarow.module-check")
-    }
+      plugins {
+        id("com.rickbusarow.module-check")
+      }
     """.trimIndent()
   }
 
@@ -84,40 +84,40 @@ abstract class BaseGradleTest :
   @Suppress("VariableNaming")
   val DEFAULT_SETTINGS_FILE by resets {
     """
-    rootProject.name = "root"
+      rootProject.name = "root"
 
-    pluginManagement {
-      repositories {
-        gradlePluginPortal()
-        mavenCentral()
-        mavenLocal()
-        google()
-      }
-      resolutionStrategy {
-        eachPlugin {
-          if (requested.id.id.startsWith("com.android")) {
-            useVersion("$agpVersion")
-          }
-          if (requested.id.id == "com.rickbusarow.module-check") {
-            useVersion("${BuildProperties.version}")
-          }
-          if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
-            useVersion("$kotlinVersion")
-          }
-          if (requested.id.id == "com.squareup.anvil") {
-            useVersion("$anvilVersion")
+      pluginManagement {
+        repositories {
+          gradlePluginPortal()
+          mavenCentral()
+          mavenLocal()
+          google()
+        }
+        resolutionStrategy {
+          eachPlugin {
+            if (requested.id.id.startsWith("com.android")) {
+              useVersion("$agpVersion")
+            }
+            if (requested.id.id == "com.rickbusarow.module-check") {
+              useVersion("${BuildProperties.version}")
+            }
+            if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
+              useVersion("$kotlinVersion")
+            }
+            if (requested.id.id == "com.squareup.anvil") {
+              useVersion("$anvilVersion")
+            }
           }
         }
       }
-    }
-    dependencyResolutionManagement {
-      @Suppress("UnstableApiUsage")
-      repositories {
-        mavenCentral()
-        mavenLocal()
-        google()
+      dependencyResolutionManagement {
+        @Suppress("UnstableApiUsage")
+        repositories {
+          mavenCentral()
+          mavenLocal()
+          google()
+        }
       }
-    }
     """.trimIndent()
   }
 
@@ -214,13 +214,13 @@ abstract class BaseGradleTest :
       )
       // remove standard Gradle output noise
       .remove(
-        "Execution failed for task ':moduleCheck(?:Auto|)\\'.".toRegex(IGNORE_CASE),
+        """Execution failed for task ':moduleCheck(?:Auto|)'.""".toRegex(IGNORE_CASE),
         "> Task [^\\n]*".toRegex(),
         ".*Run with --.*".toRegex(),
-        "See https://docs\\.gradle\\.org/[^/]+/userguide/command_line_interface\\.html#sec:command_line_warnings".toRegex(),
+        """See https://docs\.gradle\.org/[^/]+/userguide/command_line_interface\.html#sec:command_line_warnings""".toRegex(),
         "BUILD (?:SUCCESSFUL|FAILED) in .*".toRegex(),
-        "\\d+ actionable tasks?: \\d+ executed".toRegex(),
-        "> ModuleCheck found \\d+ issues? which (?:was|were) not auto-corrected.".toRegex()
+        """\d+ actionable tasks?: \d+ executed""".toRegex(),
+        """> ModuleCheck found \d+ issues? which (?:was|were) not auto-corrected.""".toRegex()
       )
       .removeDuration()
       .remove("\u200B")

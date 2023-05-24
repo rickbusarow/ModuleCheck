@@ -126,7 +126,7 @@ internal class ConsoleReportingTest : RunnerTest() {
     logger.collectReport()
       .joinToString() shouldContain "To ignore any of these findings, " +
       "annotate the dependency declaration with " +
-      "@Suppress(\"<the name of the issue>\") in Kotlin, " +
+      """@Suppress("<the name of the issue>") in Kotlin, """ +
       "or //noinspection <the name of the issue> in Groovy.\n" +
       "See https://rbusarow.github.io/ModuleCheck/docs/suppressing-findings for more info."
   }

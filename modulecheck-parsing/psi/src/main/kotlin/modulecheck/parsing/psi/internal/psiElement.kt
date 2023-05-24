@@ -198,6 +198,7 @@ fun PsiElement.file(): File {
   return File(path)
 }
 
+/** */
 @Suppress("NestedBlockDepth", "ComplexMethod")
 suspend fun PsiElement.declaredNameOrNull(
   project: McProject,

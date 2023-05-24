@@ -188,7 +188,7 @@ class RealAndroidSourceSetsParser private constructor(
 
   private val sourceSetNameToUpstreamMap = buildMap<String, List<GradleSourceSetName>> {
 
-    put(GradleSourceSetName.MainName, listOf())
+    put(GradleSourceSetName.MainName, emptyList())
     // `test` and `androidTest` source sets automatically target the `debug` build type,
     // which means they get `debug` and `main` source sets automatically
     put(

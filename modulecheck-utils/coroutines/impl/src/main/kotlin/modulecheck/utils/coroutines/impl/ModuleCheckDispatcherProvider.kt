@@ -29,6 +29,7 @@ import javax.inject.Inject
  *
  * @since 0.12.0
  */
+@Suppress("InjectDispatcher")
 @SingleIn(TaskScope::class)
 @ContributesBinding(TaskScope::class)
 class ModuleCheckDispatcherProvider @Inject constructor(

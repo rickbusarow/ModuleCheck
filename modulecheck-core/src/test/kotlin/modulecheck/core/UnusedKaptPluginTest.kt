@@ -138,7 +138,7 @@ class UnusedKaptPluginTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -168,7 +168,7 @@ class UnusedKaptPluginTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -237,7 +237,7 @@ class UnusedKaptPluginTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -277,7 +277,7 @@ class UnusedKaptPluginTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -289,8 +289,8 @@ class UnusedKaptPluginTest : RunnerTest() {
         name = "Processor",
         processor = "com.modulecheck:processor",
         annotationImports = listOf(
-          "com\\.modulecheck\\.annotations\\.\\*",
-          "com\\.modulecheck\\.annotations\\.TheAnnotation"
+          """com\.modulecheck\.annotations\.\*""",
+          """com\.modulecheck\.annotations\.TheAnnotation"""
         )
       )
     )
@@ -338,7 +338,7 @@ class UnusedKaptPluginTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -350,7 +350,7 @@ class UnusedKaptPluginTest : RunnerTest() {
         name = "Processor",
         processor = "com.modulecheck:processor",
         annotationImports = listOf(
-          "com\\.modulecheck\\.annotations\\.TheAnnotation"
+          """com\.modulecheck\.annotations\.TheAnnotation"""
         )
       )
     )
@@ -397,7 +397,7 @@ class UnusedKaptPluginTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -456,6 +456,6 @@ class UnusedKaptPluginTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 }

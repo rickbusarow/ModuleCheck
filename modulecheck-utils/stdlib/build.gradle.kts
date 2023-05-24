@@ -31,6 +31,7 @@ dependencies {
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
+  testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.square.turbine)
 
   testImplementation(project(path = ":modulecheck-utils:coroutines:api"))

@@ -42,19 +42,19 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
       PluginDeclaration(
         declarationText = """kotlin("jvm")""",
         statementWithSurroundingText = """  kotlin("jvm") // trailing comment""",
-        suppressed = listOf()
+        suppressed = emptyList()
       ),
       PluginDeclaration(
         declarationText = """javaLibrary""",
         statementWithSurroundingText = """  // comment
           |  javaLibrary
         """.trimMargin(),
-        suppressed = listOf()
+        suppressed = emptyList()
       ),
       PluginDeclaration(
         declarationText = """id("io.gitlab.arturbosch.detekt") version "1.15.0"""",
         statementWithSurroundingText = """  id("io.gitlab.arturbosch.detekt") version "1.15.0"""",
-        suppressed = listOf()
+        suppressed = emptyList()
       )
     )
   }
@@ -73,8 +73,10 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
     block.settings shouldBe listOf(
       PluginDeclaration(
         declarationText = """kotlin("jvm")""",
-        statementWithSurroundingText = "  @Suppress(\"unused-plugin\")\n" +
-          "  kotlin(\"jvm\")",
+        statementWithSurroundingText = """
+          |  @Suppress("unused-plugin")
+          |  kotlin("jvm")
+        """.trimMargin(),
         suppressed = listOf("unused-plugin")
       )
     )
@@ -94,8 +96,10 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
     block.settings shouldBe listOf(
       PluginDeclaration(
         declarationText = """`kotlin-jvm`""",
-        statementWithSurroundingText = "  @Suppress(\"unused-plugin\")\n" +
-          "  `kotlin-jvm`",
+        statementWithSurroundingText = """
+          |  @Suppress("unused-plugin")
+          |  `kotlin-jvm`
+        """.trimMargin(),
         suppressed = listOf("unused-plugin")
       )
     )
@@ -129,8 +133,10 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
     block.settings shouldBe listOf(
       PluginDeclaration(
         declarationText = """id("com.squareup.anvil")""",
-        statementWithSurroundingText = "  @Suppress(\"unused-plugin\")\n" +
-          "  id(\"com.squareup.anvil\")",
+        statementWithSurroundingText = """
+          |  @Suppress("unused-plugin")
+          |  id("com.squareup.anvil")
+        """.trimMargin(),
         suppressed = listOf("unused-plugin")
       )
     )
@@ -150,8 +156,10 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
     block.settings shouldBe listOf(
       PluginDeclaration(
         declarationText = """id("com.squareup.anvil")""",
-        statementWithSurroundingText = "  @Suppress(\"UnusedKaptProcessor\")\n" +
-          "  id(\"com.squareup.anvil\")",
+        statementWithSurroundingText = """
+          |  @Suppress("UnusedKaptProcessor")
+          |  id("com.squareup.anvil")
+        """.trimMargin(),
         suppressed = listOf("unused-kapt-processor")
       )
     )

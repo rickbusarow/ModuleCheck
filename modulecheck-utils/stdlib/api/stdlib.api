@@ -93,19 +93,6 @@ public final class modulecheck/utils/FileKt {
 	public static final fun mkdirsInline (Ljava/io/File;)Ljava/io/File;
 }
 
-public final class modulecheck/utils/IndentScope {
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/StringBuilder;)V
-	public final fun append (C)V
-	public final fun append (Ljava/lang/String;)V
-	public final fun appendLine (C)V
-	public final fun appendLine (Ljava/lang/String;)V
-	public final fun getIndent ()Ljava/lang/String;
-	public final fun getStringBuilder ()Ljava/lang/StringBuilder;
-	public final fun getTab ()Ljava/lang/String;
-	public final fun indent (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
-	public static synthetic fun indent$default (Lmodulecheck/utils/IndentScope;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
-}
-
 public final class modulecheck/utils/RegexKt {
 	public static final fun replaceDestructured (Ljava/lang/String;Lkotlin/text/Regex;Lkotlin/jvm/functions/Function1;)Ljava/lang/String;
 	public static final fun replaceDestructured (Ljava/lang/String;Lkotlin/text/Regex;Lkotlin/jvm/functions/Function2;)Ljava/lang/String;
@@ -116,8 +103,6 @@ public final class modulecheck/utils/RegexKt {
 }
 
 public final class modulecheck/utils/StringKt {
-	public static final fun buildStringIndented (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Ljava/lang/String;
-	public static synthetic fun buildStringIndented$default (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/lang/String;
 	public static final fun capitalize (Ljava/lang/String;Ljava/util/Locale;)Ljava/lang/String;
 	public static synthetic fun capitalize$default (Ljava/lang/String;Ljava/util/Locale;ILjava/lang/Object;)Ljava/lang/String;
 	public static final fun decapitalize (Ljava/lang/String;Ljava/util/Locale;)Ljava/lang/String;

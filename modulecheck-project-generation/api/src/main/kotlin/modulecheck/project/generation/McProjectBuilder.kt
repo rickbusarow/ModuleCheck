@@ -56,8 +56,8 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   val projectProvider: ProjectProvider,
   val projectCache: ProjectCache,
   val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
-  override val projectDependencies: ProjectDependencies = ProjectDependencies(mapOf()),
-  override val externalDependencies: ExternalDependencies = ExternalDependencies(mapOf()),
+  override val projectDependencies: ProjectDependencies = ProjectDependencies(emptyMap()),
+  override val externalDependencies: ExternalDependencies = ExternalDependencies(emptyMap()),
   override var hasKapt: Boolean = false,
   override var hasTestFixturesPlugin: Boolean = false,
   var anvilGradlePlugin: AnvilGradlePlugin? = null,
@@ -69,7 +69,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   override val buildFileParser: BuildFileParser
     get() = buildFileParserFactory(configuredProjectDependencyFactory).create(this)
   override val configurations: Configurations
-    get() = configurations
+    get() = TODO("figure this out")
   override val hasAnvil: Boolean
     get() = anvilGradlePlugin != null
   override val hasAGP: Boolean

@@ -19,7 +19,7 @@ import app.cash.turbine.test
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.yield
 import modulecheck.utils.coroutines.filterAsync
 import org.junit.jupiter.api.Test
@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test
 internal class SequenceFilterAsyncTest {
 
   @Test
-  fun `should only emit elements which match the predicate`() = runBlocking {
+  fun `should only emit elements which match the predicate`() = runTest {
 
     sequenceOf(1, 2, 3, 4)
       .filterAsync { it % 2 == 0 }
@@ -35,7 +35,7 @@ internal class SequenceFilterAsyncTest {
   }
 
   @Test
-  fun `should emit async elements as soon as they're complete`() = runBlocking {
+  fun `should emit async elements as soon as they're complete`() = runTest {
 
     val one = CompletableDeferred<Int>()
     val two = CompletableDeferred<Int>()

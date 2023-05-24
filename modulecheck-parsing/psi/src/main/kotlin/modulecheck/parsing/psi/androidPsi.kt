@@ -39,7 +39,7 @@ fun PsiElement.buildFeaturesBlocks(): List<KtCallExpression> {
     .toList()
 
   val qualified = childrenOfTypeBreadthFirst<KtCallExpression>()
-    .filter { it.nameSafe()?.matches("android\\s*\\.\\s*buildFeatures".toRegex()) == true }
+    .filter { it.nameSafe()?.matches("""android\s*\.\s*buildFeatures""".toRegex()) == true }
     .toList()
 
   return nested + qualified

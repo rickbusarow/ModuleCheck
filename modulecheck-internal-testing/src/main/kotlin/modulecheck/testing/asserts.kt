@@ -75,7 +75,7 @@ private fun assertChanged(
       |original string (starting on the new line):
       |$oldString
       |____________________________________________________
-      |""".replaceIndentByMargin()
+    """.replaceIndentByMargin()
       .asClue { new shouldNotBe oldString }
   }
 }

@@ -213,7 +213,7 @@ private suspend fun McProject.mustBeApiIn(
     .firstOrNull { ref ->
       declarations.contains(ref)
     }
-    ?.let { return true }
+    ?.also { return true }
 
   val rTypesFromExisting: LazyDeferred<Set<McName>> = lazyDeferred {
     directMainDependencies

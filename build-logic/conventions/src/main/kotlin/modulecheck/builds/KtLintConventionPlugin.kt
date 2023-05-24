@@ -82,7 +82,7 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
   // `build.gradle.kts` and `settings.gradle.kts` file within that project group.
   private fun Project.addGradleScriptTasks(
     tasks: TaskContainer,
-    dependencies: List<Any> = listOf(),
+    dependencies: List<Any> = emptyList(),
     taskNameQualifier: String = ""
   ) {
     val includedProjectScriptFiles = allprojects
@@ -114,8 +114,6 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
 
   private fun Project.addRootProjectDelegateTasks() {
 
-    val writeEditorConfig = addWriteBuildLogicEditorConfig()
-
     // Add KtLint tasks to the root project to handle build-logic project sources as well.
     // The convention plugin can't be applied to build-logic in the conventional way since
     // that's where its source is.
@@ -142,7 +140,6 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
                 task.description = "Runs lint on the source files in build-logic"
                 task.source(files(buildLogicSrc))
                 excludeGenerated(task, proj)
-                task.dependsOn(writeEditorConfig)
               }
             tasks.named("lintKotlin").dependsOn(lintKotlinBuildLogic)
 
@@ -152,7 +149,6 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
                 task.description = "Formats the source files in build-logic"
                 task.source(files(buildLogicSrc))
                 excludeGenerated(task, proj)
-                task.dependsOn(writeEditorConfig)
               }
             tasks.named("formatKotlin").dependsOn(formatKotlinBuildLogic)
           }
@@ -162,36 +158,10 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
       .rootProject()
       .addGradleScriptTasks(
         tasks,
-        dependencies = listOf(writeEditorConfig),
+        dependencies = emptyList(),
         taskNameQualifier = "BuildLogic"
       )
   }
-
-  private fun Project.addWriteBuildLogicEditorConfig() = rootProject.tasks
-    .register<ModuleCheckBuildTask>("writeBuildLogicEditorConfig") { task ->
-
-      val buildLogicConfig = rootProject.file("build-logic/.editorconfig")
-      task.outputs.file(buildLogicConfig)
-
-      task.doLast {
-
-        val newText = buildString {
-          appendLine("### THIS FILE IS GENERATED.  DO NOT MODIFY.")
-          appendLine("# This is done by the 'writeBuildLogicEditorConfig' task.")
-          appendLine("[{*.kt,*.kts}]")
-
-          appendLine("# noinspection EditorConfigKeyCorrectness")
-
-          appendLine("build_logic_no-since-in-kdoc = disabled")
-          appendLine()
-        }
-
-        if (!buildLogicConfig.exists() || newText != buildLogicConfig.readText()) {
-          println("writing a new version of file://$buildLogicConfig")
-          buildLogicConfig.writeText(newText)
-        }
-      }
-    }
 
   /**
    * These exclude anything in `$projectDir/build/generated/` from Kotlinter's

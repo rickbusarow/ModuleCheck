@@ -43,7 +43,7 @@ interface VersionsFactoryTest : VersionsFactory {
   ): List<DynamicTest> {
 
     return versions(exhaustive = exhaustive)
-      .letIf(filter != null) {
+      .letIf(filter != null) { versions ->
 
         val (included, excluded) = allVersions
           .partition(filter.requireNotNull())
@@ -56,7 +56,7 @@ interface VersionsFactoryTest : VersionsFactory {
           excluded.shouldNotBeEmpty()
         }
 
-        it.filter(filter.requireNotNull())
+        versions.filter(filter.requireNotNull())
       }
       .map { subject ->
         dynamicTest(subject, subject.toString(), action)

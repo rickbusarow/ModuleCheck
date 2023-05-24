@@ -65,7 +65,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
       propertyFullName = "viewBinding",
       value = "$enabled",
       declarationText = "viewBinding = $enabled",
-      suppressed = listOf()
+      suppressed = emptyList()
     )
     val buildConfigAssignment = Assignment(
       fullText = "android {\n" +
@@ -79,7 +79,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
       propertyFullName = "buildConfig",
       value = "$enabled",
       declarationText = "buildConfig = $enabled",
-      suppressed = listOf()
+      suppressed = emptyList()
     )
     val androidResourcesAssignment = Assignment(
       fullText = "android {\n" +
@@ -90,7 +90,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
       propertyFullName = "androidResources",
       value = "$enabled",
       declarationText = "androidResources = $enabled",
-      suppressed = listOf()
+      suppressed = emptyList()
     )
 
     GroovyAndroidGradleParser().parse(testFile) shouldBe AndroidGradleSettings(
@@ -119,7 +119,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
             viewBindingAssignment,
             buildConfigAssignment
           ),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         ),
         AndroidBlock(
           fullText = "android {\n" +
@@ -133,7 +133,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
           settings = listOf(
             androidResourcesAssignment
           ),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         )
       ),
       buildFeaturesBlocks = listOf(
@@ -148,7 +148,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
             "}",
           lambdaContent = "viewBinding = $enabled\n",
           settings = listOf(viewBindingAssignment),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         ),
         BuildFeaturesBlock(
           fullText = "android {\n" +
@@ -161,7 +161,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
             "}",
           lambdaContent = "buildConfig = $enabled\n",
           settings = listOf(buildConfigAssignment),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         ),
         BuildFeaturesBlock(
           fullText = "android {\n" +
@@ -171,7 +171,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
             "}",
           lambdaContent = "androidResources = $enabled\n",
           settings = listOf(androidResourcesAssignment),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         )
       )
     )
@@ -203,7 +203,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
           propertyFullName = "viewBinding",
           value = "$enabled",
           declarationText = "viewBinding = $enabled",
-          suppressed = listOf()
+          suppressed = emptyList()
         ),
         Assignment(
           fullText = "android {\n" +
@@ -215,7 +215,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
           propertyFullName = "androidResources",
           value = "${!enabled}",
           declarationText = "androidResources = ${!enabled}",
-          suppressed = listOf()
+          suppressed = emptyList()
         )
       ),
       androidBlocks = listOf(
@@ -241,7 +241,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
               propertyFullName = "viewBinding",
               value = "$enabled",
               declarationText = "viewBinding = $enabled",
-              suppressed = listOf()
+              suppressed = emptyList()
             ),
             Assignment(
               fullText = "android {\n" +
@@ -253,10 +253,10 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
               propertyFullName = "androidResources",
               value = "${!enabled}",
               declarationText = "androidResources = ${!enabled}",
-              suppressed = listOf()
+              suppressed = emptyList()
             )
           ),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         )
       ),
       buildFeaturesBlocks = listOf(
@@ -280,7 +280,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
               propertyFullName = "viewBinding",
               value = "$enabled",
               declarationText = "viewBinding = $enabled",
-              suppressed = listOf()
+              suppressed = emptyList()
             ),
             Assignment(
               fullText = "android {\n" +
@@ -292,10 +292,10 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
               propertyFullName = "androidResources",
               value = "${!enabled}",
               declarationText = "androidResources = ${!enabled}",
-              suppressed = listOf()
+              suppressed = emptyList()
             )
           ),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         )
       )
     )
@@ -324,8 +324,8 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
           suppressed = listOf("android-level")
         )
       ),
-      androidBlocks = listOf(),
-      buildFeaturesBlocks = listOf()
+      androidBlocks = emptyList(),
+      buildFeaturesBlocks = emptyList()
     )
   }
 
@@ -354,7 +354,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
           suppressed = listOf("assignment-level")
         )
       ),
-      androidBlocks = listOf(),
+      androidBlocks = emptyList(),
       buildFeaturesBlocks = listOf(
         BuildFeaturesBlock(
           fullText = "android.buildFeatures {\n" +
@@ -374,7 +374,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
               suppressed = listOf("assignment-level")
             )
           ),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         )
       )
     )
@@ -424,10 +424,10 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
               suppressed = listOf("buildFeatures-level")
             )
           ),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         )
       ),
-      buildFeaturesBlocks = listOf()
+      buildFeaturesBlocks = emptyList()
     )
   }
 

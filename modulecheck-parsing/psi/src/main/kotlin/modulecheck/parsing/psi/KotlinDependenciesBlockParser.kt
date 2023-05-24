@@ -46,7 +46,9 @@ class KotlinDependenciesBlockParser @Inject constructor(
   private val projectDependency: ProjectDependency.Factory
 ) {
 
-  @Suppress("ReturnCount")
+  /**
+   * @return all `dependencies` blocks for the project modeled by [invokesConfigurationNames]
+   */
   suspend fun parse(
     invokesConfigurationNames: InvokesConfigurationNames
   ): List<KotlinDependenciesBlock> {
@@ -93,7 +95,7 @@ class KotlinDependenciesBlockParser @Inject constructor(
               }
 
               is KtCallExpression -> {
-                element.parseStatements(block, listOf())
+                element.parseStatements(block, emptyList())
               }
             }
           }

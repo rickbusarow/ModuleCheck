@@ -19,7 +19,7 @@ import app.cash.turbine.test
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.yield
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -30,7 +30,7 @@ internal class MapAsyncTest {
   inner class `flow` {
 
     @Test
-    fun `flow executes eagerly when collection starts`() = runBlocking {
+    fun `flow executes eagerly when collection starts`() = runTest {
 
       val lock = CompletableDeferred<Unit>()
 
@@ -49,7 +49,7 @@ internal class MapAsyncTest {
       yield()
       yield()
 
-      waiting shouldBe listOf()
+      waiting shouldBe emptyList()
 
       subject.test {
 
@@ -71,7 +71,7 @@ internal class MapAsyncTest {
     }
 
     @Test
-    fun `flow should emit async elements as soon as they're transformed`() = runBlocking {
+    fun `flow should emit async elements as soon as they're transformed`() = runTest {
 
       val one = CompletableDeferred<Int>()
       val two = CompletableDeferred<Int>()
@@ -115,7 +115,7 @@ internal class MapAsyncTest {
   inner class `iterable` {
 
     @Test
-    fun `iterable executes eagerly when collection starts`() = runBlocking {
+    fun `iterable executes eagerly when collection starts`() = runTest {
 
       val lock = CompletableDeferred<Unit>()
 
@@ -134,7 +134,7 @@ internal class MapAsyncTest {
       yield()
       yield()
 
-      waiting shouldBe listOf()
+      waiting shouldBe emptyList()
 
       subject.test {
 
@@ -156,7 +156,7 @@ internal class MapAsyncTest {
     }
 
     @Test
-    fun `iterable should emit async elements as soon as they're transformed`() = runBlocking {
+    fun `iterable should emit async elements as soon as they're transformed`() = runTest {
 
       val one = CompletableDeferred<Int>()
       val two = CompletableDeferred<Int>()
@@ -200,7 +200,7 @@ internal class MapAsyncTest {
   inner class `sequence` {
 
     @Test
-    fun `sequence executes eagerly when collection starts`() = runBlocking {
+    fun `sequence executes eagerly when collection starts`() = runTest {
 
       val lock = CompletableDeferred<Unit>()
 
@@ -219,7 +219,7 @@ internal class MapAsyncTest {
       yield()
       yield()
 
-      waiting shouldBe listOf()
+      waiting shouldBe emptyList()
 
       subject.test {
 
@@ -241,7 +241,7 @@ internal class MapAsyncTest {
     }
 
     @Test
-    fun `sequence should emit async elements as soon as they're transformed`() = runBlocking {
+    fun `sequence should emit async elements as soon as they're transformed`() = runTest {
 
       val one = CompletableDeferred<Int>()
       val two = CompletableDeferred<Int>()

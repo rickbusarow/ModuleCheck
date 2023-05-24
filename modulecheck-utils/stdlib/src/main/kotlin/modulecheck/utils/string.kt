@@ -105,105 +105,6 @@ private fun String.indentWidth(): Int =
   indexOfFirst { !it.isWhitespace() }.let { if (it == -1) length else it }
 
 /**
- * A builder scope for [StringBuilder.indent][modulecheck.utils.indent] and [buildStringIndented].
- */
-class IndentScope(
-  @PublishedApi
-  internal val indent: String,
-  @PublishedApi
-  internal val tab: String,
-  @PublishedApi
-  internal val stringBuilder: StringBuilder
-) {
-
-  fun append(str: String) {
-    stringBuilder.append(indent + str)
-  }
-
-  fun appendLine(str: String) {
-    stringBuilder.appendLine(indent + str)
-  }
-
-  fun append(c: Char) {
-    stringBuilder.append(indent + c)
-  }
-
-  fun appendLine(c: Char) {
-    stringBuilder.appendLine(indent + c)
-  }
-
-  /** Creates another layer of indentation by adding [tab] to [indent], then performing [action]. */
-  inline fun indent(
-    tab: String = this.tab,
-    action: IndentScope.() -> Unit
-  ) {
-    IndentScope(
-      indent = indent + tab,
-      tab = tab,
-      stringBuilder = stringBuilder
-    )
-      .action()
-  }
-}
-
-/**
- * Shorthand version of [StringBuilder.indent][modulecheck.utils.indent] for when the first
- * line of the `buildString { ... }` block would just be a call to `indent(...) { ... }`.
- *
- * example:
- *
- * ```
- * override fun toString() = buildStringIndented(baseIndent = "      ") {
- *   appendLine("SomeClass(")
- *   indent {
- *     appendLine("prop1=$prop1")
- *     appendLine("prop2=$prop2")
- *   }
- *   eppendLine(")")
- * }
- * ```
- */
-inline fun buildStringIndented(
-  baseIndent: String,
-  tab: String = "  ",
-  action: IndentScope.() -> Unit
-): String {
-  return buildString {
-    indent(
-      startingIndent = baseIndent,
-      tab = tab,
-      action = action
-    )
-  }
-}
-
-/**
- * example:
- *
- * ```
- * override fun toString() = buildString {
- *   appendLine("SomeClass(")
- *   indent {
- *     appendLine("prop1=$prop1")
- *     appendLine("prop2=$prop2")
- *   }
- *   eppendLine(")")
- * }
- * ```
- */
-inline fun StringBuilder.indent(
-  startingIndent: String = "",
-  tab: String = "  ",
-  action: IndentScope.() -> Unit
-) {
-  IndentScope(
-    indent = startingIndent,
-    tab = tab,
-    stringBuilder = this
-  ).action()
-}
-
-/**
  * A naive auto-indent which just counts brackets.
  *
  * @since 0.12.0
@@ -315,13 +216,43 @@ fun <T> Sequence<T>.joinToStringIndexed(
 }
 
 /**
+ * example:
+ *
+ * ```
+ * override fun toString() = buildString {
+ *   appendLine("SomeClass(")
+ *   indent {
+ *     appendLine("prop1=$prop1")
+ *     appendLine("prop2=$prop2")
+ *   }
+ *   appendLine(")")
+ * }
+ * ```
+ */
+inline fun StringBuilder.indent(
+  leadingIndent: String = "  ",
+  continuationIndent: String = leadingIndent,
+  builder: StringBuilder.() -> Unit
+) {
+
+  append(
+    buildString {
+      append(leadingIndent)
+
+      builder()
+    }
+      .prependContinuationIndent(continuationIndent)
+  )
+}
+
+/**
  * Prepends [continuationIndent] to every line of the original string.
  *
  * Doesn't preserve the original line endings.
  */
 fun CharSequence.prependContinuationIndent(
   continuationIndent: String,
-  skipBlankLines: Boolean = false
+  skipBlankLines: Boolean = true
 ): String = mapLinesIndexed { i, line ->
   when {
     i == 0 -> line

@@ -101,7 +101,7 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
           configName = ConfigurationName.api,
           declarationText = """api project(':core:android')""",
           statementWithSurroundingText = "  api project(':core:android')",
-          suppressed = listOf()
+          suppressed = emptyList()
         ),
         ModuleDependencyDeclaration(
           projectPath = StringProjectPath(":core:jvm"),
@@ -119,7 +119,7 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
           configName = ConfigurationName.testImplementation,
           declarationText = """testImplementation project(':core:test')""",
           statementWithSurroundingText = "  testImplementation project(':core:test')",
-          suppressed = listOf()
+          suppressed = emptyList()
         )
       )
     }
@@ -144,7 +144,7 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
         configName = ConfigurationName.api,
         declarationText = """api project(':core:android')""",
         statementWithSurroundingText = "  api project(':core:android')",
-        suppressed = listOf()
+        suppressed = emptyList()
       ),
       ModuleDependencyDeclaration(
         projectPath = StringProjectPath(":core:jvm"),
@@ -162,7 +162,7 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
         configName = ConfigurationName.testImplementation,
         declarationText = """testImplementation project(':core:test')""",
         statementWithSurroundingText = "  testImplementation project(':core:test')",
-        suppressed = listOf()
+        suppressed = emptyList()
       )
     )
   }
