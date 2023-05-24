@@ -102,11 +102,11 @@ internal class RealSafeCache<K : Any, V>(
    */
   private val delegate: Cache<K, LazyDeferred<V>> = Caffeine.newBuilder()
     .build<K, LazyDeferred<V>>()
-    .also {
+    .also { cache ->
       val initialMap = initialValues.associate { (key, value) ->
         key to lazyDeferred { value }
       }
-      it.putAll(initialMap)
+      cache.putAll(initialMap)
     }
 
   override val values: Flow<V>
@@ -123,10 +123,17 @@ internal class RealSafeCache<K : Any, V>(
           val deferred = delegate.get(key) { lazyDeferred { loader() } }
 
           deferred.await()
-        } catch (e: IllegalStateException) {
+        } catch (exception: IllegalStateException) {
 
-          val trace = currentCoroutineContext()[Trace] ?: throw e
-          throw IllegalStateException("${e.message}\n\n${trace.asString()}\n\n", e)
+          val trace = currentCoroutineContext()[Trace] ?: throw exception
+          throw IllegalStateException(
+            """
+              |${exception.message}
+              |
+              |${trace.asString()}
+            """.replaceIndentByMargin(),
+            exception
+          )
         }
       }
     }

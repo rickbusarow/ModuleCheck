@@ -16,6 +16,7 @@
 package modulecheck.reporting.checkstyle
 
 import modulecheck.finding.Finding.FindingResult
+import modulecheck.utils.indent
 import org.unbescape.xml.XmlEscape
 import java.io.File
 import javax.inject.Inject
@@ -24,34 +25,38 @@ class CheckstyleReporter @Inject constructor() {
 
   fun createXml(results: List<FindingResult>): String = buildString {
 
-    appendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
-    appendLine("<checkstyle version=\"4.3\">")
+    appendLine("""<?xml version="1.0" encoding="UTF-8"?>""")
+    appendLine("""<checkstyle version="4.3">""")
 
     results.groupBy { it.buildFile.toUnifiedString() }
       .entries
       .forEach { (filePathString, values) ->
 
-        appendLine("\t<file name=\"${filePathString.xml()}\">")
+        indent {
 
-        values.forEach {
+          appendLine("""<file name="${filePathString.xml()}">""")
 
-          val row = it.positionOrNull?.row ?: -1
-          val column = it.positionOrNull?.column ?: -1
+          values.forEach { findingResult ->
 
-          val severity = if (it.fixed) "info" else "error"
-          val source = "modulecheck." + it.findingName.id
+            val row = findingResult.positionOrNull?.row ?: -1
+            val column = findingResult.positionOrNull?.column ?: -1
 
-          val line = "\t\t<error line=\"${row.xml()}\" " +
-            "column=\"${column.xml()}\" " +
-            "severity=\"${severity.xml()}\" " +
-            "dependency=\"${it.dependencyIdentifier.xml()}\" " +
-            "message=\"${it.message.xml()}\" " +
-            "source=\"${source.xml()}\" />"
+            val severity = if (findingResult.fixed) "info" else "error"
+            val source = "modulecheck." + findingResult.findingName.id
 
-          appendLine(line)
+            indent {
+              append("""<error line="${row.xml()}"""")
+              append(""" column="${column.xml()}"""")
+              append(""" severity="${severity.xml()}"""")
+              append(""" dependency="${findingResult.dependencyIdentifier.xml()}"""")
+              append(""" message="${findingResult.message.xml()}"""")
+              append(""" source="${source.xml()}" />""")
+              appendLine()
+            }
+          }
+
+          appendLine("</file>")
         }
-
-        appendLine("\t</file>")
       }
 
     appendLine("</checkstyle>")

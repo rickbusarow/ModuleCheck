@@ -17,20 +17,20 @@ package modulecheck.utils.coroutines
 
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 
 internal class FlowFlatMapTest {
 
   @Test
-  fun `flow of lists should flatten to list`() = runBlocking<Unit> {
+  fun `flow of lists should flatten to list`() = runTest {
 
     flowOf(listOf(1, 2, 3), listOf(4, 5, 6))
       .flatMapListConcat { it } shouldBe listOf(1, 2, 3, 4, 5, 6)
   }
 
   @Test
-  fun `flow of lists should flatten to provided destination list`() = runBlocking<Unit> {
+  fun `flow of lists should flatten to provided destination list`() = runTest {
 
     val destination = mutableListOf<Int>()
 
@@ -41,14 +41,14 @@ internal class FlowFlatMapTest {
   }
 
   @Test
-  fun `flow of sets should flatten to set`() = runBlocking<Unit> {
+  fun `flow of sets should flatten to set`() = runTest {
 
     flowOf(setOf(1, 2, 3), setOf(4, 5, 6))
       .flatMapSetConcat { it } shouldBe setOf(1, 2, 3, 4, 5, 6)
   }
 
   @Test
-  fun `flow of sets should flatten to provided destination set`() = runBlocking<Unit> {
+  fun `flow of sets should flatten to provided destination set`() = runTest {
 
     val destination = mutableSetOf<Int>()
 

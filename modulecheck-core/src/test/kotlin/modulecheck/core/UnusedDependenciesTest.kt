@@ -200,7 +200,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -240,7 +240,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -280,7 +280,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -895,7 +895,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -961,7 +961,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1018,7 +1018,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1077,7 +1077,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1144,7 +1144,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1204,7 +1204,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1264,7 +1264,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1322,7 +1322,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1390,7 +1390,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1456,7 +1456,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1512,7 +1512,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1570,7 +1570,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1793,7 +1793,7 @@ class UnusedDependenciesTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1853,7 +1853,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1911,7 +1911,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -1981,7 +1981,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -2039,7 +2039,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -2109,7 +2109,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -2168,7 +2168,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -2229,7 +2229,7 @@ class UnusedDependenciesTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -2290,7 +2290,7 @@ class UnusedDependenciesTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -2351,7 +2351,7 @@ class UnusedDependenciesTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -2412,7 +2412,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -2475,6 +2475,6 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 }

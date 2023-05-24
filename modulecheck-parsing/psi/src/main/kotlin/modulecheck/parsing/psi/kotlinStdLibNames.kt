@@ -27,9 +27,9 @@ fun ReferenceName.kotlinStdLibNameOrNull(): QualifiedDeclaredName? {
 
 fun String.kotlinStdLibNameOrNull(): QualifiedDeclaredName? {
 
-  return kotlinStdLibNames[this]?.let {
+  return kotlinStdLibNames[this]?.let { name ->
 
-    val segments = it.split('.')
+    val segments = name.split('.')
 
     DeclaredName.kotlin(
       packageName = segments.dropLast(1).joinToString(".").asPackageName(),

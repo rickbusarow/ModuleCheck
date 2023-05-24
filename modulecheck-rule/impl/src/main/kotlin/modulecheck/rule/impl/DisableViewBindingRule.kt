@@ -36,7 +36,6 @@ class DisableViewBindingRule @Inject constructor() :
   override val description: String = "Finds modules which have ViewBinding enabled, " +
     "but don't actually use any generated ViewBinding objects from that module"
 
-  @Suppress("ReturnCount")
   override suspend fun check(project: McProject): List<DisableViewBindingGenerationFinding> {
     val androidPlugin = project.platformPlugin.asAndroidOrNull() ?: return emptyList()
 

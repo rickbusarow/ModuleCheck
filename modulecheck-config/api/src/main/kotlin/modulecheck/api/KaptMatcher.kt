@@ -51,11 +51,12 @@ data class KaptMatcher(
   override fun hashCode(): Int = processor.hashCode()
 
   override fun toString(): String {
-    return """KaptMatcher(
+    return """
+      |KaptMatcher(
       |  name='$name',
       |  processor='$processor',
       |  annotationImports=${annotationImports.joinToString("\n    ", "\n    ")}
       |)
-    """.trimMargin()
+    """.replaceIndentByMargin()
   }
 }

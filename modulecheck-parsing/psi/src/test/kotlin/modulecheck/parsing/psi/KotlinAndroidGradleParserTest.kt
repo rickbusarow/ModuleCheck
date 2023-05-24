@@ -59,7 +59,16 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
     testFile.writeText(block)
 
     val viewBindingAssignment = Assignment(
-      fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n  }\n  buildFeatures {\n    buildConfig = $enabled\n  }\n}",
+      fullText = """
+        android {
+          buildFeatures {
+            viewBinding = $enabled
+          }
+          buildFeatures {
+            buildConfig = $enabled
+          }
+        }
+      """.trimIndent(),
       propertyFullName = "viewBinding",
       value = "$enabled",
       declarationText = "viewBinding = $enabled",
@@ -67,7 +76,16 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
       suppressed = listOf("disable-android-buildConfig")
     )
     val buildConfigAssignment = Assignment(
-      fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n  }\n  buildFeatures {\n    buildConfig = $enabled\n  }\n}",
+      fullText = """
+        android {
+          buildFeatures {
+            viewBinding = $enabled
+          }
+          buildFeatures {
+            buildConfig = $enabled
+          }
+        }
+      """.trimIndent(),
       propertyFullName = "buildConfig",
       value = "$enabled",
       declarationText = "buildConfig = $enabled",
@@ -76,12 +94,18 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
     )
     val declarationText1 = "androidResources = $enabled"
     val androidResourcesAssignment = Assignment(
-      fullText = "android {\n  buildFeatures {\n    androidResources = $enabled\n  }\n}",
+      fullText = """
+        android {
+          buildFeatures {
+            androidResources = $enabled
+          }
+        }
+      """.trimIndent(),
       propertyFullName = "androidResources",
       value = "$enabled",
       declarationText = declarationText1,
       statementWithSurroundingText = declarationText1,
-      suppressed = listOf()
+      suppressed = emptyList()
     )
     val result = parse(testFile)
 
@@ -107,7 +131,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
         settings = listOf(
           androidResourcesAssignment
         ),
-        blockSuppressed = listOf()
+        blockSuppressed = emptyList()
       )
     )
 
@@ -116,19 +140,19 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
         fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n  }\n  buildFeatures {\n    buildConfig = $enabled\n  }\n}",
         lambdaContent = "viewBinding = $enabled",
         settings = listOf(viewBindingAssignment),
-        blockSuppressed = listOf()
+        blockSuppressed = emptyList()
       ),
       BuildFeaturesBlock(
         fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n  }\n  buildFeatures {\n    buildConfig = $enabled\n  }\n}",
         lambdaContent = "buildConfig = $enabled",
         settings = listOf(buildConfigAssignment),
-        blockSuppressed = listOf()
+        blockSuppressed = emptyList()
       ),
       BuildFeaturesBlock(
         fullText = "android {\n  buildFeatures {\n    androidResources = $enabled\n  }\n}",
         lambdaContent = "androidResources = $enabled",
         settings = listOf(androidResourcesAssignment),
-        blockSuppressed = listOf()
+        blockSuppressed = emptyList()
       )
     )
   }
@@ -162,7 +186,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
             value = "$enabled",
             declarationText = declarationText1,
             statementWithSurroundingText = declarationText1,
-            suppressed = listOf()
+            suppressed = emptyList()
           ),
           Assignment(
             fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n    androidResources = ${!enabled}\n  }\n}",
@@ -170,7 +194,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
             value = "${!enabled}",
             declarationText = declarationText2,
             statementWithSurroundingText = declarationText2,
-            suppressed = listOf()
+            suppressed = emptyList()
           )
         ),
         androidBlocks = listOf(
@@ -184,7 +208,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
                 value = "$enabled",
                 declarationText = declarationText3,
                 statementWithSurroundingText = declarationText3,
-                suppressed = listOf()
+                suppressed = emptyList()
               ),
               Assignment(
                 fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n    androidResources = ${!enabled}\n  }\n}",
@@ -192,10 +216,10 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
                 value = "${!enabled}",
                 declarationText = declarationText4,
                 statementWithSurroundingText = declarationText4,
-                suppressed = listOf()
+                suppressed = emptyList()
               )
             ),
-            blockSuppressed = listOf()
+            blockSuppressed = emptyList()
           )
         ),
         buildFeaturesBlocks = listOf(
@@ -209,7 +233,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
                 value = "$enabled",
                 declarationText = declarationText5,
                 statementWithSurroundingText = declarationText5,
-                suppressed = listOf()
+                suppressed = emptyList()
               ),
               Assignment(
                 fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n    androidResources = ${!enabled}\n  }\n}",
@@ -217,10 +241,10 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
                 value = "${!enabled}",
                 declarationText = declarationText6,
                 statementWithSurroundingText = declarationText6,
-                suppressed = listOf()
+                suppressed = emptyList()
               )
             ),
-            blockSuppressed = listOf()
+            blockSuppressed = emptyList()
           )
         )
       )
@@ -248,8 +272,8 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
           suppressed = listOf("disable-android-resources")
         )
       ),
-      androidBlocks = listOf(),
-      buildFeaturesBlocks = listOf()
+      androidBlocks = emptyList(),
+      buildFeaturesBlocks = emptyList()
     )
   }
 
@@ -275,10 +299,10 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
             value = "$enabled",
             declarationText = declarationText1,
             statementWithSurroundingText = declarationText1,
-            suppressed = listOf()
+            suppressed = emptyList()
           )
         ),
-        androidBlocks = listOf(),
+        androidBlocks = emptyList(),
         buildFeaturesBlocks = listOf(
           BuildFeaturesBlock(
             fullText = "android.buildFeatures {\n  viewBinding = $enabled\n}",
@@ -290,10 +314,10 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
                 value = "$enabled",
                 declarationText = declarationText2,
                 statementWithSurroundingText = declarationText2,
-                suppressed = listOf()
+                suppressed = emptyList()
               )
             ),
-            blockSuppressed = listOf()
+            blockSuppressed = emptyList()
           )
         )
       )
@@ -337,10 +361,10 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
               suppressed = listOf("disable-view-binding")
             )
           ),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         )
       ),
-      buildFeaturesBlocks = listOf()
+      buildFeaturesBlocks = emptyList()
     )
   }
 
@@ -366,11 +390,11 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
 }
 
 fun AndroidGradleSettings.buildSettings() = """
-        AndroidGradleSettings(
-          assignments = ${assignments.buildAssignments()},
-          androidBlocks = ${androidBlocks.buildAndroidBlock()},
-          buildFeaturesBlocks =${buildFeaturesBlocks.buildBuildFeaturesBlock()}
-        )
+  AndroidGradleSettings(
+    assignments = ${assignments.buildAssignments()},
+    androidBlocks = ${androidBlocks.buildAndroidBlock()},
+    buildFeaturesBlocks =${buildFeaturesBlocks.buildBuildFeaturesBlock()}
+  )
 """.trimIndent()
 
 fun List<BuildFeaturesBlock>.buildBuildFeaturesBlock() =

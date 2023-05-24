@@ -97,6 +97,5 @@ class RealConfigurationsFactory @Inject constructor(
 
   companion object {
     private const val TEST_FIXTURES_SUFFIX = "-test-fixtures"
-    private const val TEST_FIXTURES_PLUGIN_ID = "java-test-fixtures"
   }
 }

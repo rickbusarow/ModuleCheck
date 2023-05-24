@@ -32,8 +32,8 @@ fun <A> forAllBlocking(
 ) {
   runBlocking<Unit> {
     @OptIn(ExperimentalKotest::class)
-    io.kotest.property.forAll(PropTestConfig(), genA) {
-      property.invoke(this, it)
+    io.kotest.property.forAll(PropTestConfig(), genA) { arg ->
+      property.invoke(this, arg)
       true
     }
   }
@@ -48,7 +48,7 @@ fun <A> forAllBlocking(
 fun <A> Gen<A>.forAllBlocking(
   property: suspend PropertyContext.(A) -> Unit
 ) {
-  forAllBlocking(genA = this) {
-    property.invoke(this, it)
+  forAllBlocking(genA = this) { arg ->
+    property.invoke(this, arg)
   }
 }

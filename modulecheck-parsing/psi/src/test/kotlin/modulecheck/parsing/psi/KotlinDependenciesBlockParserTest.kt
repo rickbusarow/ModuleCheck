@@ -153,15 +153,18 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         projectAccessor = """project(":core:android")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:android"))""",
-        statementWithSurroundingText = "   api(project(\":core:android\"))",
-        suppressed = listOf()
+        statementWithSurroundingText = """   api(project(":core:android"))""",
+        suppressed = emptyList()
       ),
       ModuleDependencyDeclaration(
         projectPath = StringProjectPath(":core:jvm"),
         projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:jvm"))""",
-        statementWithSurroundingText = "   @Suppress(\"unused-dependency\")\n   api(project(\":core:jvm\"))",
+        statementWithSurroundingText = """
+        |   @Suppress("unused-dependency")
+        |   api(project(":core:jvm"))
+        """.trimMargin(),
         suppressed = listOf("unused-dependency")
       ),
       ModuleDependencyDeclaration(
@@ -169,8 +172,8 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         projectAccessor = """project(":core:test")""",
         configName = ConfigurationName.testImplementation,
         declarationText = """testImplementation(project(":core:test"))""",
-        statementWithSurroundingText = "   testImplementation(project(\":core:test\"))",
-        suppressed = listOf()
+        statementWithSurroundingText = """   testImplementation(project(":core:test"))""",
+        suppressed = emptyList()
       )
     )
   }
@@ -180,13 +183,13 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
     val block = parser
       .parse(
         """
-       @Suppress("Unused")
-       dependencies {
-          api(project(":core:android"))
-          @Suppress("InheritedDependency")
-          api(project(":core:jvm"))
-          testImplementation(project(":core:test"))
-       }
+        @Suppress("Unused")
+        dependencies {
+           api(project(":core:android"))
+           @Suppress("InheritedDependency")
+           api(project(":core:jvm"))
+           testImplementation(project(":core:test"))
+        }
         """
       ).single()
 
@@ -196,7 +199,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         projectAccessor = """project(":core:android")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:android"))""",
-        statementWithSurroundingText = "   api(project(\":core:android\"))",
+        statementWithSurroundingText = """   api(project(":core:android"))""",
         suppressed = listOf("unused-dependency")
       ),
       ModuleDependencyDeclaration(
@@ -204,7 +207,10 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:jvm"))""",
-        statementWithSurroundingText = "   @Suppress(\"InheritedDependency\")\n   api(project(\":core:jvm\"))",
+        statementWithSurroundingText = """
+          |   @Suppress("InheritedDependency")
+          |   api(project(":core:jvm"))
+        """.trimMargin(),
         suppressed = listOf("inherited-dependency", "unused-dependency")
       ),
       ModuleDependencyDeclaration(
@@ -212,7 +218,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         projectAccessor = """project(":core:test")""",
         configName = ConfigurationName.testImplementation,
         declarationText = """testImplementation(project(":core:test"))""",
-        statementWithSurroundingText = "   testImplementation(project(\":core:test\"))",
+        statementWithSurroundingText = """   testImplementation(project(":core:test"))""",
         suppressed = listOf("unused-dependency")
       )
     )
@@ -239,7 +245,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         projectAccessor = """project(":core:android")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:android"))""",
-        statementWithSurroundingText = "   api(project(\":core:android\"))",
+        statementWithSurroundingText = """   api(project(":core:android"))""",
         suppressed = listOf("unused-dependency")
       ),
       ModuleDependencyDeclaration(
@@ -247,7 +253,10 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:jvm"))""",
-        statementWithSurroundingText = "   @Suppress(\"inherited-dependency\")\n   api(project(\":core:jvm\"))",
+        statementWithSurroundingText = """
+          |   @Suppress("inherited-dependency")
+          |   api(project(":core:jvm"))
+        """.trimMargin(),
         suppressed = listOf("inherited-dependency", "unused-dependency")
       ),
       ModuleDependencyDeclaration(

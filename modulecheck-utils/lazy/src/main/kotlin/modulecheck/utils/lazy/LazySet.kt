@@ -191,7 +191,7 @@ fun <E> lazySet(
 }
 
 fun <E> emptyLazySet(): LazySet<E> {
-  return createLazySet(listOf(), listOf())
+  return createLazySet(emptyList(), emptyList())
 }
 
 internal fun <E> createLazySet(

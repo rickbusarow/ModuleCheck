@@ -195,7 +195,7 @@ class InheritedDependenciesTest : RunnerTest() {
       strictResolution = false
     ).isSuccess shouldBe true
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -260,7 +260,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run(autoCorrect = false).isSuccess shouldBe true
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -2625,7 +2625,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
 
     lib1.buildFile shouldHaveText """
         plugins {
@@ -4000,7 +4000,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -4084,6 +4084,6 @@ class InheritedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 }

@@ -44,7 +44,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
     }
 
     run(autoCorrect = false).isSuccess shouldBe true
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -103,7 +103,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -133,7 +133,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -212,7 +212,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -241,7 +241,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
@@ -301,7 +301,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   private fun McProjectBuilder<*>.writeBuildFileWithPlugin() {

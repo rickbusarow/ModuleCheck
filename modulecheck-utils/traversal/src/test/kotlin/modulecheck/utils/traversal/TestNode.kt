@@ -38,7 +38,7 @@ data class LeafNode(
 ) : TestNode {
   override var parent: TestNode? = null
   override val children: List<TestNode>
-    get() = listOf()
+    get() = emptyList()
 }
 
 fun rootNode(name: String, elementType: String, init: CompositeNodeBuilder.() -> Unit): TestNode {

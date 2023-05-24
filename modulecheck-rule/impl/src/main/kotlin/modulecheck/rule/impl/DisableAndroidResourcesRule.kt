@@ -37,7 +37,6 @@ class DisableAndroidResourcesRule @Inject constructor() :
     "Finds modules which have android resources R file generation enabled, " +
       "but don't actually use any resources from the module"
 
-  @Suppress("ReturnCount")
   override suspend fun check(project: McProject): List<UnusedResourcesGenerationFinding> {
 
     val resourcesEnabled = (project.platformPlugin as? AndroidLibraryPlugin)

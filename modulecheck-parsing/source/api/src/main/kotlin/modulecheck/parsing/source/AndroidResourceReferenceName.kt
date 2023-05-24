@@ -54,9 +54,9 @@ class UnqualifiedAndroidResourceReferenceName(
   HasSimpleNames {
 
   private val split by unsafeLazy {
-    name.split('.').also {
+    name.split('.').also { segments ->
       @Suppress("MagicNumber")
-      require(it.size == 3) {
+      require(segments.size == 3) {
         "The name `$name` must follow the format `R.<prefix>.<identifier>`, " +
           "such as `R.string.app_name`."
       }

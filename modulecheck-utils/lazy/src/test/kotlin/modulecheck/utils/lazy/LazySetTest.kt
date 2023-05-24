@@ -15,16 +15,17 @@
 
 package modulecheck.utils.lazy
 
-import io.kotest.common.runBlocking
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 
 class LazySetTest {
+
   @Test
-  fun `isEmpty with empty LazySet when it's not cached`() = runBlocking {
+  fun `isEmpty with empty LazySet when it's not cached`() = runTest {
 
     val subject = lazySet<Int>()
 
@@ -33,7 +34,7 @@ class LazySetTest {
   }
 
   @Test
-  fun `data source is only evaluated once`() = runBlocking {
+  fun `data source is only evaluated once`() = runTest {
 
     var invocations = 0
 
@@ -49,18 +50,18 @@ class LazySetTest {
   }
 
   @Test
-  fun `isEmpty with empty LazySet when it's already cached`() = runBlocking {
+  fun `isEmpty with empty LazySet when it's already cached`() = runTest {
 
     val subject = lazySet<Int>()
 
-    subject.toList() shouldBe listOf()
+    subject.toList() shouldBe emptyList()
 
     subject.isEmpty() shouldBe true
     subject.isNotEmpty() shouldBe false
   }
 
   @Test
-  fun `isEmpty with non-empty LazySet when it's not cached`() = runBlocking {
+  fun `isEmpty with non-empty LazySet when it's not cached`() = runTest {
 
     val subject = lazySet(dataSourceOf(1))
 
@@ -72,7 +73,7 @@ class LazySetTest {
   }
 
   @Test
-  fun `isEmpty with single dataSource when it's not cached`() = runBlocking {
+  fun `isEmpty with single dataSource when it's not cached`() = runTest {
 
     val subject = lazySet { setOf(1, 2, 3, 4) }
 
@@ -84,7 +85,7 @@ class LazySetTest {
   }
 
   @Test
-  fun `isEmpty with non-empty LazySet when it's already cached`() = runBlocking {
+  fun `isEmpty with non-empty LazySet when it's already cached`() = runTest {
 
     val subject = lazySet(dataSourceOf(1))
 
@@ -95,7 +96,7 @@ class LazySetTest {
   }
 
   @Test
-  fun `isEmpty with non-empty LazySet when it's partially cached`() = runBlocking {
+  fun `isEmpty with non-empty LazySet when it's partially cached`() = runTest {
 
     val subject = lazySet(List(101) { dataSourceOf(it) })
 
@@ -112,7 +113,7 @@ class LazySetTest {
   }
 
   @Test
-  fun `should be fully cached if 'contains' returns false`() = runBlocking {
+  fun `should be fully cached if 'contains' returns false`() = runTest {
 
     val subject = lazySet(List(101) { dataSourceOf(it) })
 

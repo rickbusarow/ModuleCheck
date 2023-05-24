@@ -92,13 +92,15 @@ data class OverShotDependencyFinding(
   override fun fromStringOrEmpty(): String = ""
 
   override fun toString(): String {
-    return "OverShotDependency(\n" +
-      "\tdependentPath='$dependentPath', \n" +
-      "\tbuildFile=$buildFile, \n" +
-      "\tdependency=$dependency, \n" +
-      "\tdependencyIdentifier='$dependencyIdentifier', \n" +
-      "\tconfigurationName=$configurationName\n" +
-      ")"
+    return """
+        |OverShotDependency(
+        |  dependentPath='$dependentPath',
+        |  buildFile=$buildFile,
+        |  dependency=$dependency,
+        |  dependencyIdentifier='$dependencyIdentifier',
+        |  configurationName=$configurationName
+        |)
+      """.replaceIndentByMargin()
   }
 
   companion object {

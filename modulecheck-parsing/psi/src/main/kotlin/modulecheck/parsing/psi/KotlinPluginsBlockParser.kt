@@ -33,7 +33,9 @@ class KotlinPluginsBlockParser @Inject constructor(
   private val logger: McLogger
 ) {
 
-  @Suppress("ReturnCount")
+  /**
+   * @return all `plugins` blocks for the build file
+   */
   fun parse(file: KtFile): KotlinPluginsBlock? {
 
     var block: KotlinPluginsBlock? = null

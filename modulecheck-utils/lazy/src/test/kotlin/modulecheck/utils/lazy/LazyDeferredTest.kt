@@ -17,14 +17,14 @@ package modulecheck.utils.lazy
 
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import java.util.concurrent.atomic.AtomicBoolean
 
 internal class LazyDeferredTest {
 
   @Test
-  fun `nothing should be invoked until await`() = runBlocking {
+  fun `nothing should be invoked until await`() = runTest {
 
     val completed = AtomicBoolean(false)
 
@@ -40,7 +40,7 @@ internal class LazyDeferredTest {
   }
 
   @Test
-  fun `awaitAll should not deadlock`() = runBlocking<Unit> {
+  fun `awaitAll should not deadlock`() = runTest {
 
     val one = lazyDeferred { 1 }
     val two = lazyDeferred { 2 }

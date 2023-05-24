@@ -58,10 +58,10 @@ abstract class DetektConventionPlugin : Plugin<Project> {
 
       extension.autoCorrect = false
       extension.baseline = target.file("${target.rootDir}/detekt/detekt-baseline.xml")
-      extension.config = target.files("${target.rootDir}/detekt/detekt-config.yml")
+      extension.config.from("${target.rootDir}/detekt/detekt-config.yml")
       extension.buildUponDefaultConfig = true
 
-      extension.source = target.files(
+      extension.source.from(
         "src/main/java",
         "src/test/java",
         "src/main/kotlin",

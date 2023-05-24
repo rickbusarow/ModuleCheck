@@ -40,7 +40,7 @@ internal class AndroidResourceParserTest : BaseTest() {
 
     val declarations = AndroidResourceParser().parseFile(xml)
 
-    declarations shouldBe setOf()
+    declarations shouldBe emptySet()
   }
 
   @Test
@@ -58,7 +58,7 @@ internal class AndroidResourceParserTest : BaseTest() {
 
     val declarations = AndroidResourceParser().parseFile(xml)
 
-    declarations shouldBe setOf()
+    declarations shouldBe emptySet()
   }
 
   @Test

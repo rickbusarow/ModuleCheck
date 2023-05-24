@@ -26,10 +26,10 @@ inline fun <T> T.applyIf(predicate: Boolean, body: T.() -> T): T = apply {
   }
 }
 
-inline fun <T> T.letIf(predicate: Boolean, body: (T) -> T): T = let {
+inline fun <T> T.letIf(predicate: Boolean, body: (T) -> T): T = let { t ->
   if (predicate) {
-    body(it)
+    body(t)
   } else {
-    it
+    t
   }
 }

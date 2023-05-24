@@ -17,7 +17,7 @@ package modulecheck.reporting.sarif
 
 import io.kotest.assertions.asClue
 import io.kotest.matchers.string.shouldContain
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
@@ -54,7 +54,7 @@ class SarifReportTest : RunnerTest() {
   }
 
   @Test
-  fun `report with unused dependency`() = runBlocking {
+  fun `report with unused dependency`() = runTest {
 
     val factory = SarifReportFactory(
       websiteUrl = { "https://rbusarow.github.io/ModuleCheck" },

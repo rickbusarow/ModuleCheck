@@ -58,13 +58,14 @@ data class MustBeApiFinding(
   }
 
   override fun toString(): String {
-    return """MustBeApiFinding(
-      |   dependentPath='$dependentPath',
-      |   buildFile=$buildFile,
-      |   dependency=$dependency,
-      |   configurationName=$configurationName,
-      |   source=$source,
-      |   dependencyIdentifier='$dependencyIdentifier'
+    return """
+      |MustBeApiFinding(
+      |  dependentPath='$dependentPath',
+      |  buildFile=$buildFile,
+      |  dependency=$dependency,
+      |  configurationName=$configurationName,
+      |  source=$source,
+      |  dependencyIdentifier='$dependencyIdentifier'
       |)
     """.trimMargin()
   }

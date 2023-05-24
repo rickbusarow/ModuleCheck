@@ -109,9 +109,9 @@ internal class CheckstyleReportingTest : RunnerTest() {
     outputFile shouldHaveText """
       <?xml version="1.0" encoding="UTF-8"?>
       <checkstyle version="4.3">
-      	<file name="buildFile">
-      		<error line="1" column="2" severity="info" dependency="dependencyIdentifier" message="message" source="modulecheck.some-name" />
-      	</file>
+        <file name="buildFile">
+          <error line="1" column="2" severity="info" dependency="dependencyIdentifier" message="message" source="modulecheck.some-name" />
+        </file>
       </checkstyle>
     """
   }

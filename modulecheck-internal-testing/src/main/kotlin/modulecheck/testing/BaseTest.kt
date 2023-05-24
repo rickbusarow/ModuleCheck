@@ -170,6 +170,6 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
 
   companion object {
     protected val durationSuffixRegex: Regex =
-      "(ModuleCheck found \\d+ issues?) in [\\d.]+ seconds\\.[\\s\\S]*".toRegex()
+      """(ModuleCheck found \d+ issues?) in [\d.]+ seconds\.[\s\S]*""".toRegex()
   }
 }

@@ -27,7 +27,7 @@ class TraceTest {
       .child(tags = listOf(Kitchen::class), args = listOf("spaghetti"))
       .child(tags = listOf(Computer::class), args = listOf(Website("reddit.com")))
       .child(tags = listOf(Garage::class), args = listOf("bike"))
-      .child(tags = listOf("Oak Leaf Trail"), args = listOf())
+      .child(tags = listOf("Oak Leaf Trail"), args = emptyList())
       .child(tags = listOf("home"), args = listOf("shower"))
 
     trace.asString() shouldBe """

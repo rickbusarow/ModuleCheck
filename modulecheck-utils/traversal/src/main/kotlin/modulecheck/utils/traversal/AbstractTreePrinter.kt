@@ -79,7 +79,7 @@ abstract class AbstractTreePrinter<T : Any>(
       // return colorized(getCurrentColor())
     }
 
-    val parentName = (rootNode.parent()?.uniqueSimpleName() ?: "null")
+    val parentName = rootNode.parent()?.uniqueSimpleName() ?: "null"
     val parentType = rootNode.parent()?.typeName() ?: "null"
 
     val childrenText = rootNode.children()
@@ -103,7 +103,7 @@ abstract class AbstractTreePrinter<T : Any>(
 
       val headerBoxStart = "┏━".colorized()
 
-      val headerBoxEnd = ("━".repeat((len - 3) - headerLength) + "┓").colorized()
+      val headerBoxEnd = ("━".repeat(len - 3 - headerLength) + "┓").colorized()
 
       append("$indent$headerBoxStart $header $headerBoxEnd")
 
@@ -141,11 +141,11 @@ abstract class AbstractTreePrinter<T : Any>(
     }
 
     return map.getOrPut(this@uniqueName) {
-      val count = map.keys.count {
+      val count = map.keys.count { key ->
         if (nameType == SIMPLE) {
-          it.simpleClassName() == simpleClassName()
+          key.simpleClassName() == simpleClassName()
         } else {
-          it.typeName() == typeName()
+          key.typeName() == typeName()
         }
       }
 

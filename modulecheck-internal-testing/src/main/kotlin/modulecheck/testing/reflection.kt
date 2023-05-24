@@ -38,15 +38,17 @@ inline fun <reified T : Any> KClass<T>.sealedSubclassesRecursive(): Sequence<KCl
     .distinct()
 }
 
+/** */
 inline fun <reified T : Any> KClass<T>.sealedSubclassConstructorsRecursive(): Sequence<KFunction<T>> {
   return sealedSubclassesRecursive()
     .filter { !it.isAbstract && !it.isSealed }
-    .map {
-      it.primaryConstructor
-        .requireNotNullOrFail { "no primary constructor for $it???" }
+    .map { clazz ->
+      clazz.primaryConstructor
+        .requireNotNullOrFail { "no primary constructor for $clazz???" }
     }
 }
 
+/** */
 inline fun <reified T : Any> KClass<T>.sealedSubclassInstances(vararg args: Any?): Sequence<T> {
   return sealedSubclassConstructorsRecursive()
     .mapNotNull {
@@ -54,6 +56,7 @@ inline fun <reified T : Any> KClass<T>.sealedSubclassInstances(vararg args: Any?
     }
 }
 
+/** */
 inline fun <reified T : Any, reified R : Any> T.getPrivateFieldByName(name: String): R {
   val kClass = T::class
 

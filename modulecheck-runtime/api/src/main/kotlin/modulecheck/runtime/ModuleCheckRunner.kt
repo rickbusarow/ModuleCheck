@@ -111,7 +111,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
 
       processFindings(reportOnlyFindings)
 
-      allFindings += (fixableFindings + sortFindings + reportOnlyFindings)
+      allFindings += fixableFindings + sortFindings + reportOnlyFindings
 
       fixableResults + sortsResults // + reportResults
     }
@@ -138,10 +138,17 @@ data class ModuleCheckRunner @AssistedInject constructor(
     if (totalFindings > 0) {
 
       logger.printWarning(
-        "\n\nTo ignore any of these findings, annotate the dependency declaration with " +
-          "@Suppress(\"<the name of the issue>\") in Kotlin, or " +
-          "//noinspection <the name of the issue> in Groovy.\n" +
-          "See https://rbusarow.github.io/ModuleCheck/docs/suppressing-findings for more info."
+        buildString {
+          appendLine()
+          appendLine()
+          append("To ignore any of these findings, ")
+          append("annotate the dependency declaration with ")
+          append("""@Suppress("<the name of the issue>") in Kotlin, """)
+          appendLine("or //noinspection <the name of the issue> in Groovy.")
+          appendLine(
+            "See https://rbusarow.github.io/ModuleCheck/docs/suppressing-findings for more info."
+          )
+        }
       )
     }
 

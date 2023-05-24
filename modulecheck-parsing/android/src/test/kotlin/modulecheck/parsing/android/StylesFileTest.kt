@@ -30,15 +30,15 @@ internal class StylesFileTest : BaseTest() {
   fun `external style parent and value references should count as references`() = test {
     @Language("xml")
     val text = """
-    <?xml version="1.0" encoding="utf-8"?>
-    <resources>
+      <?xml version="1.0" encoding="utf-8"?>
+      <resources>
 
-      <style name="AppTheme.ClearActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/transparent</item>
-        <item name="alertDialogStyle">@style/SomeOtherStyle</item>
-      </style>
+        <style name="AppTheme.ClearActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+          <item name="colorPrimary">@color/transparent</item>
+          <item name="alertDialogStyle">@style/SomeOtherStyle</item>
+        </style>
 
-    </resources>
+      </resources>
     """.trimIndent()
 
     val xml = testProjectDir
