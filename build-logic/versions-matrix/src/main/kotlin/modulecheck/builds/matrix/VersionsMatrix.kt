@@ -24,7 +24,7 @@ class VersionsMatrix(
 ) {
 
   internal val gradleListDefault = listOf("7.5.1", "7.6.1", "8.0.2", "8.1.1")
-  internal val agpListDefault = listOf("7.3.1", "7.4.2", "8.0.1")
+  internal val agpListDefault = listOf("7.3.1", "7.4.2", "8.0.2")
   internal val anvilListDefault = listOf("2.4.5")
   internal val kotlinListDefault = listOf("1.8.0", "1.8.10", "1.8.21")
 
@@ -36,8 +36,8 @@ class VersionsMatrix(
   internal val exclusions = listOf<Exclusion>(
     Exclusion(gradle = "8.1.1", agp = "7.3.1", anvil = null, kotlin = null),
     Exclusion(gradle = "8.1.1", agp = "7.4.2", anvil = null, kotlin = null),
-    Exclusion(gradle = "7.5.1", agp = "8.0.1", anvil = null, kotlin = null),
-    Exclusion(gradle = "7.6.1", agp = "8.0.1", anvil = null, kotlin = null),
+    Exclusion(gradle = "7.5.1", agp = "8.0.2", anvil = null, kotlin = null),
+    Exclusion(gradle = "7.6.1", agp = "8.0.2", anvil = null, kotlin = null),
   ).requireNoDuplicates()
 
   private val latest by lazy { allValid.last() }
@@ -58,21 +58,20 @@ class VersionsMatrix(
     agpList: List<String>,
     anvilList: List<String>,
     kotlinList: List<String>
-  ) =
-    gradleList.flatMap { gradle ->
-      agpList.flatMap { agp ->
-        anvilList.flatMap { anvil ->
-          kotlinList.map { kotlin ->
-            TestVersions(
-              gradle = gradle,
-              agp = agp,
-              anvil = anvil,
-              kotlin = kotlin
-            )
-          }
+  ) = gradleList.flatMap { gradle ->
+    agpList.flatMap { agp ->
+      anvilList.flatMap { anvil ->
+        kotlinList.map { kotlin ->
+          TestVersions(
+            gradle = gradle,
+            agp = agp,
+            anvil = anvil,
+            kotlin = kotlin
+          )
         }
       }
     }
+  }
 
   val allValidDefaults = combinations(
     gradleList = gradleListDefault,
