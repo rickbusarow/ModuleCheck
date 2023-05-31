@@ -40,7 +40,6 @@ ktlint_experimental_property-naming = disabled
 ktlint_standard_filename = disabled
 ktlint_standard_max-line-length = disabled
 ktlint_standard_no-empty-first-line-in-method-block = disabled
-ktlint_standard_wrapping = disabled
 
 [{*.kt,*.kts}]
 ij_continuation_indent_size = 2
