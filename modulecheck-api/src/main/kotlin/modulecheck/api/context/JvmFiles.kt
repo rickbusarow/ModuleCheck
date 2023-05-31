@@ -30,7 +30,8 @@ import java.io.File
 /**
  * Represents a collection of JVM files for a project.
  *
- * @property fileFactoryCache a cache for mapping source set names to corresponding JVM file providers
+ * @property fileFactoryCache a cache for mapping source
+ *   set names to corresponding JVM file providers
  * @property project the project for which the JVM files are needed
  */
 data class JvmFiles(
@@ -38,9 +39,7 @@ data class JvmFiles(
   private val project: McProject
 ) : ProjectContext.Element {
 
-  /**
-   * @return the unique key of the JVM files within the project context
-   */
+  /** @return the unique key of the JVM files within the project context */
   override val key: ProjectContext.Key<JvmFiles>
     get() = Key
 
@@ -79,9 +78,7 @@ data class JvmFiles(
     }.getOrNull(file)
   }
 
-  /**
-   * Companion object that acts as the key for [JvmFiles] within a [ProjectContext].
-   */
+  /** Companion object that acts as the key for [JvmFiles] within a [ProjectContext]. */
   companion object Key : ProjectContext.Key<JvmFiles> {
     /**
      * Generates a [JvmFiles] instance for the given project.
@@ -103,7 +100,8 @@ data class JvmFiles(
 suspend fun ProjectContext.jvmFiles(): JvmFiles = get(JvmFiles)
 
 /**
- * Retrieves a flow of JVM files corresponding to the provided source set name from the [ProjectContext].
+ * Retrieves a flow of JVM files corresponding to the
+ * provided source set name from the [ProjectContext].
  *
  * @param sourceSetName the name of the source set for which JVM files are needed
  * @return a flow of [JvmFile]s for the requested source set name

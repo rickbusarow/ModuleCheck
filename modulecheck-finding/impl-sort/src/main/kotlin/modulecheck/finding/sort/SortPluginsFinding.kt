@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package modulecheck.finding.sort
 
 import modulecheck.finding.Finding
@@ -30,6 +29,15 @@ import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.suffixIfNot
 import java.io.File
 
+/**
+ * A [Finding] implementation that represents a finding where plugin
+ * declarations are not sorted according to the defined pattern.
+ *
+ * @property dependentProject the dependent project where the finding was detected
+ * @property dependentPath the path of the dependent project
+ * @property buildFile the build file where the finding was detected
+ * @property comparator the comparator used to sort plugin declarations
+ */
 class SortPluginsFinding(
   override val dependentProject: McProject,
   override val dependentPath: ProjectPath.StringProjectPath,
@@ -39,6 +47,7 @@ class SortPluginsFinding(
 
   override val findingName: FindingName = NAME
 
+  /** Returns the message associated with this finding. */
   override val message: String
     get() = "Plugin declarations are not sorted according to the defined pattern."
 
@@ -50,9 +59,14 @@ class SortPluginsFinding(
 
   override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred { null }
 
+  /**
+   * Fixes the finding by sorting the plugin declarations according to the defined pattern.
+   *
+   * @param removalStrategy the removal strategy to be applied if fixing is possible
+   * @return `true` if the finding was fixed successfully, `false` otherwise
+   */
   override suspend fun fix(removalStrategy: RemovalStrategy): Boolean {
-    val block = dependentProject.buildFileParser
-      .pluginsBlock() ?: return false
+    val block = dependentProject.buildFileParser.pluginsBlock() ?: return false
 
     var fileText = buildFile.readText()
 
@@ -70,6 +84,13 @@ class SortPluginsFinding(
   }
 }
 
+/**
+ * Sorts the plugins in this [PluginsBlock] using the specified [comparator].
+ *
+ * @param comparator the comparator used to sort the plugin declarations
+ * @receiver the [PluginsBlock] to be sorted
+ * @return the sorted plugins as a string
+ */
 fun PluginsBlock.sortedPlugins(comparator: Comparator<PluginDeclaration>): String {
   // Groovy parsing has the last whitespace at the end of the contentString block,
   // so it gets chopped off when doing the replacement.

@@ -106,9 +106,7 @@ fun IncludedBuild.requireProjectRegistry(): ProjectRegistry<ProjectInternal> {
   return delegate.mutableModel.projectRegistry
 }
 
-/**
- * @return all projects from all included builds
- */
+/** @return all projects from all included builds */
 fun Gradle.allIncludedProjects(): List<ProjectInternal> {
   return includedBuilds.flatMap { it.allProjects() }
 }
@@ -152,9 +150,7 @@ fun Project.isRealRootProject(): Boolean {
   return (gradle as GradleInternal).isRootBuild && this == rootProject
 }
 
-/**
- * `rootProject == this`
- */
+/** `rootProject == this` */
 fun Project.isRootProject(): Boolean {
   return rootProject == this
 }

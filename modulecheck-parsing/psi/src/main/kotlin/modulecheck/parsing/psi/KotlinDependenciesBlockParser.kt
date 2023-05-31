@@ -46,9 +46,7 @@ class KotlinDependenciesBlockParser @Inject constructor(
   private val projectDependency: ProjectDependency.Factory
 ) {
 
-  /**
-   * @return all `dependencies` blocks for the project modeled by [invokesConfigurationNames]
-   */
+  /** @return all `dependencies` blocks for the project modeled by [invokesConfigurationNames] */
   suspend fun parse(
     invokesConfigurationNames: InvokesConfigurationNames
   ): List<KotlinDependenciesBlock> {
@@ -171,8 +169,7 @@ private fun KtCallExpression.parseStatements(
   )
 }
 
-/* ktlint-disable no-multi-spaces */
-
+@Suppress("ktlint:no-multi-spaces")
 internal fun KtCallExpression.getStringModuleNameOrNull(): Pair<String, String>? {
   return this                                             // implementation(project(path = ":foo:bar"))
     .valueArguments                                       // [project(path = ":foo:bar")]
@@ -192,6 +189,7 @@ internal fun KtCallExpression.getStringModuleNameOrNull(): Pair<String, String>?
     }
 }
 
+@Suppress("ktlint:no-multi-spaces")
 internal fun KtCallExpression.getTypeSafeModuleNameOrNull(): Pair<String, String>? {
   return this                                       // implementation(projects.foo.bar)
     .valueArguments                                 // [projects.foo.bar]
@@ -208,6 +206,7 @@ internal fun KtCallExpression.getTypeSafeModuleNameOrNull(): Pair<String, String
     }
 }
 
+@Suppress("ktlint:no-multi-spaces")
 internal fun KtCallExpression.getStringTestFixturesModuleNameOrNull(): Pair<String, String>? {
   return this                                             // implementation(testFixtures(project(path = ":foo:bar")))
     .valueArguments                                       // [testFixtures(project(path = ":foo:bar"))]
@@ -230,6 +229,7 @@ internal fun KtCallExpression.getStringTestFixturesModuleNameOrNull(): Pair<Stri
     }
 }
 
+@Suppress("ktlint:no-multi-spaces")
 internal fun KtCallExpression.getTypeSafeTestFixturesModuleNameOrNull(): Pair<String, String>? {
   return this                                       // implementation(testFixtures(projects.foo.bar))
     .valueArguments                                 // [testFixtures(projects.foo.bar)]
@@ -250,7 +250,7 @@ internal fun KtCallExpression.getTypeSafeTestFixturesModuleNameOrNull(): Pair<St
     }
 }
 
-@Suppress("MaxLineLength")
+@Suppress("ktlint:no-multi-spaces", "MaxLineLength")
 internal fun KtCallExpression.getMavenCoordinatesOrNull(): MavenCoordinates? {
   return this                                         // implementation(dependencyNotation = "com.google.dagger:dagger:2.32")
     .valueArguments                                   // [dependencyNotation = "com.google.dagger:dagger:2.32"]
@@ -261,7 +261,7 @@ internal fun KtCallExpression.getMavenCoordinatesOrNull(): MavenCoordinates? {
     ?.let { MavenCoordinates.parseOrNull(it) }
 }
 
-@Suppress("MaxLineLength")
+@Suppress("ktlint:no-multi-spaces")
 internal fun KtCallExpression.getUnknownArgumentOrNull(): String? {
   return this                                         // implementation(libs.ktlint)
     .valueArguments                                   // [libs.ktlint]

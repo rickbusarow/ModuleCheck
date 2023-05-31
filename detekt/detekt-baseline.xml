@@ -19,12 +19,11 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>MagicNumber:ArtifactsTask.kt$ArtifactsTask$4</ID>
-    <ID>MagicNumber:JavaLibraryConventionPlugin.kt$JavaLibraryConventionPlugin$11</ID>
+    <ID>MatchingDeclarationName:publishing.kt$PublishingExtension</ID>
     <ID>NestedBlockDepth:ArtifactsCheckTask.kt$ArtifactsCheckTask$private fun StringBuilder.maybeAddChangedValueMessages( changed: List&lt;Pair&lt;ArtifactConfig, ArtifactConfig>> ): StringBuilder</ID>
+    <ID>NestedBlockDepth:file.kt$fun File.zipContentEquals(other: File): Boolean</ID>
     <ID>OutdatedDocumentation:AbstractDependenciesBlock.kt$AbstractDependenciesBlock$fun addModuleStatement( configName: ConfigurationName, parsedString: String, projectPath: ProjectPath, projectAccessor: ProjectAccessor, suppressed: List&lt;String> )</ID>
-    <ID>OutdatedDocumentation:ConfiguredDependency.kt$PluginDependency : Dependency</ID>
     <ID>OutdatedDocumentation:ModuleCheckRunner.kt$ModuleCheckRunner</ID>
-    <ID>OutdatedDocumentation:OverShotDependencyFinding.kt$OverShotDependency</ID>
     <ID>SerialVersionUIDInSerializableClass:ArtifactConfig.kt$ArtifactConfig : Serializable</ID>
     <ID>UndocumentedPublicClass:AbstractDependenciesBlock.kt$AbstractDependenciesBlock : DependenciesBlock</ID>
     <ID>UndocumentedPublicClass:AbstractDependenciesBlock.kt$DependenciesBlocksProvider</ID>
@@ -75,9 +74,6 @@
     <ID>UndocumentedPublicClass:AnvilGradlePlugin.kt$AnvilScopeName</ID>
     <ID>UndocumentedPublicClass:AnvilGradlePlugin.kt$AnvilScopeNameEntry</ID>
     <ID>UndocumentedPublicClass:AnvilGradlePlugin.kt$RawAnvilAnnotatedType</ID>
-    <ID>UndocumentedPublicClass:AnvilGraph.kt$AnvilGraph : Element</ID>
-    <ID>UndocumentedPublicClass:AnvilGraph.kt$AnvilGraph$Key : Key</ID>
-    <ID>UndocumentedPublicClass:AnvilGraph.kt$AnvilScopedDeclarations</ID>
     <ID>UndocumentedPublicClass:AnvilScopeContributions.kt$AnvilScopeContributions : Element</ID>
     <ID>UndocumentedPublicClass:AnvilScopeContributions.kt$AnvilScopeContributions$Key : Key</ID>
     <ID>UndocumentedPublicClass:AnvilScopeDependencies.kt$AnvilScopeDependencies : Element</ID>
@@ -182,11 +178,7 @@
     <ID>UndocumentedPublicClass:JvmFile.kt$KotlinFile$ScopeArgumentParseResult</ID>
     <ID>UndocumentedPublicClass:JvmFileProvider.kt$JvmFileProvider</ID>
     <ID>UndocumentedPublicClass:JvmFileProvider.kt$JvmFileProvider$Factory</ID>
-    <ID>UndocumentedPublicClass:JvmFiles.kt$JvmFiles : Element</ID>
-    <ID>UndocumentedPublicClass:JvmFiles.kt$JvmFiles$Key : Key</ID>
     <ID>UndocumentedPublicClass:JvmPlatformPluginFactory.kt$JvmPlatformPluginFactory</ID>
-    <ID>UndocumentedPublicClass:JvmSourceFiles.kt$JvmSourceFiles : Element</ID>
-    <ID>UndocumentedPublicClass:JvmSourceFiles.kt$JvmSourceFiles$Key : Key</ID>
     <ID>UndocumentedPublicClass:JvmSourceSetsParser.kt$JvmSourceSetsParser</ID>
     <ID>UndocumentedPublicClass:KaptDependencies.kt$KaptDependencies : Element</ID>
     <ID>UndocumentedPublicClass:KaptDependencies.kt$KaptDependencies$Key : Key</ID>
@@ -346,7 +338,6 @@
     <ID>UndocumentedPublicClass:SarifReportFactory.kt$SarifReportFactory</ID>
     <ID>UndocumentedPublicClass:SortDependenciesFinding.kt$SortDependenciesFinding : FindingFixable</ID>
     <ID>UndocumentedPublicClass:SortDependenciesRule.kt$SortDependenciesRule : DocumentedRuleSortRule</ID>
-    <ID>UndocumentedPublicClass:SortPluginsFinding.kt$SortPluginsFinding : FindingFixable</ID>
     <ID>UndocumentedPublicClass:SortPluginsRule.kt$SortPluginsRule : DocumentedRuleSortRule</ID>
     <ID>UndocumentedPublicClass:SourceSetBuilder.kt$SourceSetBuilder</ID>
     <ID>UndocumentedPublicClass:SourceSetDependencies.kt$SourceSetDependencies : Element</ID>
@@ -376,8 +367,6 @@
     <ID>UndocumentedPublicClass:UnusedKaptPluginRule.kt$UnusedKaptPluginRule : DocumentedRule</ID>
     <ID>UndocumentedPublicClass:UnusedKaptProcessorFinding.kt$UnusedKaptProcessorFinding : FindingProblemFixableDependencyFindingConfigurationFindingRemovesDependency</ID>
     <ID>UndocumentedPublicClass:UnusedKaptProcessorRule.kt$UnusedKaptProcessorRule : DocumentedRule</ID>
-    <ID>UndocumentedPublicClass:UnusedKaptProcessors.kt$UnusedKaptProcessors : Element</ID>
-    <ID>UndocumentedPublicClass:UnusedKaptProcessors.kt$UnusedKaptProcessors$Key : Key</ID>
     <ID>UndocumentedPublicClass:UnusedKotlinAndroidExtensionsRule.kt$UnusedKotlinAndroidExtensionsRule : DocumentedRule</ID>
     <ID>UndocumentedPublicClass:UnusedPluginFinding.kt$UnusedPluginFinding : FindingProblemFixableDeletable</ID>
     <ID>UndocumentedPublicClass:UnusedResourcesGenerationFinding.kt$UnusedResourcesGenerationFinding : FindingFixable</ID>
@@ -389,7 +378,7 @@
     <ID>UndocumentedPublicFunction:AbstractDependenciesBlock.kt$DependenciesBlocksProvider$suspend fun get(): List&lt;DependenciesBlock></ID>
     <ID>UndocumentedPublicFunction:AbstractDependenciesBlock.kt$DependenciesBlocksProvider.Factory$fun create(invokesConfigurationNames: InvokesConfigurationNames): DependenciesBlocksProvider</ID>
     <ID>UndocumentedPublicFunction:AbstractModuleCheckTask.kt$AbstractModuleCheckTask$@TaskAction fun run()</ID>
-    <ID>UndocumentedPublicFunction:AbstractPluginsBlock.kt$AbstractPluginsBlock$fun addStatement( parsedString: String, suppressed: List&lt;String> )</ID>
+    <ID>UndocumentedPublicFunction:AbstractPluginsBlock.kt$AbstractPluginsBlock$fun addStatement(parsedString: String, suppressed: List&lt;String>)</ID>
     <ID>UndocumentedPublicFunction:AbstractPluginsBlock.kt$PluginsBlockProvider$fun get(): PluginsBlock?</ID>
     <ID>UndocumentedPublicFunction:AbstractPluginsBlock.kt$PluginsBlockProvider.Factory$fun create(buildFile: File): PluginsBlockProvider</ID>
     <ID>UndocumentedPublicFunction:AbstractProjectDependencyFinding.kt$AbstractProjectDependencyFinding$abstract fun fromStringOrEmpty(): String</ID>
@@ -422,10 +411,6 @@
     <ID>UndocumentedPublicFunction:AndroidStylesFiles.kt$suspend fun ProjectContext.androidStylesFilesForSourceSetName( sourceSetName: SourceSetName ): Set&lt;AndroidStylesFile></ID>
     <ID>UndocumentedPublicFunction:AndroidStylesParser.kt$AndroidStylesParser$fun parseFile(file: File): Set&lt;UnqualifiedAndroidResourceReferenceName></ID>
     <ID>UndocumentedPublicFunction:AnvilFactoryRule.kt$AnvilFactoryRule$@Suppress("ComplexMethod") suspend fun parse(findingName: FindingName, project: McProject): List&lt;CouldUseAnvilFinding></ID>
-    <ID>UndocumentedPublicFunction:AnvilGraph.kt$AnvilGraph$suspend fun all(): List&lt;Map&lt;AnvilScopeName, AnvilScopedDeclarations>></ID>
-    <ID>UndocumentedPublicFunction:AnvilGraph.kt$AnvilGraph$suspend fun get( sourceSetName: SourceSetName ): Map&lt;AnvilScopeName, AnvilScopedDeclarations></ID>
-    <ID>UndocumentedPublicFunction:AnvilGraph.kt$AnvilGraph$suspend fun mergedScopeNames(): List&lt;AnvilScopeName></ID>
-    <ID>UndocumentedPublicFunction:AnvilGraph.kt$suspend fun ProjectContext.anvilGraph(): AnvilGraph</ID>
     <ID>UndocumentedPublicFunction:AnvilScopeContributions.kt$suspend fun ProjectContext.anvilScopeContributions(): AnvilScopeContributions</ID>
     <ID>UndocumentedPublicFunction:AnvilScopeDependencies.kt$AnvilScopeDependencies$suspend fun get(sourceSetName: SourceSetName): List&lt;ProjectDependency></ID>
     <ID>UndocumentedPublicFunction:AnvilScopeDependencies.kt$suspend fun ProjectContext.anvilScopeDependencies(): AnvilScopeDependencies</ID>
@@ -454,7 +439,7 @@
     <ID>UndocumentedPublicFunction:Declarations.kt$Declarations$suspend fun get( sourceSetName: SourceSetName, includeUpstream: Boolean, packageNameOrNull: PackageName? = null ): LazySet&lt;DeclaredName></ID>
     <ID>UndocumentedPublicFunction:Declarations.kt$suspend fun ProjectContext.declarations(): Declarations</ID>
     <ID>UndocumentedPublicFunction:Declarations.kt$suspend fun ProjectDependency.declarations( projectCache: ProjectCache, packageNameOrNull: PackageName? = null ): LazySet&lt;DeclaredName></ID>
-    <ID>UndocumentedPublicFunction:DeclarationsProvider.kt$DeclarationsProvider$suspend fun get( sourceSetName: SourceSetName, packageName: PackageName ): LazySet&lt;DeclaredName></ID>
+    <ID>UndocumentedPublicFunction:DeclarationsProvider.kt$DeclarationsProvider$suspend fun get(sourceSetName: SourceSetName, packageName: PackageName): LazySet&lt;DeclaredName></ID>
     <ID>UndocumentedPublicFunction:DeclarationsProvider.kt$DeclarationsProvider$suspend fun getWithUpstream( sourceSetName: SourceSetName, packageNameOrNull: PackageName? = null ): LazySet&lt;DeclaredName></ID>
     <ID>UndocumentedPublicFunction:DeclaredName.kt$QualifiedDeclaredName$open fun asReferenceName(language: CompatibleLanguage): ReferenceName</ID>
     <ID>UndocumentedPublicFunction:Deletable.kt$Deletable$suspend fun delete(): Boolean</ID>
@@ -477,14 +462,12 @@
     <ID>UndocumentedPublicFunction:Depths.kt$ProjectDepth$suspend fun fullTree(sourceSetName: SourceSetName = this.sourceSetName): Set&lt;ProjectDepth></ID>
     <ID>UndocumentedPublicFunction:Depths.kt$suspend fun McProject.depthForSourceSetName(sourceSetName: SourceSetName): ProjectDepth</ID>
     <ID>UndocumentedPublicFunction:Depths.kt$suspend fun McProject.depths(): Depths</ID>
-    <ID>UndocumentedPublicFunction:DynamicTests.kt$DynamicTests$fun &lt;T : Any> Iterable&lt;() -> T>.dynamic( testName: String, test: (T) -> Unit ): List&lt;DynamicTest></ID>
     <ID>UndocumentedPublicFunction:ExternalDependencies.kt$ExternalDependencies$fun add(dependency: ExternalDependency)</ID>
     <ID>UndocumentedPublicFunction:ExternalDependencies.kt$ExternalDependencies$fun main(): Set&lt;ExternalDependency></ID>
     <ID>UndocumentedPublicFunction:ExternalDependencies.kt$ExternalDependencies$fun private(): Set&lt;ExternalDependency></ID>
     <ID>UndocumentedPublicFunction:ExternalDependencies.kt$ExternalDependencies$fun public(): Set&lt;ExternalDependency></ID>
     <ID>UndocumentedPublicFunction:ExternalDependencies.kt$ExternalDependencies$fun remove(dependency: ExternalDependency)</ID>
     <ID>UndocumentedPublicFunction:ExternalDependencies.kt$ExternalDependencies$operator fun get(sourceSetName: SourceSetName): Set&lt;ExternalDependency></ID>
-    <ID>UndocumentedPublicFunction:ExternalDependencyDeclarationVisitor.kt$ExternalDependencyDeclarationVisitor$@Suppress("ReturnCount", "MaxLineLength") fun find(expression: KtCallExpression): Boolean</ID>
     <ID>UndocumentedPublicFunction:FancyShould.kt$FancyShould$infix fun &lt;T, U : T> T.shouldBe(expected: U?)</ID>
     <ID>UndocumentedPublicFunction:FancyShould.kt$FancyShould$infix fun File.shouldHaveText(expected: String)</ID>
     <ID>UndocumentedPublicFunction:FancyShould.kt$FancyShould$infix fun String.shouldBe(expected: String)</ID>
@@ -510,24 +493,16 @@
     <ID>UndocumentedPublicFunction:JavaParserNodeResolver.kt$JavaParserNodeResolver$suspend fun fqNameOrNull( node: ClassOrInterfaceType, packageName: String, directImports: Collection&lt;String>, wildcardImports: Collection&lt;String> ): FqName?</ID>
     <ID>UndocumentedPublicFunction:JvmFileProvider.kt$JvmFileProvider$suspend fun getOrNull(file: File): JvmFile?</ID>
     <ID>UndocumentedPublicFunction:JvmFileProvider.kt$JvmFileProvider.Factory$fun create(project: McProject, sourceSetName: SourceSetName): JvmFileProvider</ID>
-    <ID>UndocumentedPublicFunction:JvmFiles.kt$JvmFiles$suspend fun get(sourceSetName: SourceSetName): Flow&lt;JvmFile></ID>
-    <ID>UndocumentedPublicFunction:JvmFiles.kt$suspend fun ProjectContext.jvmFiles(): JvmFiles</ID>
-    <ID>UndocumentedPublicFunction:JvmFiles.kt$suspend fun ProjectContext.jvmFilesForSourceSetName( sourceSetName: SourceSetName ): Flow&lt;JvmFile></ID>
-    <ID>UndocumentedPublicFunction:JvmPlatformPluginFactory.kt$JvmPlatformPluginFactory$fun create( gradleProject: GradleProject, hasTestFixturesPlugin: Boolean ): JvmPlatformPlugin</ID>
+    <ID>UndocumentedPublicFunction:JvmPlatformPluginFactory.kt$JvmPlatformPluginFactory$fun create(gradleProject: GradleProject, hasTestFixturesPlugin: Boolean): JvmPlatformPlugin</ID>
     <ID>UndocumentedPublicFunction:JvmPlatformPluginFactory.kt$fun GradleProject.getKotlinExtensionOrNull(): KotlinProjectExtension?</ID>
-    <ID>UndocumentedPublicFunction:JvmSourceFiles.kt$JvmSourceFiles$suspend fun get(sourceSetName: SourceSetName): Set&lt;File></ID>
-    <ID>UndocumentedPublicFunction:JvmSourceFiles.kt$suspend fun ProjectContext.jvmSourceFiles(): JvmSourceFiles</ID>
-    <ID>UndocumentedPublicFunction:JvmSourceFiles.kt$suspend fun ProjectContext.jvmSourcesForSourceSetName( sourceSetName: SourceSetName ): Set&lt;File></ID>
-    <ID>UndocumentedPublicFunction:JvmSourceSetsParser.kt$JvmSourceSetsParser$fun parse( parsedConfigurations: Configurations, gradleProject: GradleProject ): SourceSets</ID>
+    <ID>UndocumentedPublicFunction:JvmSourceSetsParser.kt$JvmSourceSetsParser$fun parse(parsedConfigurations: Configurations, gradleProject: GradleProject): SourceSets</ID>
     <ID>UndocumentedPublicFunction:KaptDependencies.kt$KaptDependencies$suspend fun all(): List&lt;ConfiguredDependency></ID>
     <ID>UndocumentedPublicFunction:KaptDependencies.kt$KaptDependencies$suspend fun get(configurationName: ConfigurationName): Set&lt;ConfiguredDependency></ID>
     <ID>UndocumentedPublicFunction:KaptDependencies.kt$suspend fun ProjectContext.kaptDependencies(): KaptDependencies</ID>
     <ID>UndocumentedPublicFunction:KaptDependencies.kt$suspend fun ProjectContext.kaptDependenciesForConfig( configurationName: ConfigurationName ): Set&lt;ConfiguredDependency></ID>
     <ID>UndocumentedPublicFunction:KaptMatcher.kt$KaptMatcher$fun toCodeGeneratorBinding(): AnnotationProcessor</ID>
-    <ID>UndocumentedPublicFunction:KotlinDependenciesBlockParser.kt$KotlinDependenciesBlockParser$@Suppress("ReturnCount") suspend fun parse( invokesConfigurationNames: InvokesConfigurationNames ): List&lt;KotlinDependenciesBlock></ID>
     <ID>UndocumentedPublicFunction:KotlinDependenciesBlockParser.kt$inline fun blockExpressionRecursiveVisitor( crossinline block: KtTreeVisitorVoid.(expression: KtBlockExpression) -> Unit ): KtTreeVisitorVoid</ID>
     <ID>UndocumentedPublicFunction:KotlinDependenciesBlockParser.kt$inline fun literalStringTemplateRecursiveVisitor( crossinline block: KtTreeVisitorVoid.(entry: KtLiteralStringTemplateEntry) -> Unit ): KtTreeVisitorVoid</ID>
-    <ID>UndocumentedPublicFunction:KotlinPluginsBlockParser.kt$KotlinPluginsBlockParser$@Suppress("ReturnCount") fun parse(file: KtFile): KotlinPluginsBlock?</ID>
     <ID>UndocumentedPublicFunction:LayoutFiles.kt$LayoutFiles$suspend fun all(): Map&lt;SourceSetName, Set&lt;LayoutFile>></ID>
     <ID>UndocumentedPublicFunction:LayoutFiles.kt$LayoutFiles$suspend fun get(sourceSetName: SourceSetName): Set&lt;LayoutFile></ID>
     <ID>UndocumentedPublicFunction:LayoutFiles.kt$suspend fun ProjectContext.layoutFiles(): LayoutFiles</ID>
@@ -535,22 +510,22 @@
     <ID>UndocumentedPublicFunction:LazyDeferred.kt$LazyDeferred$suspend fun await(): T</ID>
     <ID>UndocumentedPublicFunction:LazyDeferred.kt$fun &lt;T> (suspend () -> T).asLazyDeferred(): LazyDeferred&lt;T></ID>
     <ID>UndocumentedPublicFunction:LazyDeferred.kt$suspend fun &lt;T> Collection&lt;LazyDeferred&lt;T>>.awaitAll(): List&lt;T></ID>
-    <ID>UndocumentedPublicFunction:LazySet.kt$@JvmName("lazySetSingle") fun &lt;E> lazySet( priority: Priority = MEDIUM, dataSource: suspend () -> E ): LazySet&lt;E></ID>
+    <ID>UndocumentedPublicFunction:LazySet.kt$@JvmName("lazySetSingle") fun &lt;E> lazySet(priority: Priority = MEDIUM, dataSource: suspend () -> E): LazySet&lt;E></ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$LazySet$fun snapshot(): State&lt;E></ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$LazySet$suspend fun contains(element: Any?): Boolean</ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$LazySet$suspend fun isEmpty(): Boolean</ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$LazySet$suspend fun isNotEmpty(): Boolean</ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$LazySet.State$fun nextSources(): Sequence&lt;List&lt;DataSource&lt;E>>></ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> Collection&lt;LazySetComponent&lt;E>>.toLazySet(): LazySet&lt;E></ID>
-    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> Flow&lt;E>.asDataSource( priority: Priority = MEDIUM ): DataSource&lt;E></ID>
-    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> Flow&lt;E>.toLazySet( priority: Priority = MEDIUM ): LazySet&lt;E></ID>
-    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> Lazy&lt;Set&lt;E>>.asDataSource( priority: Priority = MEDIUM ): DataSource&lt;E></ID>
-    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> LazyDeferred&lt;Set&lt;E>>.asDataSource( priority: Priority = MEDIUM ): DataSource&lt;E></ID>
-    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> dataSourceOf( vararg elements: E, priority: Priority = MEDIUM ): DataSource&lt;E></ID>
+    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> Flow&lt;E>.asDataSource(priority: Priority = MEDIUM): DataSource&lt;E></ID>
+    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> Flow&lt;E>.toLazySet(priority: Priority = MEDIUM): LazySet&lt;E></ID>
+    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> Lazy&lt;Set&lt;E>>.asDataSource(priority: Priority = MEDIUM): DataSource&lt;E></ID>
+    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> LazyDeferred&lt;Set&lt;E>>.asDataSource(priority: Priority = MEDIUM): DataSource&lt;E></ID>
+    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> dataSourceOf(vararg elements: E, priority: Priority = MEDIUM): DataSource&lt;E></ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> emptyLazySet(): LazySet&lt;E></ID>
-    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> lazySet( children: Collection&lt;LazySetComponent&lt;E>> ): LazySet&lt;E></ID>
-    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> lazySet( priority: Priority = MEDIUM, dataSource: suspend () -> Set&lt;E> ): LazySet&lt;E></ID>
-    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> lazySet( vararg children: LazySetComponent&lt;E> ): LazySet&lt;E></ID>
+    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> lazySet(children: Collection&lt;LazySetComponent&lt;E>>): LazySet&lt;E></ID>
+    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> lazySet(priority: Priority = MEDIUM, dataSource: suspend () -> Set&lt;E>): LazySet&lt;E></ID>
+    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> lazySet(vararg children: LazySetComponent&lt;E>): LazySet&lt;E></ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$suspend fun &lt;T : B, E : B, B> LazySet&lt;T>.containsAny(elements: Collection&lt;E>): Boolean</ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$suspend inline fun &lt;reified T : E, E> LazySet&lt;E>.getOrNull(element: E): T?</ID>
     <ID>UndocumentedPublicFunction:ManifestFiles.kt$ManifestFiles$suspend fun get(sourceSetName: SourceSetName): XmlFile.ManifestFile?</ID>
@@ -578,8 +553,8 @@
     <ID>UndocumentedPublicFunction:McSourceSet.kt$fun Collection&lt;McSourceSet>.sortedByInheritance(): Sequence&lt;McSourceSet></ID>
     <ID>UndocumentedPublicFunction:McSourceSet.kt$fun Iterable&lt;McSourceSet>.names(): List&lt;SourceSetName></ID>
     <ID>UndocumentedPublicFunction:McSourceSet.kt$fun Sequence&lt;McSourceSet>.names(): Sequence&lt;SourceSetName></ID>
-    <ID>UndocumentedPublicFunction:McSourceSet.kt$fun SourceSetName.inheritsFrom( other: SourceSetName, hasSourceSets: HasSourceSets ): Boolean</ID>
-    <ID>UndocumentedPublicFunction:McSourceSet.kt$fun SourceSetName.withDownStream( hasSourceSets: HasSourceSets ): List&lt;SourceSetName></ID>
+    <ID>UndocumentedPublicFunction:McSourceSet.kt$fun SourceSetName.inheritsFrom(other: SourceSetName, hasSourceSets: HasSourceSets): Boolean</ID>
+    <ID>UndocumentedPublicFunction:McSourceSet.kt$fun SourceSetName.withDownStream(hasSourceSets: HasSourceSets): List&lt;SourceSetName></ID>
     <ID>UndocumentedPublicFunction:ModuleCheckExtension.kt$ModuleCheckExtension$fun checks(action: Action&lt;ChecksSettings>)</ID>
     <ID>UndocumentedPublicFunction:ModuleCheckExtension.kt$ModuleCheckExtension$fun sort(action: Action&lt;SortExtension>)</ID>
     <ID>UndocumentedPublicFunction:ModuleCheckRule.kt$ModuleCheckRule$fun shouldApply(settings: ModuleCheckSettings): Boolean</ID>
@@ -611,7 +586,7 @@
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$fun androidTest( path: String, androidPackage: String, config: McProjectBuilder&lt;AndroidTestPluginBuilder>.() -> Unit = {} ): McProject</ID>
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$fun javaProject( path: String, config: McProjectBuilder&lt;JavaLibraryPluginBuilder>.() -> Unit = {} ): McProject</ID>
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$fun kotlinProject( path: String, config: McProjectBuilder&lt;KotlinJvmPluginBuilder>.() -> Unit = {} ): McProject</ID>
-    <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$fun simpleProject( buildFileText: String? = null, path: String = ":lib" ): McProject</ID>
+    <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$fun simpleProject(buildFileText: String? = null, path: String = ":lib"): McProject</ID>
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$operator fun File.invoke(text: () -> String)</ID>
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$suspend fun &lt;P : PlatformPluginBuilder&lt;*>> McProject.toProjectBuilder(): McProjectBuilder&lt;P></ID>
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$suspend fun PlatformPlugin.toBuilder(): PlatformPluginBuilder&lt;*></ID>
@@ -634,7 +609,7 @@
     <ID>UndocumentedPublicFunction:ProjectProvider.kt$ProjectProvider$fun getAll(): List&lt;McProject></ID>
     <ID>UndocumentedPublicFunction:ProjectProvider.kt$ProjectRoot$fun get(): File</ID>
     <ID>UndocumentedPublicFunction:ProjectProvider.kt$fun ProjectProvider.toTypeSafeProjectPathResolver(): TypeSafeProjectPathResolver</ID>
-    <ID>UndocumentedPublicFunction:PsiElementResolver.kt$PsiElementResolver$suspend fun declaredNameOrNull( token: PsiElement ): QualifiedDeclaredName?</ID>
+    <ID>UndocumentedPublicFunction:PsiElementResolver.kt$PsiElementResolver$suspend fun declaredNameOrNull(token: PsiElement): QualifiedDeclaredName?</ID>
     <ID>UndocumentedPublicFunction:PublicDependencies.kt$suspend fun ProjectContext.publicDependencies(): PublicDependencies</ID>
     <ID>UndocumentedPublicFunction:RealAndroidPlatformPluginFactory.kt$RealAndroidPlatformPluginFactory.Type.Companion$fun from(extension: AndroidCommonExtension): Type&lt;*></ID>
     <ID>UndocumentedPublicFunction:RealJavaFile.kt$fun &lt;T> T.canBeImported(): Boolean</ID>
@@ -659,9 +634,8 @@
     <ID>UndocumentedPublicFunction:ResolvedDeclaredNames.kt$suspend fun ProjectContext.resolvedDeclaredNames(): ResolvedDeclaredNames</ID>
     <ID>UndocumentedPublicFunction:SafeXmlParser.kt$SafeXmlParser$fun parse(file: File): Node?</ID>
     <ID>UndocumentedPublicFunction:SafeXmlParser.kt$SafeXmlParser$fun parse(text: String): Node?</ID>
-    <ID>UndocumentedPublicFunction:SarifReportFactory.kt$SarifReportFactory$fun create( findingResults: List&lt;Finding.FindingResult>, rules: List&lt;ModuleCheckRule&lt;*>> ): String</ID>
+    <ID>UndocumentedPublicFunction:SarifReportFactory.kt$SarifReportFactory$fun create(findingResults: List&lt;Finding.FindingResult>, rules: List&lt;ModuleCheckRule&lt;*>>): String</ID>
     <ID>UndocumentedPublicFunction:SortDependenciesFinding.kt$fun sortedDependenciesFileText( block: DependenciesBlock, fileText: String, comparator: Comparator&lt;String> ): String</ID>
-    <ID>UndocumentedPublicFunction:SortPluginsFinding.kt$fun PluginsBlock.sortedPlugins( comparator: Comparator&lt;PluginDeclaration> ): String</ID>
     <ID>UndocumentedPublicFunction:SourceSetBuilder.kt$@Suppress("LongParameterList") fun McProjectBuilder&lt;*>.maybeAddSourceSet( name: SourceSetName, jvmFiles: Set&lt;File> = emptySet(), resourceFiles: Set&lt;File> = emptySet(), layoutFiles: Set&lt;File> = emptySet(), classpath: Set&lt;File> = setOf( File(CharRange::class.java.protectionDomain.codeSource.location.path) ), upstreamNames: List&lt;SourceSetName> = emptyList(), downstreamNames: List&lt;SourceSetName> = emptyList(), jvmTarget: JvmTarget = JVM_11 ): SourceSetBuilder</ID>
     <ID>UndocumentedPublicFunction:SourceSetBuilder.kt$SourceSetBuilder$fun toSourceSet( dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess, projectPath: StringProjectPath ): McSourceSet</ID>
     <ID>UndocumentedPublicFunction:SourceSetBuilder.kt$SourceSetBuilder.Companion$suspend fun fromSourceSet(sourceSet: McSourceSet): SourceSetBuilder</ID>
@@ -693,9 +667,6 @@
     <ID>UndocumentedPublicFunction:UnusedDependencies.kt$UnusedDependencies$suspend fun get(configurationName: ConfigurationName): Set&lt;UnusedDependency></ID>
     <ID>UndocumentedPublicFunction:UnusedDependencies.kt$suspend fun ProjectContext.unusedDependencies(): UnusedDependencies</ID>
     <ID>UndocumentedPublicFunction:UnusedDependency.kt$UnusedDependency$fun toFinding(findingName: FindingName): UnusedDependencyFinding</ID>
-    <ID>UndocumentedPublicFunction:UnusedKaptProcessors.kt$UnusedKaptProcessors$suspend fun all(): List&lt;UnusedKaptProcessorFinding></ID>
-    <ID>UndocumentedPublicFunction:UnusedKaptProcessors.kt$UnusedKaptProcessors$suspend fun get( configurationName: ConfigurationName ): Set&lt;UnusedKaptProcessorFinding></ID>
-    <ID>UndocumentedPublicFunction:UnusedKaptProcessors.kt$suspend fun ProjectContext.unusedKaptProcessors(): UnusedKaptProcessors</ID>
     <ID>UndocumentedPublicFunction:androidPsi.kt$fun PsiElement.androidBlocks(): List&lt;KtCallExpression></ID>
     <ID>UndocumentedPublicFunction:androidPsi.kt$fun PsiElement.buildFeaturesBlocks(): List&lt;KtCallExpression></ID>
     <ID>UndocumentedPublicFunction:androidPsi.kt$fun PsiElement.inBuildscript(): Boolean</ID>
@@ -732,14 +703,10 @@
     <ID>UndocumentedPublicFunction:ktCallableDeclaration.kt$fun KtProperty.isJvmField(): Boolean</ID>
     <ID>UndocumentedPublicFunction:ktCallableDeclaration.kt$fun KtPropertyAccessor.jvmNameOrNull(): String?</ID>
     <ID>UndocumentedPublicFunction:lazy.kt$fun &lt;T> unsafeLazy(initializer: () -> T): Lazy&lt;T></ID>
-    <ID>UndocumentedPublicFunction:list.kt$fun List&lt;String>.positionOf( path: String, configuration: ConfigurationName ): Position?</ID>
-    <ID>UndocumentedPublicFunction:mcProject.kt$suspend fun ConfiguredDependency.positionIn( dependentProject: McProject ): Position?</ID>
-    <ID>UndocumentedPublicFunction:mcProject.kt$suspend fun ConfiguredDependency.statementOrNullIn( dependentProject: McProject ): DependencyDeclaration?</ID>
     <ID>UndocumentedPublicFunction:modify.kt$fun HasDependencyDeclarations.removeDependencyWithComment( statement: BuildFileStatement, fixLabel: String, configuredDependency: ConfiguredDependency? = null )</ID>
     <ID>UndocumentedPublicFunction:modify.kt$fun HasDependencyDeclarations.removeDependencyWithDelete( statement: BuildFileStatement, configuredDependency: ConfiguredDependency? = null )</ID>
     <ID>UndocumentedPublicFunction:project.kt$fun Boolean?.orPropertyDefault( gradleProject: GradleProject, key: String, defaultValue: Boolean ): Boolean</ID>
     <ID>UndocumentedPublicFunction:project.kt$fun FileTreeWalk.files(): Sequence&lt;File></ID>
-    <ID>UndocumentedPublicFunction:psiElement.kt$@Suppress("NestedBlockDepth", "ComplexMethod") suspend fun PsiElement.declaredNameOrNull( project: McProject, sourceSetName: SourceSetName ): QualifiedDeclaredName?</ID>
     <ID>UndocumentedPublicFunction:psiElement.kt$fun KotlinType.asReferenceName(): ReferenceName</ID>
     <ID>UndocumentedPublicFunction:psiElement.kt$fun KotlinType?.requireReferenceName(): ReferenceName</ID>
     <ID>UndocumentedPublicFunction:psiElement.kt$fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean</ID>
@@ -751,42 +718,28 @@
     <ID>UndocumentedPublicFunction:psiElement.kt$fun KtPropertyDelegate.returnType(bindingContext: BindingContext): KotlinType?</ID>
     <ID>UndocumentedPublicFunction:psiElement.kt$fun PsiElement.file(): File</ID>
     <ID>UndocumentedPublicFunction:psiElement.kt$fun PsiElement.isQualifiedPropertyOrCallExpression(): Boolean</ID>
-    <ID>UndocumentedPublicFunction:psiElement.kt$inline fun &lt;reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): List&lt;T></ID>
     <ID>UndocumentedPublicFunction:psiElement.kt$inline fun &lt;reified T : PsiElement> PsiElement.isPartOf(): Boolean</ID>
     <ID>UndocumentedPublicFunction:psiElement.kt$suspend fun McProject.canResolveDeclaredName( declaredName: QualifiedDeclaredName, sourceSetName: SourceSetName ): Boolean</ID>
     <ID>UndocumentedPublicFunction:psiElement.kt$suspend fun McProject.canResolveReferenceName( declaredName: ReferenceName, sourceSetName: SourceSetName ): Boolean</ID>
-    <ID>UndocumentedPublicFunction:reflection.kt$inline fun &lt;reified T : Any, reified R : Any> T.getPrivateFieldByName(name: String): R</ID>
-    <ID>UndocumentedPublicFunction:reflection.kt$inline fun &lt;reified T : Any> KClass&lt;T>.sealedSubclassConstructorsRecursive(): Sequence&lt;KFunction&lt;T>></ID>
-    <ID>UndocumentedPublicFunction:reflection.kt$inline fun &lt;reified T : Any> KClass&lt;T>.sealedSubclassInstances(vararg args: Any?): Sequence&lt;T></ID>
     <ID>UndocumentedPublicFunction:regex.kt$inline fun String.replaceDestructured( regex: Regex, crossinline transform: ( group1: String, group2: String, group3: String, group4: String, group5: String ) -> String ): String</ID>
     <ID>UndocumentedPublicFunction:regex.kt$inline fun String.replaceDestructured( regex: Regex, crossinline transform: (group1: String) -> String ): String</ID>
     <ID>UndocumentedPublicFunction:regex.kt$inline fun String.replaceDestructured( regex: Regex, crossinline transform: (group1: String, group2: String) -> String ): String</ID>
     <ID>UndocumentedPublicFunction:regex.kt$inline fun String.replaceDestructured( regex: Regex, crossinline transform: (group1: String, group2: String, group3: String) -> String ): String</ID>
     <ID>UndocumentedPublicFunction:regex.kt$inline fun String.replaceDestructured( regex: Regex, crossinline transform: (group1: String, group2: String, group3: String, group4: String) -> String ): String</ID>
+    <ID>UndocumentedPublicFunction:settings.gradle.kts$fun printCiEnvironment()</ID>
     <ID>UndocumentedPublicFunction:sourceSetName.kt$fun SourceSetName.apiConfig(): ConfigurationName</ID>
     <ID>UndocumentedPublicFunction:sourceSetName.kt$fun SourceSetName.implementationConfig(): ConfigurationName</ID>
     <ID>UndocumentedPublicFunction:sourceSetName.kt$fun SourceSetName.javaConfigurationNames(): List&lt;ConfigurationName></ID>
-    <ID>UndocumentedPublicFunction:string.kt$IndentScope$fun append(c: Char)</ID>
-    <ID>UndocumentedPublicFunction:string.kt$IndentScope$fun append(str: String)</ID>
-    <ID>UndocumentedPublicFunction:string.kt$IndentScope$fun appendLine(c: Char)</ID>
-    <ID>UndocumentedPublicFunction:string.kt$IndentScope$fun appendLine(str: String)</ID>
-    <ID>UndocumentedPublicFunction:string.kt$fun String.capitalize( locale: Locale = Locale.US ): String</ID>
-    <ID>UndocumentedPublicFunction:string.kt$fun String.decapitalize( locale: Locale = Locale.US ): String</ID>
-    <ID>UndocumentedPublicFunction:string.kt$fun String.findMinimumIndent( absoluteMinimum: String = " " ): String</ID>
     <ID>UndocumentedPublicFunction:string.kt$fun String.positionOfStatement(statement: String): Position</ID>
-    <ID>UndocumentedPublicFunction:string.kt$fun String.prefixIfNot(prefix: String): String</ID>
     <ID>UndocumentedPublicFunction:string.kt$fun String.remove(vararg patterns: Regex): String</ID>
     <ID>UndocumentedPublicFunction:string.kt$fun String.remove(vararg strings: String): String</ID>
-    <ID>UndocumentedPublicFunction:string.kt$fun String.suffixIfNot(suffix: String): String</ID>
     <ID>UndocumentedPublicFunction:uses.kt$suspend fun McProject.uses(dependency: ConfiguredDependency): Boolean</ID>
     <ID>UndocumentedPublicFunction:util.kt$fun KtElement.requireSimpleName(): SimpleName</ID>
     <ID>UndocumentedPublicFunction:util.kt$fun KtValueArgumentList.getByNameOrIndex(index: Int, name: String): KtValueArgument?</ID>
     <ID>UndocumentedPublicFunction:visitor.kt$fun &lt;T : Node> T.simpleName(): String</ID>
     <ID>UndocumentedPublicFunction:visitor.kt$fun &lt;T, R : ResolvedDeclaration> T.fqNameOrNull( typeDeclarations: List&lt;TypeDeclaration&lt;*>> ): String?</ID>
-    <ID>UndocumentedPublicFunction:visitor.kt$fun Node.childrenRecursive(): Sequence&lt;Node></ID>
     <ID>UndocumentedPublicFunction:visitor.kt$inline fun &lt;reified T : Node> Node.getChildOfType(): T?</ID>
     <ID>UndocumentedPublicFunction:visitor.kt$inline fun &lt;reified T : Node> Node.getChildrenOfType(): List&lt;T></ID>
-    <ID>UndocumentedPublicFunction:visitor.kt$inline fun &lt;reified T : Node> Node.getChildrenOfTypeRecursive(): Sequence&lt;T></ID>
     <ID>UndocumentedPublicFunction:visitor.kt$inline fun &lt;reified T : Node> Node.requireChildOfType(): T</ID>
     <ID>UndocumentedPublicProperty:AbstractDependenciesBlock.kt$AbstractDependenciesBlock.Companion$val testFixturesRegex: Regex = "testFixtures\\([\\s\\S]*\\)".toRegex()</ID>
     <ID>UndocumentedPublicProperty:AbstractModuleCheckTask.kt$AbstractModuleCheckTask$@get:Input val settings: ModuleCheckExtension = project.extensions .getByType(ModuleCheckExtension::class.java)</ID>
@@ -802,9 +755,6 @@
     <ID>UndocumentedPublicProperty:AnvilGradlePlugin.kt$AnvilScopeNameEntry$val name: ReferenceName</ID>
     <ID>UndocumentedPublicProperty:AnvilGradlePlugin.kt$RawAnvilAnnotatedType$val anvilScopeNameEntry: AnvilScopeNameEntry</ID>
     <ID>UndocumentedPublicProperty:AnvilGradlePlugin.kt$RawAnvilAnnotatedType$val declaredName: QualifiedDeclaredName</ID>
-    <ID>UndocumentedPublicProperty:AnvilGraph.kt$AnvilScopedDeclarations$val contributions: MutableSet&lt;QualifiedDeclaredName></ID>
-    <ID>UndocumentedPublicProperty:AnvilGraph.kt$AnvilScopedDeclarations$val merges: MutableSet&lt;QualifiedDeclaredName></ID>
-    <ID>UndocumentedPublicProperty:AnvilGraph.kt$AnvilScopedDeclarations$val scopeName: AnvilScopeName</ID>
     <ID>UndocumentedPublicProperty:Assignment.kt$Assignment$val fullText: String</ID>
     <ID>UndocumentedPublicProperty:Assignment.kt$Assignment$val propertyFullName: String</ID>
     <ID>UndocumentedPublicProperty:Assignment.kt$Assignment$val value: String</ID>
@@ -818,7 +768,6 @@
     <ID>UndocumentedPublicProperty:ConfigBuilder.kt$ConfigBuilder$val downstream: MutableList&lt;ConfigurationName></ID>
     <ID>UndocumentedPublicProperty:ConfigBuilder.kt$ConfigBuilder$val name: ConfigurationName</ID>
     <ID>UndocumentedPublicProperty:ConfigBuilder.kt$ConfigBuilder$val upstream: MutableList&lt;ConfigurationName></ID>
-    <ID>UndocumentedPublicProperty:ConfigurationName.kt$ConfigurationName.Companion$val mainConfigurations: List&lt;String> = listOf( api.value, compile.value, compileOnly.value, compileOnlyApi.value, implementation.value, kapt.value, // kotlinCompilerPluginClasspath is a special case, // since the main config is suffixed with "Main" kotlinCompileClasspath.value, runtime.value, runtimeOnly.value ) /** * The order of this list matters. CompileOnlyApi must be before `api` or * `extractSourceSetName` below will match the wrong suffix. * * @since 0.12.0 */ .sortedByDescending { it.length }</ID>
     <ID>UndocumentedPublicProperty:ConfiguredDependency.kt$ConfiguredDependency$val configurationName: ConfigurationName</ID>
     <ID>UndocumentedPublicProperty:CoroutineScopeModule.kt$DispatcherProviderComponent$val dispatcherProvider: DispatcherProvider</ID>
     <ID>UndocumentedPublicProperty:DependencyDeclaration.kt$DependencyDeclaration$val configName: ConfigurationName</ID>
@@ -1053,7 +1002,6 @@
     <ID>UndocumentedPublicProperty:SarifReport.kt$Level$val value: String</ID>
     <ID>UndocumentedPublicProperty:SarifReport.kt$ResultKind$val value: String</ID>
     <ID>UndocumentedPublicProperty:SortDependenciesFinding.kt$SortDependenciesFinding.Companion$val NAME: FindingName = FindingName("sort-dependencies")</ID>
-    <ID>UndocumentedPublicProperty:SortPluginsFinding.kt$SortPluginsFinding$val comparator: Comparator&lt;PluginDeclaration></ID>
     <ID>UndocumentedPublicProperty:SortPluginsFinding.kt$SortPluginsFinding.Companion$val NAME: FindingName = FindingName("sort-plugins")</ID>
     <ID>UndocumentedPublicProperty:SourceSetBuilder.kt$SourceSetBuilder$val downstream: MutableList&lt;SourceSetName></ID>
     <ID>UndocumentedPublicProperty:SourceSetBuilder.kt$SourceSetBuilder$val upstream: MutableList&lt;SourceSetName></ID>
@@ -1102,8 +1050,5 @@
     <ID>UndocumentedPublicProperty:XmlFile.kt$XmlFile.Companion$val REFERENCE_PREFIXES: List&lt;String> = listOf( "@anim/", "@animator/", "@arrays/", "@color/", "@dimen/", "@drawable/", "@font/", "@layout/", "@menu/", "@mipmap/", "@raw/", "@string/", "@style/" )</ID>
     <ID>UndocumentedPublicProperty:XmlFile.kt$XmlFile.LayoutFile$val name: String = file.nameWithoutExtension</ID>
     <ID>UndocumentedPublicProperty:XmlFile.kt$XmlFile.ManifestFile$val basePackage: PackageName? by lazy { AndroidManifestParser().parse(file)["package"]?.let { PackageName(it) } }</ID>
-    <ID>UnnecessaryAbstractClass:ModuleCheckBuildTask.kt$ModuleCheckBuildCodeGeneratorTask$ModuleCheckBuildCodeGeneratorTask</ID>
-    <ID>UnnecessaryAbstractClass:ModuleCheckBuildTask.kt$ModuleCheckBuildTask$ModuleCheckBuildTask</ID>
-    <ID>UnusedPrivateMember:RealConfigurationsFactory.kt$RealConfigurationsFactory.Companion$private const val TEST_FIXTURES_PLUGIN_ID = "java-test-fixtures"</ID>
   </CurrentIssues>
 </SmellBaseline>

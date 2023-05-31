@@ -91,7 +91,8 @@ inline fun <reified T : PsiElement> PsiElement.childrenOfTypeDepthFirst(): Seque
  * @param predicate stops visiting child nodes of the given node once this predicate returns false
  * @return a sequence of child nodes of this [PsiElement] in depth-first order that
  *   satisfy the given [predicate]. The sequence starts with the first child node of this
- *   [PsiElement], followed by the first child node of the first child node, and so on.*/
+ *   [PsiElement], followed by the first child node of the first child node, and so on.
+ */
 inline fun PsiElement.childrenDepthFirst(
   crossinline predicate: (PsiElement) -> Boolean
 ): Sequence<PsiElement> = Traversals.depthFirstTraversal(this) { children.filter(predicate) }
