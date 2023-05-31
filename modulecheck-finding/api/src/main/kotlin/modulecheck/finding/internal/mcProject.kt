@@ -22,6 +22,16 @@ import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
 import modulecheck.project.McProject
 
+/**
+ * Tries to find the corresponding
+ * [DependencyDeclaration][modulecheck.parsing.gradle.dsl.DependencyDeclaration] for
+ * this [ConfiguredDependency][modulecheck.model.dependency.ConfiguredDependency]
+ * in a given project's build file.
+ *
+ * @param dependentProject The project whose build file to search in.
+ * @receiver The [ConfiguredDependency] to find the statement for.
+ * @return The corresponding [DependencyDeclaration] if found, null otherwise.
+ */
 suspend fun ConfiguredDependency.statementOrNullIn(
   dependentProject: McProject
 ): DependencyDeclaration? {
@@ -40,6 +50,15 @@ suspend fun ConfiguredDependency.statementOrNullIn(
     ?.firstOrNull()
 }
 
+/**
+ * Finds the position of this
+ * [ConfiguredDependency][modulecheck.model.dependency.ConfiguredDependency]
+ * in the given project's build file.
+ *
+ * @param dependentProject The project whose build file to search in.
+ * @receiver The [ConfiguredDependency] to find the position for.
+ * @return The [Position] of the dependency in the build file if found, null otherwise.
+ */
 suspend fun ConfiguredDependency.positionIn(dependentProject: McProject): Position? {
 
   val statement = statementOrNullIn(dependentProject) ?: return null

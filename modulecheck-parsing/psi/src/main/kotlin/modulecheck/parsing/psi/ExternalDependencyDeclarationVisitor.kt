@@ -51,9 +51,7 @@ class ExternalDependencyDeclarationVisitor(
 
   private fun String?.orWildcard() = this ?: "*"
 
-  /**
-   * @return true if the declaration is contained within this call expression
-   */
+  /** @return true if the declaration is contained within this call expression */
   @Suppress("MaxLineLength")
   fun find(expression: KtCallExpression): Boolean {
     var found = false

@@ -269,7 +269,7 @@ rickBusarow-hermit-jUnit4 = { module = "com.rickbusarow.hermit:hermit-junit4", v
 rickBusarow-hermit-jUnit5 = { module = "com.rickbusarow.hermit:hermit-junit5", version.ref = "rickBusarow-hermit" }
 rickBusarow-hermit-mockk = { module = "com.rickbusarow.hermit:hermit-mockk", version.ref = "rickBusarow-hermit" }
 
-rickBusarow-ktrules = { module = "com.rickbusarow.ktrules:ktrules-48", version.ref = "rickBusarow-ktrules" }
+rickBusarow-ktrules = { module = "com.rickbusarow.ktrules:ktrules", version.ref = "rickBusarow-ktrules" }
 
 scabbard = "gradle.plugin.dev.arunkumar:scabbard-gradle-plugin:0.5.0"
 

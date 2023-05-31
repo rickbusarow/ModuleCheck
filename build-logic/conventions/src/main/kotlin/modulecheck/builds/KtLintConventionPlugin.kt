@@ -21,6 +21,7 @@ import org.jmailen.gradle.kotlinter.KotlinterExtension
 import org.jmailen.gradle.kotlinter.tasks.ConfigurableKtLintTask
 import org.jmailen.gradle.kotlinter.tasks.FormatTask
 import org.jmailen.gradle.kotlinter.tasks.LintTask
+import kotlin.text.RegexOption.MULTILINE
 
 abstract class KtLintConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
@@ -40,6 +41,28 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
 
     if (target.isRealRootProject()) {
       target.addRootProjectDelegateTasks()
+
+      target.tasks.register("updateEditorConfigVersion") { task ->
+
+        val file = target.file(".editorconfig")
+
+        task.doLast {
+          val oldText = file.readText()
+
+          val reg = """^(ktlint_kt-rules_project_version *?= *?)\S*$""".toRegex(MULTILINE)
+
+          val newText = oldText.replace(reg, "$1$VERSION_NAME")
+
+          if (newText != oldText) {
+            file.writeText(newText)
+          }
+        }
+      }
+    }
+
+    target.tasks.withType(ConfigurableKtLintTask::class.java).configureEach { task ->
+      task.source(target.buildFile)
+      task.dependsOn(":updateEditorConfigVersion")
     }
 
     target.tasks.named("lintKotlin") {

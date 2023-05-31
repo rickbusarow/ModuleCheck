@@ -41,14 +41,16 @@ abstract class DependencyGuardConventionPlugin : Plugin<Project> {
     val dependencyGuardDeleteBaselines = target.tasks.register(
       "dependencyGuardDeleteBaselines",
       Delete::class.java
-    ) { it.delete("dependencies") }
+    ) {
+      it.delete("dependencies")
+      it.mustRunAfter("dependencyGuardBaseline")
+    }
 
     target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME).configure {
       it.dependsOn("dependencyGuard")
     }
 
     target.tasks.named("dependencyGuardBaseline").configure {
-      it.dependsOn(dependencyGuardDeleteBaselines)
       it.finalizedBy(target.rootProject.tasks.matchingName("dependencyGuardAggregate"))
     }
     target.tasks.named("dependencyGuard").configure {

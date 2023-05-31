@@ -51,7 +51,8 @@ data class AnvilScopedDeclarations(
 /**
  * Represents a graph of Anvil scopes and their associated declarations.
  * @property project the [McProject] for which this graph is defined
- * @property delegate a cache that maps from [SourceSetName] to a map of [AnvilScopeName] to [AnvilScopedDeclarations]
+ * @property delegate a cache that maps from [SourceSetName]
+ *   to a map of [AnvilScopeName] to [AnvilScopedDeclarations]
  */
 data class AnvilGraph(
   private val project: McProject,
@@ -74,9 +75,7 @@ data class AnvilGraph(
 
   private val allAnnotations = mergeAnnotations + contributeAnnotations
 
-  /**
-   * @return the unique key of the Anvil graph within the project context
-   */
+  /** @return the unique key of the Anvil graph within the project context */
   override val key: ProjectContext.Key<AnvilGraph>
     get() = Key
 
@@ -221,9 +220,7 @@ data class AnvilGraph(
       .toMap()
   }
 
-  /**
-   * Companion object that acts as the key for [AnvilGraph] within a [ProjectContext].
-   */
+  /** Companion object that acts as the key for [AnvilGraph] within a [ProjectContext]. */
   companion object Key : ProjectContext.Key<AnvilGraph> {
     /**
      * Generates an [AnvilGraph] instance for the given project.

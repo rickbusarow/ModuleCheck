@@ -25,6 +25,13 @@ import org.junit.jupiter.api.DynamicTest
  */
 interface DynamicTests : ResetManager {
 
+  /**
+   * Creates a list of [DynamicTest] instances from a collection of test factory methods.
+   *
+   * @param testName The name of the test suite.
+   * @param test The function to run for each test instance.
+   * @return List of dynamic tests.
+   */
   fun <T : Any> Iterable<() -> T>.dynamic(testName: String, test: (T) -> Unit): List<DynamicTest> {
     return map { factory -> factory.invoke() }
       .map { subject ->
@@ -36,8 +43,13 @@ interface DynamicTests : ResetManager {
   }
 
   /**
-   * @return a collection of [DynamicTest], named after [testName]
-   *   for each test and executing the logic within [test]
+   * Creates a list of [DynamicTest] instances from a sequence of test subjects.
+   *
+   * The name of each test is determined by the provided [testName] function.
+   *
+   * @param testName A function that produces a name for each test based on the test subject.
+   * @param test The function to run for each test instance.
+   * @return List of dynamic tests.
    * @since 0.12.0
    */
   fun <T : Any> Sequence<T>.dynamic(
@@ -46,8 +58,13 @@ interface DynamicTests : ResetManager {
   ): List<DynamicTest> = toList().dynamic(testName, test)
 
   /**
-   * @return a collection of [DynamicTest], named after [testName]
-   *   for each test and executing the logic within [test]
+   * Creates a list of [DynamicTest] instances from a collection of test subjects.
+   *
+   * The name of each test is determined by the provided [testName] function.
+   *
+   * @param testName A function that produces a name for each test based on the test subject.
+   * @param test The function to run for each test instance.
+   * @return List of dynamic tests.
    * @since 0.12.0
    */
   fun <T : Any> Iterable<T>.dynamic(
