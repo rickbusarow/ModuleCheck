@@ -43,8 +43,7 @@ fun String.prefixIfNot(prefix: String): String =
  * @receiver The original String.
  * @return The string with the suffix added if not present.
  */
-fun String.suffixIfNot(suffix: String): String =
-  if (this.endsWith(suffix)) this else "$this$suffix"
+fun String.suffixIfNot(suffix: String): String = if (this.endsWith(suffix)) this else "$this$suffix"
 
 /**
  * Decapitalizes the first character of this [String] using the specified [locale].
@@ -53,9 +52,8 @@ fun String.suffixIfNot(suffix: String): String =
  * @receiver The original String.
  * @return The string with the first character decapitalized.
  */
-fun String.decapitalize(
-  locale: Locale = Locale.US
-): String = replaceFirstChar { it.lowercase(locale) }
+fun String.decapitalize(locale: Locale = Locale.US): String =
+  replaceFirstChar { it.lowercase(locale) }
 
 /**
  * Capitalizes the first character of this [String] using the specified [locale].
@@ -64,9 +62,8 @@ fun String.decapitalize(
  * @receiver The original String.
  * @return The string with the first character capitalized.
  */
-fun String.capitalize(
-  locale: Locale = Locale.US
-): String = replaceFirstChar { it.uppercase(locale) }
+fun String.capitalize(locale: Locale = Locale.US): String =
+  replaceFirstChar { it.uppercase(locale) }
 
 /**
  * Finds and returns the minimum indentation for this [String], with an optional
@@ -77,9 +74,7 @@ fun String.capitalize(
  * @receiver The original String.
  * @return The minimum indentation of the string, or the absolute minimum if the minimum is less.
  */
-fun String.findMinimumIndent(
-  absoluteMinimum: String = "  "
-): String {
+fun String.findMinimumIndent(absoluteMinimum: String = "  "): String {
 
   if (contains("\t")) return "\t"
 
@@ -164,9 +159,7 @@ fun String.trimSegments(delimiter: String = "."): String {
  *
  * Doesn't preserve the original line endings.
  */
-fun CharSequence.mapLines(
-  transform: (String) -> CharSequence
-): String = lineSequence()
+fun CharSequence.mapLines(transform: (String) -> CharSequence): String = lineSequence()
   .joinToString("\n", transform = transform)
 
 /**
@@ -174,9 +167,7 @@ fun CharSequence.mapLines(
  *
  * Doesn't preserve the original line endings.
  */
-fun CharSequence.mapLinesIndexed(
-  transform: (Int, String) -> CharSequence
-): String = lineSequence()
+fun CharSequence.mapLinesIndexed(transform: (Int, String) -> CharSequence): String = lineSequence()
   .mapIndexed(transform)
   .joinToString("\n")
 
@@ -262,7 +253,4 @@ fun CharSequence.prependContinuationIndent(
 }
 
 /** `"$prefix$this$suffix"` */
-fun CharSequence.wrapIn(
-  prefix: String,
-  suffix: String = prefix
-): String = "$prefix$this$suffix"
+fun CharSequence.wrapIn(prefix: String, suffix: String = prefix): String = "$prefix$this$suffix"

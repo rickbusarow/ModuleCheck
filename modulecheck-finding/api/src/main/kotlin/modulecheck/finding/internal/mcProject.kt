@@ -40,9 +40,7 @@ suspend fun ConfiguredDependency.statementOrNullIn(
     ?.firstOrNull()
 }
 
-suspend fun ConfiguredDependency.positionIn(
-  dependentProject: McProject
-): Position? {
+suspend fun ConfiguredDependency.positionIn(dependentProject: McProject): Position? {
 
   val statement = statementOrNullIn(dependentProject) ?: return null
 

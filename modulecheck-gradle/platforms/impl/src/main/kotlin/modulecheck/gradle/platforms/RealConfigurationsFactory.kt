@@ -63,33 +63,31 @@ class RealConfigurationsFactory @Inject constructor(
     return Configurations(map)
   }
 
-  private fun projectDependencies(
-    configuration: GradleConfiguration
-  ): Set<ProjectDependency> = configuration.dependencies
-    .withType(GradleProjectDependency::class.java)
-    .mapToSet { gradleProjectDependency ->
+  private fun projectDependencies(configuration: GradleConfiguration): Set<ProjectDependency> =
+    configuration.dependencies
+      .withType(GradleProjectDependency::class.java)
+      .mapToSet { gradleProjectDependency ->
 
-      projectDependencyFactory.create(
-        configurationName = configuration.name.asConfigurationName(),
-        path = StringProjectPath(gradleProjectDependency.dependencyProject.path),
-        isTestFixture = gradleProjectDependency.isTestFixtures()
-      )
-    }
+        projectDependencyFactory.create(
+          configurationName = configuration.name.asConfigurationName(),
+          path = StringProjectPath(gradleProjectDependency.dependencyProject.path),
+          isTestFixture = gradleProjectDependency.isTestFixtures()
+        )
+      }
 
-  private fun externalDependencies(
-    configuration: GradleConfiguration
-  ): Set<ExternalDependency> = configuration.dependencies
-    .filterIsInstance<ExternalModuleDependency>()
-    .mapToSet { dep ->
+  private fun externalDependencies(configuration: GradleConfiguration): Set<ExternalDependency> =
+    configuration.dependencies
+      .filterIsInstance<ExternalModuleDependency>()
+      .mapToSet { dep ->
 
-      externalDependencyFactory.create(
-        configurationName = configuration.name.asConfigurationName(),
-        group = dep.group,
-        moduleName = dep.name,
-        version = dep.version,
-        isTestFixture = dep.isTestFixtures()
-      )
-    }
+        externalDependencyFactory.create(
+          configurationName = configuration.name.asConfigurationName(),
+          group = dep.group,
+          moduleName = dep.name,
+          version = dep.version,
+          isTestFixture = dep.isTestFixtures()
+        )
+      }
 
   private fun ModuleDependency.isTestFixtures() = requestedCapabilities
     .filterIsInstance<ProjectDerivedCapability>()

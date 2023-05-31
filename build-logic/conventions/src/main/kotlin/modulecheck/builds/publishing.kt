@@ -116,11 +116,7 @@ private fun Project.versionIsSnapshot(): Boolean {
   return VERSION_NAME.endsWith("-SNAPSHOT")
 }
 
-private fun Project.configurePublish(
-  artifactId: String,
-  pomDescription: String,
-  groupId: String
-) {
+private fun Project.configurePublish(artifactId: String, pomDescription: String, groupId: String) {
 
   version = VERSION_NAME
 
@@ -246,10 +242,7 @@ private fun Project.configureArtifactory() {
   }
 }
 
-private fun Project.registerCoordinatesStringsCheckTask(
-  groupId: String,
-  artifactId: String
-) {
+private fun Project.registerCoordinatesStringsCheckTask(groupId: String, artifactId: String) {
 
   val checkTask = tasks.registerOnce(
     "checkMavenCoordinatesStrings",

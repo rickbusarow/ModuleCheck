@@ -72,39 +72,38 @@ private fun HasDependencyDeclarations.prependStatement(
   buildFile.writeText(buildFileText.replace(oldStatement, combinedStatement))
 }
 
-private fun HasDependencyDeclarations.addStatement(
-  newDeclaration: DependencyDeclaration
-) = synchronized(buildFile) {
+private fun HasDependencyDeclarations.addStatement(newDeclaration: DependencyDeclaration) =
+  synchronized(buildFile) {
 
-  val newStatement = newDeclaration.statementWithSurroundingText
+    val newStatement = newDeclaration.statementWithSurroundingText
 
-  val buildFileText = buildFile.readText()
+    val buildFileText = buildFile.readText()
 
-  runBlocking {
-    val oldBlockOrNull = buildFileParser.dependenciesBlocks().lastOrNull()
+    runBlocking {
+      val oldBlockOrNull = buildFileParser.dependenciesBlocks().lastOrNull()
 
-    if (oldBlockOrNull != null) {
+      if (oldBlockOrNull != null) {
 
-      val newBlock = oldBlockOrNull.fullText
-        .replaceDestructured("""([\s\S]*)}(\s*)""".toRegex()) { group1, group2 ->
+        val newBlock = oldBlockOrNull.fullText
+          .replaceDestructured("""([\s\S]*)}(\s*)""".toRegex()) { group1, group2 ->
 
-          val prefix = group1.trim(' ')
-            .suffixIfNot("\n")
+            val prefix = group1.trim(' ')
+              .suffixIfNot("\n")
 
-          "$prefix$newStatement}$group2"
-        }
+            "$prefix$newStatement}$group2"
+          }
 
-      buildFile.writeText(buildFileText.replace(oldBlockOrNull.fullText, newBlock))
-    } else {
+        buildFile.writeText(buildFileText.replace(oldBlockOrNull.fullText, newBlock))
+      } else {
 
-      val newBlock = "dependencies {\n${newStatement.suffixIfNot("\n")}}"
-        .prefixIfNot("\n\n")
-      val newText = buildFileText + newBlock
+        val newBlock = "dependencies {\n${newStatement.suffixIfNot("\n")}}"
+          .prefixIfNot("\n\n")
+        val newText = buildFileText + newBlock
 
-      buildFile.writeText(newText)
+        buildFile.writeText(newText)
+      }
     }
   }
-}
 
 fun HasDependencyDeclarations.removeDependencyWithComment(
   statement: BuildFileStatement,

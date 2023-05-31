@@ -30,8 +30,7 @@ internal class PsiTreePrinter(
 
   companion object {
 
-    internal fun <T : PsiElement> T.printEverything(
-      whitespaceChar: Char = ' '
-    ): T = apply { PsiTreePrinter(whitespaceChar).printTreeString(this) }
+    internal fun <T : PsiElement> T.printEverything(whitespaceChar: Char = ' '): T =
+      apply { PsiTreePrinter(whitespaceChar).printTreeString(this) }
   }
 }

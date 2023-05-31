@@ -77,20 +77,14 @@ sealed class Trace(
    */
   abstract fun asString(): String
 
-  internal fun child(
-    tags: Iterable<Any>,
-    args: Iterable<Any>
-  ): Trace = Child(
+  internal fun child(tags: Iterable<Any>, args: Iterable<Any>): Trace = Child(
     parent = this,
     depth = depth + 1,
     tags = tags.traceStrings(),
     args = args.traceStrings()
   )
 
-  internal fun child(
-    vararg tags: Any,
-    args: Iterable<Any>
-  ): Trace = Child(
+  internal fun child(vararg tags: Any, args: Iterable<Any>): Trace = Child(
     parent = this,
     depth = depth + 1,
     tags = tags.traceStrings(),
@@ -209,10 +203,8 @@ suspend fun <T> HasTraceTags.traced(
  * @since 0.12.0
  * @throws IllegalArgumentException if the [coroutineContext] does not have a [Trace]
  */
-suspend fun <T> HasTraceTags.traced(
-  args: Iterable<Any>,
-  block: suspend CoroutineScope.() -> T
-): T = tracedInternal(tags, args, block)
+suspend fun <T> HasTraceTags.traced(args: Iterable<Any>, block: suspend CoroutineScope.() -> T): T =
+  tracedInternal(tags, args, block)
 
 /**
  * Creates a [Trace] child node from inside a [HasTraceTags] implementation.
@@ -225,10 +217,8 @@ suspend fun <T> HasTraceTags.traced(
  * @since 0.12.0
  * @throws IllegalArgumentException if the [coroutineContext] does not have a [Trace]
  */
-suspend fun <T> HasTraceTags.traced(
-  vararg args: Any,
-  block: suspend CoroutineScope.() -> T
-): T = tracedInternal(tags, args.toList(), block)
+suspend fun <T> HasTraceTags.traced(vararg args: Any, block: suspend CoroutineScope.() -> T): T =
+  tracedInternal(tags, args.toList(), block)
 
 private suspend fun <T> tracedInternal(
   tags: Iterable<Any>,

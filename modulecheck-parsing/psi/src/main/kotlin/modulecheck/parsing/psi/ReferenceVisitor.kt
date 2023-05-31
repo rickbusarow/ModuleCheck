@@ -131,34 +131,32 @@ class ReferenceVisitor : KtTreeVisitorVoid() {
     }
   }
 
-  private fun List<PsiElement>.parseTypeReferences(): Set<PsiElement> =
-    flatMap { psiElement ->
-      psiElement.parseTypeReferences()
-    }
-      .toSet()
+  private fun List<PsiElement>.parseTypeReferences(): Set<PsiElement> = flatMap { psiElement ->
+    psiElement.parseTypeReferences()
+  }
+    .toSet()
 
-  private fun PsiElement.parseTypeReferences(): Set<PsiElement> =
-    listOfNotNull(
-      when (this) {
-        is KtTypeReference -> this
-        is KtNameReferenceExpression -> this
-        is KtDotQualifiedExpression -> this
-        else -> null
-      }
+  private fun PsiElement.parseTypeReferences(): Set<PsiElement> = listOfNotNull(
+    when (this) {
+      is KtTypeReference -> this
+      is KtNameReferenceExpression -> this
+      is KtDotQualifiedExpression -> this
+      else -> null
+    }
+  )
+    .plus(
+      childrenOfTypeBreadthFirst<KtTypeReference>()
+        .filterNot { it.isFunctionalExpression() }
     )
-      .plus(
-        childrenOfTypeBreadthFirst<KtTypeReference>()
-          .filterNot { it.isFunctionalExpression() }
-      )
-      .plus(
-        childrenOfTypeBreadthFirst<KtNameReferenceExpression>()
-          .filterNot { it.isFunctionalExpression() }
-      )
-      .plus(
-        childrenOfTypeBreadthFirst<KtDotQualifiedExpression>()
-          .filterNot { it.isFunctionalExpression() }
-      )
-      .toSet()
+    .plus(
+      childrenOfTypeBreadthFirst<KtNameReferenceExpression>()
+        .filterNot { it.isFunctionalExpression() }
+    )
+    .plus(
+      childrenOfTypeBreadthFirst<KtDotQualifiedExpression>()
+        .filterNot { it.isFunctionalExpression() }
+    )
+    .toSet()
 
   override fun visitQualifiedExpression(expression: KtQualifiedExpression) {
     super.visitQualifiedExpression(expression)

@@ -55,18 +55,14 @@ fun String.replaceOrFail(regex: Regex, replacement: String): String {
   )
 }
 
-private fun assertChanged(
-  oldString: String,
-  newString: String,
-  token: Any,
-  replacement: String
-) = newString.also { new ->
-  trimmedAssert {
+private fun assertChanged(oldString: String, newString: String, token: Any, replacement: String) =
+  newString.also { new ->
+    trimmedAssert {
 
-    @Suppress("MagicNumber")
-    val tokenName = (if (token is Regex) "regex" else "oldValue").padStart(9)
+      @Suppress("MagicNumber")
+      val tokenName = (if (token is Regex) "regex" else "oldValue").padStart(9)
 
-    """
+      """
       |String replacement did not change the original string.
       |
       |     $tokenName: $token
@@ -76,6 +72,6 @@ private fun assertChanged(
       |$oldString
       |____________________________________________________
     """.replaceIndentByMargin()
-      .asClue { new shouldNotBe oldString }
+        .asClue { new shouldNotBe oldString }
+    }
   }
-}

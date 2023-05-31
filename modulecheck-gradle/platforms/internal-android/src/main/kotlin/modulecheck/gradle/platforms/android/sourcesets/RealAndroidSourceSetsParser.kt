@@ -475,16 +475,15 @@ class RealAndroidSourceSetsParser private constructor(
     return upstreamNames.distinct()
   }
 
-  private fun BaseExtension.publishedVariants(): DomainObjectSet<out BaseVariant> =
-    when (this) {
-      is AndroidAppExtension -> applicationVariants
-      is AndroidLibraryExtension -> libraryVariants
-      is AndroidTestExtension -> applicationVariants
-      else -> error(
-        "Expected the extension to be `AppExtension`, `LibraryExtension`, or `TestExtension`, " +
-          "but it was `${this::class.qualifiedName}`."
-      )
-    }
+  private fun BaseExtension.publishedVariants(): DomainObjectSet<out BaseVariant> = when (this) {
+    is AndroidAppExtension -> applicationVariants
+    is AndroidLibraryExtension -> libraryVariants
+    is AndroidTestExtension -> applicationVariants
+    else -> error(
+      "Expected the extension to be `AppExtension`, `LibraryExtension`, or `TestExtension`, " +
+        "but it was `${this::class.qualifiedName}`."
+    )
+  }
 
   private fun GradleSourceSetName.VariantName.splitFlavorAndBuildType(): Pair<ConcatenatedFlavorsName, BuildTypeName> {
     buildTypeNames

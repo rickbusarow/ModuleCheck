@@ -79,9 +79,7 @@ sealed class ProjectPath : Identifier, Comparable<ProjectPath> {
       return TypeSafeProjectPath(value.typeSafeName())
     }
 
-    override fun pathValue(
-      typeSafeProjectPathResolver: TypeSafeProjectPathResolver
-    ): String = value
+    override fun pathValue(typeSafeProjectPathResolver: TypeSafeProjectPathResolver): String = value
   }
 
   class TypeSafeProjectPath(override val value: String) : ProjectPath() {

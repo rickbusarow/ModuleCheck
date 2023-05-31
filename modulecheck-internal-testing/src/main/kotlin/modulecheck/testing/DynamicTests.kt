@@ -25,10 +25,7 @@ import org.junit.jupiter.api.DynamicTest
  */
 interface DynamicTests : ResetManager {
 
-  fun <T : Any> Iterable<() -> T>.dynamic(
-    testName: String,
-    test: (T) -> Unit
-  ): List<DynamicTest> {
+  fun <T : Any> Iterable<() -> T>.dynamic(testName: String, test: (T) -> Unit): List<DynamicTest> {
     return map { factory -> factory.invoke() }
       .map { subject ->
 

@@ -118,10 +118,7 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
     return withLeases(pendingRequest) { action(requested) }
   }
 
-  private suspend fun <T> withLeases(
-    pendingRequest: PendingRequest,
-    action: suspend () -> T
-  ): T {
+  private suspend fun <T> withLeases(pendingRequest: PendingRequest, action: suspend () -> T): T {
     var completed = false
     var result: T? = null
 
@@ -170,10 +167,7 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
     return result as T
   }
 
-  private suspend fun addToQueue(
-    pendingRequest: PendingRequest,
-    sort: Boolean
-  ) {
+  private suspend fun addToQueue(pendingRequest: PendingRequest, sort: Boolean) {
     locksCacheLock.withLock {
       queue.value = queue.value
         .plus(pendingRequest)
@@ -185,9 +179,7 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
     }
   }
 
-  private fun maybeLockAll(
-    pendingRequest: PendingRequest
-  ): Boolean {
+  private fun maybeLockAll(pendingRequest: PendingRequest): Boolean {
 
     val allEnvironments = pendingRequest.dependencies
       .plus(pendingRequest.requester)

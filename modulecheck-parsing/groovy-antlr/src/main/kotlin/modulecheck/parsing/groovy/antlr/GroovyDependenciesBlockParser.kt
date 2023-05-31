@@ -45,10 +45,8 @@ class GroovyDependenciesBlockParser @Inject constructor(
 
     val rawModuleNameVisitor = object : GroovyParserBaseVisitor<String?>() {
 
-      override fun shouldVisitNextChild(
-        node: RuleNode?,
-        currentResult: String?
-      ): Boolean = currentResult == null
+      override fun shouldVisitNextChild(node: RuleNode?, currentResult: String?): Boolean =
+        currentResult == null
 
       override fun visitStringLiteral(ctx: StringLiteralContext?): String? {
         return ctx?.originalText()?.replace("""["']""".toRegex(), "")
@@ -59,10 +57,8 @@ class GroovyDependenciesBlockParser @Inject constructor(
     // such as for `exclude` or a `reason`
     val closureVisitor = object : GroovyParserBaseVisitor<String?>() {
 
-      override fun shouldVisitNextChild(
-        node: RuleNode?,
-        currentResult: String?
-      ): Boolean = currentResult == null
+      override fun shouldVisitNextChild(node: RuleNode?, currentResult: String?): Boolean =
+        currentResult == null
 
       override fun visitClosure(ctx: ClosureContext?): String? {
         return ctx?.originalText()
@@ -123,10 +119,8 @@ class GroovyDependenciesBlockParser @Inject constructor(
 
     val unknownArgumentVisitor = object : GroovyParserBaseVisitor<String?>() {
 
-      override fun shouldVisitNextChild(
-        node: RuleNode?,
-        currentResult: String?
-      ): Boolean = currentResult == null
+      override fun shouldVisitNextChild(node: RuleNode?, currentResult: String?): Boolean =
+        currentResult == null
 
       override fun visitExpressionListElement(ctx: ExpressionListElementContext): String {
         return ctx.originalText()

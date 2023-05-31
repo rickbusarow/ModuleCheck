@@ -21,10 +21,7 @@ import modulecheck.parsing.source.PackageName
 import modulecheck.utils.lazy.LazySet
 
 interface DeclarationsProvider {
-  suspend fun get(
-    sourceSetName: SourceSetName,
-    packageName: PackageName
-  ): LazySet<DeclaredName>
+  suspend fun get(sourceSetName: SourceSetName, packageName: PackageName): LazySet<DeclaredName>
 
   suspend fun getWithUpstream(
     sourceSetName: SourceSetName,

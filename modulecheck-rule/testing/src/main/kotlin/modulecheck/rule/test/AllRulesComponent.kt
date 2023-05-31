@@ -39,10 +39,7 @@ interface AllRulesComponent : RulesComponent {
   }
 
   companion object {
-    fun create(
-      settings: ModuleCheckSettings,
-      ruleFilter: RuleFilter
-    ): AllRulesComponent =
+    fun create(settings: ModuleCheckSettings, ruleFilter: RuleFilter): AllRulesComponent =
       DaggerAllRulesComponent.factory().create(settings, ruleFilter)
   }
 }

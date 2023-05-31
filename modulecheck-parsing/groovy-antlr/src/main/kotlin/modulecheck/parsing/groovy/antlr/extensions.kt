@@ -73,9 +73,7 @@ inline fun <reified T : Tree> Tree.childrenOfTypeDepthFirst(): Sequence<T> {
  *   the given [predicate]. The sequence starts with the first child node of this
  *   [Tree], followed by the first child node of the first child node, and so on.
  */
-fun Tree.childrenDepthFirst(
-  predicate: (Tree) -> Boolean
-): Sequence<Tree> =
+fun Tree.childrenDepthFirst(predicate: (Tree) -> Boolean): Sequence<Tree> =
   Traversals.depthFirstTraversal(this) { children().filter(predicate).toList() }
 
 /**
@@ -104,9 +102,7 @@ fun Tree.childrenBreadthFirst(): Sequence<Tree> {
  *   satisfy the given [predicate]. The sequence starts with all the child nodes of
  *   this [Tree], followed by all the child nodes of the first child node, and so on.
  */
-fun Tree.childrenBreadthFirst(
-  predicate: (Tree) -> Boolean
-): Sequence<Tree> =
+fun Tree.childrenBreadthFirst(predicate: (Tree) -> Boolean): Sequence<Tree> =
   Traversals.breadthFirstTraversal(this) { children().filter(predicate).toList() }
 
 /** @return a sequence of the children [Tree] nodes. */

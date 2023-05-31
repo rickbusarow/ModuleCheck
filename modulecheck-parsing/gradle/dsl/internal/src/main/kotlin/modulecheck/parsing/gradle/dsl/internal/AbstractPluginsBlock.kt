@@ -55,10 +55,7 @@ abstract class AbstractPluginsBlock(
     }
   }
 
-  fun addStatement(
-    parsedString: String,
-    suppressed: List<String>
-  ) {
+  fun addStatement(parsedString: String, suppressed: List<String>) {
     val originalString = getOriginalString(parsedString)
 
     val declaration = PluginDeclaration(

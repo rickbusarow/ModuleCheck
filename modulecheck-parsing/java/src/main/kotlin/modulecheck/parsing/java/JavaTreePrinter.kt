@@ -30,8 +30,7 @@ internal class JavaTreePrinter(
 
   companion object {
 
-    internal fun <T : Node> T.printEverything(
-      whitespaceChar: Char = ' '
-    ): T = apply { JavaTreePrinter(whitespaceChar).printTreeString(this) }
+    internal fun <T : Node> T.printEverything(whitespaceChar: Char = ' '): T =
+      apply { JavaTreePrinter(whitespaceChar).printTreeString(this) }
   }
 }

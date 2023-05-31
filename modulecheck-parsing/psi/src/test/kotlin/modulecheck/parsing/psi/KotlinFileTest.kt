@@ -535,10 +535,9 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
     }
 
   @Test
-  fun `explicit type of public property in internal class should not be api reference`() =
-    test {
-      val file = project.createFile(
-        """
+  fun `explicit type of public property in internal class should not be api reference`() = test {
+    val file = project.createFile(
+      """
       package com.subject
 
       import com.lib.Config
@@ -550,38 +549,37 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         )
       }
         """
-      )
+    )
 
-      file shouldBe {
-        references {
-          kotlin("com.lib.Config")
+    file shouldBe {
+      references {
+        kotlin("com.lib.Config")
 
-          kotlin("ConfigImpl")
-          kotlin("com.subject.ConfigImpl")
-          kotlin("com.subject.getString")
-          kotlin("com.subject.googleApiKey")
-          kotlin("getString")
-          kotlin("googleApiKey")
+        kotlin("ConfigImpl")
+        kotlin("com.subject.ConfigImpl")
+        kotlin("com.subject.getString")
+        kotlin("com.subject.googleApiKey")
+        kotlin("getString")
+        kotlin("googleApiKey")
 
-          unqualifiedAndroidResource("R.string.google_places_api_key")
-        }
-        apiReferences {
-        }
+        unqualifiedAndroidResource("R.string.google_places_api_key")
+      }
+      apiReferences {
+      }
 
-        declarations {
-          // TODO These should be declared, but with `internal` visibility somehow
-          //  https://github.com/RBusarow/ModuleCheck/issues/531
-          // agnostic("com.subject.SubjectClass")
-          // agnostic("com.subject.SubjectClass.config")
-        }
+      declarations {
+        // TODO These should be declared, but with `internal` visibility somehow
+        //  https://github.com/RBusarow/ModuleCheck/issues/531
+        // agnostic("com.subject.SubjectClass")
+        // agnostic("com.subject.SubjectClass.config")
       }
     }
+  }
 
   @Test
-  fun `implicit type of public property in public class should be api reference`() =
-    test {
-      val file = project.createFile(
-        """
+  fun `implicit type of public property in public class should be api reference`() = test {
+    val file = project.createFile(
+      """
       package com.subject
 
       import com.lib.Config
@@ -593,30 +591,30 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         )
       }
         """
-      )
+    )
 
-      file shouldBe {
-        references {
-          kotlin("com.lib.Config")
+    file shouldBe {
+      references {
+        kotlin("com.lib.Config")
 
-          kotlin("com.subject.getString")
-          kotlin("com.subject.googleApiKey")
-          kotlin("getString")
-          kotlin("googleApiKey")
+        kotlin("com.subject.getString")
+        kotlin("com.subject.googleApiKey")
+        kotlin("getString")
+        kotlin("googleApiKey")
 
-          unqualifiedAndroidResource("R.string.google_places_api_key")
-        }
-        apiReferences {
-          kotlin("com.lib.Config")
-        }
+        unqualifiedAndroidResource("R.string.google_places_api_key")
+      }
+      apiReferences {
+        kotlin("com.lib.Config")
+      }
 
-        declarations {
-          agnostic("com.subject.SubjectClass")
-          kotlin("com.subject.SubjectClass.config")
-          java("com.subject.SubjectClass.getConfig")
-        }
+      declarations {
+        agnostic("com.subject.SubjectClass")
+        kotlin("com.subject.SubjectClass.config")
+        java("com.subject.SubjectClass.getConfig")
       }
     }
+  }
 
   @Test
   fun `file with JvmName annotation should count as declaration`() = test {
@@ -761,44 +759,42 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
     }
 
   @Test
-  fun `is- prefix should not be removed if the following character is a lowercase letter`() =
-    test {
-      val file = project.createFile(
-        """
+  fun `is- prefix should not be removed if the following character is a lowercase letter`() = test {
+    val file = project.createFile(
+      """
         package com.subject
 
         var isaProperty = true
         """
-      )
+    )
 
-      file shouldBe {
-        declarations {
-          kotlin("com.subject.isaProperty")
-          java("com.subject.SourceKt.getIsaProperty")
-          java("com.subject.SourceKt.setIsaProperty")
-        }
+    file shouldBe {
+      declarations {
+        kotlin("com.subject.isaProperty")
+        java("com.subject.SourceKt.getIsaProperty")
+        java("com.subject.SourceKt.setIsaProperty")
       }
     }
+  }
 
   @Test
-  fun `is- should not be removed if it's not at the start of the name`() =
-    test {
-      val file = project.createFile(
-        """
+  fun `is- should not be removed if it's not at the start of the name`() = test {
+    val file = project.createFile(
+      """
         package com.subject
 
         var _isAProperty = true
         """
-      )
+    )
 
-      file shouldBe {
-        declarations {
-          kotlin("com.subject._isAProperty")
-          java("com.subject.SourceKt.get_isAProperty")
-          java("com.subject.SourceKt.set_isAProperty")
-        }
+    file shouldBe {
+      declarations {
+        kotlin("com.subject._isAProperty")
+        java("com.subject.SourceKt.get_isAProperty")
+        java("com.subject.SourceKt.set_isAProperty")
       }
     }
+  }
 
   @Test
   fun `file without JvmName should not have alternate names for type declarations`() = test {

@@ -269,10 +269,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   }
 
   @Suppress("LongParameterList")
-  private fun addJvmSource(
-    file: File,
-    sourceSetName: SourceSetName
-  ): File {
+  private fun addJvmSource(file: File, sourceSetName: SourceSetName): File {
 
     val oldSourceSet = maybeAddSourceSet(sourceSetName)
 

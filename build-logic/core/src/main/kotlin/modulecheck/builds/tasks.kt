@@ -23,10 +23,7 @@ import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
 
-fun TaskContainer.maybeNamed(
-  taskName: String,
-  configuration: Task.() -> Unit
-) {
+fun TaskContainer.maybeNamed(taskName: String, configuration: Task.() -> Unit) {
 
   if (names.contains(taskName)) {
     named(taskName, configuration)
@@ -38,9 +35,8 @@ fun TaskContainer.maybeNamed(
 }
 
 /** code golf for `matching { it.name == taskName }` */
-fun TaskContainer.matchingName(
-  taskName: String
-): TaskCollection<Task> = matching { it.name == taskName }
+fun TaskContainer.matchingName(taskName: String): TaskCollection<Task> =
+  matching { it.name == taskName }
 
 /**
  * adds all [objects] as dependencies to every task in the collection, inside a `configureEach { }`

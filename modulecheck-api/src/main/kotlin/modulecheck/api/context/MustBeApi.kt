@@ -235,9 +235,7 @@ private suspend fun McProject.mustBeApiIn(
  *   if the dependency should be `api`, or `-implementation` otherwise.
  * @since 0.12.0
  */
-suspend inline fun <reified T : ConfiguredDependency> T.maybeAsApi(
-  dependentProject: McProject
-): T {
+suspend inline fun <reified T : ConfiguredDependency> T.maybeAsApi(dependentProject: McProject): T {
   val mustBeApi = when (this as ConfiguredDependency) {
     is ExternalDependency -> false
     is ProjectDependency -> when {

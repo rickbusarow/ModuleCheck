@@ -46,6 +46,5 @@ data class JvmSourceFiles(
 }
 
 suspend fun ProjectContext.jvmSourceFiles(): JvmSourceFiles = get(JvmSourceFiles)
-suspend fun ProjectContext.jvmSourcesForSourceSetName(
-  sourceSetName: SourceSetName
-): Set<File> = jvmSourceFiles().get(sourceSetName)
+suspend fun ProjectContext.jvmSourcesForSourceSetName(sourceSetName: SourceSetName): Set<File> =
+  jvmSourceFiles().get(sourceSetName)

@@ -25,43 +25,41 @@ import kotlin.reflect.KProperty
 inline fun <reified T : Any> ObjectFactory.property(
   initialValue: T,
   crossinline onSet: (T) -> Unit
-): ReadWriteProperty<Any, T> =
-  object : ReadWriteProperty<Any, T> {
+): ReadWriteProperty<Any, T> = object : ReadWriteProperty<Any, T> {
 
-    val delegate = property(T::class.java).convention(initialValue)
+  val delegate = property(T::class.java).convention(initialValue)
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): T {
-      // return delegate.get()
-      return delegate.getFinal()
-    }
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-      // delegate.set(value)
-      delegate.setFinal(value)
-      onSet(value)
-    }
+  override fun getValue(thisRef: Any, property: KProperty<*>): T {
+    // return delegate.get()
+    return delegate.getFinal()
   }
+
+  override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
+    // delegate.set(value)
+    delegate.setFinal(value)
+    onSet(value)
+  }
+}
 
 inline fun <reified T> ObjectFactory.optionalProperty(
   crossinline onSet: (T) -> Unit
-): ReadWriteProperty<Any, T?> =
-  object : ReadWriteProperty<Any, T?> {
+): ReadWriteProperty<Any, T?> = object : ReadWriteProperty<Any, T?> {
 
-    val delegate = property(T::class.java)
+  val delegate = property(T::class.java)
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): T? {
-      return delegate.orNull
-      // return delegate.getFinal()
-    }
+  override fun getValue(thisRef: Any, property: KProperty<*>): T? {
+    return delegate.orNull
+    // return delegate.getFinal()
+  }
 
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
-      // delegate.set(value)
-      delegate.setFinal(value)
-      if (value != null) {
-        onSet(value)
-      }
+  override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
+    // delegate.set(value)
+    delegate.setFinal(value)
+    if (value != null) {
+      onSet(value)
     }
   }
+}
 
 fun <T> Property<T>.getOrNullFinal(): T? {
   finalizeValueOnRead()

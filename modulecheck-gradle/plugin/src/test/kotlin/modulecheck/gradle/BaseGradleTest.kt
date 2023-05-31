@@ -156,11 +156,7 @@ abstract class BaseGradleTest :
     rootSettings.appendText(includes)
   }
 
-  fun build(
-    vararg tasks: String,
-    withPluginClasspath: Boolean,
-    stacktrace: Boolean
-  ): BuildResult {
+  fun build(vararg tasks: String, withPluginClasspath: Boolean, stacktrace: Boolean): BuildResult {
     rootProject
     addIncludes()
     return gradleRunner

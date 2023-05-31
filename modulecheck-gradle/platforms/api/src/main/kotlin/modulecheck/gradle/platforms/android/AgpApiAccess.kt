@@ -93,9 +93,7 @@ class AgpApiAccess @Inject constructor() {
  * @return `true` if the project has a `com.android.*` plugin applied, else false
  * @since 0.12.0
  */
-fun GradleProject.isAndroid(
-  agpApiAccess: AgpApiAccess
-): Boolean {
+fun GradleProject.isAndroid(agpApiAccess: AgpApiAccess): Boolean {
 
   if (!agpApiAccess.androidIsInClasspath) return false
 

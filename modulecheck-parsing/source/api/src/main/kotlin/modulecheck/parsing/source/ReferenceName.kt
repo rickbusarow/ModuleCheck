@@ -111,18 +111,15 @@ sealed class ReferenceName(name: String) : McName, ResolvableMcName {
      * @return a basic [ReferenceName] for this name and language.
      * @since 0.12.0
      */
-    operator fun invoke(
-      name: String,
-      language: CompatibleLanguage
-    ): ReferenceName = ReferenceNameImpl(
-      name = name,
-      language = language
-    )
+    operator fun invoke(name: String, language: CompatibleLanguage): ReferenceName =
+      ReferenceNameImpl(
+        name = name,
+        language = language
+      )
 
     /** @return a basic [ReferenceName] for this name and language. */
-    fun String.asReferenceName(
-      language: CompatibleLanguage
-    ): ReferenceName = ReferenceName(this, language)
+    fun String.asReferenceName(language: CompatibleLanguage): ReferenceName =
+      ReferenceName(this, language)
   }
 }
 
