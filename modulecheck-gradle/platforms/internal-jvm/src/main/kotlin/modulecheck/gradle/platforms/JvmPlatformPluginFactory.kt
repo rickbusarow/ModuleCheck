@@ -26,10 +26,7 @@ class JvmPlatformPluginFactory @Inject constructor(
   private val sourceSetsFactory: SourceSetsFactory
 ) {
 
-  fun create(
-    gradleProject: GradleProject,
-    hasTestFixturesPlugin: Boolean
-  ): JvmPlatformPlugin {
+  fun create(gradleProject: GradleProject, hasTestFixturesPlugin: Boolean): JvmPlatformPlugin {
 
     val configurations = configurationsFactory.create(gradleProject)
 

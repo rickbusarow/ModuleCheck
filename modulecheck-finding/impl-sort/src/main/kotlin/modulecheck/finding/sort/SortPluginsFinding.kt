@@ -70,9 +70,7 @@ class SortPluginsFinding(
   }
 }
 
-fun PluginsBlock.sortedPlugins(
-  comparator: Comparator<PluginDeclaration>
-): String {
+fun PluginsBlock.sortedPlugins(comparator: Comparator<PluginDeclaration>): String {
   // Groovy parsing has the last whitespace at the end of the contentString block,
   // so it gets chopped off when doing the replacement.
   // Kotlin parsing includes it as part of the wrapping brackets,

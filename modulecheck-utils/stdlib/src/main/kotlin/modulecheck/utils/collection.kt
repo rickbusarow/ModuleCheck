@@ -105,9 +105,7 @@ fun <K : Any, T : Any> Map<K, Collection<T>>.allValues(): List<T> {
 }
 
 /** Creates a sequence of those [elements] which are not null */
-fun <T> sequenceOfNotNull(
-  vararg elements: T?
-): Sequence<T> = sequence {
+fun <T> sequenceOfNotNull(vararg elements: T?): Sequence<T> = sequence {
   elements.forEach { element ->
     if (element != null) yield(element)
   }

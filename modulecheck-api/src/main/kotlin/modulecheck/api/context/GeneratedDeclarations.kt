@@ -127,9 +127,8 @@ suspend fun ProjectContext.generatedDeclarations(): GeneratedDeclarations =
   get(GeneratedDeclarations)
 
 /** @return all [Generated] declarations for a given source set */
-suspend fun ProjectContext.generatedDeclarations(
-  sourceSetName: SourceSetName
-): LazySet<Generated> = generatedDeclarations().get(sourceSetName)
+suspend fun ProjectContext.generatedDeclarations(sourceSetName: SourceSetName): LazySet<Generated> =
+  generatedDeclarations().get(sourceSetName)
 
 /**
  * @return all [Generated] declarations from a given source set which

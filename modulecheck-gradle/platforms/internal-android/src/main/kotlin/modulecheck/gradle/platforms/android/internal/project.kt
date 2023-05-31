@@ -38,9 +38,7 @@ fun FileTreeWalk.files(): Sequence<File> = asSequence().filter { it.isFile }
  * @since 0.12.0
  */
 @UnsafeDirectAgpApiReference
-fun GradleProject.androidManifests(
-  agpApiAccess: AgpApiAccess
-): Map<SourceSetName, File>? =
+fun GradleProject.androidManifests(agpApiAccess: AgpApiAccess): Map<SourceSetName, File>? =
   agpApiAccess.ifSafeOrNull(this) {
     requireBaseExtension()
       .sourceSets

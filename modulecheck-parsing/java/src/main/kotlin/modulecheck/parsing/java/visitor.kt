@@ -25,9 +25,7 @@ import com.github.javaparser.resolution.Resolvable
 import com.github.javaparser.resolution.declarations.ResolvedDeclaration
 import modulecheck.utils.traversal.Traversals
 
-internal inline fun Node.visit(
-  crossinline predicate: (node: Node) -> Boolean
-): Sequence<Node> {
+internal inline fun Node.visit(crossinline predicate: (node: Node) -> Boolean): Sequence<Node> {
   return childrenBreadthFirst()
     .takeWhile { predicate(it) }
 }
@@ -93,9 +91,8 @@ inline fun <reified T : Node> Node.childrenOfTypeDepthFirst(): Sequence<T> {
  *   the given [predicate]. The sequence starts with the first child node of this
  *   [Node], followed by the first child node of the first child node, and so on.
  */
-inline fun Node.childrenDepthFirst(
-  crossinline predicate: (Node) -> Boolean
-): Sequence<Node> = Traversals.depthFirstTraversal(this) { childNodes.filter(predicate) }
+inline fun Node.childrenDepthFirst(crossinline predicate: (Node) -> Boolean): Sequence<Node> =
+  Traversals.depthFirstTraversal(this) { childNodes.filter(predicate) }
 
 /**
  * @return a sequence of child nodes of type [T] of this [Node] in breadth-first
@@ -123,9 +120,8 @@ fun Node.childrenBreadthFirst(): Sequence<Node> {
  *   satisfy the given [predicate]. The sequence starts with all the child nodes of
  *   this [Node], followed by all the child nodes of the first child node, and so on.
  */
-inline fun Node.childrenBreadthFirst(
-  crossinline predicate: (Node) -> Boolean
-): Sequence<Node> = Traversals.breadthFirstTraversal(this) { childNodes.filter(predicate) }
+inline fun Node.childrenBreadthFirst(crossinline predicate: (Node) -> Boolean): Sequence<Node> =
+  Traversals.breadthFirstTraversal(this) { childNodes.filter(predicate) }
 
 fun <T, R : ResolvedDeclaration> T.fqNameOrNull(
   typeDeclarations: List<TypeDeclaration<*>>

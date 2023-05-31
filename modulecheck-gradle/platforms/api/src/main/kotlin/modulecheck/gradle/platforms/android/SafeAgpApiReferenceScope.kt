@@ -76,9 +76,8 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
    *
    * @since 0.12.0
    */
-  fun requireCommonExtension(): AndroidCommonExtension =
-    gradleProject.extensions
-      .getByType(com.android.build.api.dsl.CommonExtension::class.java)
+  fun requireCommonExtension(): AndroidCommonExtension = gradleProject.extensions
+    .getByType(com.android.build.api.dsl.CommonExtension::class.java)
 
   /**
    * Direct access to the AGP [AndroidBaseExtension] type, only accessible
@@ -86,9 +85,8 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
    *
    * @since 0.12.0
    */
-  fun requireBaseExtension(): AndroidBaseExtension =
-    gradleProject.extensions
-      .getByType(AndroidBaseExtension::class.java)
+  fun requireBaseExtension(): AndroidBaseExtension = gradleProject.extensions
+    .getByType(AndroidBaseExtension::class.java)
 
   private fun hasAgpTestFixtures(): Boolean = gradleProject.extensions
     .findByType(AndroidTestedExtension::class.java)
@@ -106,9 +104,7 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
    * @return A new [AndroidPlatformPlugin] using this scope's [gradleProject]
    * @since 0.12.0
    */
-  fun AndroidPlatformPluginFactory.create(
-    hasTestFixturesPlugin: Boolean
-  ): AndroidPlatformPlugin {
+  fun AndroidPlatformPluginFactory.create(hasTestFixturesPlugin: Boolean): AndroidPlatformPlugin {
     return create(
       gradleProject = gradleProject,
       androidCommonExtension = requireCommonExtension(),

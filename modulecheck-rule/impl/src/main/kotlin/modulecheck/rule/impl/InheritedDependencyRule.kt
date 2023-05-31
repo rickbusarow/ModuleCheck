@@ -56,9 +56,7 @@ class InheritedDependencyRule @Inject constructor() :
     // For example, this function will return true for a `testImplementation` configured dependency
     // which is already declared in the main source set (such as with `api` or `implementation`).
     fun alreadyInLocalClasspath(cpd: ProjectDependency): Boolean {
-      fun dependencyPathsForSourceSet(
-        sourceSetName: SourceSetName
-      ): Set<SourceSetDependency> {
+      fun dependencyPathsForSourceSet(sourceSetName: SourceSetName): Set<SourceSetDependency> {
         return dependencyPathCache.getOrPut(sourceSetName) {
           project.projectDependencies[sourceSetName]
             .map { it.toSourceSetDependency() }

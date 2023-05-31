@@ -34,10 +34,7 @@ class KotlinDependenciesBlock internal constructor(
   projectDependency = projectDependency
 ) {
 
-  override fun originalLineMatchesParsed(
-    originalLine: String,
-    parsedString: String
-  ): Boolean {
+  override fun originalLineMatchesParsed(originalLine: String, parsedString: String): Boolean {
     return originalLine.contains(parsedString)
   }
 }

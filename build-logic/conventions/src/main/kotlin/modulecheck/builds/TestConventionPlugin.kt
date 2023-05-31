@@ -125,10 +125,12 @@ abstract class TestConventionPlugin : Plugin<Project> {
         // The path sort is just so that the shard composition is stable.  If the shard composition
         // isn't stable, the shard tasks may not be up-to-date and build caching in CI is broken.
         val sortedProjects = projectTestCosts.keys
-          .sortedWith(compareBy(
-            { projectTestCosts.getValue(it) },
-            { it.path }
-          ))
+          .sortedWith(
+            compareBy(
+              { projectTestCosts.getValue(it) },
+              { it.path }
+            )
+          )
 
         var shardIndex = 0
 

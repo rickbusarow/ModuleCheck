@@ -30,10 +30,8 @@ inline fun <reified T : Any> ResetManager.lazyResets(
   noinline valueFactory: () -> T
 ): LazyResets<T> = LazyResets(this, valueFactory)
 
-fun <T : Any> LazyResets(
-  resetManager: ResetManager,
-  valueFactory: () -> T
-): LazyResets<T> = LazyResetsImpl(resetManager, valueFactory)
+fun <T : Any> LazyResets(resetManager: ResetManager, valueFactory: () -> T): LazyResets<T> =
+  LazyResetsImpl(resetManager, valueFactory)
 
 internal class LazyResetsImpl<out T : Any>(
   private val resetManager: ResetManager,

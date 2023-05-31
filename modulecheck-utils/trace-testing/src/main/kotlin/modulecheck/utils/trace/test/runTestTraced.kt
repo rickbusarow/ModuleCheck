@@ -24,8 +24,6 @@ fun runTestTraced(action: suspend CoroutineScope.() -> Unit) {
 }
 
 @Suppress("UnusedReceiverParameter")
-inline fun <reified T> T.runTestTraced(
-  noinline action: suspend CoroutineScope.() -> Unit
-) {
+inline fun <reified T> T.runTestTraced(noinline action: suspend CoroutineScope.() -> Unit) {
   runBlocking(Trace.start(T::class), action)
 }

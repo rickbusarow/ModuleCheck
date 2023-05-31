@@ -18,10 +18,7 @@ package modulecheck.finding.internal
 import modulecheck.finding.Finding.Position
 import modulecheck.model.dependency.ConfigurationName
 
-fun List<String>.positionOf(
-  path: String,
-  configuration: ConfigurationName
-): Position? {
+fun List<String>.positionOf(path: String, configuration: ConfigurationName): Position? {
   val reg = """.*"?${configuration.value}"?\(project[(]?(?:path =\s*)"$path".*""".toRegex()
 
   val row = indexOfFirst { it.trim().matches(reg) }

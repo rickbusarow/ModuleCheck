@@ -165,9 +165,7 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
     )
   }
 
-  suspend fun parse(
-    string: String
-  ): KotlinPluginsBlock {
+  suspend fun parse(string: String): KotlinPluginsBlock {
     val file = NoContextPsiFileFactory()
       .createKotlin("build.gradle.kts", string.trimIndent())
 

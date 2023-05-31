@@ -150,9 +150,7 @@ data class ModuleDependencyDeclaration(
     }
   }
 
-  private fun String.addOrRemoveTestFixtures(
-    testFixtures: Boolean
-  ): String {
+  private fun String.addOrRemoveTestFixtures(testFixtures: Boolean): String {
 
     val escapedProjectAccessor = Regex.escape(projectAccessor.statementText)
     val regex = "testFixtures\\s*\\(\\s*$escapedProjectAccessor\\s*\\)".toRegex()
@@ -283,9 +281,7 @@ data class ExternalDependencyDeclaration(
     }
   }
 
-  private fun String.addOrRemoveTestFixtures(
-    testFixtures: Boolean
-  ): String {
+  private fun String.addOrRemoveTestFixtures(testFixtures: Boolean): String {
 
     val escapedCoords = Regex.escape(coordinates.name)
     val regex = "testFixtures\\s*\\(\\s*$escapedCoords\\s*\\)".toRegex()

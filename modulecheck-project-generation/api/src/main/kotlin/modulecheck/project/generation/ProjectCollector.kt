@@ -261,23 +261,21 @@ interface ProjectCollector {
     )
   }
 
-  fun simpleProject(
-    buildFileText: String? = null,
-    path: String = ":lib"
-  ): McProject = this.kotlinProject(path) {
-    if (buildFileText != null) {
-      buildFile.writeText(buildFileText)
-    }
+  fun simpleProject(buildFileText: String? = null, path: String = ":lib"): McProject =
+    this.kotlinProject(path) {
+      if (buildFileText != null) {
+        buildFile.writeText(buildFileText)
+      }
 
-    addKotlinSource(
-      """
+      addKotlinSource(
+        """
       package com.lib1
 
       class Lib1Class
       """,
-      SourceSetName.MAIN
-    )
-  }
+        SourceSetName.MAIN
+      )
+    }
 
   operator fun File.invoke(text: () -> String) {
     writeText(text().trimIndent())

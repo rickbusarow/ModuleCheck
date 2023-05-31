@@ -25,10 +25,7 @@ import java.io.File
 
 interface VersionsMatrixExtension {
 
-  fun Project.versionsMatrix(
-    sourceSetName: String,
-    packageName: String
-  ) {
+  fun Project.versionsMatrix(sourceSetName: String, packageName: String) {
     setUpGeneration(
       sourceSetName = sourceSetName,
       packageName = packageName
@@ -36,10 +33,7 @@ interface VersionsMatrixExtension {
   }
 }
 
-private fun Project.setUpGeneration(
-  sourceSetName: String,
-  packageName: String
-) {
+private fun Project.setUpGeneration(sourceSetName: String, packageName: String) {
 
   val generatedDirPath = buildDir.resolve(
     "generated/sources/versionsMatrix/kotlin/main"

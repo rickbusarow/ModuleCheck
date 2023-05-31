@@ -91,9 +91,7 @@ fun sortedDependenciesFileText(
   }
 }
 
-internal fun DependenciesBlock.sortedDeclarations(
-  comparator: Comparator<String>
-): String {
+internal fun DependenciesBlock.sortedDeclarations(comparator: Comparator<String>): String {
   return settings
     .grouped(comparator)
     .joinToString("\n\n") { declarations ->
@@ -113,15 +111,14 @@ internal fun DependenciesBlock.sortedDeclarations(
     .suffixIfNot("\n")
 }
 
-internal fun List<DependencyDeclaration>.grouped(
-  comparator: Comparator<String>
-) = groupBy { declaration ->
-  declaration
-    .declarationText
-    .split("[^a-zA-Z-]".toRegex())
-    .filterNot { it.isEmpty() }
-    .take(2)
-    .joinToString("-")
-}
-  .toSortedMap(comparator)
-  .map { it.value }
+internal fun List<DependencyDeclaration>.grouped(comparator: Comparator<String>) =
+  groupBy { declaration ->
+    declaration
+      .declarationText
+      .split("[^a-zA-Z-]".toRegex())
+      .filterNot { it.isEmpty() }
+      .take(2)
+      .joinToString("-")
+  }
+    .toSortedMap(comparator)
+    .map { it.value }

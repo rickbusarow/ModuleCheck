@@ -565,11 +565,10 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `public member property type with wildcard import should count as api reference`() =
-      test {
+    fun `public member property type with wildcard import should count as api reference`() = test {
 
-        val file = createFile(
-          """
+      val file = createFile(
+        """
           package com.subject;
 
           import com.lib1.*;
@@ -579,29 +578,28 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
             public Lib1Class lib1Class;
           }
           """
-        )
+      )
 
-        file shouldBe {
+      file shouldBe {
 
-          apiReferences {
-            java("com.lib1.Lib1Class")
-          }
-          references {
-            java("com.lib1.Lib1Class")
-          }
-          declarations {
-            agnostic("com.subject.ParsedClass")
-            agnostic("com.subject.ParsedClass.lib1Class")
-          }
+        apiReferences {
+          java("com.lib1.Lib1Class")
+        }
+        references {
+          java("com.lib1.Lib1Class")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.lib1Class")
         }
       }
+    }
 
     @Test
-    fun `public member property type with import should count as api reference`() =
-      test {
+    fun `public member property type with import should count as api reference`() = test {
 
-        val file = createFile(
-          """
+      val file = createFile(
+        """
           package com.subject;
 
           import com.lib1.Lib1Class;
@@ -611,22 +609,22 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
             public Lib1Class lib1Class;
           }
           """
-        )
+      )
 
-        file shouldBe {
+      file shouldBe {
 
-          apiReferences {
-            java("com.lib1.Lib1Class")
-          }
-          references {
-            java("com.lib1.Lib1Class")
-          }
-          declarations {
-            agnostic("com.subject.ParsedClass")
-            agnostic("com.subject.ParsedClass.lib1Class")
-          }
+        apiReferences {
+          java("com.lib1.Lib1Class")
+        }
+        references {
+          java("com.lib1.Lib1Class")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.lib1Class")
         }
       }
+    }
 
     @Test
     fun `a public member property with generic type with wildcard import should count as api reference`() =

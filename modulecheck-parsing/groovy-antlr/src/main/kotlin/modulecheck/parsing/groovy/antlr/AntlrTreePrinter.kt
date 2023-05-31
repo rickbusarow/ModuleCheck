@@ -34,8 +34,7 @@ internal class AntlrTreePrinter(
 
   companion object {
 
-    internal fun <T : Tree> T.printEverything(
-      whitespaceChar: Char = ' '
-    ): T = apply { AntlrTreePrinter(whitespaceChar).printTreeString(this) }
+    internal fun <T : Tree> T.printEverything(whitespaceChar: Char = ' '): T =
+      apply { AntlrTreePrinter(whitespaceChar).printTreeString(this) }
   }
 }

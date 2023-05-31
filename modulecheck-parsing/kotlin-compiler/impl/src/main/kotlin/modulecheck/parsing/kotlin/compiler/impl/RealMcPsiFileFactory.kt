@@ -83,8 +83,7 @@ class RealMcPsiFileFactory(
   /** Creates an instance of [McPsiFileFactory] */
   @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor() : McPsiFileFactory.Factory {
-    override fun create(
-      kotlinEnvironment: KotlinEnvironment
-    ): RealMcPsiFileFactory = RealMcPsiFileFactory(kotlinEnvironment)
+    override fun create(kotlinEnvironment: KotlinEnvironment): RealMcPsiFileFactory =
+      RealMcPsiFileFactory(kotlinEnvironment)
   }
 }

@@ -62,9 +62,8 @@ fun File.existsOrNull(): File? = takeIf { it.exists() }
  *   at least one child file which satisfies [childPredicate]
  * @since 0.10.0
  */
-fun File.isDirectoryWithFiles(
-  childPredicate: (File) -> Boolean = { it.exists() }
-): Boolean = !isFile && listFiles()?.any(childPredicate) == true
+fun File.isDirectoryWithFiles(childPredicate: (File) -> Boolean = { it.exists() }): Boolean =
+  !isFile && listFiles()?.any(childPredicate) == true
 
 /**
  * Returns true if the receiver [File] is `/build/` or `/.gradle/`, but

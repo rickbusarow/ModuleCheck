@@ -68,8 +68,7 @@ data class AndroidBasePackages(
   }
 }
 
-suspend fun ProjectContext.androidBasePackages(): AndroidBasePackages =
-  get(AndroidBasePackages)
+suspend fun ProjectContext.androidBasePackages(): AndroidBasePackages = get(AndroidBasePackages)
 
 suspend fun ProjectContext.androidBasePackagesForSourceSetName(
   sourceSetName: SourceSetName

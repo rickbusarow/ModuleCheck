@@ -44,9 +44,7 @@ data class UnusedKaptProcessors(
       .distinct()
   }
 
-  suspend fun get(
-    configurationName: ConfigurationName
-  ): Set<UnusedKaptProcessorFinding> {
+  suspend fun get(configurationName: ConfigurationName): Set<UnusedKaptProcessorFinding> {
 
     return delegate.getOrPut(configurationName) {
 
