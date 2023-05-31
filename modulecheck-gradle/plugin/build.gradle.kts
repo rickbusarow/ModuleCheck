@@ -14,6 +14,7 @@
  */
 
 import modulecheck.builds.ShardTestTask
+import modulecheck.builds.dependsOn
 import modulecheck.builds.shards.registerYamlShardsTasks
 
 plugins {
@@ -191,9 +192,7 @@ registerYamlShardsTasks(
   yamlFile = rootProject.file(".github/workflows/ci.yml")
 )
 
-tasks.matching { it.name == "check" }.configureEach {
-  dependsOn(integrationTestTask)
-}
+tasks.named("check").dependsOn(integrationTestTask)
 
 kotlin {
   val compilations = target.compilations

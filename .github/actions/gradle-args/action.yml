@@ -3,7 +3,7 @@ description: Sets gradle property and jvm arguments based on runner OS
 
 outputs:
   gradle-property-args:
-    description: "ex: -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false"
+    description: "ex: -Dfile.encoding=UTF-8"
     value: ${{ steps.set-args.outputs.gradle-property-args }}
   gradle-jvm-args:
     description: "ex: -Xmx5g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError"
@@ -17,15 +17,18 @@ runs:
       run: |
         runnerOS=$RUNNER_OS
 
+        # Set common JVM arguments
+        jvmArgs="-XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+
         case $runnerOS in
           macOS)
-            jvmArgs="-Xmx10g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError"
+            jvmArgs="-Xmx10g -XX:MaxMetaspaceSize=1g $jvmArgs"
             ;;
           Linux)
-            jvmArgs="-Xmx4g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError"
+            jvmArgs="-Xmx4g -XX:MaxMetaspaceSize=1g $jvmArgs"
             ;;
           Windows)
-            jvmArgs="-Xmx4g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError"
+            jvmArgs="-Xmx4g -XX:MaxMetaspaceSize=1g $jvmArgs"
             ;;
           *)
             echo "Unsupported runner OS: $runnerOS"
@@ -33,7 +36,7 @@ runs:
             ;;
         esac
 
-        propertyArgs="-Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=false -Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false"
+        propertyArgs="-Dorg.gradle.daemon=false -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false"
 
         echo "gradle-property-args=$propertyArgs" >> $GITHUB_OUTPUT
         echo "gradle-jvm-args=$jvmArgs" >> $GITHUB_OUTPUT
