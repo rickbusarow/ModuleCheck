@@ -109,8 +109,6 @@ jobs:
           task: checkVersionIsSnapshot
 
   detekt:
-    needs:
-      - build-all
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
@@ -130,8 +128,6 @@ jobs:
           sarif_file: build/reports/detekt/merged.sarif
 
   build-website:
-    needs:
-      - build-all
     runs-on: macos-latest
     steps:
       - name: check out
@@ -176,8 +172,6 @@ jobs:
         run: ./gradlew knitCheck
 
   unit-tests:
-    needs:
-      - build-all
     strategy:
       fail-fast: false
       matrix:
@@ -212,8 +206,6 @@ jobs:
           check_name: Unit Test Results - ${{runner.os}}
 
   integration-tests-ubuntu:
-    needs:
-      - build-all
     strategy:
       fail-fast: false
       ### <start-versions-matrix>
@@ -252,8 +244,6 @@ jobs:
           check_name: Integration Test Results
 
   integration-tests-windows:
-    needs:
-      - build-all
     strategy:
       fail-fast: false
       matrix:
