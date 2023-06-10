@@ -18,9 +18,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
 
 plugins {
   alias(libs.plugins.kotlin.jvm)
-  alias(libs.plugins.kotlinter)
   alias(libs.plugins.dependencyAnalysis)
   alias(libs.plugins.moduleCheck)
+  alias(libs.plugins.ktlint) apply false
 }
 
 moduleCheck {
@@ -31,7 +31,25 @@ moduleCheck {
 }
 
 val kotlinVersion = libs.versions.kotlin.get()
-allprojects {
+val ktlintPluginId = libs.plugins.ktlint.get().pluginId
+
+allprojects ap@{
+
+  val innerProject = this@ap
+
+  apply(plugin = ktlintPluginId)
+  dependencies {
+    "ktlint"(rootProject.libs.rickBusarow.ktrules)
+  }
+
+  if (innerProject != rootProject) {
+    rootProject.tasks.named("ktlintCheck") {
+      dependsOn(innerProject.tasks.named("ktlintCheck"))
+    }
+    rootProject.tasks.named("ktlintFormat") {
+      dependsOn(innerProject.tasks.named("ktlintFormat"))
+    }
+  }
 
   plugins.withType(KotlinBasePlugin::class.java).configureEach {
     extensions.configure(KotlinJvmProjectExtension::class.java) {

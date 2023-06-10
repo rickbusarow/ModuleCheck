@@ -31,9 +31,7 @@ buildconfig = "4.0.4"
 changeTracker = "0.7.4"
 classgraph = "4.8.160"
 clikt = "3.5.2"
-coil = "1.3.2"
 commons-io = "2.13.0"
-compileSdk = "30"
 dependencyAnalysis = "1.20.0"
 detekt = "1.23.0"
 diffplug-spotless = "6.19.0"
@@ -57,7 +55,6 @@ jackson = "2.13.0"
 java-diff-utils = "4.12"
 javaParser = "3.25.3"
 jetbrains-markdown = "0.4.1"
-jmailen-kotlinter = "3.15.0"
 johnrengelman-shadow = "8.1.1"
 kaml = "0.54.0"
 kct = "1.5.0"
@@ -71,13 +68,13 @@ kotlinx-datetime = "0.4.0"
 kotlinx-knit = "0.4.0"
 kotlinx-serialization = "1.5.1"
 ktlint-lib = "0.49.1"
-ktlint-plugin = "11.3.2"
 mavenPublish = "0.13.0"
 prettier = "2.8.4"
 prettier-plugin-sh = "0.12.8"
 rickBusarow-dependencySync = "0.11.2"
 rickBusarow-dispatch = "1.0.0-beta10"
 rickBusarow-doks = "0.1.4"
+rickBusarow-ktlint = "0.1.5"
 rickBusarow-ktrules = "1.1.2"
 rickBusarow-hermit = "0.9.6"
 rickBusarow-moduleCheck = "0.12.5"
@@ -111,10 +108,9 @@ github-release = { id = "com.github.breadmoirai.github-release", version.ref = "
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-plugin-publish" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlinter = { id = "org.jmailen.kotlinter", version.ref = "jmailen-kotlinter" }
 kotlinx-binaryCompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinx-binaryCompatibility" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-plugin" }
+ktlint = { id = "com.rickbusarow.ktlint", version.ref = "rickBusarow-ktlint" }
 moduleCheck = { id = "com.rickbusarow.module-check", version.ref = "rickBusarow-moduleCheck" }
 shadow = { id = "com.github.johnrengelman.shadow", version.ref = "johnrengelman-shadow" }
 tangle = { id = "com.rickbusarow.tangle", version.ref = "rickBusarow-tangle" }
@@ -190,8 +186,6 @@ javax-inject = "javax.inject:javax.inject:1"
 
 jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "jetbrains-markdown" }
 
-jmailen-kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "jmailen-kotlinter" }
-
 johnrengelman-shadow = { module = "gradle.plugin.com.github.johnrengelman:shadow", version.ref = "johnrengelman-shadow" }
 
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jUnit" }
@@ -248,7 +242,6 @@ kotlinx-serialization-protobuf = { module = "org.jetbrains.kotlinx:kotlinx-seria
 kotlinx-serialization-protobuf-jvm = { module = "org.jetbrains.kotlinx:kotlinx-serialization-protobuf-jvm", version.ref = "kotlinx-serialization" }
 
 ktlint-core = { module = "com.pinterest.ktlint:ktlint-core", version.ref = "ktlint-lib" }
-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-plugin" }
 ktlint-ruleset-experimental = { module = "com.pinterest.ktlint:ktlint-ruleset-experimental", version.ref = "ktlint-lib" }
 ktlint-ruleset-standard = { module = "com.pinterest.ktlint:ktlint-ruleset-standard", version.ref = "ktlint-lib" }
 ktlint-test = { module = "com.pinterest.ktlint:ktlint-test", version.ref = "ktlint-lib" }
@@ -268,6 +261,8 @@ rickBusarow-hermit-coroutines = { module = "com.rickbusarow.hermit:hermit-corout
 rickBusarow-hermit-jUnit4 = { module = "com.rickbusarow.hermit:hermit-junit4", version.ref = "rickBusarow-hermit" }
 rickBusarow-hermit-jUnit5 = { module = "com.rickbusarow.hermit:hermit-junit5", version.ref = "rickBusarow-hermit" }
 rickBusarow-hermit-mockk = { module = "com.rickbusarow.hermit:hermit-mockk", version.ref = "rickBusarow-hermit" }
+
+rickBusarow-ktlint = { module = "com.rickbusarow.ktlint:ktlint-gradle-plugin", version.ref = "rickBusarow-ktlint" }
 
 rickBusarow-ktrules = { module = "com.rickbusarow.ktrules:ktrules", version.ref = "rickBusarow-ktrules" }
 

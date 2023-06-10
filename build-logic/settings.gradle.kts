@@ -23,6 +23,7 @@ pluginManagement {
 
   repositories {
     if (allowMavenLocal) {
+      logger.lifecycle("${rootProject.name} -- allowing mavenLocal for plugins")
       mavenLocal()
     }
     mavenCentral()
@@ -39,6 +40,7 @@ dependencyResolutionManagement {
   @Suppress("UnstableApiUsage")
   repositories {
     if (allowMavenLocal) {
+      logger.lifecycle("${rootProject.name} -- allowing mavenLocal for dependencies")
       mavenLocal()
     }
     mavenCentral()

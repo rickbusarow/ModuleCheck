@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+rootProject.name = "ModuleCheck"
+
 pluginManagement {
 
   val allowMavenLocal = providers
@@ -21,7 +23,7 @@ pluginManagement {
 
   repositories {
     if (allowMavenLocal) {
-      println("allowing mavenLocal")
+      logger.lifecycle("${rootProject.name} -- allowing mavenLocal for plugins")
       mavenLocal()
     }
     gradlePluginPortal()
@@ -46,6 +48,7 @@ dependencyResolutionManagement {
   @Suppress("UnstableApiUsage")
   repositories {
     if (allowMavenLocal) {
+      logger.lifecycle("${rootProject.name} -- allowing mavenLocal for dependencies")
       mavenLocal()
     }
     mavenCentral()
@@ -98,8 +101,6 @@ rootDir.resolve("gradle.properties")
     target = rootDir.resolve("build-logic/gradle.properties"),
     overwrite = true
   )
-
-rootProject.name = "ModuleCheck"
 
 include(
   ":modulecheck-api",
