@@ -14,7 +14,16 @@
  */
 
 pluginManagement {
+
+  val allowMavenLocal = providers
+    .gradleProperty("moduleCheck.allow-maven-local")
+    .orNull.toBoolean()
+
   repositories {
+    if (allowMavenLocal) {
+      println("allowing mavenLocal")
+      mavenLocal()
+    }
     gradlePluginPortal()
     mavenCentral()
     google()
@@ -29,9 +38,16 @@ pluginManagement {
   includeBuild("build-logic")
 }
 
+val allowMavenLocal = providers
+  .gradleProperty("moduleCheck.allow-maven-local")
+  .orNull.toBoolean()
+
 dependencyResolutionManagement {
   @Suppress("UnstableApiUsage")
   repositories {
+    if (allowMavenLocal) {
+      mavenLocal()
+    }
     mavenCentral()
     google()
     maven("https://plugins.gradle.org/m2/")
@@ -39,7 +55,7 @@ dependencyResolutionManagement {
 }
 
 plugins {
-  id("com.gradle.enterprise").version("3.13.3")
+  id("com.gradle.enterprise") version "3.13.3"
 }
 
 val isCI = System.getenv("CI")?.toBoolean() == true
@@ -159,16 +175,21 @@ fun printCiEnvironment() {
   val maxMemory = Runtime.getRuntime().maxMemory().gigabytes()
   println(
     """
-    ╔══════════════════════════════════════════════════════════════════════════════╗
-    ║                                CI environment                                ║
-    ║                                                                              ║
-    ║                     OS - $os║
-    ║   available processors - $processors║
-    ║                                                                              ║
-    ║           total memory - $totalMemory║
-    ║            free memory - $freeMemory║
-    ║             max memory - $maxMemory║
-    ╚══════════════════════════════════════════════════════════════════════════════╝
+    ╔══════════════════════════════════════════════════╗
+    ║                  CI environment                  ║
+    ║                                                  ║
+    ║                     OS - $os                     ║
+    ║   available processors - $processors             ║
+    ║                                                  ║
+    ║       allocated memory - $totalMemory            ║
+    ║            free memory - $freeMemory             ║
+    ║             max memory - $maxMemory              ║
+    ╚══════════════════════════════════════════════════╝
     """.trimIndent()
+      .lineSequence()
+      .joinToString("\n") { line ->
+        val sub = line.substringBeforeLast('║', "")
+        if (sub.length > 51) sub.substring(0..50) + '║' else line
+      }
   )
 }
