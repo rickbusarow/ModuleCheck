@@ -16,16 +16,31 @@
 rootProject.name = "build-logic"
 
 pluginManagement {
+
+  val allowMavenLocal = providers
+    .gradleProperty("moduleCheck.allow-maven-local")
+    .orNull.toBoolean()
+
   repositories {
+    if (allowMavenLocal) {
+      mavenLocal()
+    }
     mavenCentral()
     google()
     maven("https://plugins.gradle.org/m2/")
   }
 }
 
+val allowMavenLocal = providers
+  .gradleProperty("moduleCheck.allow-maven-local")
+  .orNull.toBoolean()
+
 dependencyResolutionManagement {
   @Suppress("UnstableApiUsage")
   repositories {
+    if (allowMavenLocal) {
+      mavenLocal()
+    }
     mavenCentral()
     google()
     maven("https://plugins.gradle.org/m2/")
