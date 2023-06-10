@@ -19,6 +19,7 @@ import modulecheck.builds.artifacts.ArtifactsPlugin
 import modulecheck.builds.matrix.VersionsMatrixYamlPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.language.base.plugins.LifecycleBasePlugin
 
 abstract class McBuildPlugin : Plugin<Project> {
   override fun apply(target: Project) {
@@ -41,6 +42,7 @@ abstract class McBuildRootPlugin : Plugin<Project> {
 
     target.checkProjectIsRoot()
 
+    target.plugins.apply(LifecycleBasePlugin::class.java)
     target.plugins.apply(McBuildPlugin::class.java)
 
     target.plugins.apply(ArtifactsPlugin::class.java)

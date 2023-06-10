@@ -21,19 +21,17 @@ import modulecheck.builds.VERSION_NAME_STABLE
 buildscript {
   dependencies {
     classpath(libs.kotlin.gradle.plugin)
-    classpath(libs.ktlint.gradle)
     classpath(libs.vanniktech.publish)
   }
 }
 
 plugins {
+  id("mcbuild.root")
   alias(libs.plugins.dependencyAnalysis)
   alias(libs.plugins.detekt)
   alias(libs.plugins.doks)
   alias(libs.plugins.moduleCheck)
   alias(libs.plugins.taskTree)
-  base
-  id("mcbuild.root")
 }
 
 doks {
@@ -148,6 +146,10 @@ afterEvaluate {
   sequenceOf(
     "buildHealth",
     "clean",
+    "ktlintCheck",
+    "ktlintFormat",
+    "ktlintCheckGradleScripts",
+    "ktlintFormatGradleScripts",
     "moduleCheck",
     "moduleCheckAuto",
     "moduleCheckSortDependenciesAuto",

@@ -15,6 +15,7 @@
 
 package modulecheck.builds
 
+import com.rickbusarow.ktlint.KtLintTask
 import com.vanniktech.maven.publish.tasks.JavadocJar
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
@@ -30,8 +31,6 @@ import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import org.jetbrains.dokka.versioning.VersioningConfiguration
 import org.jetbrains.dokka.versioning.VersioningPlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jmailen.gradle.kotlinter.tasks.FormatTask
-import org.jmailen.gradle.kotlinter.tasks.LintTask
 import java.net.URL
 
 abstract class DokkaConventionPlugin : Plugin<Project> {
@@ -126,8 +125,7 @@ abstract class DokkaConventionPlugin : Plugin<Project> {
 
     // Dokka uses their outputs but doesn't explicitly depend upon them.
     mustRunAfter(target.tasks.withType(KotlinCompile::class.java))
-    mustRunAfter(target.tasks.withType(LintTask::class.java))
-    mustRunAfter(target.tasks.withType(FormatTask::class.java))
+    mustRunAfter(target.tasks.withType(KtLintTask::class.java))
     mustRunAfter(target.tasks.matchingName("generateProtos"))
   }
 

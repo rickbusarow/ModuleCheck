@@ -100,3 +100,16 @@ fun VersionCatalog.dependency(alias: String): Provider<MinimalExternalModuleDepe
 fun VersionCatalog.version(alias: String): String {
   return findVersion(alias).get().requiredVersion
 }
+
+/**
+ * non-dsl version of `libs.findPlugin(_____).get().get().pluginId`
+ *
+ * ex:
+ *
+ * ```
+ * val anvilPluginId = project.libsCatalog.pluginId("anvil")
+ * ```
+ */
+fun VersionCatalog.pluginId(alias: String): String {
+  return findPlugin(alias).get().get().pluginId
+}

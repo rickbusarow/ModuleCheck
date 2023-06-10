@@ -18,6 +18,7 @@ package modulecheck.builds
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectProvider
+import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskContainer
@@ -54,6 +55,17 @@ fun <T : Task> TaskProvider<T>.dependsOn(vararg objects: Any): TaskProvider<T> {
       task.dependsOn(*objects)
     }
   }
+}
+
+/**
+ * Finds all tasks named [taskName] in all projects.
+ * Does not throw if there are no tasks with that name.
+ *
+ * @throws IllegalStateException if the project is not the root project
+ */
+fun Project.allProjectsTasksMatchingName(taskName: String): List<TaskCollection<Task>> {
+  checkProjectIsRoot { "only call `allProjectsTasksMatchingName(...)` from the root project." }
+  return allprojects.map { proj -> proj.tasks.matchingName(taskName) }
 }
 
 /**
