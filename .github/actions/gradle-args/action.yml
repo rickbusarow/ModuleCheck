@@ -28,7 +28,7 @@ runs:
             jvmArgs="-Xmx4g -XX:MaxMetaspaceSize=1g $jvmArgs"
             ;;
           Windows)
-            jvmArgs="-Xmx4g -XX:MaxMetaspaceSize=1g $jvmArgs"
+            jvmArgs="-Xmx3g -XX:MaxMetaspaceSize=756m $jvmArgs"
             ;;
           *)
             echo "Unsupported runner OS: $runnerOS"
