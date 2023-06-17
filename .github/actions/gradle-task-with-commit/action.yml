@@ -51,11 +51,13 @@ runs:
 
     - name: Run ${{ inputs.fix-task }}
       if: steps.can-push.outputs.can_push == 'true'
-      uses: gradle/gradle-build-action@v2
+      uses: ./.github/actions/gradle-task
       with:
-        arguments: ${{ inputs.fix-task }}
-        cache-read-only: false
-        gradle-home-cache-cleanup: true
+        task: ${{ inputs.fix-task }}
+        distribution: ${{ inputs.distribution }}
+        java-version: ${{ inputs.java-version }}
+        restore-cache-key: ${{ inputs.restore-cache-key }}
+        write-cache-key: ${{ inputs.write-cache-key }}
 
     - name: Set Commit Message
       id: set-commit-message
@@ -79,6 +81,8 @@ runs:
       if: steps.can-push.outputs.can_push != 'true'
       uses: gradle/gradle-build-action@v2
       with:
-        arguments: ${{ inputs.check-task }}
-        cache-read-only: false
-        gradle-home-cache-cleanup: true
+        task: ${{ inputs.check-task }}
+        distribution: ${{ inputs.distribution }}
+        java-version: ${{ inputs.java-version }}
+        restore-cache-key: ${{ inputs.restore-cache-key }}
+        write-cache-key: ${{ inputs.write-cache-key }}
