@@ -43,7 +43,7 @@ ec4j = "0.3.0"
 exhaustive = "0.2.0"
 github-release = "2.4.1"
 
-google-auto-common = "1.2.1"
+google-auto-common = "1.2.2"
 google-auto-service = "1.1.0"
 google-accompanist = "0.18.0"
 google-dagger = "2.46.1"
