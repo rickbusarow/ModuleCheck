@@ -19,14 +19,14 @@ import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.mustBeApi
 import modulecheck.runtime.test.RunnerTest
-import modulecheck.utils.child
 import modulecheck.utils.createSafely
+import modulecheck.utils.resolve
 import org.junit.jupiter.api.Test
 
 class MustBeApiTest : RunnerTest() {
 
   @Test
-  fun `public property from implementation without auto-correct should fail`() {
+  fun `public property from implementation without auto-correct should fail`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -91,7 +91,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `public generic property from implementation without auto-correct should fail`() {
+  fun `public generic property from implementation without auto-correct should fail`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -156,7 +156,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `public property from implementation with auto-correct should be fixed`() {
+  fun `public property from implementation with auto-correct should be fixed`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -221,63 +221,64 @@ class MustBeApiTest : RunnerTest() {
 
   // https://github.com/RBusarow/ModuleCheck/issues/443
   @Test
-  fun `switching to api dependency after a blank line should preserve all newlines -- kotlin`() {
+  fun `switching to api dependency after a blank line should preserve all newlines -- kotlin`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      addKotlinSource(
-        """
+      val lib1 = kotlinProject(":lib1") {
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         class Lib1Class
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = kotlinProject(":lib2") {
+      val lib2 = kotlinProject(":lib2") {
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         class Lib2Class
         """
-      )
-    }
+        )
+      }
 
-    val lib3 = kotlinProject(":lib3") {
+      val lib3 = kotlinProject(":lib3") {
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib3
 
         class Lib3Class
         """
-      )
-    }
+        )
+      }
 
-    val lib4 = kotlinProject(":lib4") {
-      addDependency(ConfigurationName.implementation, lib1)
-      addDependency(ConfigurationName.implementation, lib2)
-      addDependency(ConfigurationName.implementation, lib3)
+      val lib4 = kotlinProject(":lib4") {
+        addDependency(ConfigurationName.implementation, lib1)
+        addDependency(ConfigurationName.implementation, lib2)
+        addDependency(ConfigurationName.implementation, lib3)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -289,10 +290,10 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib3"))
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib4
 
         import com.modulecheck.lib1.Lib1Class
@@ -303,12 +304,12 @@ class MustBeApiTest : RunnerTest() {
         val lib2Class = Lib2Class()
         val lib3Class = Lib3Class()
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib4.buildFile shouldHaveText """
+      lib4.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -324,91 +325,92 @@ class MustBeApiTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib4" to listOf(
-        mustBeApi(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib1",
-          position = "6, 3"
-        ),
-        mustBeApi(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib2",
-          position = "8, 3"
-        ),
-        mustBeApi(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib3",
-          position = "9, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":lib4" to listOf(
+          mustBeApi(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib1",
+            position = "6, 3"
+          ),
+          mustBeApi(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib2",
+            position = "8, 3"
+          ),
+          mustBeApi(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib3",
+            position = "9, 3"
+          )
         )
       )
-    )
-  }
+    }
 
   // https://github.com/RBusarow/ModuleCheck/issues/443
   @Test
-  fun `switching to api dependency after a blank line should preserve all newlines -- groovy`() {
+  fun `switching to api dependency after a blank line should preserve all newlines -- groovy`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      addKotlinSource(
-        """
+      val lib1 = kotlinProject(":lib1") {
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         class Lib1Class
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = kotlinProject(":lib2") {
+      val lib2 = kotlinProject(":lib2") {
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         class Lib2Class
         """
-      )
-    }
+        )
+      }
 
-    val lib3 = kotlinProject(":lib3") {
+      val lib3 = kotlinProject(":lib3") {
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib3
 
         class Lib3Class
         """
-      )
-    }
+        )
+      }
 
-    val lib4 = kotlinProject(":lib4") {
-      addDependency(ConfigurationName.implementation, lib1)
-      addDependency(ConfigurationName.implementation, lib2)
-      addDependency(ConfigurationName.implementation, lib3)
+      val lib4 = kotlinProject(":lib4") {
+        addDependency(ConfigurationName.implementation, lib1)
+        addDependency(ConfigurationName.implementation, lib2)
+        addDependency(ConfigurationName.implementation, lib3)
 
-      buildFile.delete()
-      buildFile = projectDir.child("build.gradle")
-        .createSafely(
-          """
+        buildFile.delete()
+        buildFile = projectDir.resolve("build.gradle")
+          .createSafely(
+            """
           plugins {
             id 'org.jetbrains.kotlin.jvm' version '1.6.10'
           }
@@ -419,11 +421,11 @@ class MustBeApiTest : RunnerTest() {
             implementation project(':lib2')
             implementation project(':lib3')
           }
-          """.trimIndent()
-        )
+            """.trimIndent()
+          )
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib4
 
         import com.modulecheck.lib1.Lib1Class
@@ -434,12 +436,12 @@ class MustBeApiTest : RunnerTest() {
         val lib2Class = Lib2Class()
         val lib3Class = Lib3Class()
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib4.buildFile shouldHaveText """
+      lib4.buildFile shouldHaveText """
         plugins {
           id 'org.jetbrains.kotlin.jvm' version '1.6.10'
         }
@@ -455,32 +457,32 @@ class MustBeApiTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib4" to listOf(
-        mustBeApi(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib1",
-          position = "6, 3"
-        ),
-        mustBeApi(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib2",
-          position = "8, 3"
-        ),
-        mustBeApi(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib3",
-          position = "9, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":lib4" to listOf(
+          mustBeApi(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib1",
+            position = "6, 3"
+          ),
+          mustBeApi(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib2",
+            position = "8, 3"
+          ),
+          mustBeApi(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib3",
+            position = "9, 3"
+          )
         )
       )
-    )
-  }
+    }
 
   @Test
-  fun `private property from implementation with auto-correct should not be changed`() {
+  fun `private property from implementation with auto-correct should not be changed`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -534,23 +536,24 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `private property from implementation inside public class with auto-correct should not be changed`() {
+  fun `private property from implementation inside public class with auto-correct should not be changed`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      addKotlinSource(
-        """
+      val lib1 = kotlinProject(":lib1") {
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         class Lib1Class
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = kotlinProject(":lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -559,10 +562,10 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         import com.modulecheck.lib1.Lib1Class
@@ -571,12 +574,12 @@ class MustBeApiTest : RunnerTest() {
           private val lib1Class = Lib1Class()
         }
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -586,11 +589,11 @@ class MustBeApiTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe emptyList()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `internal property from implementation with auto-correct should not be changed`() {
+  fun `internal property from implementation with auto-correct should not be changed`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -644,24 +647,25 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `api and implementation of the same dependency with auto-correct should not be changed`() {
+  fun `api and implementation of the same dependency with auto-correct should not be changed`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      addKotlinSource(
-        """
+      val lib1 = kotlinProject(":lib1") {
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         class Lib1Class
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = kotlinProject(":lib2") {
-      addDependency(ConfigurationName.api, lib1)
-      addDependency(ConfigurationName.implementation, lib1)
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.api, lib1)
+        addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -671,22 +675,22 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         import com.modulecheck.lib1.Lib1Class
 
         val lib1Class = Lib1Class()
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -697,11 +701,11 @@ class MustBeApiTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe emptyList()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `public property from dependency in test source should not require API`() {
+  fun `public property from dependency in test source should not require API`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -756,23 +760,24 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `internal property in class from implementation with auto-correct should not be changed`() {
+  fun `internal property in class from implementation with auto-correct should not be changed`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      addKotlinSource(
-        """
+      val lib1 = kotlinProject(":lib1") {
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         class Lib1Class
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = kotlinProject(":lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -781,10 +786,10 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         import com.modulecheck.lib1.Lib1Class
@@ -793,12 +798,12 @@ class MustBeApiTest : RunnerTest() {
           internal val lib1Class = Lib1Class()
         }
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -808,11 +813,11 @@ class MustBeApiTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe emptyList()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `supertype from implementation with auto-correct should be fixed`() {
+  fun `supertype from implementation with auto-correct should be fixed`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -876,7 +881,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `must be api from invisible dependency with unrelated api dependency declaration`() {
+  fun `must be api from invisible dependency with unrelated api dependency declaration`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -965,46 +970,47 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `must be api from invisible dependency with unrelated implementation dependency declaration`() {
+  fun `must be api from invisible dependency with unrelated implementation dependency declaration`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      addKotlinSource(
-        """
+      val lib1 = kotlinProject(":lib1") {
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         open class Lib1Class
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = kotlinProject(":lib2") {
+      val lib2 = kotlinProject(":lib2") {
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         class Lib2Class
         """
-      )
-    }
+        )
+      }
 
-    val lib3 = kotlinProject(":lib3") {
-      // lib1 is added as a dependency, but it's not in the build file.
-      // This is intentional, because it mimics the behavior of a convention plugin
-      // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.implementation, lib1, addToBuildFile = false)
-      addDependency(ConfigurationName.implementation, lib2, addToBuildFile = false)
+      val lib3 = kotlinProject(":lib3") {
+        // lib1 is added as a dependency, but it's not in the build file.
+        // This is intentional, because it mimics the behavior of a convention plugin
+        // which adds a dependency without any visible declaration in the build file
+        addDependency(ConfigurationName.implementation, lib1, addToBuildFile = false)
+        addDependency(ConfigurationName.implementation, lib2, addToBuildFile = false)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -1013,10 +1019,10 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib2"))
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib3
 
         import com.modulecheck.lib1.Lib1Class
@@ -1025,12 +1031,12 @@ class MustBeApiTest : RunnerTest() {
         class Lib3Class : Lib1Class()
         private val lib2Class = Lib2Class()
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe false
+      run().isSuccess shouldBe false
 
-    lib3.buildFile shouldHaveText """
+      lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1041,39 +1047,40 @@ class MustBeApiTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib3" to listOf(
-        mustBeApi(
-          fixed = false,
-          configuration = "implementation",
-          dependency = ":lib1",
-          position = null
+      logger.parsedReport() shouldBe listOf(
+        ":lib3" to listOf(
+          mustBeApi(
+            fixed = false,
+            configuration = "implementation",
+            dependency = ":lib1",
+            position = null
+          )
         )
       )
-    )
-  }
+    }
 
   @Test
-  fun `must be api from invisible dependency with unrelated implementation external dependency`() {
+  fun `must be api from invisible dependency with unrelated implementation external dependency`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      addKotlinSource(
-        """
+      val lib1 = kotlinProject(":lib1") {
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         open class Lib1Class
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = kotlinProject(":lib2") {
-      // lib1 is added as a dependency, but it's not in the build file.
-      // This is intentional, because it mimics the behavior of a convention plugin
-      // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.implementation, lib1, addToBuildFile = false)
+      val lib2 = kotlinProject(":lib2") {
+        // lib1 is added as a dependency, but it's not in the build file.
+        // This is intentional, because it mimics the behavior of a convention plugin
+        // which adds a dependency without any visible declaration in the build file
+        addDependency(ConfigurationName.implementation, lib1, addToBuildFile = false)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -1082,10 +1089,10 @@ class MustBeApiTest : RunnerTest() {
           implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib3
 
         import com.modulecheck.lib1.Lib1Class
@@ -1094,12 +1101,12 @@ class MustBeApiTest : RunnerTest() {
         class Lib3Class : Lib1Class()
         private val lib2Class = Lib2Class()
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe false
+      run().isSuccess shouldBe false
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1111,20 +1118,20 @@ class MustBeApiTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib2" to listOf(
-        mustBeApi(
-          fixed = false,
-          configuration = "implementation",
-          dependency = ":lib1",
-          position = null
+      logger.parsedReport() shouldBe listOf(
+        ":lib2" to listOf(
+          mustBeApi(
+            fixed = false,
+            configuration = "implementation",
+            dependency = ":lib1",
+            position = null
+          )
         )
       )
-    )
-  }
+    }
 
   @Test
-  fun `must be api from invisible dependency with unrelated api external dependency`() {
+  fun `must be api from invisible dependency with unrelated api external dependency`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -1194,7 +1201,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `must be api from invisible dependency with empty multi-line dependencies block`() {
+  fun `must be api from invisible dependency with empty multi-line dependencies block`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -1261,7 +1268,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `must be api from invisible dependency with empty single-line dependencies block`() {
+  fun `must be api from invisible dependency with empty single-line dependencies block`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -1327,7 +1334,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `must be api from invisible dependency with no dependencies block`() {
+  fun `must be api from invisible dependency with no dependencies block`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -1391,7 +1398,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `auto-correct should only replace the configuration invocation text`() {
+  fun `auto-correct should only replace the configuration invocation text`() = test {
 
     settings.deleteUnused = true
 
@@ -1460,23 +1467,24 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `supertype of internal class from implementation with auto-correct should not be changed`() {
+  fun `supertype of internal class from implementation with auto-correct should not be changed`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      addKotlinSource(
-        """
+      val lib1 = kotlinProject(":lib1") {
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         open class Lib1Class
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = kotlinProject(":lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -1485,22 +1493,22 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         import com.modulecheck.lib1.Lib1Class
 
         internal class Lib2Class : Lib1Class()
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1510,11 +1518,11 @@ class MustBeApiTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe emptyList()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `public return type from implementation with auto-correct should be fixed`() {
+  fun `public return type from implementation with auto-correct should be fixed`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -1578,7 +1586,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `internal return type from implementation with auto-correct should not be changed`() {
+  fun `internal return type from implementation with auto-correct should not be changed`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -1632,7 +1640,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `public argument type from implementation with auto-correct should be fixed`() {
+  fun `public argument type from implementation with auto-correct should be fixed`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -1696,7 +1704,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `public type argument from implementation with auto-correct should be fixed`() {
+  fun `public type argument from implementation with auto-correct should be fixed`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -1760,7 +1768,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `public generic bound type from implementation with auto-correct should be fixed`() {
+  fun `public generic bound type from implementation with auto-correct should be fixed`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -1824,23 +1832,24 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `public generic fully qualified bound type from implementation with auto-correct should be fixed`() {
+  fun `public generic fully qualified bound type from implementation with auto-correct should be fixed`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      addKotlinSource(
-        """
+      val lib1 = kotlinProject(":lib1") {
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         class Lib1Class
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = kotlinProject(":lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -1849,20 +1858,20 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         fun <T: com.modulecheck.lib1.Lib1Class> foo(t: T) = Unit
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1873,47 +1882,48 @@ class MustBeApiTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib2" to listOf(
-        mustBeApi(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib1",
-          position = "6, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":lib2" to listOf(
+          mustBeApi(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib1",
+            position = "6, 3"
+          )
         )
       )
-    )
-  }
+    }
 
   @Test
-  fun `two public public properties from implementation with auto-correct should be fixed`() {
+  fun `two public public properties from implementation with auto-correct should be fixed`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      addKotlinSource(
-        """
+      val lib1 = kotlinProject(":lib1") {
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         class Lib1Class
         """
-      )
-    }
+        )
+      }
 
-    val lib3 = kotlinProject(":lib3") {
-      addKotlinSource(
-        """
+      val lib3 = kotlinProject(":lib3") {
+        addKotlinSource(
+          """
         package com.modulecheck.lib3
 
         class Lib3Class
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = kotlinProject(":lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
-      addDependency(ConfigurationName.implementation, lib3)
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.implementation, lib1)
+        addDependency(ConfigurationName.implementation, lib3)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -1923,10 +1933,10 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib3"))
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         import com.modulecheck.lib1.Lib1Class
@@ -1935,12 +1945,12 @@ class MustBeApiTest : RunnerTest() {
         val lib1Class = Lib1Class()
         val lib3Class = Lib3Class()
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1953,26 +1963,26 @@ class MustBeApiTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib2" to listOf(
-        mustBeApi(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib1",
-          position = "6, 3"
-        ),
-        mustBeApi(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib3",
-          position = "7, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":lib2" to listOf(
+          mustBeApi(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib1",
+            position = "6, 3"
+          ),
+          mustBeApi(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib3",
+            position = "7, 3"
+          )
         )
       )
-    )
-  }
+    }
 
   @Test
-  fun `two public supertypes from implementation with auto-correct should be fixed`() {
+  fun `two public supertypes from implementation with auto-correct should be fixed`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -2057,7 +2067,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `two public return types from implementation with auto-correct should be fixed`() {
+  fun `two public return types from implementation with auto-correct should be fixed`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -2143,7 +2153,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `two public argument types from implementation with auto-correct should be fixed`() {
+  fun `two public argument types from implementation with auto-correct should be fixed`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -2229,7 +2239,7 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `two public type arguments from implementation with auto-correct should be fixed`() {
+  fun `two public type arguments from implementation with auto-correct should be fixed`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       addKotlinSource(
@@ -2314,34 +2324,35 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
-  fun `two public generic bound types from implementation with auto-correct should be fixed`() {
+  fun `two public generic bound types from implementation with auto-correct should be fixed`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      addKotlinSource(
-        """
+      val lib1 = kotlinProject(":lib1") {
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         class Lib1Class
         """
-      )
-    }
+        )
+      }
 
-    val lib3 = kotlinProject(":lib3") {
-      addKotlinSource(
-        """
+      val lib3 = kotlinProject(":lib3") {
+        addKotlinSource(
+          """
         package com.modulecheck.lib3
 
         class Lib3Class
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = kotlinProject(":lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
-      addDependency(ConfigurationName.implementation, lib3)
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.implementation, lib1)
+        addDependency(ConfigurationName.implementation, lib3)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -2351,10 +2362,10 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib3"))
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         import com.modulecheck.lib1.Lib1Class
@@ -2362,12 +2373,12 @@ class MustBeApiTest : RunnerTest() {
 
         fun <T : Lib1Class, R : Lib3Class> foo(t: T): R = TODO()
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -2380,21 +2391,21 @@ class MustBeApiTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib2" to listOf(
-        mustBeApi(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib1",
-          position = "6, 3"
-        ),
-        mustBeApi(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib3",
-          position = "7, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":lib2" to listOf(
+          mustBeApi(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib1",
+            position = "6, 3"
+          ),
+          mustBeApi(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib3",
+            position = "7, 3"
+          )
         )
       )
-    )
-  }
+    }
 }

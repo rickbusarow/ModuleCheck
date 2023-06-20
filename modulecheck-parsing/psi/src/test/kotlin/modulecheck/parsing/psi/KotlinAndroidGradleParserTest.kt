@@ -23,18 +23,21 @@ import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeatur
 import modulecheck.parsing.gradle.dsl.Assignment
 import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
 import modulecheck.testing.BaseTest
-import modulecheck.utils.child
+import modulecheck.testing.DynamicTests
+import modulecheck.testing.HasWorkingDir
+import modulecheck.testing.SkipInStackTrace
+import modulecheck.testing.TestEnvironment
 import modulecheck.utils.createSafely
+import modulecheck.utils.resolve
 import org.jetbrains.kotlin.cli.common.repl.replEscapeLineBreaks
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import java.io.File
 
-internal class KotlinAndroidGradleParserTest : BaseTest() {
+internal class KotlinAndroidGradleParserTest : BaseTest<TestEnvironment>(), DynamicTests {
 
-  val testFile by resets {
-    testProjectDir.child("build.gradle.kts").createSafely()
-  }
+  val TestEnvironment.testFile: File
+    get() = workingDir.resolve("build.gradle.kts").createSafely()
 
   @TestFactory
   fun `lots of blocks`() = runTest { enabled ->
@@ -372,20 +375,17 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
     KotlinAndroidGradleParser(NoContextPsiFileFactory()).parse(file)
   }
 
-  fun runTest(block: (enabled: Boolean) -> Unit): List<DynamicTest> {
-    return listOf(true, false).map { enabled ->
+  @SkipInStackTrace
+  fun runTest(block: suspend TestEnvironment.(enabled: Boolean) -> Unit): List<DynamicTest> {
+    val frame = HasWorkingDir.testStackFrame()
 
-      val paramsString = " -- enabled: $enabled"
+    return listOf(true, false)
+      .dynamic({ "enabled: $it" }) { enabled ->
 
-      val name = "${testDisplayName.replace("()", "")}$paramsString"
-
-      DynamicTest.dynamicTest(name) {
-        block(enabled)
-        resetAll()
-
-        System.gc()
+        test(frame, "enabled_$enabled") {
+          block(enabled)
+        }
       }
-    }
   }
 }
 

@@ -31,7 +31,6 @@ dependencies {
 
   implementation(project(path = ":modulecheck-utils:trace"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.square.turbine)

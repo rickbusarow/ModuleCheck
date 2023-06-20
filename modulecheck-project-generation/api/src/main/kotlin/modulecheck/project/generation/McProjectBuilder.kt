@@ -39,14 +39,13 @@ import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
-import modulecheck.utils.child
 import modulecheck.utils.createSafely
 import modulecheck.utils.requireNotNull
+import modulecheck.utils.resolve
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
-@Suppress("LongParameterList")
 class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   var path: StringProjectPath,
   var projectDir: File,
@@ -264,11 +263,10 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
       .fixFileSeparators()
 
     return projectDir
-      .child("src", sourceSetName.value, sourceDirName, dir, fileSimpleName)
+      .resolve("src", sourceSetName.value, sourceDirName, dir, fileSimpleName)
       .createSafely(content.trimIndent())
   }
 
-  @Suppress("LongParameterList")
   private fun addJvmSource(file: File, sourceSetName: SourceSetName): File {
 
     val oldSourceSet = maybeAddSourceSet(sourceSetName)
@@ -332,7 +330,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
     platformPlugin.manifests[sourceSetName] = file
   }
 
-  @Suppress("LongParameterList")
+  /** */
   fun addSourceSet(
     name: SourceSetName,
     jvmFiles: Set<File> = emptySet(),

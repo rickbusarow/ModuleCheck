@@ -89,7 +89,6 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     val buildConfigEnabled: Boolean
   }
 
-  @Suppress("LongParameterList")
   class AndroidApplicationPlugin(
     override val sourceSets: SourceSets,
     override val configurations: Configurations,
@@ -103,7 +102,6 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResource>> by resValuesLazy
   }
 
-  @Suppress("LongParameterList")
   class AndroidLibraryPlugin(
     override val sourceSets: SourceSets,
     override val configurations: Configurations,
@@ -122,7 +120,6 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResource>> by resValuesLazy
   }
 
-  @Suppress("LongParameterList")
   class AndroidDynamicFeaturePlugin(
     override val sourceSets: SourceSets,
     override val configurations: Configurations,
@@ -139,7 +136,6 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResource>> by resValuesLazy
   }
 
-  @Suppress("LongParameterList")
   class AndroidTestPlugin(
     override val sourceSets: SourceSets,
     override val configurations: Configurations,

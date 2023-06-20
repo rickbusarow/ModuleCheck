@@ -26,24 +26,23 @@ mcbuild {
 
 dependencies {
 
-  api(libs.bundles.hermit)
-  api(libs.kotlinx.coroutines.debug)
-
   api(project(path = ":modulecheck-internal-testing"))
   api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
+  api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project-generation:api"))
   api(project(path = ":modulecheck-project:api"))
 
   compileOnly(gradleApi())
 
-  implementation(libs.bundles.hermit)
   implementation(libs.bundles.junit)
-  implementation(libs.bundles.kotest)
   implementation(libs.bundles.kotest)
   implementation(libs.kotlin.reflect)
 
+  implementation(project(path = ":modulecheck-api"))
   implementation(project(path = ":modulecheck-config:api"))
   implementation(project(path = ":modulecheck-config:impl"))
   implementation(project(path = ":modulecheck-model:dependency:impl"))
+  implementation(project(path = ":modulecheck-utils:trace"))
 }

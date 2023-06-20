@@ -15,13 +15,13 @@
 
 package modulecheck.gradle
 
-import modulecheck.utils.child
+import modulecheck.utils.resolve
 import org.junit.jupiter.api.Test
 
 internal class GraphReportTaskTest : BaseGradleTest() {
 
   @Test
-  fun `graphs report should be created if graph task is invoked with default settings`() {
+  fun `graphs report should be created if graph task is invoked with default settings`() = test {
 
     kotlinProject(":lib1") {
       buildFile {
@@ -62,7 +62,7 @@ internal class GraphReportTaskTest : BaseGradleTest() {
 
     shouldSucceed("moduleCheckGraphs")
 
-    app.projectDir.child(
+    app.projectDir.resolve(
       "build",
       "reports",
       "modulecheck",

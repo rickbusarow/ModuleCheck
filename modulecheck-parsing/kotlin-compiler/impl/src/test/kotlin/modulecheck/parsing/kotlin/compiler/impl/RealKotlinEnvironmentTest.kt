@@ -22,6 +22,7 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.internal.isKtFile
 import modulecheck.parsing.psi.internal.childrenOfTypeBreadthFirst
 import modulecheck.project.test.ProjectTest
+import modulecheck.project.test.ProjectTestEnvironment
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.js.descriptorUtils.getKotlinTypeFqName
 import org.jetbrains.kotlin.psi.KtProperty
@@ -31,7 +32,7 @@ import org.jetbrains.kotlin.types.isNullable
 import org.junit.jupiter.api.Test
 
 @Suppress("UnusedPrivateMember")
-class RealKotlinEnvironmentTest : ProjectTest() {
+class RealKotlinEnvironmentTest : ProjectTest<ProjectTestEnvironment>() {
 
   @Test
   fun `resolution should work for sources from a dependency module`() = test {

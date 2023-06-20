@@ -19,11 +19,10 @@ import modulecheck.parsing.gradle.dsl.PluginDeclaration
 import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
 import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.BaseTest
+import modulecheck.testing.TestEnvironment
 import org.junit.jupiter.api.Test
 
-internal class KotlinPluginsBlockParserTest : BaseTest() {
-
-  val logger by resets { PrintLogger() }
+internal class KotlinPluginsBlockParserTest : BaseTest<TestEnvironment>() {
 
   @Test
   fun `external declaration`() = test {
@@ -169,6 +168,6 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
     val file = NoContextPsiFileFactory()
       .createKotlin("build.gradle.kts", string.trimIndent())
 
-    return KotlinPluginsBlockParser(logger).parse(file)!!
+    return KotlinPluginsBlockParser(PrintLogger()).parse(file)!!
   }
 }

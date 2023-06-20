@@ -18,9 +18,9 @@ package modulecheck.reporting.graphviz
 import guru.nidi.graphviz.engine.Format
 import modulecheck.api.context.ProjectDepth
 import modulecheck.config.ModuleCheckSettings
-import modulecheck.utils.child
 import modulecheck.utils.createSafely
 import modulecheck.utils.indentByBrackets
+import modulecheck.utils.resolve
 import java.io.File
 import javax.inject.Inject
 
@@ -39,10 +39,12 @@ class GraphvizFileWriter @Inject constructor(
       .sorted()
       .forEach { depth ->
 
-        val graphDir = rootOrNull?.child(
-          depth.dependentPath.value.replace(":", File.separator)
+        val graphDir = rootOrNull?.resolve(
+          depth.dependentPath.value
+            .replace(":", File.separator)
+            .removePrefix(File.separator)
         )
-          ?: depth.dependentProject.projectDir.child(
+          ?: depth.dependentProject.projectDir.resolve(
             "build",
             "reports",
             "modulecheck",
@@ -53,7 +55,7 @@ class GraphvizFileWriter @Inject constructor(
 
         val fileName = depth.sourceSetName.value
 
-        val dotFile = graphDir.child("$fileName.dot")
+        val dotFile = graphDir.resolve("$fileName.dot")
 
         val graphviz = graphvizFactory.create(depth)
 

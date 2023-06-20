@@ -214,15 +214,59 @@ public abstract class modulecheck/runtime/test/RunnerTest : modulecheck/project/
 	public fun <init> ()V
 	public final fun findingFactory (Ljava/util/List;Ljava/util/List;Ljava/util/List;)Lmodulecheck/rule/FindingFactory;
 	public static synthetic fun findingFactory$default (Lmodulecheck/runtime/test/RunnerTest;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/rule/FindingFactory;
-	public fun getCodeGeneratorBindings ()Ljava/util/List;
-	public fun getFindingFactory ()Lmodulecheck/rule/FindingFactory;
-	public fun getLogger ()Lmodulecheck/reporting/logging/test/ReportingLogger;
-	public fun getRuleFilter ()Lmodulecheck/rule/RuleFilter;
-	public fun getRules ()Ljava/util/List;
-	public fun getSettings ()Lmodulecheck/config/ModuleCheckSettings;
-	public final fun parsedReport (Lmodulecheck/reporting/logging/test/ReportingLogger;)Ljava/util/List;
-	public final fun run-jLovISM (ZZLmodulecheck/rule/FindingFactory;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/project/ProjectProvider;Lmodulecheck/finding/FindingResultFactory;Lmodulecheck/reporting/console/ReportFactory;Lmodulecheck/reporting/checkstyle/CheckstyleReporter;Lmodulecheck/reporting/graphviz/GraphvizFileWriter;Ldispatch/core/DispatcherProvider;Ljava/util/List;)Ljava/lang/Object;
-	public static synthetic fun run-jLovISM$default (Lmodulecheck/runtime/test/RunnerTest;ZZLmodulecheck/rule/FindingFactory;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/project/ProjectProvider;Lmodulecheck/finding/FindingResultFactory;Lmodulecheck/reporting/console/ReportFactory;Lmodulecheck/reporting/checkstyle/CheckstyleReporter;Lmodulecheck/reporting/graphviz/GraphvizFileWriter;Ldispatch/core/DispatcherProvider;Ljava/util/List;ILjava/lang/Object;)Ljava/lang/Object;
+	public fun getCodeGeneratorBindings ()Lkotlin/jvm/functions/Function1;
+	public fun getFindingFactory ()Lkotlin/jvm/functions/Function1;
+	public fun getLogger ()Lkotlin/jvm/functions/Function0;
+	public fun getRuleFilter ()Lkotlin/jvm/functions/Function0;
+	public fun getRules ()Lkotlin/jvm/functions/Function2;
+	public fun getSettings ()Lkotlin/jvm/functions/Function1;
+	public fun newRunnerTestEnvironment (Lmodulecheck/project/ProjectCache;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lmodulecheck/reporting/logging/test/ReportingLogger;Lmodulecheck/rule/RuleFilter;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Ljava/lang/StackWalker$StackFrame;Ljava/util/List;)Lmodulecheck/runtime/test/RunnerTestEnvironment;
+	public static synthetic fun newRunnerTestEnvironment$default (Lmodulecheck/runtime/test/RunnerTest;Lmodulecheck/project/ProjectCache;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lmodulecheck/reporting/logging/test/ReportingLogger;Lmodulecheck/rule/RuleFilter;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Ljava/lang/StackWalker$StackFrame;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/runtime/test/RunnerTestEnvironment;
+	public synthetic fun newTestEnvironment (Lmodulecheck/testing/TestEnvironmentParams;)Lmodulecheck/project/test/ProjectTestEnvironment;
+	public fun newTestEnvironment (Lmodulecheck/testing/TestEnvironmentParams;)Lmodulecheck/runtime/test/RunnerTestEnvironment;
+	public synthetic fun newTestEnvironment (Lmodulecheck/testing/TestEnvironmentParams;)Lmodulecheck/testing/TestEnvironment;
+	public final fun run-1iavgos (Lmodulecheck/runtime/test/RunnerTestEnvironment;ZZLmodulecheck/rule/FindingFactory;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/project/ProjectProvider;Lmodulecheck/finding/FindingResultFactory;Lmodulecheck/reporting/console/ReportFactory;Lmodulecheck/reporting/checkstyle/CheckstyleReporter;Lmodulecheck/reporting/graphviz/GraphvizFileWriter;Ldispatch/core/DispatcherProvider;Ljava/util/List;)Ljava/lang/Object;
+	public static synthetic fun run-1iavgos$default (Lmodulecheck/runtime/test/RunnerTest;Lmodulecheck/runtime/test/RunnerTestEnvironment;ZZLmodulecheck/rule/FindingFactory;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/project/ProjectProvider;Lmodulecheck/finding/FindingResultFactory;Lmodulecheck/reporting/console/ReportFactory;Lmodulecheck/reporting/checkstyle/CheckstyleReporter;Lmodulecheck/reporting/graphviz/GraphvizFileWriter;Ldispatch/core/DispatcherProvider;Ljava/util/List;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun shouldBe (Ljava/util/List;Ljava/util/List;)V
+}
+
+public class modulecheck/runtime/test/RunnerTestEnvironment : modulecheck/project/test/ProjectTestEnvironment {
+	public fun <init> (Lmodulecheck/project/ProjectCache;Lmodulecheck/reporting/logging/test/ReportingLogger;Lmodulecheck/rule/RuleFilter;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Ljava/lang/StackWalker$StackFrame;Ljava/util/List;)V
+	public fun <init> (Lmodulecheck/runtime/test/RunnerTestEnvironmentParams;)V
+	public fun getCodeGeneratorBindings ()Ljava/util/List;
+	public final fun getFindingFactory ()Lmodulecheck/rule/FindingFactory;
+	public final fun getLogger ()Lmodulecheck/reporting/logging/test/ReportingLogger;
+	public fun getProjectCache ()Lmodulecheck/project/ProjectCache;
+	public final fun getRuleFilter ()Lmodulecheck/rule/RuleFilter;
+	public final fun getRules ()Ljava/util/List;
+	public final fun getSettings ()Lmodulecheck/config/ModuleCheckSettings;
+	public final fun parsedReport (Lmodulecheck/reporting/logging/test/ReportingLogger;)Ljava/util/List;
+}
+
+public final class modulecheck/runtime/test/RunnerTestEnvironmentParams : modulecheck/testing/TestEnvironmentParams {
+	public fun <init> (Lmodulecheck/project/ProjectCache;Lmodulecheck/reporting/logging/test/ReportingLogger;Lmodulecheck/rule/RuleFilter;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Ljava/lang/StackWalker$StackFrame;Ljava/util/List;)V
+	public final fun component1 ()Lmodulecheck/project/ProjectCache;
+	public final fun component2 ()Lmodulecheck/reporting/logging/test/ReportingLogger;
+	public final fun component3 ()Lmodulecheck/rule/RuleFilter;
+	public final fun component4 ()Lkotlin/jvm/functions/Function1;
+	public final fun component5 ()Lkotlin/jvm/functions/Function1;
+	public final fun component6 ()Lkotlin/jvm/functions/Function2;
+	public final fun component7 ()Lkotlin/jvm/functions/Function1;
+	public final fun component8 ()Ljava/lang/StackWalker$StackFrame;
+	public final fun component9 ()Ljava/util/List;
+	public final fun copy (Lmodulecheck/project/ProjectCache;Lmodulecheck/reporting/logging/test/ReportingLogger;Lmodulecheck/rule/RuleFilter;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Ljava/lang/StackWalker$StackFrame;Ljava/util/List;)Lmodulecheck/runtime/test/RunnerTestEnvironmentParams;
+	public static synthetic fun copy$default (Lmodulecheck/runtime/test/RunnerTestEnvironmentParams;Lmodulecheck/project/ProjectCache;Lmodulecheck/reporting/logging/test/ReportingLogger;Lmodulecheck/rule/RuleFilter;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Ljava/lang/StackWalker$StackFrame;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/runtime/test/RunnerTestEnvironmentParams;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCodeGeneratorBindings ()Lkotlin/jvm/functions/Function1;
+	public final fun getFindingFactory ()Lkotlin/jvm/functions/Function1;
+	public final fun getLogger ()Lmodulecheck/reporting/logging/test/ReportingLogger;
+	public final fun getProjectCache ()Lmodulecheck/project/ProjectCache;
+	public final fun getRuleFilter ()Lmodulecheck/rule/RuleFilter;
+	public final fun getRules ()Lkotlin/jvm/functions/Function2;
+	public final fun getSettings ()Lkotlin/jvm/functions/Function1;
+	public fun getTestStackFrame ()Ljava/lang/StackWalker$StackFrame;
+	public fun getTestVariantNames ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 

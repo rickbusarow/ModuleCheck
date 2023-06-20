@@ -18,6 +18,7 @@ package modulecheck.builds
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.jvm.toolchain.JavaLanguageVersion
@@ -42,6 +43,7 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
     target.extensions.configure(JavaPluginExtension::class.java) { extension ->
       extension.sourceCompatibility = JavaVersion.toVersion(target.JVM_TARGET)
     }
+
     target.tasks.withType(KotlinCompile::class.java).configureEach { task ->
       task.kotlinOptions {
         allWarningsAsErrors = false
@@ -59,8 +61,11 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
           add("-opt-in=kotlin.ExperimentalStdlibApi")
           add("-opt-in=kotlin.RequiresOptIn")
           add("-opt-in=kotlin.contracts.ExperimentalContracts")
-          add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
-          add("-opt-in=kotlinx.coroutines.FlowPreview")
+
+          if (task.hasCoroutines(target)) {
+            add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+            add("-opt-in=kotlinx.coroutines.FlowPreview")
+          }
         }
       }
     }
@@ -112,5 +117,35 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
           .forEach { file -> file.deleteRecursively() }
       }
     }
+  }
+
+  /**
+   * There's `sourceSetName` property for the task, but it isn't
+   * necessarily set for custom compile tasks like for `integrationTest`.
+   */
+  private fun KotlinCompile.sourceSetName(): String {
+    return name.substringAfter("compile")
+      .substringBefore("Kotlin")
+      .decapitalize()
+      .ifEmpty { "main" }
+  }
+
+  private fun KotlinCompile.hasCoroutines(target: Project): Boolean {
+
+    val configNames = when (val sourceSetName = sourceSetName()) {
+      "main" -> setOf("api", "implementation", "compileOnly")
+      else -> setOf(
+        "${sourceSetName}CompileOnly",
+        "${sourceSetName}Api",
+        "${sourceSetName}Implementation"
+      )
+    }
+
+    return target.configurations
+      .asSequence()
+      .filter { it.name in configNames }
+      .flatMap { it.dependencies.asSequence() }
+      .filterIsInstance<ExternalModuleDependency>()
+      .any { it.group == "org.jetbrains.kotlinx" && it.name.startsWith("kotlinx-coroutines-") }
   }
 }

@@ -32,7 +32,6 @@ dependencies {
 
   implementation(project(path = ":modulecheck-model:sourceset:api"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

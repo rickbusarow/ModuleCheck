@@ -48,7 +48,6 @@ dependencies {
   implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.rickBusarow.dispatch.test.core)
@@ -59,6 +58,7 @@ dependencies {
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-parsing:source:api"))
   testImplementation(project(path = ":modulecheck-project-generation:api"))
+  testImplementation(project(path = ":modulecheck-rule:api"))
   testImplementation(project(path = ":modulecheck-rule:impl"))
   testImplementation(project(path = ":modulecheck-rule:impl-factory"))
   testImplementation(project(path = ":modulecheck-runtime:testing"))

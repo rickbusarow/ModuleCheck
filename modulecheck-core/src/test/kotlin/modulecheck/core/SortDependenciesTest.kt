@@ -19,18 +19,19 @@ import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
 import modulecheck.runtime.test.ProjectFindingReport.unsortedDependencies
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.runtime.test.RunnerTestEnvironment
 import modulecheck.testing.writeGroovy
 import org.junit.jupiter.api.Test
 import java.io.File
 
 class SortDependenciesTest : RunnerTest() {
 
-  override val settings by resets {
+  override val settings: RunnerTestEnvironment.() -> TestSettings = {
     TestSettings(checks = TestChecksSettings(sortDependencies = true))
   }
 
   @Test
-  fun `kts out-of-order dependencies should be sorted`() {
+  fun `kts out-of-order dependencies should be sorted`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile {
@@ -95,7 +96,7 @@ class SortDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `kts multi-line comments should move with their declarations`() {
+  fun `kts multi-line comments should move with their declarations`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile {
@@ -140,7 +141,7 @@ class SortDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `kts multi-line kdoc comments should move with their declarations`() {
+  fun `kts multi-line kdoc comments should move with their declarations`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile {
@@ -185,7 +186,7 @@ class SortDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `kts preceding comments should move with their declarations`() {
+  fun `kts preceding comments should move with their declarations`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile {
@@ -226,7 +227,7 @@ class SortDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `kts trailing comments should move with their declarations`() {
+  fun `kts trailing comments should move with their declarations`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile {
@@ -265,7 +266,7 @@ class SortDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `kts sorting should be idempotent`() {
+  fun `kts sorting should be idempotent`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile {
@@ -365,7 +366,7 @@ class SortDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `groovy out-of-order plugins should be sorted`() {
+  fun `groovy out-of-order plugins should be sorted`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
@@ -434,7 +435,7 @@ class SortDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `groovy multi-line comments should move with declarations`() {
+  fun `groovy multi-line comments should move with declarations`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
@@ -481,7 +482,7 @@ class SortDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `groovy multi-line javadoc comments should move with declarations`() {
+  fun `groovy multi-line javadoc comments should move with declarations`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
@@ -528,7 +529,7 @@ class SortDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `groovy preceding comments should move with declarations`() {
+  fun `groovy preceding comments should move with declarations`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
@@ -571,7 +572,7 @@ class SortDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `groovy trailing comments should move with declarations`() {
+  fun `groovy trailing comments should move with declarations`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
@@ -612,7 +613,7 @@ class SortDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `groovy sorting should be idempotent`() {
+  fun `groovy sorting should be idempotent`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile.delete()

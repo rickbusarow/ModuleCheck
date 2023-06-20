@@ -19,12 +19,13 @@ import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.testing.BaseTest
-import modulecheck.utils.child
+import modulecheck.testing.TestEnvironment
 import modulecheck.utils.createSafely
+import modulecheck.utils.resolve
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 
-internal class StylesFileTest : BaseTest() {
+internal class StylesFileTest : BaseTest<TestEnvironment>() {
 
   @Test
   fun `external style parent and value references should count as references`() = test {
@@ -41,8 +42,8 @@ internal class StylesFileTest : BaseTest() {
       </resources>
     """.trimIndent()
 
-    val xml = testProjectDir
-      .child("styles.xml")
+    val xml = workingDir
+      .resolve("styles.xml")
       .createSafely(text)
 
     val file = AndroidStylesFile(xml)
@@ -70,8 +71,8 @@ internal class StylesFileTest : BaseTest() {
     </resources>
       """.trimIndent()
 
-      val xml = testProjectDir
-        .child("styles.xml")
+      val xml = workingDir
+        .resolve("styles.xml")
         .createSafely(text)
 
       val file = AndroidStylesFile(xml)
@@ -100,8 +101,8 @@ internal class StylesFileTest : BaseTest() {
     </resources>
       """.trimIndent()
 
-      val xml = testProjectDir
-        .child("styles.xml")
+      val xml = workingDir
+        .resolve("styles.xml")
         .createSafely(text)
 
       val file = AndroidStylesFile(xml)
@@ -129,8 +130,8 @@ internal class StylesFileTest : BaseTest() {
     </resources>
     """.trimIndent()
 
-    val xml = testProjectDir
-      .child("styles.xml")
+    val xml = workingDir
+      .resolve("styles.xml")
       .createSafely(text)
 
     val file = AndroidStylesFile(xml)

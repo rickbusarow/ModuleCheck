@@ -95,7 +95,6 @@ class ModuleCheckPlugin : Plugin<GradleProject> {
       }
   }
 
-  @Suppress("LongParameterList")
   private fun GradleProject.registerTasks(
     name: String,
     findingName: FindingName?,

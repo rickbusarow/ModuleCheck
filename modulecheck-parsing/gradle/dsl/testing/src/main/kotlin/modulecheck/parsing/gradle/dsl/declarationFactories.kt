@@ -19,6 +19,16 @@ import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.MavenCoordinates
 import modulecheck.model.dependency.ProjectPath
 
+/**
+ * Creates an instance of [UnknownDependencyDeclaration] with the given arguments.
+ *
+ * @param argument The argument that is unknown.
+ * @param configName The name of the configuration this dependency belongs to.
+ * @param declarationText The text representation of this declaration.
+ * @param statementWithSurroundingText The declaration statement along with its surrounding context.
+ * @param suppressed A list of suppressed warnings, empty by default.
+ * @return An instance of [UnknownDependencyDeclaration].
+ */
 fun UnknownDependencyDeclaration(
   argument: String,
   configName: ConfigurationName,
@@ -34,7 +44,17 @@ fun UnknownDependencyDeclaration(
   configurationNameTransform = { it.value }
 )
 
-@Suppress("LongParameterList")
+/**
+ * Creates an instance of [ModuleDependencyDeclaration] with the given arguments.
+ *
+ * @param projectPath The path to the project this dependency refers to.
+ * @param projectAccessor The string used to access the project in the dependency declaration.
+ * @param configName The name of the configuration this dependency belongs to.
+ * @param declarationText The text representation of this declaration.
+ * @param statementWithSurroundingText The declaration statement along with its surrounding context.
+ * @param suppressed A list of suppressed warnings, empty by default.
+ * @return An instance of [ModuleDependencyDeclaration].
+ */
 fun ModuleDependencyDeclaration(
   projectPath: ProjectPath,
   projectAccessor: String,
@@ -51,7 +71,20 @@ fun ModuleDependencyDeclaration(
   suppressed = suppressed
 ) { it.value }
 
-@Suppress("LongParameterList")
+/**
+ * Creates an instance of [ExternalDependencyDeclaration] with the given arguments.
+ *
+ * @param configName The name of the configuration this dependency belongs to.
+ * @param declarationText The text representation of this declaration.
+ * @param statementWithSurroundingText The declaration statement along with its surrounding context.
+ * @param suppressed A list of suppressed warnings, empty by default.
+ * @param group The group of the external dependency.
+ * @param moduleName The name of the module in the external dependency.
+ * @param version The version of the external dependency.
+ * @param coordinates The [MavenCoordinates] for the external
+ *   dependency, computed from the group, module name and version.
+ * @return An instance of [ExternalDependencyDeclaration].
+ */
 fun ExternalDependencyDeclaration(
   configName: ConfigurationName,
   declarationText: String,

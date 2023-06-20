@@ -22,19 +22,20 @@ import modulecheck.finding.Finding.Position
 import modulecheck.finding.FindingName
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.runtime.test.RunnerTestEnvironment
 import org.junit.jupiter.api.Test
 import java.io.File
 
 internal class CheckstyleReportingTest : RunnerTest() {
 
-  override val settings by resets {
+  override val settings: RunnerTestEnvironment.() -> TestSettings = {
     TestSettings().apply {
-      reports.checkstyle.outputPath = File(testProjectDir, reports.checkstyle.outputPath).path
+      reports.checkstyle.outputPath = File(workingDir, reports.checkstyle.outputPath).path
     }
   }
 
   @Test
-  fun `checkstyle report should not be created if disabled in settings`() {
+  fun `checkstyle report should not be created if disabled in settings`() = test {
 
     settings.reports.checkstyle.enabled = false
 
@@ -47,7 +48,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
           CouldUseAnvilFinding(
             findingName = FindingName("some-name"),
             dependentProject = kotlinProject(":lib1"),
-            buildFile = testProjectDir
+            buildFile = workingDir
           )
         )
       ),
@@ -72,7 +73,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
   }
 
   @Test
-  fun `checkstyle report should be created if enabled in settings`() {
+  fun `checkstyle report should be created if enabled in settings`() = test {
 
     settings.reports.checkstyle.enabled = true
 
@@ -85,7 +86,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
           CouldUseAnvilFinding(
             findingName = FindingName("some-name"),
             dependentProject = kotlinProject(":lib1"),
-            buildFile = testProjectDir
+            buildFile = workingDir
           )
         )
       ),

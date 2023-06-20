@@ -16,22 +16,27 @@
 package modulecheck.reporting.graphviz
 
 import io.kotest.inspectors.forAll
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.generation.maybeAddSourceSet
+import modulecheck.rule.ModuleCheckRule
+import modulecheck.rule.RuleFilter
 import modulecheck.rule.impl.DepthRule
 import modulecheck.runtime.test.RunnerTest
-import modulecheck.utils.child
+import modulecheck.utils.resolve
 import org.junit.jupiter.api.Test
 import java.io.File
 
 internal class GraphVizReportTest : RunnerTest() {
 
-  override val rules = listOf(DepthRule())
+  override val rules: (ModuleCheckSettings, RuleFilter) -> List<ModuleCheckRule<*>> = { _, _ ->
+    listOf(DepthRule())
+  }
 
   fun McProject.graphFile(sourceSet: String = "main"): File {
-    return projectDir.child(
+    return projectDir.resolve(
       "build",
       "reports",
       "modulecheck",
@@ -41,7 +46,7 @@ internal class GraphVizReportTest : RunnerTest() {
   }
 
   @Test
-  fun `graph report should not be created if disabled in settings`() {
+  fun `graph report should not be created if disabled in settings`() = test {
 
     settings.reports.graphs.enabled = false
 
@@ -62,7 +67,7 @@ internal class GraphVizReportTest : RunnerTest() {
   }
 
   @Test
-  fun `graph should be created if enabled in settings`() {
+  fun `graph should be created if enabled in settings`() = test {
 
     settings.reports.graphs.enabled = true
 
@@ -108,11 +113,11 @@ internal class GraphVizReportTest : RunnerTest() {
 
   // https://github.com/RBusarow/ModuleCheck/issues/575
   @Test
-  fun `custom report dir should put all graphs in relative directories`() {
+  fun `custom report dir should put all graphs in relative directories`() = test {
 
-    val graphsDir = testProjectDir.child("graphs")
+    val graphsDir = workingDir.resolve("graphs")
     fun graph(project: McProject, sourceSetName: SourceSetName): File {
-      return graphsDir.child(
+      return graphsDir.resolve(
         project.projectPath.value.removePrefix(":"),
         "${sourceSetName.value}.dot"
       )
@@ -203,7 +208,7 @@ internal class GraphVizReportTest : RunnerTest() {
   }
 
   @Test
-  fun `graph should be created for zero-depth source sets if the source set is not empty`() {
+  fun `graph should be created for zero-depth source sets if the source set is not empty`() = test {
 
     settings.reports.graphs.enabled = true
 
@@ -228,7 +233,7 @@ internal class GraphVizReportTest : RunnerTest() {
   }
 
   @Test
-  fun `graph should be created for an existing source set with no files`() {
+  fun `graph should be created for an existing source set with no files`() = test {
 
     settings.reports.graphs.enabled = true
 
@@ -253,7 +258,7 @@ internal class GraphVizReportTest : RunnerTest() {
   }
 
   @Test
-  fun `test source set graph should be test-specific`() {
+  fun `test source set graph should be test-specific`() = test {
 
     settings.reports.graphs.enabled = true
 
@@ -360,7 +365,7 @@ internal class GraphVizReportTest : RunnerTest() {
   }
 
   @Test
-  fun `debug source set graph should be debug-specific`() {
+  fun `debug source set graph should be debug-specific`() = test {
 
     settings.reports.graphs.enabled = true
 

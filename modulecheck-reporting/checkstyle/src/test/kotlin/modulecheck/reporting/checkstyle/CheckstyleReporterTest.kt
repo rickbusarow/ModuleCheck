@@ -20,10 +20,11 @@ import modulecheck.finding.Finding.Position
 import modulecheck.finding.FindingName
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.testing.BaseTest
+import modulecheck.testing.TestEnvironment
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class CheckstyleReporterTest : BaseTest() {
+internal class CheckstyleReporterTest : BaseTest<TestEnvironment>() {
 
   @Test
   fun `empty result list should create checkstyle xml with no child attributes`() {

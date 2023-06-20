@@ -50,7 +50,6 @@ import modulecheck.utils.createSafely
 import java.io.File
 
 @PublishedApi
-@Suppress("LongParameterList")
 internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> createProject(
   projectCache: ProjectCache,
   dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,

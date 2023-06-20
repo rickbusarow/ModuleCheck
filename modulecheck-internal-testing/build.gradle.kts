@@ -23,7 +23,6 @@ mcbuild {
 
 dependencies {
 
-  api(libs.bundles.hermit)
   api(libs.bundles.junit)
   api(libs.bundles.kotest)
 

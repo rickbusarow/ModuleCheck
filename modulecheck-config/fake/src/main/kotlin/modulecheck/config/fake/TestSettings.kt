@@ -46,7 +46,6 @@ data class TestSettings(
   fun sort(block: SortSettings.() -> Unit): Unit = Unit
 }
 
-@Suppress("LongParameterList")
 data class TestChecksSettings(
   override var redundantDependency: Boolean = ChecksSettings.REDUNDANT_DEPENDENCY_DEFAULT,
   override var unusedDependency: Boolean = ChecksSettings.UNUSED_DEPENDENCY_DEFAULT,
@@ -63,12 +62,12 @@ data class TestChecksSettings(
   override var depths: Boolean = ChecksSettings.DEPTHS_DEFAULT
 ) : ChecksSettings
 
-class TestSortSettings(
+data class TestSortSettings(
   override var pluginComparators: List<String> = SortSettings.PLUGIN_COMPARATORS_DEFAULT,
   override var dependencyComparators: List<String> = SortSettings.DEPENDENCY_COMPARATORS_DEFAULT
 ) : SortSettings
 
-class TestReportsSettings(
+data class TestReportsSettings(
   override val checkstyle: ReportSettings = TestReportSettings(
     ReportsSettings.CHECKSTYLE_ENABLED_DEFAULT,
     ReportsSettings.CHECKSTYLE_PATH_DEFAULT
@@ -91,12 +90,12 @@ class TestReportsSettings(
   )
 ) : ReportsSettings
 
-class TestReportSettings(
+data class TestReportSettings(
   override var enabled: Boolean,
   override var outputPath: String
 ) : ReportSettings
 
-class TestPerModuleReportSettings(
+data class TestPerModuleReportSettings(
   override var enabled: Boolean,
   override var outputDir: String?
 ) : PerModuleReportSettings

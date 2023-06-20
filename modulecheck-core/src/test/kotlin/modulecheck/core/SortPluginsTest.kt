@@ -19,16 +19,19 @@ import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
 import modulecheck.runtime.test.ProjectFindingReport.unsortedPlugins
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.runtime.test.RunnerTestEnvironment
 import modulecheck.testing.writeGroovy
 import org.junit.jupiter.api.Test
 import java.io.File
 
 class SortPluginsTest : RunnerTest() {
 
-  override val settings by resets { TestSettings(checks = TestChecksSettings(sortPlugins = true)) }
+  override val settings: RunnerTestEnvironment.() -> TestSettings = {
+    TestSettings(checks = TestChecksSettings(sortPlugins = true))
+  }
 
   @Test
-  fun `kts out-of-order plugins should be sorted`() {
+  fun `kts out-of-order plugins should be sorted`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile {
@@ -58,7 +61,7 @@ class SortPluginsTest : RunnerTest() {
   }
 
   @Test
-  fun `kts sorting should be idempotent`() {
+  fun `kts sorting should be idempotent`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile {
@@ -101,7 +104,7 @@ class SortPluginsTest : RunnerTest() {
   }
 
   @Test
-  fun `groovy out-of-order plugins should be sorted`() {
+  fun `groovy out-of-order plugins should be sorted`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
@@ -133,7 +136,7 @@ class SortPluginsTest : RunnerTest() {
   }
 
   @Test
-  fun `groovy sorting should be idempotent`() {
+  fun `groovy sorting should be idempotent`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile.delete()

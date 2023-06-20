@@ -16,8 +16,8 @@
 package modulecheck.gradle
 
 import modulecheck.model.sourceset.SourceSetName
-import modulecheck.utils.child
 import modulecheck.utils.createSafely
+import modulecheck.utils.resolve
 import org.junit.jupiter.api.TestFactory
 import java.io.File
 
@@ -124,7 +124,7 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
       }
 
       // the manifest is automatically created, so go ahead and delete it for this one test.
-      lib1.projectDir.child("src/main/AndroidManifest.xml").delete()
+      lib1.projectDir.resolve("src/main/AndroidManifest.xml").delete()
 
       androidLibrary(":app", "com.modulecheck.app") {
         buildFile {
@@ -147,7 +147,7 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
           """
         }
 
-        projectDir.child("src/main/AndroidManifest.xml")
+        projectDir.resolve("src/main/AndroidManifest.xml")
           .createSafely("<manifest package=\"com.modulecheck.app\" />")
 
         addKotlinSource(
@@ -162,7 +162,7 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
       shouldSucceed("moduleCheck")
 
       // one last check to make sure the manifest wasn't generated, since that would invalidate the test
-      File(testProjectDir, "/lib1/src/main/AndroidManifest.xml").exists() shouldBe false
+      File(workingDir, "/lib1/src/main/AndroidManifest.xml").exists() shouldBe false
     }
 
   @TestFactory

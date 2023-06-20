@@ -152,13 +152,11 @@ dependencies {
   "integrationTestImplementation"(project(path = ":modulecheck-utils:coroutines:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-project-generation:api"))
-  testImplementation(project(path = ":modulecheck-utils:lazy"))
   testImplementation(project(path = ":modulecheck-utils:stdlib"))
 }
 

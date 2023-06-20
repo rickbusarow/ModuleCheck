@@ -22,12 +22,13 @@ import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.parsing.source.UnqualifiedAndroidResource.Companion.id
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.testing.BaseTest
-import modulecheck.utils.child
+import modulecheck.testing.TestEnvironment
 import modulecheck.utils.createSafely
+import modulecheck.utils.resolve
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 
-internal class XmlFileTest : BaseTest() {
+internal class XmlFileTest : BaseTest<TestEnvironment>() {
 
   @Test
   fun `an id which is declared in a layout should count as a declaration`() = test {
@@ -55,8 +56,8 @@ internal class XmlFileTest : BaseTest() {
     </LinearLayout>
     """.trimIndent()
 
-    val xml = testProjectDir
-      .child("stubs.xml")
+    val xml = workingDir
+      .resolve("stubs.xml")
       .createSafely(text)
 
     val file = XmlFile.LayoutFile(xml)

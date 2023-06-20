@@ -34,7 +34,6 @@ dependencies {
 
   implementation(project(path = ":modulecheck-dagger"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.square.turbine)

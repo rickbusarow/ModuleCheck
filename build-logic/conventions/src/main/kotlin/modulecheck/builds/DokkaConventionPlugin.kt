@@ -20,8 +20,10 @@ import com.vanniktech.maven.publish.tasks.JavadocJar
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.logging.LogLevel.QUIET
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.tasks.TaskCollection
+import org.gradle.internal.logging.LoggingManagerInternal
 import org.gradle.language.base.plugins.LifecycleBasePlugin
 import org.jetbrains.dokka.DokkaConfiguration
 import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
@@ -51,6 +53,11 @@ abstract class DokkaConventionPlugin : Plugin<Project> {
       if (target != target.rootProject && target.file("src/main").exists()) {
         dokkaTask.configureSourceSets(target)
       }
+    }
+
+    // Dokka is way too chatty
+    target.tasks.withType(AbstractDokkaTask::class.java).configureEach { dokkaTask ->
+      (dokkaTask.logging as LoggingManagerInternal).setLevelInternal(QUIET)
     }
 
     target.dependencies.add(

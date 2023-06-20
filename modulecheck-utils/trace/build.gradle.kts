@@ -29,7 +29,6 @@ dependencies {
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.square.turbine)
