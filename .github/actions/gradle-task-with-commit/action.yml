@@ -1,5 +1,5 @@
-name: 'Set Up Gradle and Run Task'
-description: 'This action performs common steps for a specific task.'
+name : Set Up Gradle and Run Task
+description : This action performs a "fix"-type Gradle task and commits/pushes changes if possible.
 
 inputs:
   java-version:
@@ -19,7 +19,6 @@ inputs:
     default: ''
   personal-access-token:
     description: 'The personal access token to use for checkouts'
-    required: true
   restore-cache-key:
     description: 'The unique identifier for the associated cache.  Any other consumers or producers for this cache must use the same name.'
     default: 'null'
@@ -34,19 +33,21 @@ runs:
       id: can-push
       shell: bash
       run: |
-        if [[ ${{ inputs.personal-access-token }} == '' ]]; then
+        if [[ "${{ inputs.personal-access-token }}" == '' ]]; then
           echo "can_push=false" >> $GITHUB_OUTPUT
-        elif [[ ${{ github.event.pull_request.head.repo.full_name }} != ${{ github.repository }} ]]; then
+        elif [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
           echo "can_push=false" >> $GITHUB_OUTPUT
         else
           echo "can_push=true" >> $GITHUB_OUTPUT
         fi
 
+    # ensure that we have the actual branch checked out.  By default, actions/checkout is headless.
     - name: check out with PAT
       uses: actions/checkout@v3
       if: steps.can-push.outputs.can_push == 'true'
       with:
         token: ${{ inputs.personal-access-token }}
+        ref: ${{ github.head_ref }}
         fetch-depth: 0
 
     - name: Run ${{ inputs.fix-task }}
@@ -79,7 +80,7 @@ runs:
 
     - name: Run ${{ inputs.check-task }}
       if: steps.can-push.outputs.can_push != 'true'
-      uses: gradle/gradle-build-action@v2
+      uses: ./.github/actions/gradle-task
       with:
         task: ${{ inputs.check-task }}
         distribution: ${{ inputs.distribution }}
