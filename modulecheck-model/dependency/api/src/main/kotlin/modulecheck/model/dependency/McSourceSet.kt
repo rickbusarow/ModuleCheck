@@ -61,7 +61,6 @@ class SourceSets(
  *   this one, like `test` if this source set is `main`
  * @since 0.12.0
  */
-@Suppress("LongParameterList")
 class McSourceSet(
   val name: SourceSetName,
   val compileOnlyConfiguration: McConfiguration,

@@ -15,8 +15,8 @@
 
 package modulecheck.gradle
 
-import modulecheck.utils.child
 import modulecheck.utils.createSafely
+import modulecheck.utils.resolve
 import org.gradle.testkit.runner.TaskOutcome.SUCCESS
 import org.junit.jupiter.api.TestFactory
 
@@ -35,7 +35,7 @@ class TaskLifecycleTest : BaseGradleTest() {
         """
       }
 
-      projectDir.child("settings.gradle.kts").createSafely()
+      projectDir.resolve("settings.gradle.kts").createSafely()
     }
 
     shouldSucceed(
@@ -68,7 +68,7 @@ class TaskLifecycleTest : BaseGradleTest() {
         """
       }
 
-      projectDir.child("settings.gradle.kts").createSafely()
+      projectDir.resolve("settings.gradle.kts").createSafely()
     }
 
     shouldSucceed(

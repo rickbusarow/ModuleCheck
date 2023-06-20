@@ -25,13 +25,14 @@ import org.junit.jupiter.api.Test
 class AnvilScopesTest : RunnerTest() {
 
   @Test
-  fun `module which contributes anvil scopes should not be unused in module which merges that scope`() {
+  fun `module which contributes anvil scopes should not be unused in module which merges that scope`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), true)
+      val lib1 = kotlinProject(":lib1") {
+        anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), true)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
           id("com.squareup.anvil")
@@ -41,10 +42,10 @@ class AnvilScopesTest : RunnerTest() {
           implementation("javax.inject:javax.inject:1")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         import com.squareup.anvil.annotations.ContributesBinding
@@ -55,15 +56,15 @@ class AnvilScopesTest : RunnerTest() {
 
         interface Foo
         """
-      )
-    }
+        )
+      }
 
-    kotlinProject(":lib2") {
-      addDependency(ConfigurationName.api, lib1)
-      anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), false)
+      kotlinProject(":lib2") {
+        addDependency(ConfigurationName.api, lib1)
+        anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), false)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -76,10 +77,10 @@ class AnvilScopesTest : RunnerTest() {
           kapt("com.google.dagger:dagger-compiler:2.38.1")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         import com.squareup.anvil.annotations.MergeComponent
@@ -87,21 +88,22 @@ class AnvilScopesTest : RunnerTest() {
         @MergeComponent(Unit::class)
         interface AppComponent
         """
-      )
+        )
+      }
+
+      run(
+        autoCorrect = false
+      ).isSuccess shouldBe true
     }
 
-    run(
-      autoCorrect = false
-    ).isSuccess shouldBe true
-  }
-
   @Test
-  fun `module which contributes anvil scopes with named argument should not be unused in module which merges that scope`() {
+  fun `module which contributes anvil scopes with named argument should not be unused in module which merges that scope`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), true)
-      buildFile {
-        """
+      val lib1 = kotlinProject(":lib1") {
+        anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), true)
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
           id("com.squareup.anvil")
@@ -111,10 +113,10 @@ class AnvilScopesTest : RunnerTest() {
           implementation("javax.inject:javax.inject:1")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         import com.squareup.anvil.annotations.ContributesBinding
@@ -125,15 +127,15 @@ class AnvilScopesTest : RunnerTest() {
 
         interface Foo
         """
-      )
-    }
+        )
+      }
 
-    kotlinProject(":lib2") {
-      addDependency(ConfigurationName.api, lib1)
-      anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), false)
+      kotlinProject(":lib2") {
+        addDependency(ConfigurationName.api, lib1)
+        anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), false)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -146,10 +148,10 @@ class AnvilScopesTest : RunnerTest() {
           kapt("com.google.dagger:dagger-compiler:2.38.1")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         import com.squareup.anvil.annotations.MergeComponent
@@ -157,21 +159,22 @@ class AnvilScopesTest : RunnerTest() {
         @MergeComponent(scope = Unit::class)
         interface AppComponent
         """
-      )
+        )
+      }
+
+      run(
+        autoCorrect = false
+      ).isSuccess shouldBe true
     }
 
-    run(
-      autoCorrect = false
-    ).isSuccess shouldBe true
-  }
-
   @Test
-  fun `module which contributes anvil scopes with named argument and wrong order should not be unused in module which merges that scope`() {
+  fun `module which contributes anvil scopes with named argument and wrong order should not be unused in module which merges that scope`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), true)
-      buildFile {
-        """
+      val lib1 = kotlinProject(":lib1") {
+        anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), true)
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
           id("com.squareup.anvil")
@@ -181,10 +184,10 @@ class AnvilScopesTest : RunnerTest() {
           implementation("javax.inject:javax.inject:1")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         import com.squareup.anvil.annotations.ContributesBinding
@@ -195,15 +198,15 @@ class AnvilScopesTest : RunnerTest() {
 
         interface Foo
         """
-      )
-    }
+        )
+      }
 
-    kotlinProject(":lib2") {
-      addDependency(ConfigurationName.api, lib1)
-      anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), false)
+      kotlinProject(":lib2") {
+        addDependency(ConfigurationName.api, lib1)
+        anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), false)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -216,10 +219,10 @@ class AnvilScopesTest : RunnerTest() {
           kapt("com.google.dagger:dagger-compiler:2.38.1")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         import com.squareup.anvil.annotations.MergeComponent
@@ -227,21 +230,22 @@ class AnvilScopesTest : RunnerTest() {
         @MergeComponent(scope = Unit::class)
         interface AppComponent
         """
-      )
+        )
+      }
+
+      run(
+        autoCorrect = false
+      ).isSuccess shouldBe true
     }
 
-    run(
-      autoCorrect = false
-    ).isSuccess shouldBe true
-  }
-
   @Test
-  fun `module which contributes anvil scopes should be unused in module which does not merge that scope`() {
+  fun `module which contributes anvil scopes should be unused in module which does not merge that scope`() =
+    test {
 
-    val lib1 = kotlinProject(":lib1") {
-      anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), true)
-      buildFile {
-        """
+      val lib1 = kotlinProject(":lib1") {
+        anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), true)
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
           id("com.squareup.anvil")
@@ -251,10 +255,10 @@ class AnvilScopesTest : RunnerTest() {
           implementation("javax.inject:javax.inject:1")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         import com.squareup.anvil.annotations.ContributesBinding
@@ -265,15 +269,15 @@ class AnvilScopesTest : RunnerTest() {
 
         interface Foo
         """
-      )
-    }
+        )
+      }
 
-    kotlinProject(":lib2") {
-      addDependency(ConfigurationName.api, lib1)
-      anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), false)
+      kotlinProject(":lib2") {
+        addDependency(ConfigurationName.api, lib1)
+        anvilGradlePlugin = AnvilGradlePlugin(SemVer.parse("2.4.0"), false)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -286,10 +290,10 @@ class AnvilScopesTest : RunnerTest() {
           kapt("com.google.dagger:dagger-compiler:2.38.1")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         import com.squareup.anvil.annotations.MergeComponent
@@ -298,22 +302,22 @@ class AnvilScopesTest : RunnerTest() {
         @MergeComponent(scope = String::class)
         interface AppComponent
         """
-      )
-    }
+        )
+      }
 
-    run(
-      autoCorrect = false
-    ).isSuccess shouldBe false
+      run(
+        autoCorrect = false
+      ).isSuccess shouldBe false
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib2" to listOf(
-        unusedDependency(
-          fixed = false,
-          configuration = "api",
-          dependency = ":lib1",
-          position = "8, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":lib2" to listOf(
+          unusedDependency(
+            fixed = false,
+            configuration = "api",
+            dependency = ":lib1",
+            position = "8, 3"
+          )
         )
       )
-    )
-  }
+    }
 }

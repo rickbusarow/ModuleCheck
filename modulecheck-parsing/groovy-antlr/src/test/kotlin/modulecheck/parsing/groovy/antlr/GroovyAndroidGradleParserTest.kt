@@ -15,22 +15,25 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBlock
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
 import modulecheck.parsing.gradle.dsl.Assignment
 import modulecheck.testing.BaseTest
-import modulecheck.utils.child
+import modulecheck.testing.DynamicTests
+import modulecheck.testing.HasWorkingDir
+import modulecheck.testing.SkipInStackTrace
+import modulecheck.testing.TestEnvironment
 import modulecheck.utils.createSafely
+import modulecheck.utils.resolve
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
+import java.io.File
 
-internal class GroovyAndroidGradleParserTest : BaseTest() {
+internal class GroovyAndroidGradleParserTest : BaseTest<TestEnvironment>(), DynamicTests {
 
-  val testFile by resets {
-    testProjectDir.child("build.gradle").createSafely()
-  }
+  val TestEnvironment.testFile: File
+    get() = workingDir.resolve("build.gradle").createSafely()
 
   @TestFactory
   fun `lots of blocks`() = runTest { enabled ->
@@ -431,19 +434,20 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
     )
   }
 
-  fun runTest(block: suspend (enabled: Boolean) -> Unit): List<DynamicTest> {
-    return listOf(true, false).map { enabled ->
+  @SkipInStackTrace
+  fun runTest(block: suspend TestEnvironment.(enabled: Boolean) -> Unit): List<DynamicTest> {
 
-      val paramsString = " -- enabled: $enabled"
+    val frame = HasWorkingDir.testStackFrame()
 
-      val name = "${testDisplayName.replace("()", "")}$paramsString"
+    return listOf(true, false)
+      .dynamic({ "enabled: $it" }) { enabled ->
 
-      DynamicTest.dynamicTest(name) {
-        runBlocking { block(enabled) }
-        resetAll()
-
-        System.gc()
+        test(
+          testStackFrame = frame,
+          "enabled_$enabled"
+        ) {
+          block(enabled)
+        }
       }
-    }
   }
 }

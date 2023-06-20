@@ -23,7 +23,7 @@ import org.junit.jupiter.api.TestFactory
 class TasksValidationTest : BaseGradleTest() {
 
   @Test
-  fun `all tasks with descriptions`() {
+  fun `all tasks with descriptions`() = test {
 
     rootBuild.appendText(
       """

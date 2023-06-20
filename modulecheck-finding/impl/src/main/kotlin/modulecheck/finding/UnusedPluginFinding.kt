@@ -87,7 +87,11 @@ data class UnusedPluginFinding(
 
   override suspend fun fix(removalStrategy: RemovalStrategy): Boolean {
 
+    println("############################### 1")
+
     val declaration = statementOrNull.await() ?: return false
+
+    println("############################### 2")
 
     dependentProject.removeDependencyWithComment(declaration, fixLabel())
 

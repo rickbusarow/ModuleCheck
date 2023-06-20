@@ -40,7 +40,6 @@ dependencies {
   implementation(project(path = ":modulecheck-project:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlin.compiler)
@@ -50,6 +49,7 @@ dependencies {
   testImplementation(project(path = ":modulecheck-model:sourceset:api"))
   testImplementation(project(path = ":modulecheck-project-generation:api"))
   testImplementation(project(path = ":modulecheck-project:api"))
+  testImplementation(project(path = ":modulecheck-rule:api"))
   testImplementation(project(path = ":modulecheck-rule:impl"))
   testImplementation(project(path = ":modulecheck-runtime:testing"))
 }

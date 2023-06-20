@@ -30,15 +30,16 @@ class UnusedKaptPluginTest : RunnerTest() {
   val dagger = "com.google.dagger:dagger-compiler:2.40.5"
 
   @Test
-  fun `plugin applied but with processor in non-kapt configuration without autoCorrect should remove plugin`() {
+  fun `plugin applied but with processor in non-kapt configuration without autoCorrect should remove plugin`() =
+    test {
 
-    val app = kotlinProject(":app") {
-      hasKapt = true
+      val app = kotlinProject(":app") {
+        hasKapt = true
 
-      addExternalDependency(ConfigurationName.api, dagger)
+        addExternalDependency(ConfigurationName.api, dagger)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -48,12 +49,12 @@ class UnusedKaptPluginTest : RunnerTest() {
           api("$dagger")
         }
         """
+        }
       }
-    }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    app.buildFile shouldHaveText """
+      app.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
           // kotlin("kapt")  // ModuleCheck finding [unused-kapt-plugin]
@@ -64,19 +65,19 @@ class UnusedKaptPluginTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":app" to listOf(
-        unusedKaptPlugin(
-          fixed = true,
-          dependency = "org.jetbrains.kotlin.kapt",
-          position = "3, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":app" to listOf(
+          unusedKaptPlugin(
+            fixed = true,
+            dependency = "org.jetbrains.kotlin.kapt",
+            position = "3, 3"
+          )
         )
       )
-    )
-  }
+    }
 
   @Test
-  fun `unused with main kapt no other processors should remove plugin`() {
+  fun `unused with main kapt no other processors should remove plugin`() = test {
 
     val app = kotlinProject(":app") {
       hasKapt = true
@@ -112,7 +113,7 @@ class UnusedKaptPluginTest : RunnerTest() {
   }
 
   @Test
-  fun `unused kapt should be ignored if suppressed at the statement`() {
+  fun `unused kapt should be ignored if suppressed at the statement`() = test {
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       hasKapt = true
       buildFile {
@@ -142,7 +143,7 @@ class UnusedKaptPluginTest : RunnerTest() {
   }
 
   @Test
-  fun `unused kapt should be ignored if suppressed with old finding name`() {
+  fun `unused kapt should be ignored if suppressed with old finding name`() = test {
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       hasKapt = true
       buildFile {
@@ -172,7 +173,7 @@ class UnusedKaptPluginTest : RunnerTest() {
   }
 
   @Test
-  fun `unused kapt should be fixed if suppressed with some other finding name`() {
+  fun `unused kapt should be fixed if suppressed with some other finding name`() = test {
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       hasKapt = true
 
@@ -211,7 +212,7 @@ class UnusedKaptPluginTest : RunnerTest() {
   }
 
   @Test
-  fun `unused kapt should be ignored if suppressed at the block`() {
+  fun `unused kapt should be ignored if suppressed at the block`() = test {
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       hasKapt = true
       buildFile {
@@ -241,7 +242,7 @@ class UnusedKaptPluginTest : RunnerTest() {
   }
 
   @Test
-  fun `unused processor should not make the plugin unused if the processor is suppressed`() {
+  fun `unused processor should not make the plugin unused if the processor is suppressed`() = test {
 
     val app = kotlinProject(":app") {
       hasKapt = true
@@ -281,7 +282,7 @@ class UnusedKaptPluginTest : RunnerTest() {
   }
 
   @Test
-  fun `used custom processor using KaptMatcher should not make the plugin unused`() {
+  fun `used custom processor using KaptMatcher should not make the plugin unused`() = test {
 
     @Suppress("DEPRECATION")
     settings.additionalKaptMatchers = listOf(
@@ -342,26 +343,27 @@ class UnusedKaptPluginTest : RunnerTest() {
   }
 
   @Test
-  fun `used custom processor in test source using KaptMatcher should not make the plugin unused`() {
+  fun `used custom processor in test source using KaptMatcher should not make the plugin unused`() =
+    test {
 
-    @Suppress("DEPRECATION")
-    settings.additionalKaptMatchers = listOf(
-      KaptMatcher(
-        name = "Processor",
-        processor = "com.modulecheck:processor",
-        annotationImports = listOf(
-          """com\.modulecheck\.annotations\.TheAnnotation"""
+      @Suppress("DEPRECATION")
+      settings.additionalKaptMatchers = listOf(
+        KaptMatcher(
+          name = "Processor",
+          processor = "com.modulecheck:processor",
+          annotationImports = listOf(
+            """com\.modulecheck\.annotations\.TheAnnotation"""
+          )
         )
       )
-    )
 
-    val app = kotlinProject(":app") {
-      hasKapt = true
+      val app = kotlinProject(":app") {
+        hasKapt = true
 
-      addExternalDependency("kaptTest".asConfigurationName(), "com.modulecheck:processor:0.0.1")
+        addExternalDependency("kaptTest".asConfigurationName(), "com.modulecheck:processor:0.0.1")
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           id("kotlin-jvm")
           id("kotlin-kapt")
@@ -371,22 +373,22 @@ class UnusedKaptPluginTest : RunnerTest() {
           kaptTest("com.modulecheck:processor:0.0.1")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.annotations
 
         @TheAnnotation
         class Lib1Class
         """,
-        SourceSetName.TEST
-      )
-    }
+          SourceSetName.TEST
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    app.buildFile shouldHaveText """
+      app.buildFile shouldHaveText """
       plugins {
         id("kotlin-jvm")
         id("kotlin-kapt")
@@ -397,29 +399,30 @@ class UnusedKaptPluginTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe emptyList()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `used custom annotation processor using CodeGeneratorBinding should not make the plugin unused`() {
+  fun `used custom annotation processor using CodeGeneratorBinding should not make the plugin unused`() =
+    test {
 
-    settings.additionalCodeGenerators = listOf(
-      CodeGeneratorBinding.AnnotationProcessor(
-        "Processor",
-        "com.modulecheck:processor",
-        listOf(
-          "com.modulecheck.annotations.TheAnnotation"
+      settings.additionalCodeGenerators = listOf(
+        CodeGeneratorBinding.AnnotationProcessor(
+          "Processor",
+          "com.modulecheck:processor",
+          listOf(
+            "com.modulecheck.annotations.TheAnnotation"
+          )
         )
       )
-    )
 
-    val app = kotlinProject(":app") {
-      hasKapt = true
+      val app = kotlinProject(":app") {
+        hasKapt = true
 
-      addExternalDependency(ConfigurationName.kapt, "com.modulecheck:processor:0.0.1")
+        addExternalDependency(ConfigurationName.kapt, "com.modulecheck:processor:0.0.1")
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           id("kotlin-jvm")
           id("kotlin-kapt")
@@ -429,10 +432,10 @@ class UnusedKaptPluginTest : RunnerTest() {
           kapt("com.modulecheck:processor:0.0.1")
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         import com.modulecheck.annotations.TheAnnotation
@@ -440,12 +443,12 @@ class UnusedKaptPluginTest : RunnerTest() {
         @TheAnnotation
         class Lib1Class
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    app.buildFile shouldHaveText """
+      app.buildFile shouldHaveText """
       plugins {
         id("kotlin-jvm")
         id("kotlin-kapt")
@@ -456,6 +459,6 @@ class UnusedKaptPluginTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe emptyList()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 }

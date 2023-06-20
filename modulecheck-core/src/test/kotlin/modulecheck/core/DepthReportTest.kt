@@ -15,32 +15,39 @@
 
 package modulecheck.core
 
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.fake.TestSettings
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.generation.maybeAddSourceSet
+import modulecheck.rule.ModuleCheckRule
+import modulecheck.rule.RuleFilter
 import modulecheck.rule.impl.DepthRule
 import modulecheck.rule.impl.FindingFactoryImpl
 import modulecheck.rule.impl.UnusedDependencyRule
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.runtime.test.RunnerTestEnvironment
 import modulecheck.utils.remove
 import org.junit.jupiter.api.Test
 import java.io.File
 
 internal class DepthReportTest : RunnerTest() {
 
-  override val settings by resets {
+  override val settings: RunnerTestEnvironment.() -> TestSettings = {
     TestSettings().apply {
-      reports.depths.outputPath = File(testProjectDir, reports.depths.outputPath).path
+      reports.depths.outputPath = File(workingDir, reports.depths.outputPath).path
     }
   }
 
-  override val rules = listOf(DepthRule())
+  override val rules: (ModuleCheckSettings, RuleFilter) -> List<ModuleCheckRule<*>> = { _, _ ->
+    listOf(DepthRule())
+  }
 
-  val outputFile by resets { File(settings.reports.depths.outputPath) }
+  val RunnerTestEnvironment.outputFile
+    get() = File(settings.reports.depths.outputPath)
 
   @Test
-  fun `depth report should not be created if disabled in settings`() {
+  fun `depth report should not be created if disabled in settings`() = test {
 
     settings.reports.depths.enabled = false
 
@@ -61,7 +68,7 @@ internal class DepthReportTest : RunnerTest() {
   }
 
   @Test
-  fun `depth report should be created if enabled in settings`() {
+  fun `depth report should be created if enabled in settings`() = test {
 
     settings.reports.depths.enabled = true
 
@@ -93,7 +100,7 @@ internal class DepthReportTest : RunnerTest() {
   }
 
   @Test
-  fun `depth report should include zero-depth source sets if they're not empty`() {
+  fun `depth report should include zero-depth source sets if they're not empty`() = test {
 
     settings.reports.depths.enabled = true
 
@@ -131,7 +138,7 @@ internal class DepthReportTest : RunnerTest() {
   }
 
   @Test
-  fun `depth report should not include zero-depth source sets if they have no files`() {
+  fun `depth report should not include zero-depth source sets if they have no files`() = test {
 
     settings.reports.depths.enabled = true
 
@@ -163,7 +170,7 @@ internal class DepthReportTest : RunnerTest() {
   }
 
   @Test
-  fun `test source set depths should use the main depth of the dependency`() {
+  fun `test source set depths should use the main depth of the dependency`() = test {
 
     settings.reports.depths.enabled = true
 
@@ -203,7 +210,7 @@ internal class DepthReportTest : RunnerTest() {
   }
 
   @Test
-  fun `depth report should be calculated after fixes are applied`() {
+  fun `depth report should be calculated after fixes are applied`() = test {
 
     settings.checks.depths = true
     settings.reports.depths.enabled = true
@@ -304,7 +311,7 @@ internal class DepthReportTest : RunnerTest() {
   }
 
   @Test
-  fun `debug source set depth should be reported`() {
+  fun `debug source set depth should be reported`() = test {
 
     settings.reports.depths.enabled = true
 

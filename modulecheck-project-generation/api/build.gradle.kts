@@ -26,8 +26,6 @@ mcbuild {
 
 dependencies {
 
-  api(libs.bundles.hermit)
-
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-model:dependency:impl"))
@@ -41,7 +39,6 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  implementation(libs.bundles.hermit)
   implementation(libs.bundles.junit)
   implementation(libs.bundles.kotest)
   implementation(libs.bundles.kotest)

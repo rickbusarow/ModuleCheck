@@ -68,7 +68,9 @@ class ReportFactory @Inject constructor() {
             { it.dependencyIdentifier },
             { it.positionOrNull },
             { it.findingName.id },
-            { it.sourceOrNull }
+            { it.configurationName },
+            { it.sourceOrNull },
+            { it.toString() }
           )
         ).forEach { result ->
 

@@ -15,7 +15,7 @@
 
 package modulecheck.gradle
 
-import modulecheck.testing.replaceOrFail
+import modulecheck.testing.assert.replaceOrFail
 import org.junit.jupiter.api.TestFactory
 
 class AnvilPluginParsingTest : BaseGradleTest() {

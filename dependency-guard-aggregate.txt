@@ -52,10 +52,6 @@
 
 :modulecheck-internal-testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
 :modulecheck-internal-testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-internal-testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-test:1.0.0-beta10
-:modulecheck-internal-testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-core:0.9.6
-:modulecheck-internal-testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-coroutines:0.9.6
-:modulecheck-internal-testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-junit5:0.9.6
 :modulecheck-internal-testing -- runtimeClasspath -- io.github.java-diff-utils:java-diff-utils:4.12
 :modulecheck-internal-testing -- runtimeClasspath -- io.kotest:kotest-assertions-api-jvm:5.6.2
 :modulecheck-internal-testing -- runtimeClasspath -- io.kotest:kotest-assertions-api:5.6.2
@@ -65,15 +61,6 @@
 :modulecheck-internal-testing -- runtimeClasspath -- io.kotest:kotest-common-jvm:5.6.2
 :modulecheck-internal-testing -- runtimeClasspath -- io.kotest:kotest-common:5.6.2
 :modulecheck-internal-testing -- runtimeClasspath -- io.kotest:kotest-property-jvm:5.6.2
-:modulecheck-internal-testing -- runtimeClasspath -- io.mockk:mockk-agent-api:1.12.4
-:modulecheck-internal-testing -- runtimeClasspath -- io.mockk:mockk-agent-common:1.12.4
-:modulecheck-internal-testing -- runtimeClasspath -- io.mockk:mockk-agent-jvm:1.12.4
-:modulecheck-internal-testing -- runtimeClasspath -- io.mockk:mockk-common:1.12.4
-:modulecheck-internal-testing -- runtimeClasspath -- io.mockk:mockk-dsl-jvm:1.12.4
-:modulecheck-internal-testing -- runtimeClasspath -- io.mockk:mockk-dsl:1.12.4
-:modulecheck-internal-testing -- runtimeClasspath -- io.mockk:mockk:1.12.4
-:modulecheck-internal-testing -- runtimeClasspath -- net.bytebuddy:byte-buddy-agent:1.12.6
-:modulecheck-internal-testing -- runtimeClasspath -- net.bytebuddy:byte-buddy:1.12.6
 :modulecheck-internal-testing -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.22
@@ -88,8 +75,6 @@
 :modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
 :modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
 :modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
-:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1
-:modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1
 :modulecheck-internal-testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-internal-testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-api:5.9.3
 :modulecheck-internal-testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-engine:5.9.3
@@ -97,7 +82,6 @@
 :modulecheck-internal-testing -- runtimeClasspath -- org.junit.platform:junit-platform-commons:1.9.3
 :modulecheck-internal-testing -- runtimeClasspath -- org.junit.platform:junit-platform-engine:1.9.3
 :modulecheck-internal-testing -- runtimeClasspath -- org.junit:junit-bom:5.9.3
-:modulecheck-internal-testing -- runtimeClasspath -- org.objenesis:objenesis:3.2
 :modulecheck-internal-testing -- runtimeClasspath -- org.opentest4j:opentest4j:1.2.0
 
 :modulecheck-config:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
@@ -481,10 +465,6 @@
 :modulecheck-project:testing -- runtimeClasspath -- com.google.j2objc:j2objc-annotations:1.3
 :modulecheck-project:testing -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-project:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-project:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-test:1.0.0-beta10
-:modulecheck-project:testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-core:0.9.6
-:modulecheck-project:testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-coroutines:0.9.6
-:modulecheck-project:testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-junit5:0.9.6
 :modulecheck-project:testing -- runtimeClasspath -- io.github.java-diff-utils:java-diff-utils:4.12
 :modulecheck-project:testing -- runtimeClasspath -- io.kotest:kotest-assertions-api-jvm:5.6.2
 :modulecheck-project:testing -- runtimeClasspath -- io.kotest:kotest-assertions-api:5.6.2
@@ -494,18 +474,8 @@
 :modulecheck-project:testing -- runtimeClasspath -- io.kotest:kotest-common-jvm:5.6.2
 :modulecheck-project:testing -- runtimeClasspath -- io.kotest:kotest-common:5.6.2
 :modulecheck-project:testing -- runtimeClasspath -- io.kotest:kotest-property-jvm:5.6.2
-:modulecheck-project:testing -- runtimeClasspath -- io.mockk:mockk-agent-api:1.12.4
-:modulecheck-project:testing -- runtimeClasspath -- io.mockk:mockk-agent-common:1.12.4
-:modulecheck-project:testing -- runtimeClasspath -- io.mockk:mockk-agent-jvm:1.12.4
-:modulecheck-project:testing -- runtimeClasspath -- io.mockk:mockk-common:1.12.4
-:modulecheck-project:testing -- runtimeClasspath -- io.mockk:mockk-dsl-jvm:1.12.4
-:modulecheck-project:testing -- runtimeClasspath -- io.mockk:mockk-dsl:1.12.4
-:modulecheck-project:testing -- runtimeClasspath -- io.mockk:mockk:1.12.4
 :modulecheck-project:testing -- runtimeClasspath -- javax.inject:javax.inject:1
-:modulecheck-project:testing -- runtimeClasspath -- net.bytebuddy:byte-buddy-agent:1.12.6
-:modulecheck-project:testing -- runtimeClasspath -- net.bytebuddy:byte-buddy:1.12.6
-:modulecheck-project:testing -- runtimeClasspath -- net.java.dev.jna:jna-platform:5.9.0
-:modulecheck-project:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.9.0
+:modulecheck-project:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-project:testing -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-project:testing -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-project:testing -- runtimeClasspath -- org.antlr:ST4:4.3.4
@@ -528,10 +498,7 @@
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
-:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.7.1
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
-:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1
-:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-project:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-api:5.9.3
 :modulecheck-project:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-engine:5.9.3
@@ -539,7 +506,6 @@
 :modulecheck-project:testing -- runtimeClasspath -- org.junit.platform:junit-platform-commons:1.9.3
 :modulecheck-project:testing -- runtimeClasspath -- org.junit.platform:junit-platform-engine:1.9.3
 :modulecheck-project:testing -- runtimeClasspath -- org.junit:junit-bom:5.9.3
-:modulecheck-project:testing -- runtimeClasspath -- org.objenesis:objenesis:3.2
 :modulecheck-project:testing -- runtimeClasspath -- org.opentest4j:opentest4j:1.2.0
 
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -555,10 +521,6 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.j2objc:j2objc-annotations:1.3
 :modulecheck-project-generation:api -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-project-generation:api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-project-generation:api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-test:1.0.0-beta10
-:modulecheck-project-generation:api -- runtimeClasspath -- com.rickbusarow.hermit:hermit-core:0.9.6
-:modulecheck-project-generation:api -- runtimeClasspath -- com.rickbusarow.hermit:hermit-coroutines:0.9.6
-:modulecheck-project-generation:api -- runtimeClasspath -- com.rickbusarow.hermit:hermit-junit5:0.9.6
 :modulecheck-project-generation:api -- runtimeClasspath -- io.github.java-diff-utils:java-diff-utils:4.12
 :modulecheck-project-generation:api -- runtimeClasspath -- io.kotest:kotest-assertions-api-jvm:5.6.2
 :modulecheck-project-generation:api -- runtimeClasspath -- io.kotest:kotest-assertions-api:5.6.2
@@ -568,16 +530,7 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- io.kotest:kotest-common-jvm:5.6.2
 :modulecheck-project-generation:api -- runtimeClasspath -- io.kotest:kotest-common:5.6.2
 :modulecheck-project-generation:api -- runtimeClasspath -- io.kotest:kotest-property-jvm:5.6.2
-:modulecheck-project-generation:api -- runtimeClasspath -- io.mockk:mockk-agent-api:1.12.4
-:modulecheck-project-generation:api -- runtimeClasspath -- io.mockk:mockk-agent-common:1.12.4
-:modulecheck-project-generation:api -- runtimeClasspath -- io.mockk:mockk-agent-jvm:1.12.4
-:modulecheck-project-generation:api -- runtimeClasspath -- io.mockk:mockk-common:1.12.4
-:modulecheck-project-generation:api -- runtimeClasspath -- io.mockk:mockk-dsl-jvm:1.12.4
-:modulecheck-project-generation:api -- runtimeClasspath -- io.mockk:mockk-dsl:1.12.4
-:modulecheck-project-generation:api -- runtimeClasspath -- io.mockk:mockk:1.12.4
 :modulecheck-project-generation:api -- runtimeClasspath -- javax.inject:javax.inject:1
-:modulecheck-project-generation:api -- runtimeClasspath -- net.bytebuddy:byte-buddy-agent:1.12.6
-:modulecheck-project-generation:api -- runtimeClasspath -- net.bytebuddy:byte-buddy:1.12.6
 :modulecheck-project-generation:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-project-generation:api -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-project-generation:api -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
@@ -602,8 +555,6 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
-:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1
-:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-project-generation:api -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-api:5.9.3
 :modulecheck-project-generation:api -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-engine:5.9.3
@@ -611,7 +562,6 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- org.junit.platform:junit-platform-commons:1.9.3
 :modulecheck-project-generation:api -- runtimeClasspath -- org.junit.platform:junit-platform-engine:1.9.3
 :modulecheck-project-generation:api -- runtimeClasspath -- org.junit:junit-bom:5.9.3
-:modulecheck-project-generation:api -- runtimeClasspath -- org.objenesis:objenesis:3.2
 :modulecheck-project-generation:api -- runtimeClasspath -- org.opentest4j:opentest4j:1.2.0
 
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
@@ -849,10 +799,6 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.j2objc:j2objc-annotations:1.3
 :modulecheck-runtime:testing -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-test:1.0.0-beta10
-:modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-core:0.9.6
-:modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-coroutines:0.9.6
-:modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-junit5:0.9.6
 :modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.anvil:annotations:2.4.6
 :modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.0
 :modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.okio:okio:2.10.0
@@ -867,18 +813,8 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- io.kotest:kotest-common-jvm:5.6.2
 :modulecheck-runtime:testing -- runtimeClasspath -- io.kotest:kotest-common:5.6.2
 :modulecheck-runtime:testing -- runtimeClasspath -- io.kotest:kotest-property-jvm:5.6.2
-:modulecheck-runtime:testing -- runtimeClasspath -- io.mockk:mockk-agent-api:1.12.4
-:modulecheck-runtime:testing -- runtimeClasspath -- io.mockk:mockk-agent-common:1.12.4
-:modulecheck-runtime:testing -- runtimeClasspath -- io.mockk:mockk-agent-jvm:1.12.4
-:modulecheck-runtime:testing -- runtimeClasspath -- io.mockk:mockk-common:1.12.4
-:modulecheck-runtime:testing -- runtimeClasspath -- io.mockk:mockk-dsl-jvm:1.12.4
-:modulecheck-runtime:testing -- runtimeClasspath -- io.mockk:mockk-dsl:1.12.4
-:modulecheck-runtime:testing -- runtimeClasspath -- io.mockk:mockk:1.12.4
 :modulecheck-runtime:testing -- runtimeClasspath -- javax.inject:javax.inject:1
-:modulecheck-runtime:testing -- runtimeClasspath -- net.bytebuddy:byte-buddy-agent:1.12.6
-:modulecheck-runtime:testing -- runtimeClasspath -- net.bytebuddy:byte-buddy:1.12.6
-:modulecheck-runtime:testing -- runtimeClasspath -- net.java.dev.jna:jna-platform:5.9.0
-:modulecheck-runtime:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.9.0
+:modulecheck-runtime:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-runtime:testing -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-runtime:testing -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:ST4:4.3.4
@@ -901,10 +837,7 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
-:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.7.1
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
-:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1
-:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-runtime:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-api:5.9.3
 :modulecheck-runtime:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-engine:5.9.3
@@ -912,7 +845,6 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- org.junit.platform:junit-platform-commons:1.9.3
 :modulecheck-runtime:testing -- runtimeClasspath -- org.junit.platform:junit-platform-engine:1.9.3
 :modulecheck-runtime:testing -- runtimeClasspath -- org.junit:junit-bom:5.9.3
-:modulecheck-runtime:testing -- runtimeClasspath -- org.objenesis:objenesis:3.2
 :modulecheck-runtime:testing -- runtimeClasspath -- org.opentest4j:opentest4j:1.2.0
 :modulecheck-runtime:testing -- runtimeClasspath -- org.slf4j:jcl-over-slf4j:1.7.30
 :modulecheck-runtime:testing -- runtimeClasspath -- org.slf4j:jul-to-slf4j:1.7.30
@@ -1167,10 +1099,6 @@
 
 :modulecheck-parsing:source:testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
 :modulecheck-parsing:source:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-parsing:source:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-test:1.0.0-beta10
-:modulecheck-parsing:source:testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-core:0.9.6
-:modulecheck-parsing:source:testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-coroutines:0.9.6
-:modulecheck-parsing:source:testing -- runtimeClasspath -- com.rickbusarow.hermit:hermit-junit5:0.9.6
 :modulecheck-parsing:source:testing -- runtimeClasspath -- io.github.java-diff-utils:java-diff-utils:4.12
 :modulecheck-parsing:source:testing -- runtimeClasspath -- io.kotest:kotest-assertions-api-jvm:5.6.2
 :modulecheck-parsing:source:testing -- runtimeClasspath -- io.kotest:kotest-assertions-api:5.6.2
@@ -1180,15 +1108,6 @@
 :modulecheck-parsing:source:testing -- runtimeClasspath -- io.kotest:kotest-common-jvm:5.6.2
 :modulecheck-parsing:source:testing -- runtimeClasspath -- io.kotest:kotest-common:5.6.2
 :modulecheck-parsing:source:testing -- runtimeClasspath -- io.kotest:kotest-property-jvm:5.6.2
-:modulecheck-parsing:source:testing -- runtimeClasspath -- io.mockk:mockk-agent-api:1.12.4
-:modulecheck-parsing:source:testing -- runtimeClasspath -- io.mockk:mockk-agent-common:1.12.4
-:modulecheck-parsing:source:testing -- runtimeClasspath -- io.mockk:mockk-agent-jvm:1.12.4
-:modulecheck-parsing:source:testing -- runtimeClasspath -- io.mockk:mockk-common:1.12.4
-:modulecheck-parsing:source:testing -- runtimeClasspath -- io.mockk:mockk-dsl-jvm:1.12.4
-:modulecheck-parsing:source:testing -- runtimeClasspath -- io.mockk:mockk-dsl:1.12.4
-:modulecheck-parsing:source:testing -- runtimeClasspath -- io.mockk:mockk:1.12.4
-:modulecheck-parsing:source:testing -- runtimeClasspath -- net.bytebuddy:byte-buddy-agent:1.12.6
-:modulecheck-parsing:source:testing -- runtimeClasspath -- net.bytebuddy:byte-buddy:1.12.6
 :modulecheck-parsing:source:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-parsing:source:testing -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -1204,8 +1123,6 @@
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.1
-:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1
-:modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-api:5.9.3
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-engine:5.9.3
@@ -1213,7 +1130,6 @@
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.junit.platform:junit-platform-commons:1.9.3
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.junit.platform:junit-platform-engine:1.9.3
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.junit:junit-bom:5.9.3
-:modulecheck-parsing:source:testing -- runtimeClasspath -- org.objenesis:objenesis:3.2
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.opentest4j:opentest4j:1.2.0
 
 :modulecheck-reporting:logging:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22

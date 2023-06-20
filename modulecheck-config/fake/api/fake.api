@@ -50,29 +50,53 @@ public final class modulecheck/config/fake/TestChecksSettings : modulecheck/conf
 
 public final class modulecheck/config/fake/TestPerModuleReportSettings : modulecheck/config/PerModuleReportSettings {
 	public fun <init> (ZLjava/lang/String;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (ZLjava/lang/String;)Lmodulecheck/config/fake/TestPerModuleReportSettings;
+	public static synthetic fun copy$default (Lmodulecheck/config/fake/TestPerModuleReportSettings;ZLjava/lang/String;ILjava/lang/Object;)Lmodulecheck/config/fake/TestPerModuleReportSettings;
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getEnabled ()Z
 	public fun getOutputDir ()Ljava/lang/String;
+	public fun hashCode ()I
 	public fun setEnabled (Z)V
 	public fun setOutputDir (Ljava/lang/String;)V
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class modulecheck/config/fake/TestReportSettings : modulecheck/config/ReportSettings {
 	public fun <init> (ZLjava/lang/String;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (ZLjava/lang/String;)Lmodulecheck/config/fake/TestReportSettings;
+	public static synthetic fun copy$default (Lmodulecheck/config/fake/TestReportSettings;ZLjava/lang/String;ILjava/lang/Object;)Lmodulecheck/config/fake/TestReportSettings;
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getEnabled ()Z
 	public fun getOutputPath ()Ljava/lang/String;
+	public fun hashCode ()I
 	public fun setEnabled (Z)V
 	public fun setOutputPath (Ljava/lang/String;)V
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class modulecheck/config/fake/TestReportsSettings : modulecheck/config/ReportsSettings {
 	public fun <init> ()V
 	public fun <init> (Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/PerModuleReportSettings;)V
 	public synthetic fun <init> (Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/PerModuleReportSettings;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/config/ReportSettings;
+	public final fun component2 ()Lmodulecheck/config/ReportSettings;
+	public final fun component3 ()Lmodulecheck/config/ReportSettings;
+	public final fun component4 ()Lmodulecheck/config/ReportSettings;
+	public final fun component5 ()Lmodulecheck/config/PerModuleReportSettings;
+	public final fun copy (Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/PerModuleReportSettings;)Lmodulecheck/config/fake/TestReportsSettings;
+	public static synthetic fun copy$default (Lmodulecheck/config/fake/TestReportsSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/ReportSettings;Lmodulecheck/config/PerModuleReportSettings;ILjava/lang/Object;)Lmodulecheck/config/fake/TestReportsSettings;
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getCheckstyle ()Lmodulecheck/config/ReportSettings;
 	public fun getDepths ()Lmodulecheck/config/ReportSettings;
 	public fun getGraphs ()Lmodulecheck/config/PerModuleReportSettings;
 	public fun getSarif ()Lmodulecheck/config/ReportSettings;
 	public fun getText ()Lmodulecheck/config/ReportSettings;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class modulecheck/config/fake/TestSettings : modulecheck/config/ModuleCheckSettings {
@@ -116,9 +140,16 @@ public final class modulecheck/config/fake/TestSortSettings : modulecheck/config
 	public fun <init> ()V
 	public fun <init> (Ljava/util/List;Ljava/util/List;)V
 	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;)Lmodulecheck/config/fake/TestSortSettings;
+	public static synthetic fun copy$default (Lmodulecheck/config/fake/TestSortSettings;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/config/fake/TestSortSettings;
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getDependencyComparators ()Ljava/util/List;
 	public fun getPluginComparators ()Ljava/util/List;
+	public fun hashCode ()I
 	public fun setDependencyComparators (Ljava/util/List;)V
 	public fun setPluginComparators (Ljava/util/List;)V
+	public fun toString ()Ljava/lang/String;
 }
 

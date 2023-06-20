@@ -41,7 +41,6 @@ dependencies {
   implementation(project(path = ":modulecheck-utils:stdlib"))
   implementation(project(path = ":modulecheck-utils:traversal"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 
@@ -50,5 +49,4 @@ dependencies {
   testImplementation(project(path = ":modulecheck-parsing:java"))
   testImplementation(project(path = ":modulecheck-parsing:source:testing"))
   testImplementation(project(path = ":modulecheck-project:testing"))
-  testImplementation(project(path = ":modulecheck-utils:trace"))
 }

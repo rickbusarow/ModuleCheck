@@ -15,13 +15,13 @@
 
 package modulecheck.gradle
 
-import modulecheck.utils.child
+import modulecheck.utils.resolve
 import org.junit.jupiter.api.Test
 
 internal class DepthReportTaskTest : BaseGradleTest() {
 
   @Test
-  fun `depth report should be created if depth task is invoked with default settings`() {
+  fun `depth report should be created if depth task is invoked with default settings`() = test {
 
     kotlinProject(":lib1") {
       buildFile {
@@ -62,7 +62,7 @@ internal class DepthReportTaskTest : BaseGradleTest() {
 
     shouldSucceed("moduleCheckDepths")
 
-    root.child(
+    root.resolve(
       "build",
       "reports",
       "modulecheck",

@@ -15,10 +15,7 @@
 
 package modulecheck.parsing.psi
 
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.single
-import kotlinx.coroutines.runBlocking
 import modulecheck.api.context.jvmFiles
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.sourceset.SourceSetName
@@ -29,19 +26,18 @@ import modulecheck.parsing.source.PackageName.Companion.asPackageName
 import modulecheck.parsing.test.McNameTest
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
-import modulecheck.utils.trace.Trace
-import org.intellij.lang.annotations.Language
+import modulecheck.project.test.ProjectTestEnvironment
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-internal class KotlinFileTest : ProjectTest(), McNameTest {
+internal class KotlinFileTest : ProjectTest<ProjectTestEnvironment>(), McNameTest {
 
   override val defaultLanguage: CompatibleLanguage
     get() = KOTLIN
 
-  val lib1 by resets {
-    kotlinProject(":lib1") {
+  val ProjectTestEnvironment.lib1: McProject
+    get() = kotlinProject(":lib1") {
       addKotlinSource(
         """
         package com.lib1
@@ -50,20 +46,18 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
     }
-  }
 
-  val project by resets {
-    kotlinProject(":subject") {
+  val ProjectTestEnvironment.project: McProject
+    get() = kotlinProject(":subject") {
       addDependency(ConfigurationName.api, lib1)
     }
-  }
 
   val McNameTest.JvmFileBuilder.ReferenceBuilder.lib1Class
     get() = kotlin("com.lib1.Lib1Class")
 
   @Test
   fun `fully qualified annotated primary constructor arguments should be injected`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -75,7 +69,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
 
         lib1Class
@@ -104,7 +98,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `fully qualified annotated secondary constructor arguments should be injected`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -121,7 +115,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
 
         lib1Class
@@ -155,7 +149,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `imported annotated primary constructor arguments should be injected`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -168,7 +162,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
 
         lib1Class
@@ -189,7 +183,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `wildcard-imported annotated primary constructor arguments should be injected`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -202,7 +196,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
 
         kotlin("com.lib1.Lib1Class")
@@ -222,7 +216,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `fully qualified arguments in annotated primary constructor should be injected`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -234,7 +228,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
 
         kotlin("com")
@@ -263,7 +257,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `imported annotated secondary constructor arguments should be injected`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -281,7 +275,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
 
         lib1Class
@@ -308,7 +302,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `arguments from overloaded constructor without annotation should not be injected`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -325,7 +319,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
 
         lib1Class
@@ -352,7 +346,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
     test {
       val project = androidLibrary(":subject", "com.subject")
 
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
         package com.subject
 
@@ -370,7 +364,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           androidR("com.subject".asPackageName())
 
@@ -403,7 +397,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     val project = androidLibrary(":subject", "com.subject")
 
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -418,7 +412,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
         androidR("com.subject".asPackageName())
 
@@ -453,7 +447,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       val project = kotlinProject(":subject")
 
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
       package com.subject
 
@@ -466,7 +460,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("com.subject.SubjectClass")
         }
@@ -485,7 +479,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       val project = androidLibrary(":subject", "com.subject")
 
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
         package com.subject
 
@@ -498,7 +492,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           androidR("com.subject".asPackageName())
 
@@ -536,7 +530,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `explicit type of public property in internal class should not be api reference`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -551,7 +545,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
         kotlin("com.lib.Config")
 
@@ -578,7 +572,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `implicit type of public property in public class should be api reference`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -593,7 +587,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
         kotlin("com.lib.Config")
 
@@ -618,7 +612,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `file with JvmName annotation should count as declaration`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       @file:JvmName("SubjectFile")
       package com.subject
@@ -633,7 +627,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
         kotlin("kotlin.Unit")
         kotlin("kotlin.jvm.JvmName")
@@ -655,7 +649,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
   @Test
   fun `file with JvmName annotation should not have alternate names for type declarations`() =
     test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
       @file:JvmName("SubjectFile")
       package com.subject
@@ -664,7 +658,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.jvm.JvmName")
         }
@@ -676,7 +670,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `file without JvmName should have alternate names for top-level functions`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -686,7 +680,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
         kotlin("kotlin.Unit")
       }
@@ -701,7 +695,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `val property with is- prefix should not have get-prefix for java method`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -709,7 +703,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       declarations {
         kotlin("com.subject.isAProperty")
         java("com.subject.SourceKt.isAProperty")
@@ -719,7 +713,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `var property with is- prefix should have set- prefix and no is- for java method`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -727,7 +721,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       declarations {
         kotlin("com.subject.isAProperty")
         java("com.subject.SourceKt.isAProperty")
@@ -739,7 +733,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
   @Test
   fun `var property with explicit accessors and is- prefix should have set- prefix and no is- for java method`() =
     test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
       package com.subject
 
@@ -749,7 +743,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         declarations {
           kotlin("com.subject.isAProperty")
           java("com.subject.SourceKt.isAProperty")
@@ -760,7 +754,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `is- prefix should not be removed if the following character is a lowercase letter`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
         package com.subject
 
@@ -768,7 +762,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       declarations {
         kotlin("com.subject.isaProperty")
         java("com.subject.SourceKt.getIsaProperty")
@@ -779,7 +773,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `is- should not be removed if it's not at the start of the name`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
         package com.subject
 
@@ -787,7 +781,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       declarations {
         kotlin("com.subject._isAProperty")
         java("com.subject.SourceKt.get_isAProperty")
@@ -798,7 +792,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `file without JvmName should not have alternate names for type declarations`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -806,7 +800,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       declarations {
         agnostic("com.subject.SubjectClass")
       }
@@ -815,7 +809,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `object should have alternate name with INSTANCE`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -823,7 +817,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       declarations {
         agnostic("com.subject.Utils")
         java("com.subject.Utils.INSTANCE")
@@ -833,7 +827,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `companion object should have alternate name for both with Companion`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -843,7 +837,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       declarations {
         agnostic("com.subject.SomeClass")
         agnostic("com.subject.SomeClass.Companion")
@@ -856,7 +850,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     @Test
     fun `top-level extension property declaration`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
       package com.subject
 
@@ -864,7 +858,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.String")
           kotlin("kotlin.text.replace")
@@ -888,7 +882,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
     @Disabled
     @Test
     fun `top-level extension property reference from String literal`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
       package com.subject
 
@@ -898,7 +892,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.String")
           kotlin("kotlin.text.replace")
@@ -924,7 +918,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
     @Disabled
     @Test
     fun `top-level extension function`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
       package com.subject
 
@@ -932,7 +926,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.String")
           kotlin("kotlin.text.replace")
@@ -957,7 +951,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
     @Disabled
     @Test
     fun `extension property reference from variable`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
       package com.subject
 
@@ -969,7 +963,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.String")
           kotlin("kotlin.text.replace")
@@ -996,7 +990,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
   @Test
   fun `class with name wrapped in backticks is allowed`() = test {
 
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
         package com.subject
 
@@ -1008,7 +1002,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       declarations {
         kotlin(
           "`outer in backticks`.`inner in backticks`.`function in backticks`",
@@ -1026,7 +1020,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
   @Test
   fun `function with name wrapped in backticks is allowed`() = test {
 
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
         import com.lib1.Lib1Class
 
@@ -1036,7 +1030,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
         kotlin("com.lib1.Lib1Class")
         kotlin("kotlin.Unit")
@@ -1052,7 +1046,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
   @Test
   fun `file without package should put declarations at the root`() = test {
 
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
         import com.lib1.Lib1Class
 
@@ -1062,7 +1056,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
         kotlin("com.lib1.Lib1Class")
       }
@@ -1075,7 +1069,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   @Test
   fun `top-level function with JvmName annotation should have alternate name`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -1084,7 +1078,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
         kotlin("kotlin.Unit")
         kotlin("kotlin.jvm.JvmName")
@@ -1103,7 +1097,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
   @Disabled
   @Test
   fun `top-level expression inferred function return type should be api reference`() = test {
-    val file = project.createFile(
+    val file = project.createKotlinFile(
       """
       package com.subject
 
@@ -1113,7 +1107,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
       references {
         lib1Class
       }
@@ -1132,7 +1126,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
   @Test
   fun `import alias reference which is continued should be inlined to the normal fully qualified reference`() =
     test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
       package com.subject
 
@@ -1142,7 +1136,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("com.modulecheck.lib1.R")
           kotlin("com.modulecheck.lib1.R.string.app_name")
@@ -1162,7 +1156,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
   fun `import alias reference without further selectors should be inlined to the normal fully qualified reference`() =
     test {
 
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
       package com.subject
 
@@ -1172,7 +1166,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("com.modulecheck.lib1.foo")
         }
@@ -1194,7 +1188,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     @Test
     fun `companion object function`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
         package com.subject
 
@@ -1206,7 +1200,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.Unit")
         }
@@ -1225,7 +1219,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     @Test
     fun `companion object with JvmStatic should have alternate name`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
         package com.subject
 
@@ -1238,7 +1232,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.Unit")
           kotlin("kotlin.jvm.JvmStatic")
@@ -1262,7 +1256,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     @Test
     fun `object property with default setter and getter`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject
 
@@ -1273,7 +1267,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.Unit")
         }
@@ -1293,7 +1287,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     @Test
     fun `object property with JvmStatic and default setter and getter`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject
 
@@ -1304,7 +1298,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.Unit")
           kotlin("kotlin.jvm.JvmStatic")
@@ -1327,7 +1321,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     @Test
     fun `object property with JvmName setter and getter`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject
 
@@ -1340,7 +1334,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.Unit")
           kotlin("kotlin.jvm.JvmName")
@@ -1361,7 +1355,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     @Test
     fun `object JvmStatic property with default setter and getter`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject
 
@@ -1373,7 +1367,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.Unit")
           kotlin("kotlin.jvm.JvmStatic")
@@ -1396,7 +1390,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     @Test
     fun `object JvmStatic property with JvmName setter and getter`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject
 
@@ -1410,7 +1404,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.Unit")
           kotlin("kotlin.jvm.JvmName")
@@ -1438,7 +1432,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     @Test
     fun `object function`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject
 
@@ -1449,7 +1443,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.Unit")
         }
@@ -1468,7 +1462,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     @Test
     fun `object JvmStatic function`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject
 
@@ -1479,7 +1473,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.Unit")
           kotlin("kotlin.jvm.JvmStatic")
@@ -1500,7 +1494,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     @Test
     fun `object JvmStatic function with JvmName`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject
 
@@ -1512,7 +1506,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.Unit")
           kotlin("kotlin.jvm.JvmName")
@@ -1534,7 +1528,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     @Test
     fun `object function with JvmName`() = test {
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject
 
@@ -1545,7 +1539,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           kotlin("kotlin.Unit")
           kotlin("kotlin.jvm.JvmName")
@@ -1572,7 +1566,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       val androidProject = androidLibrary(":subject", "com.subject")
 
-      val file = androidProject.createFile(
+      val file = androidProject.createKotlinFile(
         """
         package com.subject
 
@@ -1580,7 +1574,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           unqualifiedAndroidResource("R.string.app_name")
           androidR("com.subject".asPackageName())
@@ -1618,7 +1612,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           androidR("com.modulecheck.other".asPackageName())
           qualifiedAndroidResource("com.modulecheck.other.R.string.app_name")
@@ -1656,7 +1650,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           androidR("com.modulecheck.other".asPackageName())
           kotlin("com.modulecheck.other.R.string")
@@ -1695,7 +1689,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
 
           androidR("com.subject".asPackageName())
@@ -1734,7 +1728,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
 
           androidR("com.modulecheck.other".asPackageName())
@@ -1761,7 +1755,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject.internal
 
@@ -1771,7 +1765,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
 
           androidR("com.modulecheck.other".asPackageName())
@@ -1798,7 +1792,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject
 
@@ -1808,7 +1802,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
           androidR("com.modulecheck.other".asPackageName())
           kotlin("com.modulecheck.other.R.string")
@@ -1842,7 +1836,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject
 
@@ -1852,7 +1846,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
 
           androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding")
@@ -1885,7 +1879,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject
 
@@ -1893,7 +1887,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
 
           androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding")
@@ -1926,7 +1920,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createKotlinFile(
         """
           package com.subject
 
@@ -1936,7 +1930,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
         references {
 
           androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding")
@@ -1952,18 +1946,5 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         }
       }
     }
-  }
-
-  fun McProject.createFile(
-    @Language("kotlin")
-    content: String,
-    sourceSetName: SourceSetName = SourceSetName.MAIN
-  ): RealKotlinFile = runBlocking(Trace.start(KotlinFileTest::class)) {
-    editSimple {
-      addKotlinSource(content, sourceSetName)
-    }.jvmFiles()
-      .get(sourceSetName)
-      .filterIsInstance<RealKotlinFile>()
-      .first { it.psi.text == content.trimIndent() }
   }
 }

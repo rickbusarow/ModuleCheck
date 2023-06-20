@@ -32,6 +32,11 @@ fun String.capitalize(): String = replaceFirstChar {
   if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString()
 }
 
+/** Replaces the deprecated Kotlin version, but hard-codes `Locale.US` */
+fun String.decapitalize(): String = replaceFirstChar {
+  if (it.isUpperCase()) it.lowercase(Locale.US) else it.toString()
+}
+
 /**
  * Removes trailing whitespaces from all lines in a string.
  *

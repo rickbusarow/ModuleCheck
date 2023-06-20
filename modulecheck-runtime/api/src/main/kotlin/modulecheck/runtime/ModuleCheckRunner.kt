@@ -54,7 +54,6 @@ import kotlin.system.measureTimeMillis
  * @property reportFactory handles console output of the results
  * @since 0.12.0
  */
-@Suppress("LongParameterList")
 data class ModuleCheckRunner @AssistedInject constructor(
   val settings: ModuleCheckSettings,
   val findingFactory: FindingFactory<out Finding>,

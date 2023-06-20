@@ -132,10 +132,22 @@ fun String.indentByBrackets(tab: String = "  "): String {
     }
 }
 
+/**
+ * Removes all occurrences of specified strings from the receiver string.
+ *
+ * @param strings Strings to be removed from the receiver string.
+ * @return A new string with all occurrences of specified strings removed.
+ */
 fun String.remove(vararg strings: String): String = strings.fold(this) { acc, string ->
   acc.replace(string, "")
 }
 
+/**
+ * Removes all matches of specified regular expressions from the receiver string.
+ *
+ * @param patterns Regular expressions to be removed from the receiver string.
+ * @return A new string with all matches of specified regular expressions removed.
+ */
 fun String.remove(vararg patterns: Regex): String = patterns.fold(this) { acc, regex ->
   acc.replace(regex, "")
 }
@@ -181,7 +193,6 @@ fun CharSequence.mapLinesIndexed(transform: (Int, String) -> CharSequence): Stri
  *
  * The operation is _terminal_.
  */
-@Suppress("LongParameterList")
 fun <T> Sequence<T>.joinToStringIndexed(
   separator: CharSequence = ", ",
   prefix: CharSequence = "",
@@ -254,3 +265,83 @@ fun CharSequence.prependContinuationIndent(
 
 /** `"$prefix$this$suffix"` */
 fun CharSequence.wrapIn(prefix: String, suffix: String = prefix): String = "$prefix$this$suffix"
+
+/** Replaces the deprecated Kotlin version, but hard-codes `Locale.US` */
+fun String.capitalize(): String = replaceFirstChar {
+  if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString()
+}
+
+/** shorthand for `joinToString("") { ... }` */
+fun <E> Sequence<E>.joinToStringConcat(transform: ((E) -> CharSequence)? = null): String =
+  joinToString("", transform = transform)
+
+/** shorthand for `joinToString("") { ... }` */
+fun <E> Iterable<E>.joinToStringConcat(transform: ((E) -> CharSequence)? = null): String =
+  joinToString("", transform = transform)
+
+/** Converts all line separators in the receiver string to use `\n`. */
+fun String.normaliseLineSeparators(): String = replace("\r\n|\r".toRegex(), "\n")
+
+/**
+ * Adds line breaks and indents to the output of data class `toString()`s.
+ *
+ * @see toStringPretty
+ */
+fun String.prettyToString(): String {
+  return replace(",", ",\n")
+    .replace("(", "(\n")
+    .replace(")", "\n)")
+    .replace("[", "[\n")
+    .replace("]", "\n]")
+    .replace("{", "{\n")
+    .replace("}", "\n}")
+    .replace("\\(\\s*\\)".toRegex(), "()")
+    .replace("\\[\\s*]".toRegex(), "[]")
+    .indentByBrackets()
+    .replace("""\n *\n""".toRegex(), "\n")
+}
+
+/**
+ * shorthand for `toString().prettyToString()`, which adds line breaks and indents to a string
+ *
+ * @see prettyToString
+ */
+fun Any?.toStringPretty(): String = when (this) {
+  is Map<*, *> -> toList().joinToString("\n")
+  else -> toString().prettyToString()
+}
+
+/**
+ * Removes the indentation from every line in this string after the first line,
+ * and also removes any blank lines appearing before the first non-blank line.
+ *
+ * This method assumes the original string has multiple lines. The first line is
+ * left intact, but all subsequent lines have their leading white space removed.
+ *
+ * Example usage:
+ *
+ * ```
+ * val text = """
+ *     Keep leading
+ *         Remove indent
+ *     Remove indent
+ * """
+ * val result = text.trimIndentAfterFirstLine()
+ * // Result is:
+ * // """
+ * // Keep leading
+ * // Remove indent
+ * // Remove indent
+ * // """
+ * ```
+ *
+ * @receiver The string from which to remove indentation after the first line.
+ * @return A new string with the same first line, but
+ *   with indentation removed from subsequent lines.
+ */
+fun String.trimIndentAfterFirstLine(): String {
+  val split = lines()
+  val first = split.first()
+  val remaining = split.drop(1).joinToString("\n").trimIndent()
+  return "$first\n$remaining"
+}

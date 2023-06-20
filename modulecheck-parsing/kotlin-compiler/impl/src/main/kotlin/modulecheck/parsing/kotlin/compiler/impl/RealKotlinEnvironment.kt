@@ -70,7 +70,6 @@ import javax.inject.Inject
  * @property logger logs Kotlin compiler messages during analysis
  * @property resetManager used to reset caching
  */
-@Suppress("LongParameterList")
 class RealKotlinEnvironment(
   val projectPath: StringProjectPath,
   val sourceSetName: SourceSetName,

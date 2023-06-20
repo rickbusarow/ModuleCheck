@@ -30,7 +30,6 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

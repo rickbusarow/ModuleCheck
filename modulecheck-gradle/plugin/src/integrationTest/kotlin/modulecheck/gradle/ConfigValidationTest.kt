@@ -17,14 +17,14 @@ package modulecheck.gradle
 
 import modulecheck.testing.writeGroovy
 import modulecheck.testing.writeKotlin
-import modulecheck.utils.child
+import modulecheck.utils.resolve
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.memberProperties
 
 class ConfigValidationTest : BaseGradleTest() {
 
   @Test
-  fun `all properties`() {
+  fun `all properties`() = test {
 
     ModuleCheckExtension::class.memberProperties
       .map { it.name } shouldBe listOf(
@@ -140,7 +140,7 @@ class ConfigValidationTest : BaseGradleTest() {
   """.trimIndent()
 
   @Test
-  fun `Kotlin configuration`() {
+  fun `Kotlin configuration`() = test {
 
     rootBuild.writeKotlin(kotlinConfig)
 
@@ -224,10 +224,10 @@ class ConfigValidationTest : BaseGradleTest() {
   """.trimIndent()
 
   @Test
-  fun `Groovy configuration`() {
+  fun `Groovy configuration`() = test {
 
     rootBuild.delete()
-    val buildFile = root.child("build.gradle")
+    val buildFile = root.resolve("build.gradle")
     buildFile.writeGroovy(groovyConfig)
 
     shouldSucceed("moduleCheck", withPluginClasspath = true)

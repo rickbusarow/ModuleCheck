@@ -19,14 +19,15 @@ import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.parsing.source.UnqualifiedAndroidResource.Companion.string
 import modulecheck.parsing.source.UnqualifiedAndroidResource.Companion.style
 import modulecheck.testing.BaseTest
-import modulecheck.utils.child
+import modulecheck.testing.TestEnvironment
 import modulecheck.utils.createSafely
+import modulecheck.utils.resolve
 import org.junit.jupiter.api.Test
 
-internal class AndroidResourceParserTest : BaseTest() {
+internal class AndroidResourceParserTest : BaseTest<TestEnvironment>() {
 
   @Test
-  fun `a node without attributes should not be parsed`() {
+  fun `a node without attributes should not be parsed`() = test {
     val text = """
       <?xml version="1.0" encoding="utf-8"?>
       <resources>
@@ -34,8 +35,8 @@ internal class AndroidResourceParserTest : BaseTest() {
       </resources>
     """.trimIndent()
 
-    val xml = testProjectDir
-      .child("styles.xml")
+    val xml = workingDir
+      .resolve("styles.xml")
       .createSafely(text)
 
     val declarations = AndroidResourceParser().parseFile(xml)
@@ -44,7 +45,7 @@ internal class AndroidResourceParserTest : BaseTest() {
   }
 
   @Test
-  fun `a node without a name attribute should not be parsed`() {
+  fun `a node without a name attribute should not be parsed`() = test {
     val text = """
       <?xml version="1.0" encoding="utf-8"?>
       <resources>
@@ -52,8 +53,8 @@ internal class AndroidResourceParserTest : BaseTest() {
       </resources>
     """.trimIndent()
 
-    val xml = testProjectDir
-      .child("styles.xml")
+    val xml = workingDir
+      .resolve("styles.xml")
       .createSafely(text)
 
     val declarations = AndroidResourceParser().parseFile(xml)
@@ -62,7 +63,7 @@ internal class AndroidResourceParserTest : BaseTest() {
   }
 
   @Test
-  fun `a node with a name as the second attribute should be parsed`() {
+  fun `a node with a name as the second attribute should be parsed`() = test {
     val text = """
       <?xml version="1.0" encoding="utf-8"?>
       <resources>
@@ -70,8 +71,8 @@ internal class AndroidResourceParserTest : BaseTest() {
       </resources>
     """.trimIndent()
 
-    val xml = testProjectDir
-      .child("styles.xml")
+    val xml = workingDir
+      .resolve("styles.xml")
       .createSafely(text)
 
     val declarations = AndroidResourceParser().parseFile(xml)
@@ -82,7 +83,7 @@ internal class AndroidResourceParserTest : BaseTest() {
   }
 
   @Test
-  fun `a node with dots in its name should be parsed using underscores`() {
+  fun `a node with dots in its name should be parsed using underscores`() = test {
     val text = """
       <?xml version="1.0" encoding="utf-8"?>
       <resources>
@@ -90,8 +91,8 @@ internal class AndroidResourceParserTest : BaseTest() {
       </resources>
     """.trimIndent()
 
-    val xml = testProjectDir
-      .child("styles.xml")
+    val xml = workingDir
+      .resolve("styles.xml")
       .createSafely(text)
 
     val declarations = AndroidResourceParser().parseFile(xml)

@@ -15,10 +15,7 @@
 
 package modulecheck.parsing.java
 
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.single
-import kotlinx.coroutines.runBlocking
 import modulecheck.api.context.jvmFiles
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.sourceset.SourceSetName
@@ -28,16 +25,13 @@ import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.PackageName.Companion.asPackageName
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.test.McNameTest
-import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
-import modulecheck.utils.trace.Trace
-import org.intellij.lang.annotations.Language
+import modulecheck.project.test.ProjectTestEnvironment
 import org.jetbrains.kotlin.config.JvmTarget
-import org.jetbrains.kotlin.config.JvmTarget.JVM_11
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-internal class JavaFileTest : ProjectTest(), McNameTest {
+internal class JavaFileTest : ProjectTest<ProjectTestEnvironment>(), McNameTest {
 
   override val defaultLanguage: CompatibleLanguage
     get() = JAVA
@@ -46,16 +40,16 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
   inner class `resolvable declarations` {
 
     @Test
-    fun `enum constants should count as declarations`() {
+    fun `enum constants should count as declarations`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
         public enum Color { RED, BLUE }
         """
       )
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {}
@@ -68,9 +62,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `nested enum constants should count as declarations`() {
+    fun `nested enum constants should count as declarations`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -80,7 +74,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {}
@@ -94,9 +88,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `declared constants should count as declarations`() {
+    fun `declared constants should count as declarations`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -107,7 +101,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {}
@@ -119,9 +113,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `declared nested constants should count as declarations`() {
+    fun `declared nested constants should count as declarations`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -135,7 +129,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {}
@@ -148,9 +142,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `public static methods should count as declarations`() {
+    fun `public static methods should count as declarations`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -161,7 +155,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {}
@@ -173,9 +167,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `a record should count as a declaration`() {
+    fun `a record should count as a declaration`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         //language=text
         """
         package com.subject;
@@ -187,7 +181,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         jvmTarget = JvmTarget.JVM_16
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {
@@ -201,9 +195,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
     // reproducer for https://github.com/RBusarow/ModuleCheck/issues/399
     @Test
-    fun `file without package should put declarations at the root`() {
+    fun `file without package should put declarations at the root`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         //language=text
         """
 
@@ -214,7 +208,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         jvmTarget = JvmTarget.JVM_16
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {
@@ -227,9 +221,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `file without imports should still parse`() {
+    fun `file without imports should still parse`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -237,7 +231,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {}
@@ -252,9 +246,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
   inner class `api references` {
 
     @Test
-    fun `public method return type should count as api reference`() {
+    fun `public method return type should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -267,7 +261,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {
           java("com.lib1.Lib1Class")
@@ -283,9 +277,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `private method return type should not count as api reference`() {
+    fun `private method return type should not count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -298,7 +292,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {
@@ -311,9 +305,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `package-private method return type should not count as api reference`() {
+    fun `package-private method return type should not count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -326,7 +320,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {
@@ -340,9 +334,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `public method with wildcard-imported return type should count as api reference`() {
+    fun `public method with wildcard-imported return type should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -355,7 +349,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {
           java("com.lib1.Lib1Class")
@@ -371,9 +365,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `public method with fully qualified return type should count as api reference`() {
+    fun `public method with fully qualified return type should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -384,7 +378,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {
           java("com.lib1.Lib1Class")
@@ -402,9 +396,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `public method parameterized return type should count as api reference`() {
+    fun `public method parameterized return type should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -418,7 +412,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {
           java("com.lib1.Lib1Class")
@@ -436,9 +430,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `public method generic return type parameter should not count as api reference`() {
+    fun `public method generic return type parameter should not count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -451,7 +445,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {
           java("java.util.List")
@@ -467,10 +461,11 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `import should not be an api reference if it isn't actually part of an api reference`() {
+    fun `import should not be an api reference if it isn't actually part of an api reference`() =
+      test {
 
-      val file = createFile(
-        """
+        val file = createJavaFile(
+          """
         package com.subject;
 
         import com.lib1.Lib1Class;
@@ -481,28 +476,28 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
           public <E> List<E> foo() { return null; }
         }
         """
-      )
+        )
 
-      file shouldBe {
+        file shouldBeJvmFile {
 
-        apiReferences {
-          java("java.util.List")
-        }
-        references {
-          java("com.lib1.Lib1Class")
-          java("java.util.List")
-        }
-        declarations {
-          agnostic("com.subject.ParsedClass")
-          agnostic("com.subject.ParsedClass.foo")
+          apiReferences {
+            java("java.util.List")
+          }
+          references {
+            java("com.lib1.Lib1Class")
+            java("java.util.List")
+          }
+          declarations {
+            agnostic("com.subject.ParsedClass")
+            agnostic("com.subject.ParsedClass.foo")
+          }
         }
       }
-    }
 
     @Test
-    fun `public method generic return type parameter bound should count as api reference`() {
+    fun `public method generic return type parameter bound should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -515,7 +510,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {
           java("java.util.List")
@@ -533,9 +528,9 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
 
     @Test
-    fun `public method argument should count as api reference`() {
+    fun `public method argument should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
         package com.subject;
 
@@ -547,7 +542,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         }
         """
       )
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {
           java("java.util.List")
@@ -567,7 +562,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     @Test
     fun `public member property type with wildcard import should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
           package com.subject;
 
@@ -580,7 +575,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
           """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {
           java("com.lib1.Lib1Class")
@@ -598,7 +593,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     @Test
     fun `public member property type with import should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
           package com.subject;
 
@@ -611,7 +606,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
           """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {
           java("com.lib1.Lib1Class")
@@ -630,7 +625,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     fun `a public member property with generic type with wildcard import should count as api reference`() =
       test {
 
-        val file = createFile(
+        val file = createJavaFile(
           """
           package com.subject;
 
@@ -644,7 +639,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
           """
         )
 
-        file shouldBe {
+        file shouldBeJvmFile {
 
           apiReferences {
             java("java.util.List")
@@ -670,7 +665,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val project = androidLibrary(":lib1", "com.subject")
 
-      val file = project.createFile(
+      val file = project.createJavaFile(
         """
         package com.subject;
 
@@ -681,7 +676,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {
@@ -720,7 +715,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {
@@ -759,7 +754,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {
@@ -799,7 +794,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {
@@ -838,7 +833,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {
@@ -862,7 +857,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createJavaFile(
         """
         package com.subject.internal;
 
@@ -875,7 +870,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {
@@ -899,7 +894,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createJavaFile(
         """
         package com.subject;
 
@@ -912,7 +907,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {
@@ -944,7 +939,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createJavaFile(
         """
         package com.subject;
 
@@ -957,7 +952,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {
           java("com.modulecheck.other.databinding.FragmentOtherBinding")
@@ -989,7 +984,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createJavaFile(
         """
         package com.subject;
 
@@ -1000,7 +995,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {}
         references {
@@ -1030,7 +1025,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createJavaFile(
         """
         package com.subject;
 
@@ -1043,7 +1038,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file shouldBe {
+      file shouldBeJvmFile {
 
         apiReferences {
           java("com.modulecheck.other.databinding.FragmentOtherBinding")
@@ -1065,7 +1060,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
     val project = androidLibrary(":lib1", "com.lib1")
 
-    val file = project.createFile(
+    val file = project.createJavaFile(
       """
         package com.subject;
 
@@ -1087,7 +1082,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
 
       apiReferences {}
       references {
@@ -1106,7 +1101,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
     val project = androidLibrary(":lib1", "com.lib1")
 
-    val file = project.createFile(
+    val file = project.createJavaFile(
       """
         package com.subject;
 
@@ -1117,7 +1112,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
     )
 
-    file shouldBe {
+    file shouldBeJvmFile {
 
       apiReferences {}
       references {}
@@ -1131,32 +1126,4 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
   }
 
   fun java(name: String) = ReferenceName(name, JAVA)
-
-  fun McProject.createFile(
-    @Language("java")
-    content: String,
-    sourceSetName: SourceSetName = SourceSetName.MAIN
-  ): RealJavaFile = runBlocking {
-    createFile(
-      content = content,
-      project = this@createFile,
-      sourceSetName = sourceSetName
-    )
-  }
-
-  fun createFile(
-    @Language("java")
-    content: String,
-    project: McProject = simpleProject(),
-    sourceSetName: SourceSetName = SourceSetName.MAIN,
-    jvmTarget: JvmTarget = JVM_11
-  ): RealJavaFile = runBlocking(Trace.start(listOf(JavaFileTest::class))) {
-    project.editSimple {
-      addJavaSource(content, sourceSetName)
-      this.jvmTarget = jvmTarget
-    }.jvmFiles()
-      .get(sourceSetName)
-      .filterIsInstance<RealJavaFile>()
-      .first { it.file.readText() == content.trimIndent() }
-  }
 }

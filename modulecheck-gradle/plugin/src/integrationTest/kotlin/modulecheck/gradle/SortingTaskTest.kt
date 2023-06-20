@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 internal class SortingTaskTest : BaseGradleTest() {
 
   @Test
-  fun `dependency sort task should execute even if disabled in multi rule settings`() {
+  fun `dependency sort task should execute even if disabled in multi rule settings`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile {
@@ -73,7 +73,7 @@ internal class SortingTaskTest : BaseGradleTest() {
   }
 
   @Test
-  fun `plugin sort task should execute even if disabled in multi rule settings`() {
+  fun `plugin sort task should execute even if disabled in multi rule settings`() = test {
 
     val lib1 = kotlinProject(":lib1") {
       buildFile {

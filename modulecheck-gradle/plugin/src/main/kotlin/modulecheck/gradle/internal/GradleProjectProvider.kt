@@ -42,7 +42,6 @@ import modulecheck.rule.impl.KAPT_PLUGIN_ID
 import net.swiftzer.semver.SemVer
 import javax.inject.Inject
 
-@Suppress("LongParameterList")
 @ContributesBinding(TaskScope::class, ProjectProvider::class)
 class GradleProjectProvider @Inject constructor(
   @RootGradleProject

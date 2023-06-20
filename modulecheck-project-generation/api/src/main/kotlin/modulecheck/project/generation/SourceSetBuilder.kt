@@ -25,7 +25,7 @@ import modulecheck.model.sourceset.removeSuffix
 import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.parsing.kotlin.compiler.impl.RealKotlinEnvironment
 import modulecheck.reporting.logging.PrintLogger
-import modulecheck.testing.requireNotNullOrFail
+import modulecheck.testing.assert.requireNotNullOrFail
 import modulecheck.utils.capitalize
 import modulecheck.utils.lazy.ResetManager
 import modulecheck.utils.lazy.lazyDeferred
@@ -35,6 +35,25 @@ import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersion.KOTLIN_1_6
 import java.io.File
 
+/**
+ * @property name Name of the source set.
+ * @property compileOnlyConfiguration Dependencies that
+ *   are required to compile the project's source set.
+ * @property apiConfiguration Dependencies that are part
+ *   of the API of the source set exposed to consumers.
+ * @property implementationConfiguration Dependencies that are used internally in the source set.
+ * @property runtimeOnlyConfiguration Dependencies that are required
+ *   to run the project's source set, but not required to compile it.
+ * @property annotationProcessorConfiguration Dependencies that are used for annotation processing.
+ * @property jvmFiles The JVM source files of this source set.
+ * @property resourceFiles The resource files of this source set.
+ * @property layoutFiles The layout files of this source set.
+ * @property classpath The classpath required to compile this source set.
+ * @property upstream The list of upstream source set names.
+ * @property downstream The list of downstream source set names.
+ * @property kotlinLanguageVersion The version of Kotlin used to compile this source set.
+ * @property jvmTarget The target version of the generated JVM bytecode.
+ */
 data class SourceSetBuilder(
   var name: SourceSetName,
   var compileOnlyConfiguration: McConfiguration,
@@ -53,6 +72,13 @@ data class SourceSetBuilder(
   var kotlinLanguageVersion: LanguageVersion? = null,
   var jvmTarget: JvmTarget = JVM_11
 ) {
+  /**
+   * Converts a `SourceSetBuilder` to a `McSourceSet`.
+   *
+   * @param dependencyModuleDescriptorAccess The access point to obtain module descriptors.
+   * @param projectPath The path to the project.
+   * @return A `McSourceSet` built from this `SourceSetBuilder`.
+   */
   fun toSourceSet(
     dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
     projectPath: StringProjectPath
@@ -89,6 +115,12 @@ data class SourceSetBuilder(
   }
 
   companion object {
+    /**
+     * Constructs a `SourceSetBuilder` from a given `McSourceSet`.
+     *
+     * @param sourceSet The `McSourceSet` to construct from.
+     * @return A `SourceSetBuilder` constructed from the provided `McSourceSet`.
+     */
     suspend fun fromSourceSet(sourceSet: McSourceSet): SourceSetBuilder {
       val kotlinEnvironment = sourceSet.kotlinEnvironmentDeferred.await() as RealKotlinEnvironment
 
@@ -112,6 +144,7 @@ data class SourceSetBuilder(
   }
 }
 
+/** Populates the source sets for a project. */
 @PublishedApi
 internal fun McProjectBuilder<*>.populateSourceSets() {
   platformPlugin
@@ -122,7 +155,19 @@ internal fun McProjectBuilder<*>.populateSourceSets() {
     .forEach { maybeAddSourceSet(it) }
 }
 
-@Suppress("LongParameterList")
+/**
+ * Attempts to add a source set to the project, if it does not already exist.
+ *
+ * @param name The name of the source set.
+ * @param jvmFiles The JVM source files for the source set.
+ * @param resourceFiles The resource files for the source set.
+ * @param layoutFiles The layout files for the source set.
+ * @param classpath The classpath required to compile the source set.
+ * @param upstreamNames The names of the upstream source sets.
+ * @param downstreamNames The names of the downstream source sets.
+ * @param jvmTarget The target version of the generated JVM bytecode.
+ * @return The `SourceSetBuilder` of the newly added or existing source set.
+ */
 fun McProjectBuilder<*>.maybeAddSourceSet(
   name: SourceSetName,
   jvmFiles: Set<File> = emptySet(),
@@ -186,6 +231,7 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
   return sourceSet
 }
 
+/** Asserts that the hierarchy of source sets is valid. */
 @PublishedApi
 internal fun MutableMap<SourceSetName, SourceSetBuilder>.validateHierarchy() {
   values.forEach { sourceSet ->
@@ -196,10 +242,20 @@ internal fun MutableMap<SourceSetName, SourceSetBuilder>.validateHierarchy() {
   }
 }
 
+/**
+ * Asserts that a source set with a given name exists.
+ *
+ * @param name The name of the source set to verify.
+ */
 internal fun PlatformPluginBuilder<*>.requireSourceSetExists(name: SourceSetName) {
   sourceSets.requireSourceSetExists(name)
 }
 
+/**
+ * Asserts that a source set with a given name exists.
+ *
+ * @param name The name of the source set to check.
+ */
 internal fun MutableMap<SourceSetName, SourceSetBuilder>.requireSourceSetExists(
   name: SourceSetName
 ) {
@@ -214,6 +270,7 @@ internal fun MutableMap<SourceSetName, SourceSetBuilder>.requireSourceSetExists(
     }
 }
 
+/** Finds the downstream source sets for each source set. */
 @PublishedApi
 internal fun MutableMap<SourceSetName, SourceSetBuilder>.populateDownstreams() {
   values.forEach { sourceSetBuilder ->
@@ -226,6 +283,15 @@ internal fun MutableMap<SourceSetName, SourceSetBuilder>.populateDownstreams() {
   }
 }
 
+/**
+ * Derives this source set's name for the base [configName].
+ *
+ * For instance, the "test" source set with a `configName`
+ * of "implementation" will return `testImplementation`.
+ *
+ * @param configName The base name of the configuration.
+ * @return The complete configuration name.
+ */
 internal fun SourceSetName.configurationName(configName: String): String {
   return if (this == SourceSetName.MAIN) {
     configName

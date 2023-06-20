@@ -18,8 +18,11 @@ package modulecheck.testing
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
+import java.lang.StackWalker.StackFrame
 
-internal class VersionsFactoryFilteringTest : BaseTest(), VersionsFactoryTest {
+internal class VersionsFactoryFilteringTest :
+  BaseTest<VersionFactoryTestTestEnvironment>(),
+  VersionsFactoryTest<VersionFactoryTestTestEnvironment> {
 
   override val exhaustive: Boolean
     get() = true
@@ -45,9 +48,18 @@ internal class VersionsFactoryFilteringTest : BaseTest(), VersionsFactoryTest {
 
   override fun dynamicTest(
     subject: TestVersions,
+    stackFrame: StackFrame,
     testName: String,
-    action: (TestVersions) -> Unit
+    action: suspend VersionFactoryTestTestEnvironment.() -> Unit
   ): DynamicTest {
     throw NotImplementedError("forced override")
   }
 }
+
+/** unused */
+internal data class VersionFactoryTestTestEnvironment(
+  override val testVersions: TestVersions,
+  val testStackFrame: StackWalker.StackFrame,
+  val testVariantNames: List<String>
+) : TestEnvironment(testStackFrame, testVariantNames),
+  HasTestVersions

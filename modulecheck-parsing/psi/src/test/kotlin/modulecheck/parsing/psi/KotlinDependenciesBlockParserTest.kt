@@ -26,30 +26,29 @@ import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
 import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
+import modulecheck.project.test.ProjectTestEnvironment
 import modulecheck.reporting.logging.PrintLogger
 import org.junit.jupiter.api.Test
 
-internal class KotlinDependenciesBlockParserTest : ProjectTest() {
+internal class KotlinDependenciesBlockParserTest : ProjectTest<ProjectTestEnvironment>() {
 
-  val parser by resets {
-    KotlinDependenciesBlockParser(
+  val parser: KotlinDependenciesBlockParser
+    get() = KotlinDependenciesBlockParser(
       logger = PrintLogger(),
       psiFileFactory = NoContextPsiFileFactory()
     ) { configurationName, projectPath, isTestFixture ->
       RuntimeProjectDependency(configurationName, projectPath, isTestFixture)
     }
-  }
 
   @Test
-  fun `external declaration`() {
-    val block = parser
-      .parse(
-        """
+  fun `external declaration`() = test {
+    val block = parse(
+      """
        dependencies {
           api("com.foo:bar:1.2.3.4")
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ExternalDependencyDeclaration(
@@ -64,15 +63,14 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `string extension configuration functions declaration`() {
-    val block = parser
-      .parse(
-        """
+  fun `string extension configuration functions declaration`() = test {
+    val block = parse(
+      """
        dependencies {
          "api"(project(path = ":core:jvm"))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -86,16 +84,15 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `declaration's original string should include trailing comment`() {
-    val block = parser
-      .parse(
-        """
+  fun `declaration's original string should include trailing comment`() = test {
+    val block = parse(
+      """
        dependencies {
           api(project(":core:jvm")) // trailing comment
           api(project(":core:jvm"))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -116,10 +113,9 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `suppression which doesn't match finding name regex should be ignored`() {
-    val block = parser
-      .parse(
-        """
+  fun `suppression which doesn't match finding name regex should be ignored`() = test {
+    val block = parse(
+      """
         @Suppress("DSL_SCOPE_VIOLATION")
         dependencies {
            api(project(":core:android"))
@@ -128,16 +124,15 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
            testImplementation(project(":core:test"))
         }
          """
-      ).single()
+    ).single()
 
     block.allSuppressions.values.flatten() shouldBe emptyList()
   }
 
   @Test
-  fun `declaration with annotation should include annotation with argument`() {
-    val block = parser
-      .parse(
-        """
+  fun `declaration with annotation should include annotation with argument`() = test {
+    val block = parse(
+      """
        dependencies {
           api(project(":core:android"))
           @Suppress("unused-dependency")
@@ -145,7 +140,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
           testImplementation(project(":core:test"))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -179,9 +174,9 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `dependency block with Suppress annotation with old IDs should include annotation with argument`() {
-    val block = parser
-      .parse(
+  fun `dependency block with Suppress annotation with old IDs should include annotation with argument`() =
+    test {
+      val block = parse(
         """
         @Suppress("Unused")
         dependencies {
@@ -193,42 +188,41 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         """
       ).single()
 
-    block.settings shouldBe listOf(
-      ModuleDependencyDeclaration(
-        projectPath = StringProjectPath(":core:android"),
-        projectAccessor = """project(":core:android")""",
-        configName = ConfigurationName.api,
-        declarationText = """api(project(":core:android"))""",
-        statementWithSurroundingText = """   api(project(":core:android"))""",
-        suppressed = listOf("unused-dependency")
-      ),
-      ModuleDependencyDeclaration(
-        projectPath = StringProjectPath(":core:jvm"),
-        projectAccessor = """project(":core:jvm")""",
-        configName = ConfigurationName.api,
-        declarationText = """api(project(":core:jvm"))""",
-        statementWithSurroundingText = """
+      block.settings shouldBe listOf(
+        ModuleDependencyDeclaration(
+          projectPath = StringProjectPath(":core:android"),
+          projectAccessor = """project(":core:android")""",
+          configName = ConfigurationName.api,
+          declarationText = """api(project(":core:android"))""",
+          statementWithSurroundingText = """   api(project(":core:android"))""",
+          suppressed = listOf("unused-dependency")
+        ),
+        ModuleDependencyDeclaration(
+          projectPath = StringProjectPath(":core:jvm"),
+          projectAccessor = """project(":core:jvm")""",
+          configName = ConfigurationName.api,
+          declarationText = """api(project(":core:jvm"))""",
+          statementWithSurroundingText = """
           |   @Suppress("InheritedDependency")
           |   api(project(":core:jvm"))
-        """.trimMargin(),
-        suppressed = listOf("inherited-dependency", "unused-dependency")
-      ),
-      ModuleDependencyDeclaration(
-        projectPath = StringProjectPath(":core:test"),
-        projectAccessor = """project(":core:test")""",
-        configName = ConfigurationName.testImplementation,
-        declarationText = """testImplementation(project(":core:test"))""",
-        statementWithSurroundingText = """   testImplementation(project(":core:test"))""",
-        suppressed = listOf("unused-dependency")
+          """.trimMargin(),
+          suppressed = listOf("inherited-dependency", "unused-dependency")
+        ),
+        ModuleDependencyDeclaration(
+          projectPath = StringProjectPath(":core:test"),
+          projectAccessor = """project(":core:test")""",
+          configName = ConfigurationName.testImplementation,
+          declarationText = """testImplementation(project(":core:test"))""",
+          statementWithSurroundingText = """   testImplementation(project(":core:test"))""",
+          suppressed = listOf("unused-dependency")
+        )
       )
-    )
-  }
+    }
 
   @Test
-  fun `dependency block with Suppress annotation should include annotation with argument`() {
-    val block = parser
-      .parse(
-        """
+  fun `dependency block with Suppress annotation should include annotation with argument`() = test {
+    val block = parse(
+      """
        @Suppress("unused-dependency")
        dependencies {
           api(project(":core:android"))
@@ -237,7 +231,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
           testImplementation(project(":core:test"))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -271,10 +265,9 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `blank line between dependencies`() {
-    val block = parser
-      .parse(
-        """
+  fun `blank line between dependencies`() = test {
+    val block = parse(
+      """
        dependencies {
           api(testFixtures(project(":lib1")))
 
@@ -282,7 +275,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
           implementation(testFixtures(project(":lib3")))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -312,15 +305,14 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `string module dependency declaration with testFixtures should be parsed`() {
-    val block = parser
-      .parse(
-        """
+  fun `string module dependency declaration with testFixtures should be parsed`() = test {
+    val block = parse(
+      """
        dependencies {
           api(testFixtures(project(":core:jvm")))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -334,16 +326,15 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `module dependency with commented out dependency above it`() {
-    val block = parser
-      .parse(
-        """
+  fun `module dependency with commented out dependency above it`() = test {
+    val block = parse(
+      """
        dependencies {
           // api(project(":core:dagger"))
           api(testFixtures(project(":core:jvm")))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -358,16 +349,15 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `module dependency with commented out dependency from previous finding above it`() {
-    val block = parser
-      .parse(
-        """
+  fun `module dependency with commented out dependency from previous finding above it`() = test {
+    val block = parse(
+      """
        dependencies {
           // api(project(":core:dagger")) // ModuleCheck finding [unused-dependency]
           api(testFixtures(project(":core:jvm")))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -381,15 +371,14 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `type-safe module dependency declaration with testFixtures should be parsed`() {
-    val block = parser
-      .parse(
-        """
+  fun `type-safe module dependency declaration with testFixtures should be parsed`() = test {
+    val block = parse(
+      """
        dependencies {
           api(testFixtures(projects.core.jvm))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -403,10 +392,9 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `module dependency with config block should split declarations properly`() {
-    val block = parser
-      .parse(
-        """
+  fun `module dependency with config block should split declarations properly`() = test {
+    val block = parse(
+      """
        dependencies {
           api(project(":core:test")) {
             exclude(group = "androidx.appcompat")
@@ -415,7 +403,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
           api(project(":core:jvm"))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -443,58 +431,57 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `module dependency with config block and preceding declaration should split declarations properly`() {
-    val block = parser
-      .parse(
+  fun `module dependency with config block and preceding declaration should split declarations properly`() =
+    test {
+      val block = parse(
         """
-       dependencies {
-          api(project(":core:jvm"))
+        dependencies {
+           api(project(":core:jvm"))
 
-          api(project(":core:test")) {
-            exclude(group = "androidx.appcompat")
-          }
-       }
+           api(project(":core:test")) {
+             exclude(group = "androidx.appcompat")
+           }
+        }
         """
       ).single()
 
-    block.settings shouldBe listOf(
-      ModuleDependencyDeclaration(
-        projectPath = StringProjectPath(":core:jvm"),
-        projectAccessor = """project(":core:jvm")""",
-        configName = ConfigurationName.api,
-        declarationText = "api(project(\":core:jvm\"))",
-        statementWithSurroundingText = "   api(project(\":core:jvm\"))"
-      ),
-      ModuleDependencyDeclaration(
-        projectPath = StringProjectPath(":core:test"),
-        projectAccessor = """project(":core:test")""",
-        configName = ConfigurationName.api,
-        declarationText = """api(project(":core:test")) {
+      block.settings shouldBe listOf(
+        ModuleDependencyDeclaration(
+          projectPath = StringProjectPath(":core:jvm"),
+          projectAccessor = """project(":core:jvm")""",
+          configName = ConfigurationName.api,
+          declarationText = "api(project(\":core:jvm\"))",
+          statementWithSurroundingText = "   api(project(\":core:jvm\"))"
+        ),
+        ModuleDependencyDeclaration(
+          projectPath = StringProjectPath(":core:test"),
+          projectAccessor = """project(":core:test")""",
+          configName = ConfigurationName.api,
+          declarationText = """api(project(":core:test")) {
           |     exclude(group = "androidx.appcompat")
           |   }
-        """.trimMargin(),
-        statementWithSurroundingText = """
+          """.trimMargin(),
+          statementWithSurroundingText = """
 
           |   api(project(":core:test")) {
           |     exclude(group = "androidx.appcompat")
           |   }
-        """.trimMargin()
+          """.trimMargin()
+        )
       )
-    )
-  }
+    }
 
   @Test
-  fun `module dependency with preceding blank line should preserve the blank line`() {
-    val block = parser
-      .parse(
-        """
+  fun `module dependency with preceding blank line should preserve the blank line`() = test {
+    val block = parse(
+      """
        dependencies {
           api(project(":core:test"))
 
           api(project(":core:jvm"))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -515,16 +502,15 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `module dependency with two different configs should be recorded twice`() {
-    val block = parser
-      .parse(
-        """
+  fun `module dependency with two different configs should be recorded twice`() = test {
+    val block = parse(
+      """
        dependencies {
           implementation(project(":core:jvm"))
           api(project(":core:jvm"))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -545,10 +531,9 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `declaration's original string should include preceding single-line comment`() {
-    val block = parser
-      .parse(
-        """
+  fun `declaration's original string should include preceding single-line comment`() = test {
+    val block = parse(
+      """
        dependencies {
           api("com.foo:bar:1.2.3.4") // inline comment
 
@@ -556,7 +541,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
           implementation(project(":core:android"))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ExternalDependencyDeclaration(
@@ -582,10 +567,9 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `declaration's original string should include preceding block comment`() {
-    val block = parser
-      .parse(
-        """
+  fun `declaration's original string should include preceding block comment`() = test {
+    val block = parse(
+      """
        dependencies {
           api("com.foo:bar:1.2.3.4") // inline comment
 
@@ -595,7 +579,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
           implementation(project(":core:android"))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ExternalDependencyDeclaration(
@@ -623,16 +607,15 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `declaration's original string should include preceding in-line block comment`() {
-    val block = parser
-      .parse(
-        """
+  fun `declaration's original string should include preceding in-line block comment`() = test {
+    val block = parse(
+      """
        dependencies {
           api("com.foo:bar:1.2.3.4") // inline comment
           /* single-line block comment */ implementation(project(":core:android"))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ExternalDependencyDeclaration(
@@ -654,16 +637,15 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `duplicate module dependency with same config should be recorded twice`() {
-    val block = parser
-      .parse(
-        """
+  fun `duplicate module dependency with same config should be recorded twice`() = test {
+    val block = parse(
+      """
        dependencies {
           api(project(":core:jvm"))
           api (   project(":core:jvm"))
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -684,16 +666,15 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `modules declared using type-safe accessors can be looked up using their path`() {
-    val block = parser
-      .parse(
-        """
+  fun `modules declared using type-safe accessors can be looked up using their path`() = test {
+    val block = parse(
+      """
        dependencies {
           api(projects.core.test)
           implementation(projects.httpLogging)
        }
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
@@ -714,10 +695,9 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `buildscript dependencies should not be parsed`() {
-    val block = parser
-      .parse(
-        """
+  fun `buildscript dependencies should not be parsed`() = test {
+    val block = parse(
+      """
         buildscript {
           repositories {
             mavenCentral()
@@ -737,7 +717,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         }
 
         """
-      ).single()
+    ).single()
 
     block.settings shouldBe listOf(
       UnknownDependencyDeclaration(
@@ -749,8 +729,10 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
     )
   }
 
-  fun KotlinDependenciesBlockParser.parse(
+  fun ProjectTestEnvironment.parse(
     string: String,
     project: McProject = simpleProject(buildFileText = string.trimIndent())
-  ): List<KotlinDependenciesBlock> = runBlocking { parse(project) }
+  ): List<KotlinDependenciesBlock> {
+    return runBlocking { parser.parse(project) }
+  }
 }

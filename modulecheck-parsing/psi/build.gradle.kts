@@ -50,7 +50,6 @@ dependencies {
   implementation(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotest.runner.junit5.jvm)
@@ -61,5 +60,4 @@ dependencies {
   testImplementation(project(path = ":modulecheck-parsing:psi"))
   testImplementation(project(path = ":modulecheck-parsing:source:testing"))
   testImplementation(project(path = ":modulecheck-project:testing"))
-  testImplementation(project(path = ":modulecheck-utils:trace"))
 }

@@ -21,10 +21,11 @@ import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.testing.BaseTest
 import modulecheck.testing.DynamicTests
+import modulecheck.testing.TestEnvironment
 import modulecheck.utils.letIf
 
 @Suppress("UnnecessaryAbstractClass")
-abstract class BaseMcNameTest : BaseTest(), DynamicTests {
+abstract class BaseMcNameTest : BaseTest<TestEnvironment>(), DynamicTests {
 
   fun allReferenceNames(
     name: String = "com.test.Subject",

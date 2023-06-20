@@ -7,6 +7,11 @@
         <option value="$PROJECT_DIR$/detekt/detekt-config.yml" />
       </set>
     </option>
+    <option name="configurationFiles">
+      <list>
+        <option value="$PROJECT_DIR$/detekt/detekt-config.yml" />
+      </list>
+    </option>
   </component>
   <component name="DetektProjectConfiguration">
     <configPaths>detekt/detekt-config.yml</configPaths>

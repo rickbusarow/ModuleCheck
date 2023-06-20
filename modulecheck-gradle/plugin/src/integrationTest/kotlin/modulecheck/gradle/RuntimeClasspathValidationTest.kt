@@ -48,16 +48,16 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
           resolutionStrategy {
             eachPlugin {
               if (requested.id.id.startsWith("com.android")) {
-                useVersion("$agp")
+                useVersion("$agpVersion")
               }
               if (requested.id.id == "com.rickbusarow.module-check") {
                 useVersion("${BuildProperties.version}")
               }
               if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
-                useVersion("$kotlin")
+                useVersion("$kotlinVersion")
               }
               if (requested.id.id == "com.squareup.anvil") {
-                useVersion("$anvil")
+                useVersion("$anvilVersion")
               }
             }
           }
@@ -119,8 +119,8 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
 
     shouldSucceed("printClasspath") {
 
-      output shouldContain "com.android.library:com.android.library.gradle.plugin:$agp"
-      output shouldContain "org.jetbrains.kotlin.android:org.jetbrains.kotlin.android.gradle.plugin:$kotlin"
+      output shouldContain "com.android.library:com.android.library.gradle.plugin:$agpVersion"
+      output shouldContain "org.jetbrains.kotlin.android:org.jetbrains.kotlin.android.gradle.plugin:$kotlinVersion"
     }
   }
 

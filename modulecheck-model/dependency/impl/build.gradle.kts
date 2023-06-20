@@ -35,7 +35,6 @@ dependencies {
 
   implementation(project(":modulecheck-utils:lazy"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }
