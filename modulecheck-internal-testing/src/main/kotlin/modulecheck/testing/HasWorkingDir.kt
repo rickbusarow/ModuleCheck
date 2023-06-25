@@ -16,9 +16,11 @@
 package modulecheck.testing
 
 import modulecheck.utils.div
+import modulecheck.utils.requireNotNull
 import modulecheck.utils.segments
 import java.io.File
 import java.lang.StackWalker.StackFrame
+import kotlin.streams.toList
 
 /**
  * @param workingDir the directory containing all source and generated files to be used in this test
@@ -128,11 +130,7 @@ abstract class HasWorkingDir(workingDir: File) {
 
       val classSimpleNames = actualClass.canonicalName.segments().drop(packageLength)
 
-      val testFunctionName = clazz.name.removePrefix(actualClass.name)
-        .segments()
-        .firstOrNull()
-        ?.cleanForDir()
-        ?: testStackFrame.methodName.cleanForDir()
+      val testFunctionName = testStackFrame.callingFunctionName().cleanForDir()
 
       val testClassName = classSimpleNames
         // "MyTest/nested class"
@@ -142,9 +140,33 @@ abstract class HasWorkingDir(workingDir: File) {
 
       val classDir = File("build") / "tests" / testClassName
 
-      val working = classDir / testFunctionName / testVariantNames.joinToString(File.separator)
+      val working = classDir / testFunctionName / testVariantNames
+        .joinToString(File.separator)
+        .replace("[^a-zA-Z\\d/]".toRegex(), "_")
 
       return working.absoluteFile
+    }
+
+    /**
+     * Finds the stack trace element corresponding to the invoking test function.
+     *
+     * @return The StackFrame corresponding to the test function.
+     */
+    fun StackFrame.callingFunctionName(): String {
+      val clazz = declaringClass()
+
+      // trim off all the stuff like "$$inlined$$execute$1""
+      val actualClass = clazz.firstNonSyntheticClass()
+
+      // nested classes and functions have the java `$` delimiter
+      // ex: "com.example.MyTest$nested class$my test"
+      fun String.segments(): List<String> = split(".", "$")
+        .filter { it.isNotBlank() }
+
+      return clazz.name.removePrefix(actualClass.name)
+        .segments()
+        .firstOrNull()
+        ?: methodName
     }
 
     @PublishedApi
@@ -161,12 +183,18 @@ abstract class HasWorkingDir(workingDir: File) {
       .getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE)
       .walk { frames ->
 
-        frames
+        val allGoodFrames = frames
           // skip the first since it's this function and not the calling test
           .skip(1)
           .filter { !it.isSkipped() }
-          .findFirst()
-          .get()
+          .toList()
+
+        val callingFunctionName = allGoodFrames
+          .firstOrNull()
+          .requireNotNull { "Could not find a stack frame which is not skipped." }
+          .callingFunctionName()
+
+        allGoodFrames.last { it.methodName == callingFunctionName }
       }
   }
 }

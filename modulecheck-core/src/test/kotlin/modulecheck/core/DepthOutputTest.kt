@@ -23,19 +23,17 @@ import modulecheck.model.dependency.ConfigurationName
 import modulecheck.rule.impl.FindingFactoryImpl
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.runtime.test.RunnerTestEnvironment
-import modulecheck.testing.DynamicTests
-import modulecheck.testing.HasWorkingDir
 import modulecheck.testing.SkipInStackTrace
+import modulecheck.testing.asContainers
 import modulecheck.utils.remove
 import modulecheck.utils.resolve
-import org.junit.jupiter.api.DynamicContainer
 import org.junit.jupiter.api.DynamicNode
-import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import java.io.File
+import java.util.stream.Stream
 
-internal class DepthOutputTest : RunnerTest(), DynamicTests {
+internal class DepthOutputTest : RunnerTest() {
 
   override val settings: RunnerTestEnvironment.() -> ModuleCheckSettings = {
     TestSettings(
@@ -306,51 +304,20 @@ internal class DepthOutputTest : RunnerTest(), DynamicTests {
     }
 
   @SkipInStackTrace
-  fun <E> List<E>.runTest(
-    testName: (E) -> String,
-    block: suspend RunnerTestEnvironment.(E) -> Unit
-  ): List<DynamicTest> {
-
-    val frame = HasWorkingDir.testStackFrame()
-
-    return this.dynamic(testName) { e ->
-
-      test(
-        testStackFrame = frame,
-        testName(e)
-      ) {
-        block(e)
-      }
-    }
-  }
-
-  @SkipInStackTrace
   fun flags(
     block: suspend RunnerTestEnvironment.(Boolean, Boolean, Boolean) -> Unit
-  ): List<DynamicNode> {
+  ): Stream<out DynamicNode> {
 
-    val frame = HasWorkingDir.testStackFrame()
+    return listOf(true, false)
+      .asContainers({ "depthsConsole: $it" }) { depthsConsole ->
 
-    return listOf(true, false).map { depthsConsole ->
-
-      DynamicContainer.dynamicContainer(
-        "depthsConsole: $depthsConsole",
-        listOf(true, false).map { depthsReport ->
-          DynamicContainer.dynamicContainer(
-            "depthsReport: $depthsReport",
-            listOf(true, false).dynamic({ "graphsReport: $it" }) { graphsReport ->
-              test(
-                frame,
-                "depthsConsole_$depthsConsole",
-                "depthsReport_$depthsReport",
-                "graphsReport_$graphsReport"
-              ) {
+        listOf(true, false)
+          .asContainers({ "depthsReport: $it" }) { depthsReport ->
+            listOf(true, false)
+              .asTests({ "graphsReport: $it" }) { graphsReport ->
                 block(depthsConsole, depthsReport, graphsReport)
               }
-            }
-          )
-        }
-      )
-    }
+          }
+      }
   }
 }

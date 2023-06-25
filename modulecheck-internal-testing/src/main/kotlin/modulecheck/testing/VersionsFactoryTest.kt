@@ -19,12 +19,14 @@ import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import modulecheck.utils.letIf
 import modulecheck.utils.requireNotNull
+import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
 import java.lang.StackWalker.StackFrame
+import java.util.stream.Stream
 
 /**
  * Convenience interface for a test which uses [VersionsFactory]
- * in order to create [dynamicTest]s for a JUnit5 test factory.
+ * in order to create [DynamicTest]s for a JUnit5 test factory.
  */
 interface VersionsFactoryTest<T> :
   VersionsFactory,
@@ -46,11 +48,9 @@ interface VersionsFactoryTest<T> :
     exhaustive: Boolean = this.exhaustive,
     filter: ((TestVersions) -> Boolean)? = null,
     action: suspend T.() -> Unit
-  ): List<DynamicTest> {
+  ): Stream<out DynamicNode> = testFactory {
 
-    val stackFrame = HasWorkingDir.testStackFrame()
-
-    return versions(exhaustive = exhaustive)
+    versions(exhaustive = exhaustive)
       .letIf(filter != null) { versions ->
 
         val (included, excluded) = allVersions
@@ -66,16 +66,14 @@ interface VersionsFactoryTest<T> :
 
         versions.filter(filter.requireNotNull())
       }
-      .map { subject ->
-        dynamicTest(subject, stackFrame, subject.toString(), action)
+      .asTests { subject ->
+        test(
+          params = subject.newParams(rootStackFrame),
+          action = action
+        )
       }
   }
 
-  /** hook for performing setup/teardown for each test within a base test class */
-  fun dynamicTest(
-    subject: TestVersions,
-    stackFrame: StackFrame,
-    testName: String,
-    action: suspend T.() -> Unit
-  ): DynamicTest
+  /** hook for creating a custom TestEnvironment within a base test class */
+  fun TestVersions.newParams(stackFrame: StackFrame): TestEnvironmentParams
 }

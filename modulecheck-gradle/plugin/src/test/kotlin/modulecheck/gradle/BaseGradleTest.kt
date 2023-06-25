@@ -17,19 +17,15 @@ package modulecheck.gradle
 
 import modulecheck.project.ProjectCache
 import modulecheck.testing.BaseTest
-import modulecheck.testing.DynamicTests
-import modulecheck.testing.SkipInStackTrace
 import modulecheck.testing.TestEnvironmentParams
 import modulecheck.testing.TestVersions
 import modulecheck.testing.VersionsFactoryTest
 import modulecheck.utils.remove
-import org.junit.jupiter.api.DynamicTest
 import java.lang.StackWalker.StackFrame
 
 @Suppress("UnnecessaryAbstractClass")
 abstract class BaseGradleTest :
   BaseTest<GradleTestEnvironment>(),
-  DynamicTests,
   VersionsFactoryTest<GradleTestEnvironment> {
 
   override fun newTestEnvironment(params: TestEnvironmentParams): GradleTestEnvironment {
@@ -47,26 +43,16 @@ abstract class BaseGradleTest :
     }
   }
 
-  @SkipInStackTrace
-  final override fun dynamicTest(
-    subject: TestVersions,
-    stackFrame: StackFrame,
-    testName: String,
-    action: suspend GradleTestEnvironment.() -> Unit
-  ): DynamicTest = DynamicTest.dynamicTest(testName) {
-
-    test(
-      params = GradleTestEnvironmentParams(
-        testVersions = subject,
-        projectCache = ProjectCache(),
-        testStackFrame = stackFrame,
-        testVariantNames = testName
-          .substringAfter('[')
-          .substringBefore(']')
-          .split(',')
-          .map { it.trim().replace(" ", "_").remove(":") }
-      ),
-      action = action
+  final override fun TestVersions.newParams(stackFrame: StackFrame): GradleTestEnvironmentParams {
+    return GradleTestEnvironmentParams(
+      testVersions = this,
+      projectCache = ProjectCache(),
+      testStackFrame = stackFrame,
+      testVariantNames = this.toString()
+        .substringAfter('[')
+        .substringBefore(']')
+        .split(',')
+        .map { it.trim().replace(" ", "_").remove(":") }
     )
   }
 }
