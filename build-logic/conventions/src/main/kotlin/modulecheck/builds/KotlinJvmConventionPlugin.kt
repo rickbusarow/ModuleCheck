@@ -66,6 +66,10 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
             add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
             add("-opt-in=kotlinx.coroutines.FlowPreview")
           }
+
+          if (task.name.endsWith("TestKotlin") || target.path.endsWith("testing")) {
+            add("-Xcontext-receivers")
+          }
         }
       }
     }

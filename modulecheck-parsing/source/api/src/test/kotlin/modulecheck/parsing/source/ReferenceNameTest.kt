@@ -19,6 +19,7 @@ import io.kotest.matchers.shouldNotBe
 import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.McName.CompatibleLanguage.XML
+import modulecheck.testing.asTests
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
@@ -33,7 +34,7 @@ class ReferenceNameTest : BaseMcNameTest() {
     @TestFactory
     fun `equals matches other reference types with the same name and language`() =
       allReferenceNames("com.test.Subject", languages = listOf(JAVA))
-        .dynamic { other ->
+        .asTests { other ->
 
           other shouldBe subject
           subject shouldBe other
@@ -42,7 +43,7 @@ class ReferenceNameTest : BaseMcNameTest() {
     @TestFactory
     fun `equals does not match any reference types with a different language`() =
       allReferenceNames("com.test.Subject", languages = listOf(XML, KOTLIN))
-        .dynamic { other ->
+        .asTests { other ->
 
           other shouldNotBe subject
           subject shouldNotBe other
@@ -51,7 +52,7 @@ class ReferenceNameTest : BaseMcNameTest() {
     @TestFactory
     fun `equals does not match any reference types with a different name`() =
       allReferenceNames("com.test.Other", languages = listOf(JAVA))
-        .dynamic { other ->
+        .asTests { other ->
 
           other shouldNotBe subject
           subject shouldNotBe other

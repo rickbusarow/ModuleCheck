@@ -33,6 +33,22 @@ interface HasTestEnvironment<T : TestEnvironment> {
     vararg testVariantNames: String,
     action: suspend T.() -> Unit
   ) {
+    test(testStackFrame, testVariantNames.toList(), action = action)
+  }
+
+  /**
+   * Runs the provided test [action] in the context of a new [TestEnvironment].
+   *
+   * @param testStackFrame The [StackWalker.StackFrame] from which the test is being run.
+   * @param testVariantNames The variant names related to the test.
+   * @param action The test action to run within the [TestEnvironment].
+   */
+  @SkipInStackTrace
+  fun test(
+    testStackFrame: StackWalker.StackFrame = HasWorkingDir.testStackFrame(),
+    testVariantNames: List<String>,
+    action: suspend T.() -> Unit
+  ) {
     test(
       params = DefaultTestEnvironmentParams(
         testStackFrame = testStackFrame,

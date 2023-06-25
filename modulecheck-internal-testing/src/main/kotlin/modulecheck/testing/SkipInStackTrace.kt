@@ -86,8 +86,9 @@ internal fun StackTraceElement.declaringClass(): Class<*> = Class.forName(classN
 @SkipInStackTrace
 @PublishedApi
 internal fun StackFrame.isSkipped(): Boolean {
+  val clazz = declaringClass ?: return true
   return isSkipped(
-    clazz = declaringClass(),
+    clazz = clazz,
     methodName = methodName.removeSuffix("\$default")
   )
 }
@@ -100,7 +101,7 @@ internal fun StackFrame.isSkipped(): Boolean {
  */
 @SkipInStackTrace
 @PublishedApi
-internal fun StackFrame.declaringClass(): Class<*> = Class.forName(className)
+internal fun StackFrame.declaringClass(): Class<*> = declaringClass
 
 /**
  * Determines whether a method within the given class should be skipped.

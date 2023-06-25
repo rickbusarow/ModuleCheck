@@ -21,7 +21,6 @@ import modulecheck.gradle.internal.BuildProperties
 import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.project.ProjectCache
 import modulecheck.project.generation.ProjectCollector
-import modulecheck.testing.DynamicTests
 import modulecheck.testing.HasTestVersions
 import modulecheck.testing.TestEnvironment
 import modulecheck.testing.TestEnvironmentParams
@@ -53,7 +52,6 @@ class GradleTestEnvironment(
   testVariantNames: List<String>
 ) : TestEnvironment(testStackFrame, testVariantNames),
   ProjectCollector,
-  DynamicTests,
   HasTestVersions {
 
   constructor(params: GradleTestEnvironmentParams) : this(
