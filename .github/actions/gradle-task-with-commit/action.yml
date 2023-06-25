@@ -1,5 +1,5 @@
-name : Set Up Gradle and Run Task
-description : This action performs a "fix"-type Gradle task and commits/pushes changes if possible.
+name: Set Up Gradle and Run Task
+description: This action performs a "fix"-type Gradle task and commits/pushes changes if possible.
 
 inputs:
   java-version:
