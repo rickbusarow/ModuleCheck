@@ -51,7 +51,6 @@ runs:
       with:
         path: |
           ~/.gradle/caches/build-cache-1
-          ~/.gradle/wrapper
           ./**/build/**
         key: ${{runner.os}}-${{inputs.write-cache-key}}-${{hashFiles('**/*.gradle.kt*')}}-${{hashFiles('**/libs.versions.toml')}}-${{hashFiles('**/gradle.properties')}}
         restore-keys: ${{runner.os}}-${{inputs.write-cache-key}}
@@ -64,7 +63,6 @@ runs:
       with:
         path: |
           ~/.gradle/caches/build-cache-1
-          ~/.gradle/wrapper
           ./**/build/**
         key: ${{runner.os}}-${{inputs.restore-cache-key}}-${{hashFiles('**/*.gradle.kt*')}}-${{hashFiles('**/libs.versions.toml')}}-${{hashFiles('**/gradle.properties')}}
         restore-keys: ${{runner.os}}-${{inputs.restore-cache-key}}
@@ -94,7 +92,6 @@ runs:
       with:
         path: |
           ~/.gradle/caches/build-cache-1
-          ~/.gradle/wrapper
           ./**/build/**
         key: ${{runner.os}}-${{inputs.write-cache-key}}-${{hashFiles('**/*.gradle.kt*')}}-${{hashFiles('**/libs.versions.toml')}}-${{hashFiles('**/gradle.properties')}}
 
