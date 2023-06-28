@@ -22,15 +22,6 @@ import modulecheck.utils.sequenceOfNotNull
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
-interface HasSourceSets {
-  val sourceSets: SourceSets
-}
-
-/** Cache of [sourceSets][McSourceSet], probably at the project level. */
-class SourceSets(
-  delegate: Map<SourceSetName, McSourceSet>
-) : Map<SourceSetName, McSourceSet> by delegate
-
 /**
  * Models all the particulars for a compilation unit, roughly equivalent
  * to the source set models in AGP, KGP, and the Java Gradle Plugin.
@@ -119,14 +110,14 @@ class McSourceSet(
    */
   val downstream: List<SourceSetName> by downstreamLazy
 
-  fun withUpstream(): List<SourceSetName> = listOf(name) + upstream
-  fun withDownstream(): List<SourceSetName> = listOf(name) + downstream
-
   val hasExistingSourceFiles: Boolean by lazy {
     jvmFiles.hasExistingFiles() ||
       resourceFiles.hasExistingFiles() ||
       layoutFiles.hasExistingFiles()
   }
+
+  fun withUpstream(): List<SourceSetName> = listOf(name) + upstream
+  fun withDownstream(): List<SourceSetName> = listOf(name) + downstream
 
   private fun Set<File>.hasExistingFiles(): Boolean {
     return any { dir ->

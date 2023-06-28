@@ -126,138 +126,6 @@ class RealKotlinFile(
 
   private val fileJavaFacadeName by lazy { psi.javaFileFacadeFqName.asString() }
 
-  @Suppress("ComplexMethod")
-  private fun KtNamedDeclaration.declaredNames(): List<QualifiedDeclaredName> {
-    val fq = fqNameSafe() ?: return emptyList()
-
-    val nameAsString = fq.asString()
-
-    return buildList {
-
-      fun kotlin(name: String) {
-        val declared = DeclaredName.kotlin(
-          packageName,
-          name.stripPackageNameFromFqName(packageName)
-        )
-        if (!contains(declared)) {
-          add(declared)
-        }
-      }
-
-      fun both(name: String) {
-
-        val kotlinOnly = nameAsString.contains("`.*`".toRegex())
-
-        if (kotlinOnly) {
-          kotlin(name)
-        } else {
-
-          val declared = name.stripPackageNameFromFqName(packageName)
-            .asDeclaredName(packageName)
-          add(declared)
-        }
-      }
-
-      fun java(name: String) {
-        val declared = DeclaredName.java(
-          packageName,
-          name.stripPackageNameFromFqName(packageName)
-        )
-        if (!contains(declared)) {
-          add(declared)
-        }
-      }
-
-      val psi = this@declaredNames
-
-      fun parseCompanionObjectDeclarations(companionName: String) {
-        both(nameAsString)
-
-        if (isStatic()) {
-          both(nameAsString.remove(".$companionName"))
-        } else if (psi is KtCallableDeclaration) {
-          kotlin(nameAsString.remove(".$companionName"))
-        }
-      }
-
-      when {
-        psi.isCompanionObject() -> {
-          parseCompanionObjectDeclarations(psi.name ?: "Companion")
-        }
-
-        psi.isInCompanionObject() -> {
-          val companion = containingClassOrObject as KtObjectDeclaration
-          parseCompanionObjectDeclarations(companion.name ?: "Companion")
-        }
-
-        isTopLevelKtOrJavaMember() && psi !is KtClassOrObject && !isStatic() -> {
-          kotlin(nameAsString)
-
-          jvmSimpleNames().forEach {
-            java("$fileJavaFacadeName.$it")
-          }
-        }
-
-        // object non-static properties or functions
-        isPartOf<KtObjectDeclaration>() && !isStatic() -> {
-          val parentObjectOrNull = containingClassOrObject
-
-          if (parentObjectOrNull == null) {
-            both(nameAsString)
-            java("$nameAsString.INSTANCE")
-          } else {
-            kotlin(nameAsString)
-
-            val parentFqName = parentObjectOrNull.fqName.requireNotNull().asString()
-            jvmSimpleNames().forEach {
-              java("$parentFqName.INSTANCE.$it")
-            }
-          }
-        }
-
-        // object static properties
-        isPartOf<KtObjectDeclaration>() && isStatic() -> {
-          val parentFqName = containingClassOrObject?.fqNameSafe()
-            .requireNotNull()
-            .asString()
-
-          val jvmNames = jvmSimpleNames()
-
-          if (psi is KtFunction && psi.jvmNameOrNull() == null) {
-            both(nameAsString)
-          } else {
-            kotlin(nameAsString)
-          }
-
-          jvmNames.forEach { name ->
-            java("$parentFqName.$name")
-            // The IDE gives warnings about "static member [...] accessed via instance reference"
-            // and hides this name from code completion, but it's technically still functional.
-            java("$parentFqName.INSTANCE.$name")
-          }
-        }
-
-        psi is KtParameter || (psi is KtProperty && !psi.isTopLevelKtOrJavaMember()) -> {
-
-          kotlin(nameAsString)
-
-          val parentFqName = containingClassOrObject.requireNotNull { text }
-            .fqNameSafe()
-            .requireNotNull()
-            .asString()
-
-          jvmSimpleNames().forEach {
-            java("$parentFqName.$it")
-          }
-        }
-
-        else -> {
-          both(nameAsString)
-        }
-      }
-    }
-  }
-
   override val declarations: Set<QualifiedDeclaredName> by lazy {
 
     psi.childrenOfTypeBreadthFirst<KtNamedDeclaration>()
@@ -389,6 +257,138 @@ class RealKotlinFile(
       declaredName = typeFqName.asDeclaredName(packageName),
       anvilScopeNameEntry = AnvilScopeNameEntry(resolvedScope)
     )
+  }
+
+  @Suppress("ComplexMethod")
+  private fun KtNamedDeclaration.declaredNames(): List<QualifiedDeclaredName> {
+    val fq = fqNameSafe() ?: return emptyList()
+
+    val nameAsString = fq.asString()
+
+    return buildList {
+
+      fun kotlin(name: String) {
+        val declared = DeclaredName.kotlin(
+          packageName,
+          name.stripPackageNameFromFqName(packageName)
+        )
+        if (!contains(declared)) {
+          add(declared)
+        }
+      }
+
+      fun both(name: String) {
+
+        val kotlinOnly = nameAsString.contains("`.*`".toRegex())
+
+        if (kotlinOnly) {
+          kotlin(name)
+        } else {
+
+          val declared = name.stripPackageNameFromFqName(packageName)
+            .asDeclaredName(packageName)
+          add(declared)
+        }
+      }
+
+      fun java(name: String) {
+        val declared = DeclaredName.java(
+          packageName,
+          name.stripPackageNameFromFqName(packageName)
+        )
+        if (!contains(declared)) {
+          add(declared)
+        }
+      }
+
+      val psi = this@declaredNames
+
+      fun parseCompanionObjectDeclarations(companionName: String) {
+        both(nameAsString)
+
+        if (isStatic()) {
+          both(nameAsString.remove(".$companionName"))
+        } else if (psi is KtCallableDeclaration) {
+          kotlin(nameAsString.remove(".$companionName"))
+        }
+      }
+
+      when {
+        psi.isCompanionObject() -> {
+          parseCompanionObjectDeclarations(psi.name ?: "Companion")
+        }
+
+        psi.isInCompanionObject() -> {
+          val companion = containingClassOrObject as KtObjectDeclaration
+          parseCompanionObjectDeclarations(companion.name ?: "Companion")
+        }
+
+        isTopLevelKtOrJavaMember() && psi !is KtClassOrObject && !isStatic() -> {
+          kotlin(nameAsString)
+
+          jvmSimpleNames().forEach {
+            java("$fileJavaFacadeName.$it")
+          }
+        }
+
+        // object non-static properties or functions
+        isPartOf<KtObjectDeclaration>() && !isStatic() -> {
+          val parentObjectOrNull = containingClassOrObject
+
+          if (parentObjectOrNull == null) {
+            both(nameAsString)
+            java("$nameAsString.INSTANCE")
+          } else {
+            kotlin(nameAsString)
+
+            val parentFqName = parentObjectOrNull.fqName.requireNotNull().asString()
+            jvmSimpleNames().forEach {
+              java("$parentFqName.INSTANCE.$it")
+            }
+          }
+        }
+
+        // object static properties
+        isPartOf<KtObjectDeclaration>() && isStatic() -> {
+          val parentFqName = containingClassOrObject?.fqNameSafe()
+            .requireNotNull()
+            .asString()
+
+          val jvmNames = jvmSimpleNames()
+
+          if (psi is KtFunction && psi.jvmNameOrNull() == null) {
+            both(nameAsString)
+          } else {
+            kotlin(nameAsString)
+          }
+
+          jvmNames.forEach { name ->
+            java("$parentFqName.$name")
+            // The IDE gives warnings about "static member [...] accessed via instance reference"
+            // and hides this name from code completion, but it's technically still functional.
+            java("$parentFqName.INSTANCE.$name")
+          }
+        }
+
+        psi is KtParameter || (psi is KtProperty && !psi.isTopLevelKtOrJavaMember()) -> {
+
+          kotlin(nameAsString)
+
+          val parentFqName = containingClassOrObject.requireNotNull { text }
+            .fqNameSafe()
+            .requireNotNull()
+            .asString()
+
+          jvmSimpleNames().forEach {
+            java("$parentFqName.$it")
+          }
+        }
+
+        else -> {
+          both(nameAsString)
+        }
+      }
+    }
   }
 
   internal companion object {

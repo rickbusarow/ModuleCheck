@@ -121,6 +121,7 @@ interface AndroidPlatformPluginBuilder<T : AndroidPlatformPlugin> : PlatformPlug
   val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>>
 }
 
+@Suppress("DataClassShouldBeImmutable")
 data class AndroidApplicationPluginBuilder(
   override var viewBindingEnabled: Boolean = true,
   override var nonTransientRClass: Boolean = false,
@@ -165,6 +166,7 @@ data class AndroidApplicationPluginBuilder(
   )
 }
 
+@Suppress("DataClassShouldBeImmutable")
 data class AndroidLibraryPluginBuilder(
   override var viewBindingEnabled: Boolean = true,
   override var nonTransientRClass: Boolean = false,
@@ -213,6 +215,7 @@ data class AndroidLibraryPluginBuilder(
   )
 }
 
+@Suppress("DataClassShouldBeImmutable")
 data class AndroidDynamicFeaturePluginBuilder(
   override var viewBindingEnabled: Boolean = true,
   override var nonTransientRClass: Boolean = false,
@@ -259,6 +262,7 @@ data class AndroidDynamicFeaturePluginBuilder(
   )
 }
 
+@Suppress("DataClassShouldBeImmutable")
 data class AndroidTestPluginBuilder(
   override var viewBindingEnabled: Boolean = true,
   override var nonTransientRClass: Boolean = false,

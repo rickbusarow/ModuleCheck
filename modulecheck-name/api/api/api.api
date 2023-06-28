@@ -1,0 +1,232 @@
+public final class modulecheck/name/AndroidDataBindingName : modulecheck/name/AndroidName, modulecheck/name/NameWithPackageName {
+	public synthetic fun <init> (Ljava/lang/String;Lmodulecheck/name/AndroidResourceName;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getPackageName-A9AyiEE ()Ljava/lang/String;
+	public fun getSimpleNames ()Ljava/util/List;
+}
+
+public abstract interface class modulecheck/name/AndroidName : modulecheck/name/HasSimpleNames, modulecheck/name/Name {
+	public static final field Companion Lmodulecheck/name/AndroidName$Companion;
+}
+
+public final class modulecheck/name/AndroidName$Companion {
+	public final fun dataBinding-9PpwmVA (Lmodulecheck/name/UnqualifiedAndroidResourceName;Ljava/lang/String;)Lmodulecheck/name/AndroidDataBindingName;
+	public final fun qualifiedAndroidResource (Lmodulecheck/name/AndroidRName;Lmodulecheck/name/UnqualifiedAndroidResourceName;)Lmodulecheck/name/AndroidResourceNameWithRName;
+	public final fun r-p04zEWQ (Ljava/lang/String;)Lmodulecheck/name/AndroidRName;
+}
+
+public final class modulecheck/name/AndroidRName : modulecheck/name/AndroidName, modulecheck/name/NameWithPackageName {
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getPackageName-A9AyiEE ()Ljava/lang/String;
+	public fun getSimpleNames ()Ljava/util/List;
+}
+
+public abstract interface class modulecheck/name/AndroidResourceName : modulecheck/name/AndroidName, modulecheck/name/HasSimpleNames, modulecheck/name/Name {
+	public abstract fun getIdentifier-yyTc5LE ()Ljava/lang/String;
+	public abstract fun getPrefix-yyTc5LE ()Ljava/lang/String;
+}
+
+public final class modulecheck/name/AndroidResourceNameWithRName : modulecheck/name/AndroidResourceName, modulecheck/name/NameWithPackageName {
+	public fun <init> (Lmodulecheck/name/AndroidRName;Lmodulecheck/name/UnqualifiedAndroidResourceName;)V
+	public final fun getAndroidRName ()Lmodulecheck/name/AndroidRName;
+	public fun getIdentifier-yyTc5LE ()Ljava/lang/String;
+	public fun getPackageName-A9AyiEE ()Ljava/lang/String;
+	public fun getPrefix-yyTc5LE ()Ljava/lang/String;
+	public final fun getResourceName ()Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public fun getSimpleNames ()Ljava/util/List;
+}
+
+public final class modulecheck/name/ClassName : modulecheck/name/NameWithPackageName, modulecheck/name/TypeName {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/util/List;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;[Ljava/lang/String;Ljava/util/List;Z)V
+	public synthetic fun <init> (Ljava/lang/String;[Ljava/lang/String;Ljava/util/List;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-A9AyiEE ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Z
+	public final fun copy-XtOWetg (Ljava/lang/String;Ljava/util/List;Ljava/util/List;Z)Lmodulecheck/name/ClassName;
+	public static synthetic fun copy-XtOWetg$default (Lmodulecheck/name/ClassName;Ljava/lang/String;Ljava/util/List;Ljava/util/List;ZILjava/lang/Object;)Lmodulecheck/name/ClassName;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAsStringWithTypeParameters ()Ljava/lang/String;
+	public fun getNullable ()Z
+	public fun getPackageName-A9AyiEE ()Ljava/lang/String;
+	public fun getSimpleNames ()Ljava/util/List;
+	public final fun getTypeArguments ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun makeNotNullable ()Lmodulecheck/name/TypeName;
+	public fun makeNullable ()Lmodulecheck/name/TypeName;
+	public final fun parameterizedBy ([Lmodulecheck/name/TypeName;)Lmodulecheck/name/ClassName;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/name/HasNameSegments {
+	public abstract fun getSegments ()Ljava/util/List;
+}
+
+public abstract interface class modulecheck/name/HasPackageName {
+	public abstract fun getPackageName-A9AyiEE ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/name/HasSimpleNames : modulecheck/name/HasNameSegments {
+	public static final field Companion Lmodulecheck/name/HasSimpleNames$Companion;
+	public fun getSegments ()Ljava/util/List;
+	public abstract fun getSimpleNames ()Ljava/util/List;
+	public fun getSimplestName-yyTc5LE ()Ljava/lang/String;
+}
+
+public final class modulecheck/name/HasSimpleNames$Companion {
+}
+
+public abstract interface class modulecheck/name/Name : java/io/Serializable, java/lang/Comparable {
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lmodulecheck/name/Name;)I
+	public abstract fun getAsString ()Ljava/lang/String;
+	public fun getSimpleName-yyTc5LE ()Ljava/lang/String;
+	public fun getSimpleNameString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/name/NameWithPackageName : modulecheck/name/HasPackageName, modulecheck/name/HasSimpleNames, modulecheck/name/ResolvableName {
+	public static final field Companion Lmodulecheck/name/NameWithPackageName$Companion;
+	public fun getAsString ()Ljava/lang/String;
+	public fun getSegments ()Ljava/util/List;
+	public fun isTopLevel ()Z
+}
+
+public final class modulecheck/name/NameWithPackageName$Companion {
+	public final fun invoke-Q6FKjUA (Ljava/lang/String;Ljava/util/List;)Lmodulecheck/name/NameWithPackageName;
+}
+
+public final class modulecheck/name/NameWithPackageNameKt {
+	public static final fun asNameWithPackageName-23wzK4s (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/name/NameWithPackageName;
+	public static final fun asNameWithPackageName-9PpwmVA (Ljava/lang/Iterable;Ljava/lang/String;)Lmodulecheck/name/NameWithPackageName;
+	public static final fun asNameWithPackageName-9PpwmVA (Lorg/jetbrains/kotlin/name/FqName;Ljava/lang/String;)Lmodulecheck/name/NameWithPackageName;
+}
+
+public final class modulecheck/name/PackageName : modulecheck/name/HasNameSegments, modulecheck/name/Name {
+	public static final field Companion Lmodulecheck/name/PackageName$Companion;
+	public static final fun append-f585xGA (Ljava/lang/String;Ljava/lang/Iterable;)Ljava/lang/String;
+	public static final fun appendAsString-impl (Ljava/lang/String;Ljava/lang/Iterable;)Ljava/lang/String;
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/name/PackageName;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public fun getAsString ()Ljava/lang/String;
+	public fun getSegments ()Ljava/util/List;
+	public static fun getSegments-impl (Ljava/lang/String;)Ljava/util/List;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class modulecheck/name/PackageName$Companion {
+	public final fun asPackageName-f585xGA (Ljava/lang/String;)Ljava/lang/String;
+	public final fun getDEFAULT-A9AyiEE ()Ljava/lang/String;
+	public final fun invoke-f585xGA (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class modulecheck/name/PackageNameKt {
+	public static final fun append-Q6FKjUA (Ljava/lang/String;Ljava/lang/Iterable;)Ljava/lang/String;
+	public static final fun appendAsString-Q6FKjUA (Ljava/lang/String;Ljava/lang/Iterable;)Ljava/lang/String;
+	public static final fun appendAsString-Q6FKjUA (Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/name/ResolvableName : modulecheck/name/Name {
+}
+
+public final class modulecheck/name/SimpleName : modulecheck/name/Name {
+	public static final field Companion Lmodulecheck/name/SimpleName$Companion;
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/name/SimpleName;
+	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public fun getAsString ()Ljava/lang/String;
+	public fun getSimpleName-yyTc5LE ()Ljava/lang/String;
+	public static fun getSimpleName-yyTc5LE (Ljava/lang/String;)Ljava/lang/String;
+	public fun getSimpleNameString ()Ljava/lang/String;
+	public static fun getSimpleNameString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class modulecheck/name/SimpleName$Companion {
+	public final fun asSimpleName-d3qGUlM (Ljava/lang/String;)Ljava/lang/String;
+	public final fun asString (Ljava/util/List;)Ljava/lang/String;
+	public final fun getJAVA_IDENTIFIER_REGEX ()Lkotlin/text/Regex;
+	public final fun getSIMPLE_NAME_REGEX ()Lkotlin/text/Regex;
+	public final fun stripPackageNameFromFqName-9PpwmVA (Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
+}
+
+public abstract interface class modulecheck/name/TypeName : modulecheck/name/HasSimpleNames, modulecheck/name/Name {
+	public abstract fun getNullable ()Z
+	public abstract fun makeNotNullable ()Lmodulecheck/name/TypeName;
+	public abstract fun makeNullable ()Lmodulecheck/name/TypeName;
+}
+
+public final class modulecheck/name/TypeParameter : modulecheck/name/TypeName {
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;ZLmodulecheck/name/TypeParameter$Variance;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;[Lmodulecheck/name/TypeName;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-yyTc5LE ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Z
+	public final fun component4 ()Lmodulecheck/name/TypeParameter$Variance;
+	public final fun copy-PwtOO7w (Ljava/lang/String;Ljava/util/List;ZLmodulecheck/name/TypeParameter$Variance;)Lmodulecheck/name/TypeParameter;
+	public static synthetic fun copy-PwtOO7w$default (Lmodulecheck/name/TypeParameter;Ljava/lang/String;Ljava/util/List;ZLmodulecheck/name/TypeParameter$Variance;ILjava/lang/Object;)Lmodulecheck/name/TypeParameter;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAsString ()Ljava/lang/String;
+	public final fun getBounds ()Ljava/util/List;
+	public fun getNullable ()Z
+	public fun getSegments ()Ljava/util/List;
+	public fun getSimpleName-yyTc5LE ()Ljava/lang/String;
+	public fun getSimpleNames ()Ljava/util/List;
+	public final fun getVariance ()Lmodulecheck/name/TypeParameter$Variance;
+	public fun hashCode ()I
+	public fun makeNotNullable ()Lmodulecheck/name/TypeName;
+	public fun makeNullable ()Lmodulecheck/name/TypeName;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/name/TypeParameter$Variance : java/lang/Enum {
+	public static final field IN Lmodulecheck/name/TypeParameter$Variance;
+	public static final field OUT Lmodulecheck/name/TypeParameter$Variance;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/name/TypeParameter$Variance;
+	public static fun values ()[Lmodulecheck/name/TypeParameter$Variance;
+}
+
+public final class modulecheck/name/UnqualifiedAndroidResourceName : modulecheck/name/AndroidResourceName {
+	public static final field Companion Lmodulecheck/name/UnqualifiedAndroidResourceName$Companion;
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getAsString ()Ljava/lang/String;
+	public fun getIdentifier-yyTc5LE ()Ljava/lang/String;
+	public fun getPrefix-yyTc5LE ()Ljava/lang/String;
+	public fun getSegments ()Ljava/util/List;
+	public fun getSimpleNames ()Ljava/util/List;
+	public final fun toAndroidResourceNameWithRName (Lmodulecheck/name/AndroidRName;)Lmodulecheck/name/AndroidResourceNameWithRName;
+}
+
+public final class modulecheck/name/UnqualifiedAndroidResourceName$Companion {
+	public final fun anim-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun animator-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun array-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun bool-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun color-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun dimen-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun drawable-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun font-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun fromFile (Ljava/io/File;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun fromValuePair (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun fromXmlString (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun id-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun integer-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun layout-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun menu-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun mipmap-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun raw-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun string-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+	public final fun style-tQbDKes (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+}
+

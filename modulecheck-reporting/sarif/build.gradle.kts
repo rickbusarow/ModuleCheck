@@ -26,6 +26,7 @@ mcbuild {
 }
 
 dependencies {
+
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-project:api"))
@@ -33,7 +34,7 @@ dependencies {
 
   implementation(libs.square.moshi)
 
-  implementation(project(":modulecheck-utils:stdlib"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   "ksp"(libs.square.moshi.codegen)
 

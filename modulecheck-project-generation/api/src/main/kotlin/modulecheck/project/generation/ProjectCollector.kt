@@ -182,7 +182,7 @@ interface ProjectCollector {
     config: McProjectBuilder<PlatformPluginBuilder<PlatformPlugin>>.() -> Unit = {}
   ): McProject {
     return toProjectBuilder<PlatformPluginBuilder<PlatformPlugin>>()
-      .also { it.config() }
+      .apply(config)
       .toRealMcProject()
   }
 

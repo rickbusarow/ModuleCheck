@@ -15,13 +15,13 @@
 
 package modulecheck.parsing.source
 
-@JvmInline
 /**
  * A name which is not fully qualified, like `Foo` in `com.example.Foo`
  *
  * @property name the string value of this name
  * @since 0.12.0
  */
+@JvmInline
 value class SimpleName(val name: String) : Comparable<SimpleName> {
 
   init {

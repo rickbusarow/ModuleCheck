@@ -93,6 +93,8 @@ sealed class ProjectPath : Identifier, Comparable<ProjectPath> {
     }
   }
 
+  abstract fun toTypeSafe(): TypeSafeProjectPath
+
   companion object {
     fun from(rawString: String): ProjectPath = if (rawString.trim().startsWith(':')) {
       StringProjectPath(rawString)
@@ -100,8 +102,6 @@ sealed class ProjectPath : Identifier, Comparable<ProjectPath> {
       TypeSafeProjectPath(rawString)
     }
   }
-
-  abstract fun toTypeSafe(): TypeSafeProjectPath
 }
 
 internal val projectSplitRegex = "[.\\-_]".toRegex()

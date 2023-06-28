@@ -34,4 +34,6 @@ dependencies {
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.square.turbine)
+
+  testImplementation(project(":modulecheck-utils:lazy"))
 }

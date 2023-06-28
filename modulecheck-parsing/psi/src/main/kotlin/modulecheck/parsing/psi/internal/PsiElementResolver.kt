@@ -16,15 +16,23 @@
 package modulecheck.parsing.psi.internal
 
 import modulecheck.model.sourceset.SourceSetName
+import modulecheck.parsing.element.resolve.SymbolResolver
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.project.McProject
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 
+/**
+ * A [SymbolResolver] that can resolve [PsiElement] symbols. This
+ * resolver uses a [McProject] and a source set name to resolve symbols.
+ *
+ * @property project The project in which the symbols are to be resolved.
+ * @property sourceSetName The name of the source set in which the symbols are to be resolved.
+ */
 class PsiElementResolver(
   private val project: McProject,
   private val sourceSetName: SourceSetName
-) {
-  suspend fun declaredNameOrNull(token: PsiElement): QualifiedDeclaredName? {
-    return token.declaredNameOrNull(project, sourceSetName)
+) : SymbolResolver<PsiElement> {
+  override suspend fun declaredNameOrNull(symbol: PsiElement): QualifiedDeclaredName? {
+    return symbol.declaredNameOrNull(project, sourceSetName)
   }
 }

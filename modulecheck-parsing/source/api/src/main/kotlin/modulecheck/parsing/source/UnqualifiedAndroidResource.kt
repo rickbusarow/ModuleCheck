@@ -80,6 +80,7 @@ class UnqualifiedAndroidResource private constructor(
   override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
 
   companion object {
+    private val XML_REGEX = """"?@\+?(.*)\/(.*)"?""".toRegex()
 
     /**
      * `R.anim.foo`
@@ -260,14 +261,12 @@ class UnqualifiedAndroidResource private constructor(
       }
     }
 
-    private val REGEX = """"?@\+?(.*)\/(.*)"?""".toRegex()
-
     /**
      * @return a resource declaration from a string in XML, like `@+id/______`
      * @since 0.12.0
      */
     fun fromXmlString(str: String): UnqualifiedAndroidResource? {
-      val (prefix, name) = REGEX.find(str)?.destructured ?: return null
+      val (prefix, name) = XML_REGEX.find(str)?.destructured ?: return null
 
       return fromValuePair(prefix, name)
     }

@@ -106,6 +106,13 @@ public abstract interface class modulecheck/parsing/psi/internal/DeclarationsPro
 	public static synthetic fun getWithUpstream-WsCknJc$default (Lmodulecheck/parsing/psi/internal/DeclarationsProvider;Ljava/lang/String;Lmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 
+public final class modulecheck/parsing/psi/internal/KotlinTypeKt {
+	public static final fun asReferenceName (Lorg/jetbrains/kotlin/types/KotlinType;)Lmodulecheck/parsing/source/ReferenceName;
+	public static final fun asTypeName (Lorg/jetbrains/kotlin/types/KotlinType;)Lmodulecheck/name/TypeName;
+	public static final fun requireReferenceName (Lorg/jetbrains/kotlin/types/KotlinType;)Lmodulecheck/parsing/source/ReferenceName;
+	public static final fun requireTypeName (Lorg/jetbrains/kotlin/types/KotlinType;)Lmodulecheck/name/TypeName;
+}
+
 public final class modulecheck/parsing/psi/internal/KtCallableDeclarationKt {
 	public static final fun isJvmField (Lorg/jetbrains/kotlin/psi/KtProperty;)Z
 	public static final fun isJvmStatic (Lorg/jetbrains/kotlin/psi/KtCallableDeclaration;)Z
@@ -114,7 +121,6 @@ public final class modulecheck/parsing/psi/internal/KtCallableDeclarationKt {
 }
 
 public final class modulecheck/parsing/psi/internal/PsiElementKt {
-	public static final fun asReferenceName (Lorg/jetbrains/kotlin/types/KotlinType;)Lmodulecheck/parsing/source/ReferenceName;
 	public static final fun callSiteName (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Ljava/lang/String;
 	public static final fun canResolveDeclaredName-Hc0XbgE (Lmodulecheck/project/McProject;Lmodulecheck/parsing/source/QualifiedDeclaredName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun canResolveReferenceName-Hc0XbgE (Lmodulecheck/project/McProject;Lmodulecheck/parsing/source/ReferenceName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -134,14 +140,14 @@ public final class modulecheck/parsing/psi/internal/PsiElementKt {
 	public static final fun isQualifiedPropertyOrCallExpression (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Z
 	public static final fun nameSafe (Lorg/jetbrains/kotlin/psi/KtBlockExpression;)Ljava/lang/String;
 	public static final fun nameSafe (Lorg/jetbrains/kotlin/psi/KtCallExpression;)Ljava/lang/String;
-	public static final fun requireReferenceName (Lorg/jetbrains/kotlin/types/KotlinType;)Lmodulecheck/parsing/source/ReferenceName;
 	public static final fun resolveType (Lorg/jetbrains/kotlin/psi/KtProperty;Lorg/jetbrains/kotlin/resolve/BindingContext;)Lorg/jetbrains/kotlin/descriptors/VariableDescriptor;
 	public static final fun returnType (Lorg/jetbrains/kotlin/psi/KtPropertyDelegate;Lorg/jetbrains/kotlin/resolve/BindingContext;)Lorg/jetbrains/kotlin/types/KotlinType;
 }
 
-public final class modulecheck/parsing/psi/internal/PsiElementResolver {
+public final class modulecheck/parsing/psi/internal/PsiElementResolver : modulecheck/parsing/element/resolve/SymbolResolver {
 	public synthetic fun <init> (Lmodulecheck/project/McProject;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun declaredNameOrNull (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun declaredNameOrNull (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun declaredNameOrNull (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class modulecheck/parsing/psi/internal/UtilKt {

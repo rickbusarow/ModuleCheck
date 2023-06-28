@@ -88,6 +88,22 @@
     "javaVersion": "11"
   },
   {
+    "gradlePath": ":modulecheck-name:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-name-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
+    "gradlePath": ":modulecheck-name:testing",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-name-testing",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
     "gradlePath": ":modulecheck-parsing:android",
     "group": "com.rickbusarow.modulecheck",
     "artifactId": "modulecheck-parsing-core",
@@ -339,6 +355,30 @@
     "gradlePath": ":modulecheck-model:sourceset:api",
     "group": "com.rickbusarow.modulecheck",
     "artifactId": "modulecheck-model-sourceset-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
+    "gradlePath": ":modulecheck-parsing:element:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-element-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
+    "gradlePath": ":modulecheck-parsing:element:impl-kotlin",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-element-kotlin",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
+    "gradlePath": ":modulecheck-parsing:element:impl-resolve",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-element-impl-resolve",
     "description": "Fast dependency graph linting for Gradle projects",
     "packaging": "jar",
     "javaVersion": "11"

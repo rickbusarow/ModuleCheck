@@ -1,0 +1,358 @@
+public abstract interface class modulecheck/parsing/element/Declared : modulecheck/parsing/source/HasPackageName, modulecheck/parsing/source/HasSimpleNames {
+	public abstract fun getDeclaredName ()Lmodulecheck/parsing/source/DeclaredName;
+	public fun isApi ()Z
+}
+
+public abstract interface class modulecheck/parsing/element/HasJavaVisibility : modulecheck/parsing/element/HasVisibility {
+	public abstract fun getVisibility ()Lmodulecheck/parsing/element/McVisibility$McJavaVisibility;
+}
+
+public abstract interface class modulecheck/parsing/element/HasKtVisibility : modulecheck/parsing/element/HasVisibility {
+	public abstract fun getVisibility ()Lmodulecheck/parsing/element/McVisibility$McKtVisibility;
+}
+
+public abstract interface class modulecheck/parsing/element/HasVisibility {
+	public abstract fun getVisibility ()Lmodulecheck/parsing/element/McVisibility;
+}
+
+public abstract interface class modulecheck/parsing/element/McAnnotated {
+	public abstract fun getAnnotations ()Lmodulecheck/utils/lazy/LazySet;
+}
+
+public abstract interface class modulecheck/parsing/element/McAnnotation : modulecheck/parsing/element/McElement, modulecheck/parsing/element/McElementWithParent {
+	public abstract fun getReferenceName ()Lmodulecheck/utils/lazy/LazyDeferred;
+}
+
+public abstract interface class modulecheck/parsing/element/McAnnotation$McKtAnnotation : modulecheck/parsing/element/McAnnotation, modulecheck/parsing/element/McElementWithParent, modulecheck/parsing/element/McKtElement {
+	public abstract fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+}
+
+public abstract interface class modulecheck/parsing/element/McAnnotationArgument : modulecheck/parsing/element/McElement, modulecheck/parsing/element/McElementWithParent {
+	public abstract fun getType ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public abstract fun getValue ()Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/element/McAnnotationArgument$McKtAnnotationArgument : modulecheck/parsing/element/McAnnotationArgument, modulecheck/parsing/element/McElementWithParent, modulecheck/parsing/element/McKtElement {
+	public abstract fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+}
+
+public abstract interface class modulecheck/parsing/element/McCallable : modulecheck/parsing/element/HasVisibility, modulecheck/parsing/element/McAnnotated, modulecheck/parsing/element/McElement, modulecheck/parsing/element/McElementWithParent {
+}
+
+public abstract interface class modulecheck/parsing/element/McCallable$McJavaCallable : modulecheck/parsing/element/McCallable, modulecheck/parsing/element/McJavaElement {
+	public abstract fun getParent ()Lmodulecheck/parsing/element/McJavaElement;
+	public abstract fun getVisibility ()Lmodulecheck/parsing/element/McVisibility$McJavaVisibility;
+}
+
+public abstract interface class modulecheck/parsing/element/McCallable$McKtCallable : modulecheck/parsing/element/McCallable, modulecheck/parsing/element/McKtElement {
+	public abstract fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+	public abstract fun getPsi ()Lorg/jetbrains/kotlin/psi/KtCallableDeclaration;
+	public abstract fun getVisibility ()Lmodulecheck/parsing/element/McVisibility$McKtVisibility;
+}
+
+public abstract interface class modulecheck/parsing/element/McElement {
+	public fun getChildren ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getContainingFile ()Lmodulecheck/parsing/element/McFile;
+	public abstract fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+}
+
+public abstract interface class modulecheck/parsing/element/McElementFactory {
+	public abstract fun create (Lmodulecheck/parsing/element/resolve/McElementContext;Ljava/io/File;Ljava/lang/Object;Lmodulecheck/parsing/element/McElement;)Lmodulecheck/parsing/element/McElement;
+	public abstract fun createKtFile (Lmodulecheck/parsing/element/resolve/McElementContext;Ljava/io/File;Lorg/jetbrains/kotlin/psi/KtFile;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/element/McElementKt {
+	public static final fun parents (Lmodulecheck/parsing/element/McElementWithParent;)Lkotlin/sequences/Sequence;
+}
+
+public abstract interface class modulecheck/parsing/element/McElementWithParent : modulecheck/parsing/element/McElement {
+	public abstract fun getParent ()Lmodulecheck/parsing/element/McElement;
+}
+
+public abstract interface class modulecheck/parsing/element/McExtensionElement : modulecheck/parsing/element/McCallable$McKtCallable, modulecheck/parsing/element/McKtElement {
+	public abstract fun getReceiver ()Lmodulecheck/parsing/element/McType;
+}
+
+public abstract interface class modulecheck/parsing/element/McExtensionElement$McKtExtensionFunction : modulecheck/parsing/element/McExtensionElement, modulecheck/parsing/element/McFunction$McKtFunction {
+}
+
+public abstract interface class modulecheck/parsing/element/McExtensionElement$McKtExtensionProperty : modulecheck/parsing/element/McExtensionElement, modulecheck/parsing/element/McProperty$McKtProperty {
+}
+
+public abstract interface class modulecheck/parsing/element/McFile : modulecheck/parsing/element/McElement, modulecheck/parsing/source/HasPackageName {
+	public abstract fun getApiReferences ()Ljava/util/List;
+	public abstract fun getDeclarations ()Ljava/util/List;
+	public abstract fun getDeclaredTypes ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getDeclaredTypesAndInnerTypes ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getFile ()Ljava/io/File;
+	public abstract fun getImports ()Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public abstract fun getReferences ()Ljava/util/List;
+	public abstract fun getWildcardImports ()Lmodulecheck/utils/lazy/LazySet$DataSource;
+}
+
+public abstract interface class modulecheck/parsing/element/McFile$McJavaFile : modulecheck/parsing/element/McFile, modulecheck/parsing/element/McJavaElement {
+}
+
+public abstract interface class modulecheck/parsing/element/McFile$McKtFile : modulecheck/parsing/element/McAnnotated, modulecheck/parsing/element/McFile, modulecheck/parsing/element/McKtElement {
+	public abstract fun getAnvilScopeArguments (Ljava/util/List;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getDeclaredTypes ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getDeclaredTypesAndInnerTypes ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getImportAliases ()Ljava/util/Map;
+	public abstract fun getPsi ()Lorg/jetbrains/kotlin/psi/KtFile;
+	public abstract fun getTopLevelFunctions ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getTopLevelProperties ()Lmodulecheck/utils/lazy/LazySet;
+}
+
+public final class modulecheck/parsing/element/McFile$McKtFile$ScopeArgumentParseResult {
+	public fun <init> (Ljava/util/Set;Ljava/util/Set;)V
+	public final fun component1 ()Ljava/util/Set;
+	public final fun component2 ()Ljava/util/Set;
+	public final fun copy (Ljava/util/Set;Ljava/util/Set;)Lmodulecheck/parsing/element/McFile$McKtFile$ScopeArgumentParseResult;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/element/McFile$McKtFile$ScopeArgumentParseResult;Ljava/util/Set;Ljava/util/Set;ILjava/lang/Object;)Lmodulecheck/parsing/element/McFile$McKtFile$ScopeArgumentParseResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContributeArguments ()Ljava/util/Set;
+	public final fun getMergeArguments ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/parsing/element/McFunction : modulecheck/parsing/element/McCallable, modulecheck/parsing/element/McElement, modulecheck/parsing/element/McHasTypeParameters {
+	public abstract fun getParameters ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getProperties ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getReturnType ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public abstract fun getTypeParamters ()Lmodulecheck/utils/lazy/LazySet;
+}
+
+public abstract interface class modulecheck/parsing/element/McFunction$McJavaFunction : modulecheck/parsing/element/McCallable$McJavaCallable, modulecheck/parsing/element/McFunction {
+	public abstract fun getParent ()Lmodulecheck/parsing/element/McJavaElement;
+}
+
+public abstract interface class modulecheck/parsing/element/McFunction$McKtFunction : modulecheck/parsing/element/McCallable$McKtCallable, modulecheck/parsing/element/McFunction {
+	public abstract fun getParameters ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+	public abstract fun getProperties ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getPsi ()Lorg/jetbrains/kotlin/psi/KtFunction;
+	public abstract fun getReturnType ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public abstract fun getTypeParamters ()Lmodulecheck/utils/lazy/LazySet;
+}
+
+public abstract interface class modulecheck/parsing/element/McHasTypeParameters {
+	public abstract fun getTypeParameters ()Lmodulecheck/utils/lazy/LazySet;
+}
+
+public abstract interface class modulecheck/parsing/element/McJavaElement : modulecheck/parsing/element/McElement {
+	public abstract fun getContainingFile ()Lmodulecheck/parsing/element/McFile$McJavaFile;
+}
+
+public abstract interface class modulecheck/parsing/element/McKtDeclaredElement : modulecheck/parsing/element/Declared, modulecheck/parsing/element/McKtElement {
+}
+
+public abstract interface class modulecheck/parsing/element/McKtElement : modulecheck/parsing/element/McElement {
+	public fun getContainingFile ()Lmodulecheck/parsing/element/McFile$McKtFile;
+	public synthetic fun getContainingFile ()Lmodulecheck/parsing/element/McFile;
+	public abstract fun getPsi ()Lorg/jetbrains/kotlin/psi/KtElement;
+}
+
+public abstract interface class modulecheck/parsing/element/McParameter : modulecheck/parsing/element/McCallable, modulecheck/parsing/element/McElement {
+	public abstract fun getIndex ()I
+}
+
+public abstract interface class modulecheck/parsing/element/McParameter$McJavaParameter : modulecheck/parsing/element/McCallable$McJavaCallable, modulecheck/parsing/element/McParameter {
+	public abstract fun getParent ()Lmodulecheck/parsing/element/McJavaElement;
+}
+
+public abstract interface class modulecheck/parsing/element/McParameter$McKtParameter : modulecheck/parsing/element/McCallable$McKtCallable, modulecheck/parsing/element/McParameter {
+	public abstract fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+}
+
+public abstract interface class modulecheck/parsing/element/McProperty : modulecheck/parsing/element/Declared, modulecheck/parsing/element/McCallable, modulecheck/parsing/element/McElement {
+	public abstract fun getTypeReferenceName ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public abstract fun isMutable ()Z
+}
+
+public abstract interface class modulecheck/parsing/element/McProperty$McJavaProperty : modulecheck/parsing/element/McCallable$McJavaCallable, modulecheck/parsing/element/McProperty {
+}
+
+public abstract interface class modulecheck/parsing/element/McProperty$McJavaProperty$JavaMemberProperty : modulecheck/parsing/element/McProperty$McJavaProperty {
+}
+
+public abstract interface class modulecheck/parsing/element/McProperty$McKtProperty : modulecheck/parsing/element/McCallable$McKtCallable, modulecheck/parsing/element/McProperty {
+	public abstract fun getPsi ()Lorg/jetbrains/kotlin/psi/KtCallableDeclaration;
+}
+
+public abstract interface class modulecheck/parsing/element/McProperty$McKtProperty$KtConstructorProperty : modulecheck/parsing/element/McProperty$McKtProperty {
+	public abstract fun getPsi ()Lorg/jetbrains/kotlin/psi/KtParameter;
+}
+
+public abstract interface class modulecheck/parsing/element/McProperty$McKtProperty$KtExtensionProperty : modulecheck/parsing/element/McHasTypeParameters, modulecheck/parsing/element/McProperty$McKtProperty$KtMemberProperty {
+	public abstract fun getPsi ()Lorg/jetbrains/kotlin/psi/KtProperty;
+}
+
+public abstract interface class modulecheck/parsing/element/McProperty$McKtProperty$KtMemberProperty : modulecheck/parsing/element/McProperty$McKtProperty {
+	public abstract fun getPsi ()Lorg/jetbrains/kotlin/psi/KtProperty;
+}
+
+public abstract interface class modulecheck/parsing/element/McType : modulecheck/parsing/element/McAnnotated, modulecheck/parsing/element/McElementWithParent, modulecheck/parsing/element/McHasTypeParameters {
+	public abstract fun getSuperTypes ()Lmodulecheck/utils/lazy/LazySet;
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType : modulecheck/parsing/element/Declared, modulecheck/parsing/element/McType {
+	public abstract fun getContainingFile ()Lmodulecheck/parsing/element/McFile;
+	public abstract fun getFunctions ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getInnerTypes ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getInnerTypesRecursive ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getProperties ()Lmodulecheck/utils/lazy/LazySet;
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType$McJavaConcreteType : modulecheck/parsing/element/McJavaElement, modulecheck/parsing/element/McType$McConcreteType, modulecheck/parsing/element/McType$McConcreteType$McJavaType {
+	public abstract fun getContainingFile ()Lmodulecheck/parsing/element/McFile$McJavaFile;
+	public abstract fun getInnerTypes ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getInnerTypesRecursive ()Lmodulecheck/utils/lazy/LazySet;
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType$McJavaConcreteType$McJavaClass : modulecheck/parsing/element/Declared, modulecheck/parsing/element/McType$McConcreteType$McJavaConcreteType {
+	public abstract fun getConstructors ()Lmodulecheck/utils/lazy/LazySet;
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType$McJavaConcreteType$McJavaInterface : modulecheck/parsing/element/Declared, modulecheck/parsing/element/McType$McConcreteType$McJavaConcreteType {
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType$McJavaType : modulecheck/parsing/element/McJavaElement, modulecheck/parsing/element/McType {
+	public abstract fun getParent ()Lmodulecheck/parsing/element/McJavaElement;
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType : modulecheck/parsing/element/McKtDeclaredElement, modulecheck/parsing/element/McKtElement, modulecheck/parsing/element/McType$McConcreteType, modulecheck/parsing/element/McType$McConcreteType$McKtType {
+	public abstract fun getContainingFile ()Lmodulecheck/parsing/element/McFile$McKtFile;
+	public abstract fun getFunctions ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getInnerTypes ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getInnerTypesRecursive ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+	public abstract fun getProperties ()Lmodulecheck/utils/lazy/LazySet;
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType$McKtAnnotationClass : modulecheck/parsing/element/Declared, modulecheck/parsing/element/McKtElement, modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType {
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType$McKtClass : modulecheck/parsing/element/Declared, modulecheck/parsing/element/McKtElement, modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType {
+	public abstract fun getConstructors ()Lmodulecheck/utils/lazy/LazySet;
+	public abstract fun getPrimaryConstructor ()Lmodulecheck/parsing/element/McFunction$McKtFunction;
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType$McKtCompanionObject : modulecheck/parsing/element/Declared, modulecheck/parsing/element/McKtElement, modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType {
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType$McKtEnum : modulecheck/parsing/element/Declared, modulecheck/parsing/element/McKtElement, modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType {
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType$McKtInterface : modulecheck/parsing/element/Declared, modulecheck/parsing/element/McKtElement, modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType {
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType$McKtObject : modulecheck/parsing/element/Declared, modulecheck/parsing/element/McKtElement, modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType {
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType$McKtTypeAlias : modulecheck/parsing/element/Declared, modulecheck/parsing/element/McKtElement, modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType {
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McConcreteType$McKtType : modulecheck/parsing/element/McKtElement, modulecheck/parsing/element/McType {
+	public abstract fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McJavaTypeParameter : modulecheck/parsing/element/McType$McConcreteType$McJavaType, modulecheck/parsing/element/McType$McTypeParameter {
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McKtTypeParameter : modulecheck/parsing/element/McType$McConcreteType$McKtType, modulecheck/parsing/element/McType$McTypeParameter {
+}
+
+public abstract interface class modulecheck/parsing/element/McType$McTypeParameter : modulecheck/parsing/element/McType {
+}
+
+public abstract interface class modulecheck/parsing/element/McVisibility {
+}
+
+public abstract interface class modulecheck/parsing/element/McVisibility$McJavaVisibility : modulecheck/parsing/element/McVisibility {
+}
+
+public final class modulecheck/parsing/element/McVisibility$McJavaVisibility$PackagePrivate : modulecheck/parsing/element/McVisibility$McJavaVisibility {
+	public static final field INSTANCE Lmodulecheck/parsing/element/McVisibility$McJavaVisibility$PackagePrivate;
+}
+
+public abstract interface class modulecheck/parsing/element/McVisibility$McKtVisibility : modulecheck/parsing/element/McVisibility {
+}
+
+public final class modulecheck/parsing/element/McVisibility$McKtVisibility$Internal : modulecheck/parsing/element/McVisibility$McKtVisibility {
+	public static final field INSTANCE Lmodulecheck/parsing/element/McVisibility$McKtVisibility$Internal;
+}
+
+public final class modulecheck/parsing/element/McVisibility$Private : modulecheck/parsing/element/McVisibility$McJavaVisibility, modulecheck/parsing/element/McVisibility$McKtVisibility {
+	public static final field INSTANCE Lmodulecheck/parsing/element/McVisibility$Private;
+}
+
+public final class modulecheck/parsing/element/McVisibility$Protected : modulecheck/parsing/element/McVisibility$McJavaVisibility, modulecheck/parsing/element/McVisibility$McKtVisibility {
+	public static final field INSTANCE Lmodulecheck/parsing/element/McVisibility$Protected;
+}
+
+public final class modulecheck/parsing/element/McVisibility$Public : modulecheck/parsing/element/McVisibility$McJavaVisibility, modulecheck/parsing/element/McVisibility$McKtVisibility {
+	public static final field INSTANCE Lmodulecheck/parsing/element/McVisibility$Public;
+}
+
+public final class modulecheck/parsing/element/TraversalKt {
+	public static final fun childrenRecursive (Lmodulecheck/parsing/element/McElement;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class modulecheck/parsing/element/resolve/McElementContext {
+	public fun <init> (Lmodulecheck/parsing/element/resolve/NameParser2;Lmodulecheck/parsing/element/resolve/SymbolResolver;Lmodulecheck/parsing/source/McName$CompatibleLanguage;Lmodulecheck/utils/lazy/LazyDeferred;Lkotlin/jvm/functions/Function1;)V
+	public final fun declaredNameOrNull (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getBindingContextDeferred ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public final fun getKotlinEnvironmentDeferred ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public final fun getLanguage ()Lmodulecheck/parsing/source/McName$CompatibleLanguage;
+	public final fun getNameParser ()Lmodulecheck/parsing/element/resolve/NameParser2;
+	public final fun getStdLibNameOrNull ()Lkotlin/jvm/functions/Function1;
+	public final fun getSymbolResolver ()Lmodulecheck/parsing/element/resolve/SymbolResolver;
+	public final fun resolveReferenceNameOrNull (Lmodulecheck/parsing/element/McFile;Lmodulecheck/parsing/source/ReferenceName;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/element/resolve/NameParser2 {
+	public abstract fun parse (Lmodulecheck/parsing/element/resolve/NameParser2$NameParser2Packet;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/element/resolve/NameParser2$NameParser2Packet {
+	public fun <init> (Lmodulecheck/parsing/element/McFile;Lmodulecheck/parsing/source/ReferenceName;Lmodulecheck/parsing/source/McName$CompatibleLanguage;Lkotlin/jvm/functions/Function1;)V
+	public final fun component1 ()Lmodulecheck/parsing/element/McFile;
+	public final fun component2 ()Lmodulecheck/parsing/source/ReferenceName;
+	public final fun component3 ()Lmodulecheck/parsing/source/McName$CompatibleLanguage;
+	public final fun component4 ()Lkotlin/jvm/functions/Function1;
+	public final fun copy (Lmodulecheck/parsing/element/McFile;Lmodulecheck/parsing/source/ReferenceName;Lmodulecheck/parsing/source/McName$CompatibleLanguage;Lkotlin/jvm/functions/Function1;)Lmodulecheck/parsing/element/resolve/NameParser2$NameParser2Packet;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/element/resolve/NameParser2$NameParser2Packet;Lmodulecheck/parsing/element/McFile;Lmodulecheck/parsing/source/ReferenceName;Lmodulecheck/parsing/source/McName$CompatibleLanguage;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lmodulecheck/parsing/element/resolve/NameParser2$NameParser2Packet;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFile ()Lmodulecheck/parsing/element/McFile;
+	public final fun getReferenceLanguage ()Lmodulecheck/parsing/source/McName$CompatibleLanguage;
+	public final fun getStdLibNameOrNull ()Lkotlin/jvm/functions/Function1;
+	public final fun getToResolve ()Lmodulecheck/parsing/source/ReferenceName;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/element/resolve/ParsingChain2 : modulecheck/parsing/element/resolve/ParsingInterceptor2$Chain {
+	public synthetic fun <init> (Lmodulecheck/parsing/element/resolve/NameParser2$NameParser2Packet;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getPacket ()Lmodulecheck/parsing/element/resolve/NameParser2$NameParser2Packet;
+	public fun proceed (Lmodulecheck/parsing/element/resolve/NameParser2$NameParser2Packet;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/element/resolve/ParsingChain2$Factory : modulecheck/parsing/element/resolve/NameParser2 {
+	public fun <init> (Ljava/util/List;)V
+	public fun parse (Lmodulecheck/parsing/element/resolve/NameParser2$NameParser2Packet;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/element/resolve/ParsingInterceptor2 {
+	public abstract fun intercept (Lmodulecheck/parsing/element/resolve/ParsingInterceptor2$Chain;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/element/resolve/ParsingInterceptor2$Chain {
+	public abstract fun getPacket ()Lmodulecheck/parsing/element/resolve/NameParser2$NameParser2Packet;
+	public abstract fun proceed (Lmodulecheck/parsing/element/resolve/NameParser2$NameParser2Packet;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/element/resolve/SymbolResolver {
+	public abstract fun declaredNameOrNull (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

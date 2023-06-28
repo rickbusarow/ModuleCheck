@@ -31,6 +31,9 @@ import kotlin.random.Random
 
 internal class PendingRequestSortingTest : BaseTest {
 
+  private val HasAnalysisResult.name: String
+    get() = (this as TestHasAnalysisResult).name
+
   @Test
   fun `sorting does not violate general contract`() {
 
@@ -117,7 +120,4 @@ internal class PendingRequestSortingTest : BaseTest {
     override val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl> =
       lazyDeferred { TODO() }
   }
-
-  private val HasAnalysisResult.name: String
-    get() = (this as TestHasAnalysisResult).name
 }

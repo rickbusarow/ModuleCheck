@@ -143,6 +143,13 @@ class McGradleTestEnvironment(
       .withProjectDir(workingDir)
   }
 
+  constructor(params: GradleTestEnvironmentParams) : this(
+    testVersions = params.testVersions,
+    projectCache = params.projectCache,
+    testStackFrame = params.testStackFrame,
+    testVariantNames = params.testVariantNames
+  )
+
   // Make sure that every project in the cache is also added to the root project's settings file
   private fun addIncludes() {
     val includes = projectCache.values.map { it.projectPath.value }

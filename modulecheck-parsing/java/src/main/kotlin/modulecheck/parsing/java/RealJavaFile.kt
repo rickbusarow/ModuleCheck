@@ -161,22 +161,6 @@ class RealJavaFile(
       .toSet()
   }
 
-  private fun FieldAccessExpr.qualifiedNameOrSimple(): String {
-    return getChildOfType<FieldAccessExpr>()
-      ?.let { qualifier -> "$qualifier.$nameAsString" }
-      ?: getChildOfType<NameExpr>()
-        ?.let { qualifier -> "$qualifier.$nameAsString" }
-      ?: nameAsString
-  }
-
-  private fun MethodCallExpr.qualifiedNameOrSimple(): String {
-    return getChildOfType<FieldAccessExpr>()
-      ?.let { qualifier -> "$qualifier.$nameAsString" }
-      ?: getChildOfType<NameExpr>()
-        ?.let { qualifier -> "$qualifier.$nameAsString" }
-      ?: nameAsString
-  }
-
   override val apiReferences: LazyDeferred<Set<ReferenceName>> = lazyDeferred {
 
     refs.await().apiReferenceNames
@@ -239,6 +223,22 @@ class RealJavaFile(
   override val references: LazySet<ReferenceName> = listOf(
     dataSource { refs.await().resolved }
   ).toLazySet()
+
+  private fun FieldAccessExpr.qualifiedNameOrSimple(): String {
+    return getChildOfType<FieldAccessExpr>()
+      ?.let { qualifier -> "$qualifier.$nameAsString" }
+      ?: getChildOfType<NameExpr>()
+        ?.let { qualifier -> "$qualifier.$nameAsString" }
+      ?: nameAsString
+  }
+
+  private fun MethodCallExpr.qualifiedNameOrSimple(): String {
+    return getChildOfType<FieldAccessExpr>()
+      ?.let { qualifier -> "$qualifier.$nameAsString" }
+      ?: getChildOfType<NameExpr>()
+        ?.let { qualifier -> "$qualifier.$nameAsString" }
+      ?: nameAsString
+  }
 }
 
 /**

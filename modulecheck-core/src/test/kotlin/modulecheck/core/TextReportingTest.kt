@@ -37,6 +37,7 @@ internal class TextReportingTest : RunnerTest() {
   fun `text report should not be created if disabled in settings`() = test {
 
     settings.reports.text.enabled = false
+    settings.reports.text.outputPath = File(workingDir, settings.reports.text.outputPath).path
 
     val outputFile = File(settings.reports.text.outputPath)
 
@@ -75,6 +76,7 @@ internal class TextReportingTest : RunnerTest() {
   fun `text report should be created if enabled in settings`() = test {
 
     settings.reports.text.enabled = true
+    settings.reports.text.outputPath = File(workingDir, settings.reports.text.outputPath).path
 
     val outputFile = File(settings.reports.text.outputPath)
 

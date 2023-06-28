@@ -65,7 +65,7 @@ import javax.inject.Inject
  *   this source set, like `[...]/myProject/src/main/java`.
  * @property kotlinLanguageVersion the version of Kotlin being used
  * @property jvmTarget the version of Java being compiled to
- * @property dependencyModuleDescriptorAccess provides the module descriptors of
+ * @property dependencyModuleDescriptors provides the module descriptors of
  *   all dependency source sets from the current module and dependency modules
  * @property logger logs Kotlin compiler messages during analysis
  * @param resetManager used to reset caching
@@ -77,7 +77,7 @@ class RealKotlinEnvironment(
   private val sourceDirs: Collection<File>,
   val kotlinLanguageVersion: LanguageVersion?,
   val jvmTarget: JvmTarget,
-  val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
+  val dependencyModuleDescriptors: LazyDeferred<List<ModuleDescriptorImpl>>,
   val logger: McLogger,
   private val resetManager: ResetManager
 ) : KotlinEnvironment {
@@ -90,10 +90,9 @@ class RealKotlinEnvironment(
   }
 
   override val compilerConfiguration: LazyDeferred<CompilerConfiguration> = lazyDeferred {
+
     createCompilerConfiguration(
-      // TODO re-enable classpath files once external dependency resolution is working
-      // classpathFiles =   classpathFiles.await(),
-      classpathFiles = emptyList(),
+      classpathFiles = classpathFiles.await(),
       sourceFiles = sourceFiles.toList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
@@ -112,29 +111,6 @@ class RealKotlinEnvironment(
     analysisResultDeferred.await()
     RealMcPsiFileFactory(this)
   }
-
-  override suspend fun bestAvailablePsiFactory(): RealMcPsiFileFactory {
-    return when {
-      heavyPsiFactory.isCompleted -> heavyPsiFactory.getCompleted()
-      analysisResultDeferred.isCompleted -> heavyPsiFactory.await()
-      else -> lightPsiFactory.await()
-    }
-  }
-
-  private val kotlinSourceFiles by lazy { sourceFiles.filter { it.isKotlinFile() } }
-
-  override suspend fun javaPsiFile(file: File): PsiJavaFile {
-    // Type resolution for Java Psi files assumes that analysis has already been run.
-    // Otherwise, we get:
-    // `UninitializedPropertyAccessException: lateinit property module has not been initialized`
-    analysisResultDeferred.await()
-    return heavyPsiFactory.await().createJava(file)
-  }
-
-  override suspend fun ktFile(file: File): KtFile {
-    return bestAvailablePsiFactory().createKotlin(file)
-  }
-
   override val analysisResultDeferred: LazyDeferred<AnalysisResult> = lazyDeferred {
 
     val psiFactory = lightPsiFactory.await()
@@ -142,15 +118,10 @@ class RealKotlinEnvironment(
     val ktFiles = kotlinSourceFiles
       .map { file -> psiFactory.createKotlin(file) }
 
-    val descriptors = dependencyModuleDescriptorAccess.dependencyModuleDescriptors(
-      projectPath = projectPath,
-      sourceSetName = sourceSetName
-    )
-
     createAnalysisResult(
       coreEnvironment = coreEnvironment.await(),
       ktFiles = ktFiles,
-      dependencyModuleDescriptors = descriptors
+      dependencyModuleDescriptors = dependencyModuleDescriptors.await()
     )
   }
 
@@ -168,6 +139,28 @@ class RealKotlinEnvironment(
       logger = logger,
       logLevel = McMessageCollector.LogLevel.WARNINGS_AS_ERRORS
     )
+  }
+
+  private val kotlinSourceFiles by lazy { sourceFiles.filter { it.isKotlinFile() } }
+
+  override suspend fun bestAvailablePsiFactory(): RealMcPsiFileFactory {
+    return when {
+      heavyPsiFactory.isCompleted -> heavyPsiFactory.getCompleted()
+      analysisResultDeferred.isCompleted -> heavyPsiFactory.await()
+      else -> lightPsiFactory.await()
+    }
+  }
+
+  override suspend fun javaPsiFile(file: File): PsiJavaFile {
+    // Type resolution for Java Psi files assumes that analysis has already been run.
+    // Otherwise, we get:
+    // `UninitializedPropertyAccessException: lateinit property module has not been initialized`
+    analysisResultDeferred.await()
+    return heavyPsiFactory.await().createJava(file)
+  }
+
+  override suspend fun ktFile(file: File): KtFile {
+    return bestAvailablePsiFactory().createKotlin(file)
   }
 
   private suspend fun createAnalysisResult(
@@ -269,7 +262,12 @@ class RealKotlinEnvironment(
       sourceDirs = sourceDirs,
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget,
-      dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
+      dependencyModuleDescriptors = lazyDeferred {
+        dependencyModuleDescriptorAccess.dependencyModuleDescriptors(
+          projectPath = projectPath,
+          sourceSetName = sourceSetName
+        )
+      },
       logger = logger,
       resetManager = ResetManager()
     )

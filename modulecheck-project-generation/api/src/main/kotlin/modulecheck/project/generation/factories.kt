@@ -47,6 +47,7 @@ import modulecheck.project.impl.RealMcProject
 import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.logging.PrintLogger
 import modulecheck.utils.createSafely
+import modulecheck.utils.mkdirsInline
 import java.io.File
 
 @PublishedApi
@@ -63,7 +64,7 @@ internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> c
 ): McProject {
 
   val projectRoot = File(projectDir, path.replace(":", File.separator))
-    .also { it.mkdirs() }
+    .mkdirsInline()
 
   val buildFile = File(projectRoot, "build.gradle.kts")
     .createSafely()

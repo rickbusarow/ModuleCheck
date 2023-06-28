@@ -42,19 +42,6 @@ data class MavenCoordinates(
 
   override val name: String by unsafeLazy { "${group.orEmpty()}:$moduleName:${version.orEmpty()}" }
 
-  companion object {
-
-    private val MATCHER = """([\w\.]+):([\w\-]+):([\w\.]+)""".toRegex()
-
-    fun parseOrNull(coordinateString: String): MavenCoordinates? {
-      return MATCHER.find(coordinateString)
-        ?.destructured
-        ?.let { (group, moduleName, version) ->
-          MavenCoordinates(group, moduleName, version)
-        }
-    }
-  }
-
   override fun compareTo(other: MavenCoordinates): Int {
     return name.compareTo(other.name)
   }
@@ -78,6 +65,19 @@ data class MavenCoordinates(
     result = 31 * result + moduleName.hashCode()
     result = 31 * result + (version?.hashCode() ?: 0)
     return result
+  }
+
+  companion object {
+
+    private val MATCHER = """([\w.]+):([\w\-]+):([\w.]+)""".toRegex()
+
+    fun parseOrNull(coordinateString: String): MavenCoordinates? {
+      return MATCHER.find(coordinateString)
+        ?.destructured
+        ?.let { (group, moduleName, version) ->
+          MavenCoordinates(group, moduleName, version)
+        }
+    }
   }
 }
 

@@ -15,11 +15,13 @@
 
 package modulecheck.utils.traversal
 
+import modulecheck.utils.lazy.unsafeLazy
+
 sealed interface TestNode {
   val name: String
   val elementType: String
   val children: List<TestNode>
-  var parent: TestNode?
+  val parent: TestNode?
 
   val text: String get() = "text for $name\nthe element type is $elementType"
 }
@@ -27,22 +29,24 @@ sealed interface TestNode {
 data class CompositeNode(
   override val name: String,
   override val elementType: String,
-  override val children: List<TestNode>
+  override val children: List<TestNode>,
+  private val parentLazy: Lazy<TestNode?> = unsafeLazy { null }
 ) : TestNode {
-  override var parent: TestNode? = null
+  override val parent: TestNode? by parentLazy
 }
 
 data class LeafNode(
   override val name: String,
-  override val elementType: String
+  override val elementType: String,
+  private val parentLazy: Lazy<TestNode?> = unsafeLazy { null }
 ) : TestNode {
-  override var parent: TestNode? = null
+  override val parent: TestNode? by parentLazy
   override val children: List<TestNode>
     get() = emptyList()
 }
 
 fun rootNode(name: String, elementType: String, init: CompositeNodeBuilder.() -> Unit): TestNode {
-  val builder = CompositeNodeBuilder(name, elementType, null)
+  val builder = CompositeNodeBuilder(name, elementType, unsafeLazy { null })
   builder.init()
   return builder.build()
 }
@@ -50,24 +54,21 @@ fun rootNode(name: String, elementType: String, init: CompositeNodeBuilder.() ->
 class CompositeNodeBuilder(
   private val name: String,
   private val elementType: String,
-  private val parent: TestNode?
+  private val parentLazy: Lazy<TestNode?>
 ) {
   private val children = mutableListOf<TestNode>()
 
   fun compositeNode(name: String, elementType: String, init: CompositeNodeBuilder.() -> Unit) {
-    val childBuilder = CompositeNodeBuilder(name, elementType, build())
+    val childBuilder = CompositeNodeBuilder(name, elementType, unsafeLazy { build() })
     childBuilder.init()
     children.add(childBuilder.build())
   }
 
   fun leafNode(name: String, elementType: String) {
-    children.add(LeafNode(name, elementType).also { it.parent = build() })
+    children.add(LeafNode(name, elementType, unsafeLazy { build() }))
   }
 
-  fun build(): TestNode = CompositeNode(name, elementType, children).apply {
-    this@apply.parent = this@CompositeNodeBuilder.parent
-    children.forEach { it.parent = this }
-  }
+  fun build(): TestNode = CompositeNode(name, elementType, children, parentLazy)
 }
 
 class TestNodeTreePrinter(

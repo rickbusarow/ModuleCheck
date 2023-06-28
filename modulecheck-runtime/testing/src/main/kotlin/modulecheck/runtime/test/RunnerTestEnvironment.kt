@@ -111,6 +111,18 @@ open class RunnerTestEnvironment(
 
   val findingFactory: FindingFactory<out Finding> by lazy { findingFactory(this.rules) }
 
+  constructor(params: RunnerTestEnvironmentParams) : this(
+    projectCache = params.projectCache,
+    logger = params.logger,
+    ruleFilter = params.ruleFilter,
+    settings = params.settings,
+    codeGeneratorBindings = params.codeGeneratorBindings,
+    rules = params.rules,
+    findingFactory = params.findingFactory,
+    testStackFrame = params.testStackFrame,
+    testVariantNames = params.testVariantNames
+  )
+
   /**
    * Parses the log report into a list of pairs, each containing
    * a report title and a list of [ProjectFindingReport].

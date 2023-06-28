@@ -222,6 +222,21 @@ public final class modulecheck/parsing/source/PackageNameKt {
 	public static final fun append (Lmodulecheck/parsing/source/PackageName;[Ljava/lang/String;)Ljava/lang/String;
 }
 
+public final class modulecheck/parsing/source/ParameterizedReferenceName : modulecheck/parsing/source/ReferenceName {
+	public static final field Companion Lmodulecheck/parsing/source/ParameterizedReferenceName$Companion;
+	public fun <init> (Lmodulecheck/parsing/source/ReferenceName;Ljava/util/List;)V
+	public fun getLanguage ()Lmodulecheck/parsing/source/McName$CompatibleLanguage;
+	public final fun getRawTypeName ()Lmodulecheck/parsing/source/ReferenceName;
+	public fun getSegments ()Ljava/util/List;
+	public fun getSimpleName ()Ljava/lang/String;
+	public final fun getTypeParams ()Ljava/util/List;
+}
+
+public final class modulecheck/parsing/source/ParameterizedReferenceName$Companion {
+	public final fun parameterizedBy (Lmodulecheck/parsing/source/ReferenceName;Ljava/util/List;)Lmodulecheck/parsing/source/ParameterizedReferenceName;
+	public final fun parameterizedBy (Lmodulecheck/parsing/source/ReferenceName;[Lmodulecheck/parsing/source/ReferenceName;)Lmodulecheck/parsing/source/ParameterizedReferenceName;
+}
+
 public final class modulecheck/parsing/source/QualifiedAndroidResourceDeclaredName : modulecheck/parsing/source/QualifiedDeclaredName, modulecheck/parsing/source/AndroidResourceDeclaredName, modulecheck/parsing/source/Generated {
 	public fun <init> (Lmodulecheck/parsing/source/AndroidRReferenceName;Lmodulecheck/parsing/source/UnqualifiedAndroidResourceReferenceName;)V
 	public fun asReferenceName (Lmodulecheck/parsing/source/McName$CompatibleLanguage;)Lmodulecheck/parsing/source/ReferenceName;

@@ -24,7 +24,14 @@ import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSourceLocation
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 
-internal class McMessageCollector(
+/**
+ * A message collector class that logs the compiler messages according to the given log level.
+ *
+ * @property messageRenderer The renderer that will be used to render messages.
+ * @property logger The logger instance used for logging the messages.
+ * @property logLevel The level of logging.
+ */
+class McMessageCollector(
   private val messageRenderer: MessageRenderer,
   private val logger: McLogger,
   private val logLevel: LogLevel
@@ -33,6 +40,13 @@ internal class McMessageCollector(
   private var totalMessages = 0
   private var ignoredMessages = 0
 
+  /**
+   * Logs a report message with its severity and source location.
+   *
+   * @param severity The severity of the message.
+   * @param message The message to be logged.
+   * @param location The source location of the message.
+   */
   override fun report(
     severity: CompilerMessageSeverity,
     message: String,
@@ -62,19 +76,27 @@ internal class McMessageCollector(
     }
   }
 
+  /** Clears the total and ignored messages count. */
   override fun clear() {
     ignoredMessages = 0
     totalMessages = 0
   }
 
+  /**
+   * Checks if there were any errors reported.
+   *
+   * @return Boolean value indicating if there were any errors.
+   */
   override fun hasErrors(): Boolean = totalMessages > 0
 
+  /** Prints a warning message about the number of ignored issues, if there are any. */
   fun printIssuesCountIfAny() {
     if (ignoredMessages > 0) {
       logger.warning("Analysis completed with $ignoredMessages ignored issues.")
     }
   }
 
+  /** Enum class to define log levels. */
   enum class LogLevel {
     ERRORS,
     WARNINGS_AS_ERRORS,

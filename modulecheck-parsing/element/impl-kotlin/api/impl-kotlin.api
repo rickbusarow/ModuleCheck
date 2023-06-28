@@ -1,0 +1,273 @@
+public final class modulecheck/parsing/element/McElementFactoryImpl : modulecheck/parsing/element/McElementFactory {
+	public fun <init> ()V
+	public fun create (Lmodulecheck/parsing/element/resolve/McElementContext;Ljava/io/File;Ljava/lang/Object;Lmodulecheck/parsing/element/McElement;)Lmodulecheck/parsing/element/McElement;
+	public fun createKtFile (Lmodulecheck/parsing/element/resolve/McElementContext;Ljava/io/File;Lorg/jetbrains/kotlin/psi/KtFile;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract class modulecheck/parsing/element/kotlin/AbstractMcKtConcreteType : modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType, modulecheck/parsing/element/McType$McConcreteType$McKtType, modulecheck/parsing/element/kotlin/HasMcElementContext {
+	public fun getAnnotations ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getContainingFile ()Lmodulecheck/parsing/element/McFile$McKtFile;
+	public synthetic fun getContainingFile ()Lmodulecheck/parsing/element/McFile;
+	public fun getContext ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public fun getDeclaredName ()Lmodulecheck/parsing/source/DeclaredName;
+	public fun getFunctions ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getInnerTypes ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getInnerTypesRecursive ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+	public fun getProperties ()Lmodulecheck/utils/lazy/LazySet;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+	public fun getPsi ()Lorg/jetbrains/kotlin/psi/KtClassOrObject;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtElement;
+	public fun getSimpleNames ()Ljava/util/List;
+	public fun getSuperTypes ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getTypeParameters ()Lmodulecheck/utils/lazy/LazySet;
+	public final fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/parsing/element/kotlin/HasMcElementContext {
+	public fun bindingContext (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun bindingContext (Lorg/jetbrains/kotlin/util/slicedMap/ReadOnlySlice;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun bindingContext$suspendImpl (Lmodulecheck/parsing/element/kotlin/HasMcElementContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun bindingContext$suspendImpl (Lmodulecheck/parsing/element/kotlin/HasMcElementContext;Lorg/jetbrains/kotlin/util/slicedMap/ReadOnlySlice;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getContext ()Lmodulecheck/parsing/element/resolve/McElementContext;
+}
+
+public final class modulecheck/parsing/element/kotlin/McKtAnnotationArgumentImpl : modulecheck/parsing/element/McAnnotationArgument$McKtAnnotationArgument {
+	public fun <init> (Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtValueArgument;Lmodulecheck/parsing/element/McKtElement;)V
+	public final fun component2 ()Lorg/jetbrains/kotlin/psi/KtValueArgument;
+	public final fun component3 ()Lmodulecheck/parsing/element/McKtElement;
+	public final fun copy (Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtValueArgument;Lmodulecheck/parsing/element/McKtElement;)Lmodulecheck/parsing/element/kotlin/McKtAnnotationArgumentImpl;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/element/kotlin/McKtAnnotationArgumentImpl;Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtValueArgument;Lmodulecheck/parsing/element/McKtElement;ILjava/lang/Object;)Lmodulecheck/parsing/element/kotlin/McKtAnnotationArgumentImpl;
+	public fun equals (Ljava/lang/Object;)Z
+	public synthetic fun getParent ()Lmodulecheck/parsing/element/McElement;
+	public fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtElement;
+	public fun getPsi ()Lorg/jetbrains/kotlin/psi/KtValueArgument;
+	public fun getType ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/element/kotlin/McKtAnnotationImpl : modulecheck/parsing/element/McAnnotation$McKtAnnotation {
+	public fun <init> (Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtAnnotationEntry;Lmodulecheck/parsing/element/McKtElement;)V
+	public final fun component2 ()Lorg/jetbrains/kotlin/psi/KtAnnotationEntry;
+	public final fun component3 ()Lmodulecheck/parsing/element/McKtElement;
+	public final fun copy (Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtAnnotationEntry;Lmodulecheck/parsing/element/McKtElement;)Lmodulecheck/parsing/element/kotlin/McKtAnnotationImpl;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/element/kotlin/McKtAnnotationImpl;Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtAnnotationEntry;Lmodulecheck/parsing/element/McKtElement;ILjava/lang/Object;)Lmodulecheck/parsing/element/kotlin/McKtAnnotationImpl;
+	public fun equals (Ljava/lang/Object;)Z
+	public synthetic fun getParent ()Lmodulecheck/parsing/element/McElement;
+	public fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+	public fun getPsi ()Lorg/jetbrains/kotlin/psi/KtAnnotationEntry;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtElement;
+	public fun getReferenceName ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/element/kotlin/McKtClassImpl : modulecheck/parsing/element/kotlin/AbstractMcKtConcreteType, modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType$McKtClass {
+	public fun <init> (Lmodulecheck/parsing/element/resolve/McElementContext;Lmodulecheck/parsing/element/McFile$McKtFile;Lorg/jetbrains/kotlin/psi/KtClass;Lmodulecheck/parsing/element/McKtElement;)V
+	public final fun component1 ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public final fun component2 ()Lmodulecheck/parsing/element/McFile$McKtFile;
+	public final fun component3 ()Lorg/jetbrains/kotlin/psi/KtClass;
+	public final fun component4 ()Lmodulecheck/parsing/element/McKtElement;
+	public final fun copy (Lmodulecheck/parsing/element/resolve/McElementContext;Lmodulecheck/parsing/element/McFile$McKtFile;Lorg/jetbrains/kotlin/psi/KtClass;Lmodulecheck/parsing/element/McKtElement;)Lmodulecheck/parsing/element/kotlin/McKtClassImpl;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/element/kotlin/McKtClassImpl;Lmodulecheck/parsing/element/resolve/McElementContext;Lmodulecheck/parsing/element/McFile$McKtFile;Lorg/jetbrains/kotlin/psi/KtClass;Lmodulecheck/parsing/element/McKtElement;ILjava/lang/Object;)Lmodulecheck/parsing/element/kotlin/McKtClassImpl;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getConstructors ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getContainingFile ()Lmodulecheck/parsing/element/McFile$McKtFile;
+	public synthetic fun getContainingFile ()Lmodulecheck/parsing/element/McFile;
+	public fun getContext ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public synthetic fun getParent ()Lmodulecheck/parsing/element/McElement;
+	public fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+	public fun getPrimaryConstructor ()Lmodulecheck/parsing/element/McFunction$McKtFunction;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+	public fun getPsi ()Lorg/jetbrains/kotlin/psi/KtClass;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtClassOrObject;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtElement;
+	public fun hashCode ()I
+}
+
+public final class modulecheck/parsing/element/kotlin/McKtCompanionObjectImpl : modulecheck/parsing/element/kotlin/AbstractMcKtConcreteType, modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType$McKtCompanionObject {
+	public fun <init> (Lmodulecheck/parsing/element/resolve/McElementContext;Lmodulecheck/parsing/element/McFile$McKtFile;Lorg/jetbrains/kotlin/psi/KtObjectDeclaration;Lmodulecheck/parsing/element/McKtElement;)V
+	public final fun component1 ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public final fun component2 ()Lmodulecheck/parsing/element/McFile$McKtFile;
+	public final fun component3 ()Lorg/jetbrains/kotlin/psi/KtObjectDeclaration;
+	public final fun component4 ()Lmodulecheck/parsing/element/McKtElement;
+	public final fun copy (Lmodulecheck/parsing/element/resolve/McElementContext;Lmodulecheck/parsing/element/McFile$McKtFile;Lorg/jetbrains/kotlin/psi/KtObjectDeclaration;Lmodulecheck/parsing/element/McKtElement;)Lmodulecheck/parsing/element/kotlin/McKtCompanionObjectImpl;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/element/kotlin/McKtCompanionObjectImpl;Lmodulecheck/parsing/element/resolve/McElementContext;Lmodulecheck/parsing/element/McFile$McKtFile;Lorg/jetbrains/kotlin/psi/KtObjectDeclaration;Lmodulecheck/parsing/element/McKtElement;ILjava/lang/Object;)Lmodulecheck/parsing/element/kotlin/McKtCompanionObjectImpl;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getContainingFile ()Lmodulecheck/parsing/element/McFile$McKtFile;
+	public synthetic fun getContainingFile ()Lmodulecheck/parsing/element/McFile;
+	public fun getContext ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public synthetic fun getParent ()Lmodulecheck/parsing/element/McElement;
+	public fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtClassOrObject;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtElement;
+	public fun getPsi ()Lorg/jetbrains/kotlin/psi/KtObjectDeclaration;
+	public fun hashCode ()I
+}
+
+public final class modulecheck/parsing/element/kotlin/McKtConstructorPropertyImpl : modulecheck/parsing/element/Declared, modulecheck/parsing/element/HasKtVisibility, modulecheck/parsing/element/McProperty$McKtProperty$KtConstructorProperty, modulecheck/parsing/element/kotlin/HasMcElementContext {
+	public fun <init> (Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtParameter;Lmodulecheck/parsing/element/McKtDeclaredElement;)V
+	public final fun component1 ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public final fun component2 ()Lorg/jetbrains/kotlin/psi/KtParameter;
+	public final fun component3 ()Lmodulecheck/parsing/element/McKtDeclaredElement;
+	public final fun copy (Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtParameter;Lmodulecheck/parsing/element/McKtDeclaredElement;)Lmodulecheck/parsing/element/kotlin/McKtConstructorPropertyImpl;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/element/kotlin/McKtConstructorPropertyImpl;Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtParameter;Lmodulecheck/parsing/element/McKtDeclaredElement;ILjava/lang/Object;)Lmodulecheck/parsing/element/kotlin/McKtConstructorPropertyImpl;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAnnotations ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getContext ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public fun getDeclaredName ()Lmodulecheck/parsing/source/DeclaredName;
+	public fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+	public synthetic fun getParent ()Lmodulecheck/parsing/element/McElement;
+	public fun getParent ()Lmodulecheck/parsing/element/McKtDeclaredElement;
+	public synthetic fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtCallableDeclaration;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtElement;
+	public fun getPsi ()Lorg/jetbrains/kotlin/psi/KtParameter;
+	public fun getSimpleNames ()Ljava/util/List;
+	public fun getSimplestName-Jf_0vz4 ()Ljava/lang/String;
+	public fun getTypeReferenceName ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getVisibility ()Lmodulecheck/parsing/element/McVisibility$McKtVisibility;
+	public synthetic fun getVisibility ()Lmodulecheck/parsing/element/McVisibility;
+	public fun hashCode ()I
+	public fun isApi ()Z
+	public fun isMutable ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/element/kotlin/McKtFileImpl : modulecheck/parsing/element/McFile$McKtFile {
+	public fun <init> (Lmodulecheck/parsing/element/resolve/McElementContext;Ljava/io/File;Lorg/jetbrains/kotlin/psi/KtFile;)V
+	public fun getAnnotations ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getAnvilScopeArguments (Ljava/util/List;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getApiReferences ()Ljava/util/List;
+	public fun getChildren ()Lkotlinx/coroutines/flow/Flow;
+	public fun getContainingFile ()Lmodulecheck/parsing/element/McFile$McKtFile;
+	public synthetic fun getContainingFile ()Lmodulecheck/parsing/element/McFile;
+	public final fun getContext ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public fun getDeclarations ()Ljava/util/List;
+	public fun getDeclaredTypes ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getDeclaredTypesAndInnerTypes ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getFile ()Ljava/io/File;
+	public fun getImportAliases ()Ljava/util/Map;
+	public fun getImports ()Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtElement;
+	public fun getPsi ()Lorg/jetbrains/kotlin/psi/KtFile;
+	public fun getReferences ()Ljava/util/List;
+	public fun getTopLevelFunctions ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getTopLevelProperties ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getWildcardImports ()Lmodulecheck/utils/lazy/LazySet$DataSource;
+}
+
+public final class modulecheck/parsing/element/kotlin/McKtFunctionImpl : modulecheck/parsing/element/Declared, modulecheck/parsing/element/HasKtVisibility, modulecheck/parsing/element/McFunction$McKtFunction, modulecheck/parsing/element/kotlin/HasMcElementContext {
+	public fun <init> (Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtFunction;Lmodulecheck/parsing/element/McKtDeclaredElement;)V
+	public final fun component1 ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public final fun component2 ()Lorg/jetbrains/kotlin/psi/KtFunction;
+	public final fun component3 ()Lmodulecheck/parsing/element/McKtDeclaredElement;
+	public final fun copy (Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtFunction;Lmodulecheck/parsing/element/McKtDeclaredElement;)Lmodulecheck/parsing/element/kotlin/McKtFunctionImpl;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/element/kotlin/McKtFunctionImpl;Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtFunction;Lmodulecheck/parsing/element/McKtDeclaredElement;ILjava/lang/Object;)Lmodulecheck/parsing/element/kotlin/McKtFunctionImpl;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAnnotations ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getContext ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public fun getDeclaredName ()Lmodulecheck/parsing/source/DeclaredName;
+	public fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+	public fun getParameters ()Lmodulecheck/utils/lazy/LazySet;
+	public synthetic fun getParent ()Lmodulecheck/parsing/element/McElement;
+	public fun getParent ()Lmodulecheck/parsing/element/McKtDeclaredElement;
+	public synthetic fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+	public fun getProperties ()Lmodulecheck/utils/lazy/LazySet;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtCallableDeclaration;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtElement;
+	public fun getPsi ()Lorg/jetbrains/kotlin/psi/KtFunction;
+	public fun getReturnType ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getSimpleNames ()Ljava/util/List;
+	public fun getSimplestName-Jf_0vz4 ()Ljava/lang/String;
+	public fun getTypeParameters ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getTypeParamters ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getVisibility ()Lmodulecheck/parsing/element/McVisibility$McKtVisibility;
+	public synthetic fun getVisibility ()Lmodulecheck/parsing/element/McVisibility;
+	public fun hashCode ()I
+	public fun isApi ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/element/kotlin/McKtInterfaceImpl : modulecheck/parsing/element/kotlin/AbstractMcKtConcreteType, modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType$McKtInterface {
+	public fun <init> (Lmodulecheck/parsing/element/resolve/McElementContext;Lmodulecheck/parsing/element/McFile$McKtFile;Lorg/jetbrains/kotlin/psi/KtClass;Lmodulecheck/parsing/element/McKtElement;)V
+	public final fun component1 ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public final fun component2 ()Lmodulecheck/parsing/element/McFile$McKtFile;
+	public final fun component3 ()Lorg/jetbrains/kotlin/psi/KtClass;
+	public final fun component4 ()Lmodulecheck/parsing/element/McKtElement;
+	public final fun copy (Lmodulecheck/parsing/element/resolve/McElementContext;Lmodulecheck/parsing/element/McFile$McKtFile;Lorg/jetbrains/kotlin/psi/KtClass;Lmodulecheck/parsing/element/McKtElement;)Lmodulecheck/parsing/element/kotlin/McKtInterfaceImpl;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/element/kotlin/McKtInterfaceImpl;Lmodulecheck/parsing/element/resolve/McElementContext;Lmodulecheck/parsing/element/McFile$McKtFile;Lorg/jetbrains/kotlin/psi/KtClass;Lmodulecheck/parsing/element/McKtElement;ILjava/lang/Object;)Lmodulecheck/parsing/element/kotlin/McKtInterfaceImpl;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getContainingFile ()Lmodulecheck/parsing/element/McFile$McKtFile;
+	public synthetic fun getContainingFile ()Lmodulecheck/parsing/element/McFile;
+	public fun getContext ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public synthetic fun getParent ()Lmodulecheck/parsing/element/McElement;
+	public fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+	public fun getPsi ()Lorg/jetbrains/kotlin/psi/KtClass;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtClassOrObject;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtElement;
+	public fun hashCode ()I
+}
+
+public final class modulecheck/parsing/element/kotlin/McKtMemberPropertyImpl : modulecheck/parsing/element/Declared, modulecheck/parsing/element/HasKtVisibility, modulecheck/parsing/element/McProperty$McKtProperty$KtMemberProperty, modulecheck/parsing/element/kotlin/HasMcElementContext {
+	public fun <init> (Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtProperty;Lmodulecheck/parsing/element/McKtDeclaredElement;)V
+	public final fun component1 ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public final fun component2 ()Lorg/jetbrains/kotlin/psi/KtProperty;
+	public final fun component3 ()Lmodulecheck/parsing/element/McKtDeclaredElement;
+	public final fun copy (Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtProperty;Lmodulecheck/parsing/element/McKtDeclaredElement;)Lmodulecheck/parsing/element/kotlin/McKtMemberPropertyImpl;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/element/kotlin/McKtMemberPropertyImpl;Lmodulecheck/parsing/element/resolve/McElementContext;Lorg/jetbrains/kotlin/psi/KtProperty;Lmodulecheck/parsing/element/McKtDeclaredElement;ILjava/lang/Object;)Lmodulecheck/parsing/element/kotlin/McKtMemberPropertyImpl;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAnnotations ()Lmodulecheck/utils/lazy/LazySet;
+	public fun getContext ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public fun getDeclaredName ()Lmodulecheck/parsing/source/DeclaredName;
+	public fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+	public synthetic fun getParent ()Lmodulecheck/parsing/element/McElement;
+	public fun getParent ()Lmodulecheck/parsing/element/McKtDeclaredElement;
+	public synthetic fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtCallableDeclaration;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtElement;
+	public fun getPsi ()Lorg/jetbrains/kotlin/psi/KtProperty;
+	public fun getSimpleNames ()Ljava/util/List;
+	public fun getSimplestName-Jf_0vz4 ()Ljava/lang/String;
+	public fun getTypeReferenceName ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getVisibility ()Lmodulecheck/parsing/element/McVisibility$McKtVisibility;
+	public synthetic fun getVisibility ()Lmodulecheck/parsing/element/McVisibility;
+	public fun hashCode ()I
+	public fun isApi ()Z
+	public fun isMutable ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/element/kotlin/McKtObjectImpl : modulecheck/parsing/element/kotlin/AbstractMcKtConcreteType, modulecheck/parsing/element/McType$McConcreteType$McKtConcreteType$McKtObject {
+	public fun <init> (Lmodulecheck/parsing/element/resolve/McElementContext;Lmodulecheck/parsing/element/McFile$McKtFile;Lorg/jetbrains/kotlin/psi/KtObjectDeclaration;Lmodulecheck/parsing/element/McKtElement;)V
+	public final fun component1 ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public final fun component2 ()Lmodulecheck/parsing/element/McFile$McKtFile;
+	public final fun component3 ()Lorg/jetbrains/kotlin/psi/KtObjectDeclaration;
+	public final fun component4 ()Lmodulecheck/parsing/element/McKtElement;
+	public final fun copy (Lmodulecheck/parsing/element/resolve/McElementContext;Lmodulecheck/parsing/element/McFile$McKtFile;Lorg/jetbrains/kotlin/psi/KtObjectDeclaration;Lmodulecheck/parsing/element/McKtElement;)Lmodulecheck/parsing/element/kotlin/McKtObjectImpl;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/element/kotlin/McKtObjectImpl;Lmodulecheck/parsing/element/resolve/McElementContext;Lmodulecheck/parsing/element/McFile$McKtFile;Lorg/jetbrains/kotlin/psi/KtObjectDeclaration;Lmodulecheck/parsing/element/McKtElement;ILjava/lang/Object;)Lmodulecheck/parsing/element/kotlin/McKtObjectImpl;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getContainingFile ()Lmodulecheck/parsing/element/McFile$McKtFile;
+	public synthetic fun getContainingFile ()Lmodulecheck/parsing/element/McFile;
+	public fun getContext ()Lmodulecheck/parsing/element/resolve/McElementContext;
+	public synthetic fun getParent ()Lmodulecheck/parsing/element/McElement;
+	public fun getParent ()Lmodulecheck/parsing/element/McKtElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtClassOrObject;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/psi/KtElement;
+	public fun getPsi ()Lorg/jetbrains/kotlin/psi/KtObjectDeclaration;
+	public fun hashCode ()I
+}
+

@@ -32,15 +32,31 @@ public final class modulecheck/parsing/kotlin/compiler/impl/DependencyModuleDesc
 	public final fun newInstance (Lmodulecheck/project/ProjectCache;)Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;
 }
 
+public final class modulecheck/parsing/kotlin/compiler/impl/McMessageCollector : org/jetbrains/kotlin/cli/common/messages/MessageCollector {
+	public fun <init> (Lorg/jetbrains/kotlin/cli/common/messages/MessageRenderer;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/parsing/kotlin/compiler/impl/McMessageCollector$LogLevel;)V
+	public fun clear ()V
+	public fun hasErrors ()Z
+	public final fun printIssuesCountIfAny ()V
+	public fun report (Lorg/jetbrains/kotlin/cli/common/messages/CompilerMessageSeverity;Ljava/lang/String;Lorg/jetbrains/kotlin/cli/common/messages/CompilerMessageSourceLocation;)V
+}
+
+public final class modulecheck/parsing/kotlin/compiler/impl/McMessageCollector$LogLevel : java/lang/Enum {
+	public static final field ERRORS Lmodulecheck/parsing/kotlin/compiler/impl/McMessageCollector$LogLevel;
+	public static final field VERBOSE Lmodulecheck/parsing/kotlin/compiler/impl/McMessageCollector$LogLevel;
+	public static final field WARNINGS_AS_ERRORS Lmodulecheck/parsing/kotlin/compiler/impl/McMessageCollector$LogLevel;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/parsing/kotlin/compiler/impl/McMessageCollector$LogLevel;
+	public static fun values ()[Lmodulecheck/parsing/kotlin/compiler/impl/McMessageCollector$LogLevel;
+}
+
 public final class modulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment : modulecheck/parsing/kotlin/compiler/KotlinEnvironment {
-	public synthetic fun <init> (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/lang/String;Lmodulecheck/utils/lazy/LazyDeferred;Ljava/util/Collection;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/utils/lazy/ResetManager;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/lang/String;Lmodulecheck/utils/lazy/LazyDeferred;Ljava/util/Collection;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;Lmodulecheck/utils/lazy/LazyDeferred;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/utils/lazy/ResetManager;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun bestAvailablePsiFactory (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getAnalysisResultDeferred ()Lmodulecheck/utils/lazy/LazyDeferred;
 	public fun getBindingContextDeferred ()Lmodulecheck/utils/lazy/LazyDeferred;
 	public final fun getClasspathFiles ()Lmodulecheck/utils/lazy/LazyDeferred;
 	public fun getCompilerConfiguration ()Lmodulecheck/utils/lazy/LazyDeferred;
 	public fun getCoreEnvironment ()Lmodulecheck/utils/lazy/LazyDeferred;
-	public final fun getDependencyModuleDescriptorAccess ()Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;
+	public final fun getDependencyModuleDescriptors ()Lmodulecheck/utils/lazy/LazyDeferred;
 	public fun getHeavyPsiFactory ()Lmodulecheck/utils/lazy/LazyDeferred;
 	public final fun getJvmTarget ()Lorg/jetbrains/kotlin/config/JvmTarget;
 	public final fun getKotlinLanguageVersion ()Lorg/jetbrains/kotlin/config/LanguageVersion;

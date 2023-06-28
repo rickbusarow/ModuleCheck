@@ -90,7 +90,7 @@ fun File.createSafely(content: String? = null, overwrite: Boolean = true): File 
  * @receiver [File] The directories to create.
  * @return The directory file.
  */
-internal fun File.mkdirsInline(): File = apply(File::mkdirs)
+fun File.mkdirsInline(): File = apply(File::mkdirs)
 
 /**
  * Creates the parent directory of the receiver [File] if it doesn't already exist.
@@ -98,7 +98,7 @@ internal fun File.mkdirsInline(): File = apply(File::mkdirs)
  * @receiver [File] The file whose parent directory is to be created.
  * @return The file with its parent directory created.
  */
-internal fun File.makeParentDir(): File = apply {
+fun File.makeParentDir(): File = apply {
   val fileParent = requireNotNull(parentFile) { "File's `parentFile` must not be null." }
   fileParent.mkdirs()
 }

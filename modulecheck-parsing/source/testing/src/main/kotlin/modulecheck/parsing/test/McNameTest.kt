@@ -128,7 +128,7 @@ interface McNameTest : TrimmedAsserts {
 
   infix fun JvmFile.shouldBeJvmFile(config: JvmFileBuilder.() -> Unit) {
 
-    val other = JvmFileBuilder().also { it.config() }
+    val other = JvmFileBuilder().apply(config)
 
     assertSoftly {
       "references".asClue {

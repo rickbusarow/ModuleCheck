@@ -379,13 +379,13 @@ fun String.trimIndentAfterFirstLine(): String {
 fun String.noAnsi(): String = """\u001B\[[;\d]*m""".toRegex().replace(this, "")
 
 /** replace ` ` with `·` */
-val String.dots: String get() = replace(" ", "·")
+val String.dots: String get() = interpuncts
 
 /** replace ` ` with `·` */
-val String.interpuncts: String get() = replace(" ", "·")
+val String.interpuncts: String get() = replaceRegex("""[^\S\n\r]""", "·")
 
 /** replace `·` with ` ` */
-val String.noDots: String get() = replace("·", " ")
+val String.noDots: String get() = noInterpuncts
 
 /** replace `·` with ` ` */
 val String.noInterpuncts: String get() = replace("·", " ")

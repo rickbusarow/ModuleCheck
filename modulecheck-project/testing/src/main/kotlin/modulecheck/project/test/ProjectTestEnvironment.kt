@@ -63,7 +63,6 @@ open class ProjectTestEnvironment(
   testLocation: TestLocation = TestLocation.get()
 ) : TestEnvironment(names = names, testLocation = testLocation),
   ProjectCollector {
-
   override val codeGeneratorBindings: List<CodeGeneratorBinding> by lazy {
     defaultCodeGeneratorBindings()
   }
@@ -80,6 +79,12 @@ open class ProjectTestEnvironment(
       generatorBindings = codeGeneratorBindings
     )
   }
+
+  constructor(params: ProjectTestEnvironmentParams) : this(
+    projectCache = params.projectCache,
+    testStackFrame = params.testStackFrame,
+    testVariantNames = params.testVariantNames
+  )
 
   /**
    * Adds a project dependency to the receiver [McProject].

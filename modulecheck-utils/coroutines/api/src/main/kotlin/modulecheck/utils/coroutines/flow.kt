@@ -67,7 +67,7 @@ suspend fun <T, R> Flow<T>.flatMapListConcat(
   transform: suspend (T) -> Iterable<R>
 ): List<R> {
   return fold(destination) { acc, value ->
-    acc.also { it.addAll(transform(value)) }
+    acc.apply { addAll(transform(value)) }
   }
 }
 
@@ -80,7 +80,7 @@ suspend fun <T> Flow<Iterable<T>>.flatMapListConcat(
   destination: MutableList<T> = mutableListOf()
 ): List<T> {
   return fold(destination) { acc, iterable ->
-    acc.also { it.addAll(iterable) }
+    acc.apply { addAll(iterable) }
   }
 }
 

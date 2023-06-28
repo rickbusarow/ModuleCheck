@@ -58,6 +58,7 @@ import org.gradle.api.file.ProjectLayout
 import org.gradle.api.model.ObjectFactory
 import javax.inject.Inject
 
+@Suppress("ClassOrdering")
 open class ModuleCheckExtension @Inject constructor(
   objects: ObjectFactory,
   projectLayout: ProjectLayout
@@ -185,6 +186,7 @@ open class SortExtension @Inject constructor(
     .listProperty(DEPENDENCY_COMPARATORS_DEFAULT)
 }
 
+@Suppress("ClassOrdering")
 open class ReportsExtension @Inject constructor(
   objects: ObjectFactory,
   projectLayout: ProjectLayout

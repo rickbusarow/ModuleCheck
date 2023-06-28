@@ -44,8 +44,6 @@ abstract class AbstractModuleCheckTask(
     }
   }
 
-  protected abstract fun ruleFilter(): RuleFilter
-
   @get:Input
   val settings: ModuleCheckExtension = project.extensions
     .getByType(ModuleCheckExtension::class.java)
@@ -60,6 +58,8 @@ abstract class AbstractModuleCheckTask(
         projectRoot = { project.rootDir }
       )
   }
+
+  protected abstract fun ruleFilter(): RuleFilter
 
   @TaskAction
   fun run() {

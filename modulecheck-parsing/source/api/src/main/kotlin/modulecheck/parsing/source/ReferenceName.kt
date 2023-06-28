@@ -45,7 +45,7 @@ interface HasReferences {
  */
 sealed class ReferenceName(name: String) : McName, ResolvableMcName {
 
-  final override val name: String = name.trimSegments()
+  final override val name: String by unsafeLazy { name.trimSegments(".") }
 
   /**
    * The [language][CompatibleLanguage] of the file making this reference
@@ -112,7 +112,7 @@ sealed class ReferenceName(name: String) : McName, ResolvableMcName {
      * @since 0.12.0
      */
     operator fun invoke(name: String, language: CompatibleLanguage): ReferenceName =
-      ReferenceNameImpl(
+      DefaultReferenceName(
         name = name,
         language = language
       )
@@ -123,7 +123,7 @@ sealed class ReferenceName(name: String) : McName, ResolvableMcName {
   }
 }
 
-private class ReferenceNameImpl(
+private class DefaultReferenceName(
   name: String,
   override val language: CompatibleLanguage
 ) : ReferenceName(name), McName {

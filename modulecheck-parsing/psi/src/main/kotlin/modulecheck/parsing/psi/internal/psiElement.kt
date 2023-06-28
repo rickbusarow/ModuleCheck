@@ -17,21 +17,16 @@ package modulecheck.parsing.psi.internal
 
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
-import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
-import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.Companion.asReferenceName
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.McProject
 import modulecheck.utils.cast
 import modulecheck.utils.lazy.unsafeLazy
-import modulecheck.utils.requireNotNull
 import modulecheck.utils.traversal.Traversals
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.PropertyDescriptor
 import org.jetbrains.kotlin.descriptors.VariableDescriptor
-import org.jetbrains.kotlin.js.descriptorUtils.getKotlinTypeFqName
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtAnnotated
@@ -64,6 +59,7 @@ import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.types.KotlinType
 import java.io.File
 import kotlin.contracts.contract
+import modulecheck.parsing.source.PackageName as SourcePackageName
 
 inline fun <reified T : PsiElement> PsiElement.isPartOf(): Boolean =
   getNonStrictParentOfType<T>() != null
@@ -126,13 +122,6 @@ fun PsiElement.childrenBreadthFirst(): Sequence<PsiElement> {
 inline fun PsiElement.childrenBreadthFirst(
   crossinline predicate: (PsiElement) -> Boolean
 ): Sequence<PsiElement> = Traversals.breadthFirstTraversal(this) { children.filter(predicate) }
-
-fun KotlinType?.requireReferenceName(): ReferenceName = requireNotNull()
-  .getKotlinTypeFqName(false)
-  .asReferenceName(KOTLIN)
-
-fun KotlinType.asReferenceName(): ReferenceName = getKotlinTypeFqName(false)
-  .asReferenceName(KOTLIN)
 
 fun KtProperty.resolveType(bindingContext: BindingContext): VariableDescriptor? {
   return bindingContext[BindingContext.VARIABLE, this]
@@ -211,7 +200,7 @@ suspend fun PsiElement.declaredNameOrNull(
     .first()
     .containingKtFile
 
-  val packageName = PackageName(containingKtFile.packageFqName.asString())
+  val packageName = SourcePackageName(containingKtFile.packageFqName.asString())
 
   val classReference = when (this) {
     // If a fully qualified name is used, then we're done and don't need to do anything further.

@@ -684,6 +684,22 @@ public final class modulecheck/model/dependency/SourceSets : java/util/Map, kotl
 	public final fun values ()Ljava/util/Collection;
 }
 
+public final class modulecheck/model/dependency/SourceSetsKt {
+	public static final fun getAndroidTest (Lmodulecheck/model/dependency/SourceSets;)Lmodulecheck/model/dependency/McSourceSet;
+	public static final fun getAndroidTestOrNull (Lmodulecheck/model/dependency/SourceSets;)Lmodulecheck/model/dependency/McSourceSet;
+	public static final fun getDebug (Lmodulecheck/model/dependency/SourceSets;)Lmodulecheck/model/dependency/McSourceSet;
+	public static final fun getDebugOrNull (Lmodulecheck/model/dependency/SourceSets;)Lmodulecheck/model/dependency/McSourceSet;
+	public static final fun getMain (Lmodulecheck/model/dependency/SourceSets;)Lmodulecheck/model/dependency/McSourceSet;
+	public static final fun getMainOrNull (Lmodulecheck/model/dependency/SourceSets;)Lmodulecheck/model/dependency/McSourceSet;
+	public static final fun getRelease (Lmodulecheck/model/dependency/SourceSets;)Lmodulecheck/model/dependency/McSourceSet;
+	public static final fun getReleaseOrNull (Lmodulecheck/model/dependency/SourceSets;)Lmodulecheck/model/dependency/McSourceSet;
+	public static final fun getTest (Lmodulecheck/model/dependency/SourceSets;)Lmodulecheck/model/dependency/McSourceSet;
+	public static final fun getTestFixtures (Lmodulecheck/model/dependency/SourceSets;)Lmodulecheck/model/dependency/McSourceSet;
+	public static final fun getTestFixturesOrNull (Lmodulecheck/model/dependency/SourceSets;)Lmodulecheck/model/dependency/McSourceSet;
+	public static final fun getTestOrNull (Lmodulecheck/model/dependency/SourceSets;)Lmodulecheck/model/dependency/McSourceSet;
+	public static final fun requireSourceSet-wYXeOjA (Lmodulecheck/model/dependency/SourceSets;Ljava/lang/String;)Lmodulecheck/model/dependency/McSourceSet;
+}
+
 public final class modulecheck/model/dependency/TransitiveProjectDependency {
 	public fun <init> (Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/model/dependency/ProjectDependency;)V
 	public final fun component1 ()Lmodulecheck/model/dependency/ProjectDependency;

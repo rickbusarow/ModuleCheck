@@ -54,6 +54,7 @@ import java.io.File
  * @property kotlinLanguageVersion The version of Kotlin used to compile this source set.
  * @property jvmTarget The target version of the generated JVM bytecode.
  */
+@Suppress("DataClassShouldBeImmutable")
 data class SourceSetBuilder(
   var name: SourceSetName,
   var compileOnlyConfiguration: McConfiguration,
@@ -91,7 +92,9 @@ data class SourceSetBuilder(
         sourceDirs = jvmFiles,
         kotlinLanguageVersion = kotlinLanguageVersion,
         jvmTarget = jvmTarget,
-        dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
+        dependencyModuleDescriptors = lazyDeferred {
+          dependencyModuleDescriptorAccess.dependencyModuleDescriptors(projectPath, name)
+        },
         logger = PrintLogger(),
         resetManager = ResetManager()
       )

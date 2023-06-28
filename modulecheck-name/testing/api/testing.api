@@ -1,0 +1,59 @@
+public abstract interface class NameTest : modulecheck/testing/assert/TrimmedAsserts {
+	public fun agnostic-9PpwmVA (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/name/NameWithPackageName;
+	public static synthetic fun agnostic-9PpwmVA$default (LNameTest;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/name/NameWithPackageName;
+	public fun androidR-p04zEWQ (Ljava/lang/String;)Lmodulecheck/name/AndroidRName;
+	public static synthetic fun androidR-p04zEWQ$default (LNameTest;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/name/AndroidRName;
+	public fun java-9PpwmVA (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/name/NameWithPackageName;
+	public static synthetic fun java-9PpwmVA$default (LNameTest;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/name/NameWithPackageName;
+	public fun kotlin-9PpwmVA (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/name/NameWithPackageName;
+	public static synthetic fun kotlin-9PpwmVA$default (LNameTest;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/name/NameWithPackageName;
+	public fun shouldBe (Ljava/util/Collection;Ljava/util/Collection;)V
+	public fun shouldBe (Ljava/util/List;Ljava/util/Collection;)V
+	public fun shouldBe (Lmodulecheck/utils/lazy/LazyDeferred;Ljava/util/Collection;)V
+	public fun shouldBe (Lmodulecheck/utils/lazy/LazySet;Ljava/util/Collection;)V
+	public fun shouldBeJvmFile (Lmodulecheck/parsing/source/JvmFile;Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class NameTest$JvmFileBuilder {
+	public fun <init> ()V
+	public final fun apiReferences (Lkotlin/jvm/functions/Function1;)V
+	public final fun declarations (Lkotlin/jvm/functions/Function1;)V
+	public final fun getApiNames ()Ljava/util/List;
+	public final fun getDeclarations ()Ljava/util/List;
+	public final fun getNames ()Ljava/util/List;
+	public final fun references (Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class NameTest$JvmFileBuilder$ApiReferenceBuilder : NameTest$JvmFileBuilder$ReferenceBuilder {
+	public fun <init> (LNameTest$JvmFileBuilder;)V
+}
+
+public final class NameTest$JvmFileBuilder$DeclarationsBuilder {
+	public fun <init> (LNameTest$JvmFileBuilder;)V
+	public final fun agnostic-9PpwmVA (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/name/NameWithPackageName;
+	public static synthetic fun agnostic-9PpwmVA$default (LNameTest$JvmFileBuilder$DeclarationsBuilder;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/name/NameWithPackageName;
+	public final fun java-9PpwmVA (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/name/NameWithPackageName;
+	public static synthetic fun java-9PpwmVA$default (LNameTest$JvmFileBuilder$DeclarationsBuilder;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/name/NameWithPackageName;
+	public final fun kotlin-9PpwmVA (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/name/NameWithPackageName;
+	public static synthetic fun kotlin-9PpwmVA$default (LNameTest$JvmFileBuilder$DeclarationsBuilder;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/name/NameWithPackageName;
+}
+
+public final class NameTest$JvmFileBuilder$NormalReferenceBuilder : NameTest$JvmFileBuilder$ReferenceBuilder {
+	public fun <init> (LNameTest$JvmFileBuilder;)V
+}
+
+public class NameTest$JvmFileBuilder$ReferenceBuilder {
+	public fun <init> (Ljava/util/List;)V
+	public final fun androidDataBinding (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/name/AndroidDataBindingName;
+	public final fun androidR-p04zEWQ (Ljava/lang/String;)Lmodulecheck/name/AndroidRName;
+	public static synthetic fun androidR-p04zEWQ$default (LNameTest$JvmFileBuilder$ReferenceBuilder;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/name/AndroidRName;
+	public final fun java (Ljava/lang/String;)Lmodulecheck/name/Name;
+	public final fun kotlin (Ljava/lang/String;)Lmodulecheck/name/Name;
+	public final fun qualifiedAndroidResource (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/name/AndroidResourceNameWithRName;
+	public final fun unqualifiedAndroidResource (Ljava/lang/String;)Lmodulecheck/name/UnqualifiedAndroidResourceName;
+}
+
+public final class NameTestKt {
+	public static final fun prettyPrint (Ljava/util/Collection;)Ljava/lang/String;
+}
+

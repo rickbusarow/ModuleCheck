@@ -40,10 +40,10 @@ sealed interface PackageName : McName {
    */
   object DEFAULT : PackageName {
     override val name: String = ""
-
-    override fun append(simpleNames: Iterable<String>): String = simpleNames.joinToString(".")
     override val segments: List<String>
       get() = emptyList()
+
+    override fun append(simpleNames: Iterable<String>): String = simpleNames.joinToString(".")
   }
 
   /**
@@ -101,10 +101,10 @@ data class PackageNameImpl internal constructor(override val name: String) : Pac
     }
   }
 
+  override val segments: List<String> by unsafeLazy { name.split('.') }
+
   override fun append(simpleNames: Iterable<String>): String =
     "$name.${simpleNames.joinToString(".")}"
-
-  override val segments: List<String> by unsafeLazy { name.split('.') }
 }
 
 /** Convenience interface for providing a [PackageName]. */

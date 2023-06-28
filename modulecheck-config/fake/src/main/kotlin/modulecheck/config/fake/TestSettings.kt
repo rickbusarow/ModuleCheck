@@ -26,7 +26,7 @@ import modulecheck.config.ReportSettings
 import modulecheck.config.ReportsSettings
 import modulecheck.config.SortSettings
 
-@Suppress("UNUSED_PARAMETER")
+@Suppress("UNUSED_PARAMETER", "DataClassShouldBeImmutable")
 data class TestSettings(
   override var deleteUnused: Boolean = false,
   override var trace: Boolean = false,
@@ -46,6 +46,7 @@ data class TestSettings(
   fun sort(block: SortSettings.() -> Unit): Unit = Unit
 }
 
+@Suppress("DataClassShouldBeImmutable")
 data class TestChecksSettings(
   override var redundantDependency: Boolean = ChecksSettings.REDUNDANT_DEPENDENCY_DEFAULT,
   override var unusedDependency: Boolean = ChecksSettings.UNUSED_DEPENDENCY_DEFAULT,
@@ -62,6 +63,7 @@ data class TestChecksSettings(
   override var depths: Boolean = ChecksSettings.DEPTHS_DEFAULT
 ) : ChecksSettings
 
+@Suppress("DataClassShouldBeImmutable")
 data class TestSortSettings(
   override var pluginComparators: List<String> = SortSettings.PLUGIN_COMPARATORS_DEFAULT,
   override var dependencyComparators: List<String> = SortSettings.DEPENDENCY_COMPARATORS_DEFAULT
@@ -90,11 +92,13 @@ data class TestReportsSettings(
   )
 ) : ReportsSettings
 
+@Suppress("DataClassShouldBeImmutable")
 data class TestReportSettings(
   override var enabled: Boolean,
   override var outputPath: String
 ) : ReportSettings
 
+@Suppress("DataClassShouldBeImmutable")
 data class TestPerModuleReportSettings(
   override var enabled: Boolean,
   override var outputDir: String?

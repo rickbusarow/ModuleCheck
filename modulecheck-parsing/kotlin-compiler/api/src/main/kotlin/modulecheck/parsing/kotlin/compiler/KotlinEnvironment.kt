@@ -43,14 +43,6 @@ interface KotlinEnvironment : HasAnalysisResult {
   val heavyPsiFactory: LazyDeferred<McPsiFileFactory>
 
   /**
-   * Returns the best [McPsiFileFactory] available without having to run compiler analysis.
-   *
-   * If analysis is completed, this will return [heavyPsiFactory].
-   * Otherwise, it will return [lightPsiFactory].
-   */
-  suspend fun bestAvailablePsiFactory(): McPsiFileFactory
-
-  /**
    * wrapper around "core" settings like Kotlin version,
    * source files, and classpath files (external dependencies)
    */
@@ -60,6 +52,14 @@ interface KotlinEnvironment : HasAnalysisResult {
    * "core" settings like Kotlin version, source files, and classpath files (external dependencies)
    */
   val compilerConfiguration: LazyDeferred<CompilerConfiguration>
+
+  /**
+   * Returns the best [McPsiFileFactory] available without having to run compiler analysis.
+   *
+   * If analysis is completed, this will return [heavyPsiFactory].
+   * Otherwise, it will return [lightPsiFactory].
+   */
+  suspend fun bestAvailablePsiFactory(): McPsiFileFactory
 
   /**
    * Returns a cached [KtFile] if one has already been created, otherwise creates a new
