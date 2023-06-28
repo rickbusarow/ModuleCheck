@@ -110,6 +110,8 @@ include(
   ":modulecheck-gradle:platforms:internal-jvm",
   ":modulecheck-gradle:plugin",
   ":modulecheck-internal-testing",
+  ":modulecheck-name:api",
+  ":modulecheck-name:testing",
   ":modulecheck-model:dependency:api",
   ":modulecheck-model:dependency:impl",
   ":modulecheck-model:sourceset:api",

@@ -13,39 +13,37 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.source
+package modulecheck.name
 
 /**
  * A name which is not fully qualified, like `Foo` in `com.example.Foo`
  *
- * @property name the string value of this name
- * @since 0.12.0
+ * @property asString the string value of this name
  */
 @JvmInline
-value class SimpleName(val name: String) : Comparable<SimpleName> {
+value class SimpleName(override val asString: String) : Name {
 
   init {
-    require(name.matches("""^([a-zA-Z_$][a-zA-Z\d_$]*)|(`.*`)$""".toRegex())) {
+    require(asString.matches("""^([a-zA-Z_$][a-zA-Z\d_$]*)|(`.*`)$""".toRegex())) {
       "SimpleName names must be valid Java identifier " +
-        "without a dot qualifier or whitespace.  This name was: `$name`"
+        "without a dot qualifier or whitespace.  This name was: `$asString`"
     }
   }
 
-  override fun compareTo(other: SimpleName): Int = name.compareTo(other.name)
+  override val segments: List<String>
+    get() = listOf(asString)
+
+  override val simpleName: SimpleName
+    get() = this
+
+  override val simpleNameString: String
+    get() = asString
 
   companion object {
-    /**
-     * shorthand for `joinToString(".") { it.name.trim() }`
-     *
-     * @since 0.12.0
-     */
-    fun List<SimpleName>.asString(): String = joinToString(".") { it.name.trim() }
+    /** shorthand for `joinToString(".") { it.name.trim() }` */
+    fun List<SimpleName>.asString(): String = joinToString(".") { it.asString.trim() }
 
-    /**
-     * wraps this String in a [SimpleName]
-     *
-     * @since 0.12.0
-     */
+    /** wraps this String in a [SimpleName] */
     fun String.asSimpleName(): SimpleName = SimpleName(this)
 
     /**
@@ -53,11 +51,9 @@ value class SimpleName(val name: String) : Comparable<SimpleName> {
      * then splits the remainder by dots and returns that list as [SimpleName]
      *
      * example: `com.example.Outer.Inner` becomes `[Outer, Inner]`
-     *
-     * @since 0.12.0
      */
     fun String.stripPackageNameFromFqName(packageName: PackageName): List<SimpleName> {
-      return removePrefix("${packageName.name}.").split('.')
+      return removePrefix("${packageName.asString}.").split('.')
         .map { it.asSimpleName() }
     }
   }
@@ -65,11 +61,7 @@ value class SimpleName(val name: String) : Comparable<SimpleName> {
 
 /** Convenience interface for providing a [SimpleName]. */
 interface HasSimpleNames {
-  /**
-   * The contained [SimpleNames][SimpleName]
-   *
-   * @since 0.12.0
-   */
+  /** The contained [SimpleNames][SimpleName] */
   val simpleNames: List<SimpleName>
 
   /**
@@ -77,8 +69,6 @@ interface HasSimpleNames {
    *
    * example: Given a full name of `com.example.Outer.Inner`, with
    * the [simpleNames] `[Outer, Inner]`, this value will be `Inner`.
-   *
-   * @since 0.12.0
    */
   val simplestName: SimpleName
     get() = simpleNames.last()
@@ -86,7 +76,7 @@ interface HasSimpleNames {
   companion object {
 
     internal fun HasSimpleNames.checkSimpleNames() {
-      require(simpleNames.isNotEmpty()) {
+      check(simpleNames.isNotEmpty()) {
         "`simpleNames` must have at least one name, but this list is empty."
       }
     }

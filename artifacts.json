@@ -88,6 +88,22 @@
     "javaVersion": "11"
   },
   {
+    "gradlePath": ":modulecheck-name:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-name-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
+    "gradlePath": ":modulecheck-name:testing",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-name-testing",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
     "gradlePath": ":modulecheck-parsing:android",
     "group": "com.rickbusarow.modulecheck",
     "artifactId": "modulecheck-parsing-core",

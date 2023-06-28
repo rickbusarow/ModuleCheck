@@ -15,6 +15,15 @@
 
 package modulecheck.utils
 
+/** @return the receiver `Iterable` if it's already a `List`, otherwise the result of `toList()` */
+@Suppress("NOTHING_TO_INLINE")
+inline fun <E> Iterable<E>.asList(): List<E> {
+  return when (this) {
+    is List<E> -> this
+    else -> toList()
+  }
+}
+
 /**
  * Wraps a given item in a list.
  *
