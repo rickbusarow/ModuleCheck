@@ -49,8 +49,8 @@ data class RedundantDependencyFinding(
 
   override val message: String
     get() = "The dependency is declared as `api` in a dependency module, but also explicitly " +
-      "declared in the current module.  This is technically unnecessary if a \"minimalist\" build " +
-      "file is desired."
+      "declared in the current module.  This is technically unnecessary " +
+      "if a \"minimalist\" build file is desired."
 
   override val dependencyIdentifier: String = oldDependency.projectPath.value + fromStringOrEmpty()
 

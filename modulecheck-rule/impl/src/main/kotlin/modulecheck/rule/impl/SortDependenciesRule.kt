@@ -36,8 +36,7 @@ class SortDependenciesRule @Inject constructor(
       .sort
       .dependencyComparators
       .map { it.toRegex() }
-      .map { regex ->
-        { str: String -> !str.matches(regex) }
+      .map { regex -> { str: String -> !str.matches(regex) }
       }.toTypedArray()
 
   @Suppress("SpreadOperator")

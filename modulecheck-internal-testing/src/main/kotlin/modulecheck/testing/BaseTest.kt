@@ -65,8 +65,8 @@ fun String.clean(workingDir: File): String {
       "Type-safe project accessors is an incubating feature.",
       "-- ModuleCheck results --",
       "Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.",
-      "You can use '--warning-mode all' to show the individual deprecation warnings and determine " +
-        "if they come from your own scripts or plugins.",
+      "You can use '--warning-mode all' to show the individual deprecation warnings " +
+        "and determine if they come from your own scripts or plugins.",
       "To ignore any of these findings, " +
         "annotate the dependency declaration with " +
         "@Suppress(\"<the name of the issue>\") in Kotlin, " +

@@ -42,8 +42,9 @@ internal class PackageNameTest {
   fun `an empty package name parameter to PackageNameImpl throws exception with message`() {
 
     shouldThrowWithMessage<IllegalArgumentException>(
-      "A ${PackageNameImpl::class.qualifiedName} must be a non-empty, non-blank String.  " +
-        "Represent an empty/blank or missing package name as ${DEFAULT::class.qualifiedName}.  " +
+      "A ${PackageNameImpl::class.qualifiedName} must be a non-empty, " +
+        "non-blank String.  Represent an empty/blank " +
+        "or missing package name as ${DEFAULT::class.qualifiedName}.  " +
         "This name argument, wrapped in single quotes: ''"
     ) {
       PackageNameImpl("")
@@ -57,8 +58,9 @@ internal class PackageNameTest {
       .forAllBlocking { name ->
 
         shouldThrowWithMessage<IllegalArgumentException>(
-          "A ${PackageNameImpl::class.qualifiedName} must be a non-empty, non-blank String.  " +
-            "Represent an empty/blank or missing package name as ${DEFAULT::class.qualifiedName}.  " +
+          "A ${PackageNameImpl::class.qualifiedName} must be a non-empty, " +
+            "non-blank String.  Represent an empty/blank " +
+            "or missing package name as ${DEFAULT::class.qualifiedName}.  " +
             "This name argument, wrapped in single quotes: '$name'"
         ) {
           PackageNameImpl(name)

@@ -42,8 +42,9 @@ class InheritedDependencyRule @Inject constructor() :
   DocumentedRule<InheritedDependencyFinding>() {
 
   override val name: FindingName = FindingName("inherited-dependency")
-  override val description: String = "Finds project dependencies which are used in the current module, " +
-    "but are not actually directly declared as dependencies in the current module"
+  override val description: String =
+    "Finds project dependencies which are used in the current module, " +
+      "but are not actually directly declared as dependencies in the current module"
 
   override suspend fun check(project: McProject): List<InheritedDependencyFinding> {
 
