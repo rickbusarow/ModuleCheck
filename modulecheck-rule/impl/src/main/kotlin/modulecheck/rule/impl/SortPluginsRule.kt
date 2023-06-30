@@ -38,10 +38,14 @@ class SortPluginsRule @Inject constructor(
       .pluginComparators
       .map { it.toRegex() }
       .map { regex ->
-        { str: String -> !str.matches(regex) }
+        {
+            str: String ->
+          !str.matches(regex)
+        }
       }
       .map { booleanLambda ->
-        { dec: PluginDeclaration ->
+        {
+            dec: PluginDeclaration ->
 
           booleanLambda.invoke(dec.declarationText)
         }

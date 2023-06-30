@@ -602,7 +602,9 @@ class RealAndroidSourceSetsParser private constructor(
             runtimeOnlyConfiguration = parsedConfigurations
               .getValue(androidSourceSet.runtimeOnlyConfigurationName.asConfigurationName()),
             annotationProcessorConfiguration = parsedConfigurations
-              .getValue(androidSourceSet.annotationProcessorConfigurationName.asConfigurationName()),
+              .getValue(
+                androidSourceSet.annotationProcessorConfigurationName.asConfigurationName()
+              ),
             jvmFiles = jvmFiles,
             resourceFiles = resourceFiles,
             layoutFiles = layoutFiles,

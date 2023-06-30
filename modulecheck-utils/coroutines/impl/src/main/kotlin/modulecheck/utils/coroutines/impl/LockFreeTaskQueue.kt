@@ -149,7 +149,9 @@ internal class LockFreeTaskQueueCore<E : Any>(
           // 2. Freeze & resize to avoid spinning
           // We use heuristic here to avoid memory-overallocation
           // Freeze & reallocate when queue is small or more than half of the queue is used
-          if (capacity < MIN_ADD_SPIN_CAPACITY || (tail - head) and MAX_CAPACITY_MASK > capacity shr 1) {
+          if (capacity < MIN_ADD_SPIN_CAPACITY ||
+            (tail - head) and MAX_CAPACITY_MASK > capacity shr 1
+          ) {
             return ADD_FROZEN
           }
           // otherwise spin
