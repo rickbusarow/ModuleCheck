@@ -63,13 +63,12 @@ class ExternalDependencyDeclarationVisitor(
         .takeIf { it?.text == configuration }
 
       if (innerReference != null) {
-        @Suppress("ktlint:no-multi-spaces")
-        innerExpression                                     // implementation(dependencyNotation = "com.google.dagger:dagger:2.32")
-          .valueArguments                                   // [dependencyNotation = "com.google.dagger:dagger:2.32"]
-          .firstOrNull()                                    // dependencyNotation = "com.google.dagger:dagger:2.32"
-          ?.getChildOfType<KtStringTemplateExpression>()    // "com.google.dagger:dagger:2.32"
-          ?.getChildOfType<KtLiteralStringTemplateEntry>()  // com.google.dagger:dagger:2.32
-          ?.text                                            // com.google.dagger:dagger:2.32
+        innerExpression // implementation(dependencyNotation = "com.google.dagger:dagger:2.32")
+          .valueArguments // [dependencyNotation = "com.google.dagger:dagger:2.32"]
+          .firstOrNull() // dependencyNotation = "com.google.dagger:dagger:2.32"
+          ?.getChildOfType<KtStringTemplateExpression>() // "com.google.dagger:dagger:2.32"
+          ?.getChildOfType<KtLiteralStringTemplateEntry>() // com.google.dagger:dagger:2.32
+          ?.text // com.google.dagger:dagger:2.32
           ?.let { groupName ->
 
             if (groupName.matches(projectMatcher)) {

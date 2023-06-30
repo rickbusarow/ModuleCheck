@@ -169,32 +169,30 @@ private fun KtCallExpression.parseStatements(
   )
 }
 
-@Suppress("ktlint:no-multi-spaces")
 internal fun KtCallExpression.getStringModuleNameOrNull(): Pair<String, String>? {
-  return this                                             // implementation(project(path = ":foo:bar"))
-    .valueArguments                                       // [project(path = ":foo:bar")]
-    .firstOrNull()                                        // project(path = ":foo:bar")
-    ?.getChildOfType<KtCallExpression>()                  // project(path = ":foo:bar")
+  return this // implementation(project(path = ":foo:bar"))
+    .valueArguments // [project(path = ":foo:bar")]
+    .firstOrNull() // project(path = ":foo:bar")
+    ?.getChildOfType<KtCallExpression>() // project(path = ":foo:bar")
     ?.let { projectAccessorCallExpression ->
 
       val projectAccessor = projectAccessorCallExpression.text
 
       projectAccessorCallExpression
-        .valueArguments                                   // [path = ":foo:bar"]
-        .firstOrNull()                                    // path = ":foo:bar"
-        ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
-        ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
+        .valueArguments // [path = ":foo:bar"]
+        .firstOrNull() // path = ":foo:bar"
+        ?.getChildOfType<KtStringTemplateExpression>() // ":foo:bar"
+        ?.getChildOfType<KtLiteralStringTemplateEntry>() // :foo:bar
         ?.text
         ?.let { moduleRef -> projectAccessor to moduleRef }
     }
 }
 
-@Suppress("ktlint:no-multi-spaces")
 internal fun KtCallExpression.getTypeSafeModuleNameOrNull(): Pair<String, String>? {
-  return this                                       // implementation(projects.foo.bar)
-    .valueArguments                                 // [projects.foo.bar]
-    .firstOrNull()                                  // projects.foo.bar
-    ?.getChildOfType<KtDotQualifiedExpression>()    // projects.foo.bar
+  return this // implementation(projects.foo.bar)
+    .valueArguments // [projects.foo.bar]
+    .firstOrNull() // projects.foo.bar
+    ?.getChildOfType<KtDotQualifiedExpression>() // projects.foo.bar
     ?.let { projectAccessorCallExpression ->
 
       val projectAccessor = projectAccessorCallExpression.text
@@ -206,38 +204,36 @@ internal fun KtCallExpression.getTypeSafeModuleNameOrNull(): Pair<String, String
     }
 }
 
-@Suppress("ktlint:no-multi-spaces")
 internal fun KtCallExpression.getStringTestFixturesModuleNameOrNull(): Pair<String, String>? {
-  return this                                             // implementation(testFixtures(project(path = ":foo:bar")))
-    .valueArguments                                       // [testFixtures(project(path = ":foo:bar"))]
-    .firstOrNull()                                        // testFixtures(project(path = ":foo:bar"))
-    ?.getChildOfType<KtCallExpression>()                  // testFixtures(project(path = ":foo:bar"))
-    ?.valueArguments                                      // [project(path = ":foo:bar")]
-    ?.firstOrNull()                                       // project(path = ":foo:bar")
-    ?.getChildOfType<KtCallExpression>()                  // project(path = ":foo:bar")
+  return this // implementation(testFixtures(project(path = ":foo:bar")))
+    .valueArguments // [testFixtures(project(path = ":foo:bar"))]
+    .firstOrNull() // testFixtures(project(path = ":foo:bar"))
+    ?.getChildOfType<KtCallExpression>() // testFixtures(project(path = ":foo:bar"))
+    ?.valueArguments // [project(path = ":foo:bar")]
+    ?.firstOrNull() // project(path = ":foo:bar")
+    ?.getChildOfType<KtCallExpression>() // project(path = ":foo:bar")
     ?.let { projectAccessorCallExpression ->
 
       val projectAccessor = projectAccessorCallExpression.text
 
       projectAccessorCallExpression
-        .valueArguments                                   // [path = ":foo:bar"]
-        .firstOrNull()                                    // path = ":foo:bar"
-        ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
-        ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
+        .valueArguments // [path = ":foo:bar"]
+        .firstOrNull() // path = ":foo:bar"
+        ?.getChildOfType<KtStringTemplateExpression>() // ":foo:bar"
+        ?.getChildOfType<KtLiteralStringTemplateEntry>() // :foo:bar
         ?.text
         ?.let { moduleRef -> projectAccessor to moduleRef }
     }
 }
 
-@Suppress("ktlint:no-multi-spaces")
 internal fun KtCallExpression.getTypeSafeTestFixturesModuleNameOrNull(): Pair<String, String>? {
-  return this                                       // implementation(testFixtures(projects.foo.bar))
-    .valueArguments                                 // [testFixtures(projects.foo.bar)]
-    .firstOrNull()                                  // testFixtures(projects.foo.bar)
-    ?.getChildOfType<KtCallExpression>()            // testFixtures(projects.foo.bar)
-    ?.valueArguments                                // [projects.foo.bar]
-    ?.firstOrNull()                                 // projects.foo.bar
-    ?.getChildOfType<KtDotQualifiedExpression>()    // projects.foo.bar
+  return this // implementation(testFixtures(projects.foo.bar))
+    .valueArguments // [testFixtures(projects.foo.bar)]
+    .firstOrNull() // testFixtures(projects.foo.bar)
+    ?.getChildOfType<KtCallExpression>() // testFixtures(projects.foo.bar)
+    ?.valueArguments // [projects.foo.bar]
+    ?.firstOrNull() // projects.foo.bar
+    ?.getChildOfType<KtDotQualifiedExpression>() // projects.foo.bar
     ?.let { projectAccessorCallExpression ->
 
       val projectAccessor = projectAccessorCallExpression.text
@@ -250,23 +246,21 @@ internal fun KtCallExpression.getTypeSafeTestFixturesModuleNameOrNull(): Pair<St
     }
 }
 
-@Suppress("ktlint:no-multi-spaces", "MaxLineLength")
 internal fun KtCallExpression.getMavenCoordinatesOrNull(): MavenCoordinates? {
-  return this                                         // implementation(dependencyNotation = "com.google.dagger:dagger:2.32")
-    .valueArguments                                   // [dependencyNotation = "com.google.dagger:dagger:2.32"]
-    .firstOrNull()                                    // dependencyNotation = "com.google.dagger:dagger:2.32"
-    ?.getChildOfType<KtStringTemplateExpression>()    // "com.google.dagger:dagger:2.32"
-    ?.getChildOfType<KtLiteralStringTemplateEntry>()  // com.google.dagger:dagger:2.32
-    ?.text                                            // com.google.dagger:dagger:2.32
+  return this // implementation(dependencyNotation = "com.google.dagger:dagger:2.32")
+    .valueArguments // [dependencyNotation = "com.google.dagger:dagger:2.32"]
+    .firstOrNull() // dependencyNotation = "com.google.dagger:dagger:2.32"
+    ?.getChildOfType<KtStringTemplateExpression>() // "com.google.dagger:dagger:2.32"
+    ?.getChildOfType<KtLiteralStringTemplateEntry>() // com.google.dagger:dagger:2.32
+    ?.text // com.google.dagger:dagger:2.32
     ?.let { MavenCoordinates.parseOrNull(it) }
 }
 
-@Suppress("ktlint:no-multi-spaces")
 internal fun KtCallExpression.getUnknownArgumentOrNull(): String? {
-  return this                                         // implementation(libs.ktlint)
-    .valueArguments                                   // [libs.ktlint]
-    .firstOrNull()                                    // libs.ktlint
-    ?.text                                            // libs.ktlint
+  return this // implementation(libs.ktlint)
+    .valueArguments // [libs.ktlint]
+    .firstOrNull() // libs.ktlint
+    ?.text // libs.ktlint
 }
 
 inline fun blockExpressionRecursiveVisitor(
