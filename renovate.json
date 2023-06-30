@@ -15,6 +15,14 @@
         "^com\\.square\\.anvil:(?:[\\w-]+)$"
       ],
       "groupName": "Kotlin and compiler plugins"
+    },
+    {
+      "matchPackagePatterns": [
+        "^com\\.pinterest\\.ktlint:(?:[\\w-]+)$",
+        "^com\\.rickbusarow\\.ktlint:(?:[\\w-]+)$",
+        "^com\\.rickbusarow\\.ktrules:(?:[\\w-]+)$"
+      ],
+      "groupName": "KtLint things"
     }
   ]
 }
