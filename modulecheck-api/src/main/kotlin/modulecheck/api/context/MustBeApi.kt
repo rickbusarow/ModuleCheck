@@ -120,7 +120,8 @@ data class MustBeApi(
                   // First try to find a normal "implementation" version of the dependency.
                   dependencies
                     .firstOrNull { declared ->
-                      declared.projectPath == cpd.projectPath && declared.isTestFixture == cpd.isTestFixture
+                      declared.projectPath == cpd.projectPath &&
+                        declared.isTestFixture == cpd.isTestFixture
                     }
                     // If that didn't work, look for something where the project matches
                     // (which means it's testFixtures)
