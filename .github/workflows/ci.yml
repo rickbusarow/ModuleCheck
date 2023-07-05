@@ -10,8 +10,37 @@ concurrency:
 
 jobs:
 
+  validate-wrapper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out
+        uses: actions/checkout@v3
+      - uses: gradle/wrapper-validation-action@v1
+
+  build-logic:
+    needs: validate-wrapper
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ macos, ubuntu, windows ]
+    runs-on: ${{ matrix.runner }}-latest
+    steps:
+      - name: check out
+        uses: actions/checkout@v3
+
+      - name: main build
+        uses: ./.github/actions/gradle-task
+        with:
+          task: jar compileKotlin
+          write-cache-key: build-logic-artifacts
+
   build-all:
-    runs-on: macos-latest
+    needs: build-logic
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ macos, ubuntu, windows ]
+    runs-on: ${{ matrix.runner }}-latest
     steps:
       - name: check out
         uses: actions/checkout@v3
@@ -21,9 +50,11 @@ jobs:
         with:
           task: jar compileKotlin
           write-cache-key: main-build-artifacts
+          restore-cache-key: build-logic-artifacts
 
   ktlint:
     runs-on: ubuntu-latest
+    needs: build-logic
     steps:
       - uses: actions/checkout@v3
       - name: ktlint
@@ -35,6 +66,7 @@ jobs:
 
   ci-matrices:
     runs-on: ubuntu-latest
+    needs: build-logic
     steps:
       - uses: actions/checkout@v3
       - name: ci-matrices
@@ -46,6 +78,7 @@ jobs:
 
   dependency-guard:
     runs-on: ubuntu-latest
+    needs: build-logic
     steps:
       - uses: actions/checkout@v3
       - name: dependency-guard
@@ -57,6 +90,7 @@ jobs:
 
   moduleCheck:
     runs-on: ubuntu-latest
+    needs: build-logic
     steps:
       - uses: actions/checkout@v3
       - name: moduleCheck
@@ -68,6 +102,7 @@ jobs:
 
   doks:
     runs-on: ubuntu-latest
+    needs: build-logic
     steps:
       - uses: actions/checkout@v3
       - name: doks
@@ -79,6 +114,7 @@ jobs:
 
   website-versioning:
     runs-on: ubuntu-latest
+    needs: build-logic
     steps:
       - uses: actions/checkout@v3
       - name: website versioning
@@ -90,6 +126,7 @@ jobs:
 
   artifacts-check:
     runs-on: ubuntu-latest
+    needs: build-logic
     steps:
       - uses: actions/checkout@v3
       - name: artifacts-check
@@ -101,6 +138,7 @@ jobs:
 
   check-version-is-snapshot:
     runs-on: ubuntu-latest
+    needs: build-logic
     steps:
       - uses: actions/checkout@v3
       - name: check version is snapshot
@@ -110,6 +148,7 @@ jobs:
 
   detekt:
     runs-on: macos-latest
+    needs: build-all
     steps:
       - uses: actions/checkout@v3
       - name: detektAll
@@ -129,6 +168,7 @@ jobs:
 
   build-website:
     runs-on: macos-latest
+    needs: build-all
     steps:
       - name: check out
         uses: actions/checkout@v3
@@ -172,6 +212,7 @@ jobs:
         run: ./gradlew knitCheck
 
   unit-tests:
+    needs: build-all
     strategy:
       fail-fast: false
       matrix:
@@ -206,6 +247,7 @@ jobs:
           check_name: Unit Test Results - ${{runner.os}}
 
   integration-tests-ubuntu:
+    needs: build-all
     strategy:
       fail-fast: false
       ### <start-versions-matrix>
@@ -244,6 +286,7 @@ jobs:
           check_name: Integration Test Results
 
   integration-tests-windows:
+    needs: build-all
     strategy:
       fail-fast: false
       matrix:
@@ -290,6 +333,7 @@ jobs:
       - ktlint
       - moduleCheck
       - unit-tests
+      - validate-wrapper
       - website-versioning
     steps:
       - name: require that all other jobs have passed
