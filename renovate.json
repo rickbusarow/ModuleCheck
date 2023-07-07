@@ -14,7 +14,8 @@
         "^com\\.google\\.devtools\\.ksp:(?:[\\w-]+)$",
         "^com\\.square\\.anvil:(?:[\\w-]+)$"
       ],
-      "groupName": "Kotlin and compiler plugins"
+      "groupName": "Kotlin and compiler plugins",
+      "separateMultipleMajor": false
     },
     {
       "matchPackagePatterns": [
@@ -24,5 +25,6 @@
       ],
       "groupName": "KtLint things"
     }
-  ]
+  ],
+  "stopUpdatingLabel": "renovate-ignore"
 }
