@@ -93,20 +93,12 @@ public final class modulecheck/gradle/ChecksExtension_Factory : dagger/internal/
 }
 
 public final class modulecheck/gradle/GradleMcLogger : modulecheck/reporting/logging/McLogger {
-	public fun <init> (Lorg/gradle/api/Project;)V
-	public fun printFailure (Ljava/lang/String;)V
-	public fun printFailureHeader (Ljava/lang/String;)V
-	public fun printFailureLine (Ljava/lang/String;)V
-	public fun printHeader (Ljava/lang/String;)V
-	public fun printHeaderLine (Ljava/lang/String;)V
-	public fun printInfo (Ljava/lang/String;)V
-	public fun printInfoLine (Ljava/lang/String;)V
+	public fun <init> (Lcom/github/ajalt/mordant/terminal/Terminal;)V
+	public fun failure (Ljava/lang/String;)V
+	public fun info (Ljava/lang/String;)V
 	public fun printReport (Lmodulecheck/reporting/logging/Report;)V
-	public fun printSuccess (Ljava/lang/String;)V
-	public fun printSuccessHeader (Ljava/lang/String;)V
-	public fun printSuccessLine (Ljava/lang/String;)V
-	public fun printWarning (Ljava/lang/String;)V
-	public fun printWarningLine (Ljava/lang/String;)V
+	public fun success (Ljava/lang/String;)V
+	public fun warning (Ljava/lang/String;)V
 }
 
 public final class modulecheck/gradle/GradleMcLogger_Factory : dagger/internal/Factory {
@@ -114,7 +106,7 @@ public final class modulecheck/gradle/GradleMcLogger_Factory : dagger/internal/F
 	public static fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/GradleMcLogger_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/GradleMcLogger;
-	public static fun newInstance (Lorg/gradle/api/Project;)Lmodulecheck/gradle/GradleMcLogger;
+	public static fun newInstance (Lcom/github/ajalt/mordant/terminal/Terminal;)Lmodulecheck/gradle/GradleMcLogger;
 }
 
 public class modulecheck/gradle/ModuleCheckExtension : modulecheck/config/ModuleCheckSettings {

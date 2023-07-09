@@ -16,7 +16,7 @@
 package modulecheck.utils.traversal
 
 import io.kotest.matchers.shouldBe
-import modulecheck.utils.traversal.AbstractTreePrinter.Color.Companion.noColors
+import modulecheck.utils.noAnsi
 import org.junit.jupiter.api.Test
 
 class AbstractTreePrinterTest {
@@ -34,7 +34,7 @@ class AbstractTreePrinterTest {
       leafNode("c", "typeC")
     }
 
-    TestNodeTreePrinter().treeString(tree).noColors() shouldBe """
+    TestNodeTreePrinter().treeString(tree).noAnsi() shouldBe """
     ┏━ CompositeNode [type: root] [parent: null] [parent type: null] ━┓
     ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
     ┃text for root                                                    ┃
@@ -92,7 +92,7 @@ class AbstractTreePrinterTest {
       leafNode("c", "typeC")
     }
 
-    TestNodeTreePrinter('·').treeString(tree).noColors() shouldBe """
+    TestNodeTreePrinter('·').treeString(tree).noAnsi() shouldBe """
     ┏━ CompositeNode [type: root] [parent: null] [parent type: null] ━┓
     ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
     ┃text·for·root                                                    ┃

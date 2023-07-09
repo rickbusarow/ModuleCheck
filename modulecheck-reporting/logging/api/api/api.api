@@ -1,34 +1,23 @@
+public final class anvil/hint/merge/modulecheck/reporting/logging/TerminalModuleKt {
+	public static final fun getModulecheck_reporting_logging_TerminalModule_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_reporting_logging_TerminalModule_scope0 ()Lkotlin/reflect/KClass;
+}
+
 public abstract interface class modulecheck/reporting/logging/McLogger {
-	public abstract fun printFailure (Ljava/lang/String;)V
-	public abstract fun printFailureHeader (Ljava/lang/String;)V
-	public abstract fun printFailureLine (Ljava/lang/String;)V
-	public abstract fun printHeader (Ljava/lang/String;)V
-	public abstract fun printHeaderLine (Ljava/lang/String;)V
-	public abstract fun printInfo (Ljava/lang/String;)V
-	public abstract fun printInfoLine (Ljava/lang/String;)V
+	public abstract fun failure (Ljava/lang/String;)V
+	public abstract fun info (Ljava/lang/String;)V
 	public abstract fun printReport (Lmodulecheck/reporting/logging/Report;)V
-	public abstract fun printSuccess (Ljava/lang/String;)V
-	public abstract fun printSuccessHeader (Ljava/lang/String;)V
-	public abstract fun printSuccessLine (Ljava/lang/String;)V
-	public abstract fun printWarning (Ljava/lang/String;)V
-	public abstract fun printWarningLine (Ljava/lang/String;)V
+	public abstract fun success (Ljava/lang/String;)V
+	public abstract fun warning (Ljava/lang/String;)V
 }
 
 public final class modulecheck/reporting/logging/PrintLogger : modulecheck/reporting/logging/McLogger {
 	public fun <init> ()V
-	public fun printFailure (Ljava/lang/String;)V
-	public fun printFailureHeader (Ljava/lang/String;)V
-	public fun printFailureLine (Ljava/lang/String;)V
-	public fun printHeader (Ljava/lang/String;)V
-	public fun printHeaderLine (Ljava/lang/String;)V
-	public fun printInfo (Ljava/lang/String;)V
-	public fun printInfoLine (Ljava/lang/String;)V
+	public fun failure (Ljava/lang/String;)V
+	public fun info (Ljava/lang/String;)V
 	public fun printReport (Lmodulecheck/reporting/logging/Report;)V
-	public fun printSuccess (Ljava/lang/String;)V
-	public fun printSuccessHeader (Ljava/lang/String;)V
-	public fun printSuccessLine (Ljava/lang/String;)V
-	public fun printWarning (Ljava/lang/String;)V
-	public fun printWarningLine (Ljava/lang/String;)V
+	public fun success (Ljava/lang/String;)V
+	public fun warning (Ljava/lang/String;)V
 }
 
 public final class modulecheck/reporting/logging/Report {
@@ -53,17 +42,9 @@ public final class modulecheck/reporting/logging/Report$ReportBuilder {
 	public fun <init> (Ljava/util/List;)V
 	public synthetic fun <init> (Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun failure (Ljava/lang/String;)V
-	public final fun failureHeader (Ljava/lang/String;)V
-	public final fun failureLine (Ljava/lang/String;)V
-	public final fun header (Ljava/lang/String;)V
-	public final fun headerLine (Ljava/lang/String;)V
 	public final fun info (Ljava/lang/String;)V
-	public final fun infoLine (Ljava/lang/String;)V
 	public final fun success (Ljava/lang/String;)V
-	public final fun successHeader (Ljava/lang/String;)V
-	public final fun successLine (Ljava/lang/String;)V
 	public final fun warning (Ljava/lang/String;)V
-	public final fun warningLine (Ljava/lang/String;)V
 }
 
 public abstract interface class modulecheck/reporting/logging/Report$ReportEntry {
@@ -71,67 +52,8 @@ public abstract interface class modulecheck/reporting/logging/Report$ReportEntry
 	public fun printToStdOut ()V
 }
 
-public abstract interface class modulecheck/reporting/logging/Report$ReportEntry$AppendNewLine {
-}
-
 public final class modulecheck/reporting/logging/Report$ReportEntry$Failure : modulecheck/reporting/logging/Report$ReportEntry {
 	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/reporting/logging/Report$ReportEntry$Failure;
-	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
-	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
-	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
-	public fun getMessage ()Ljava/lang/String;
-	public fun hashCode ()I
-	public static fun hashCode-impl (Ljava/lang/String;)I
-	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
-	public final synthetic fun unbox-impl ()Ljava/lang/String;
-}
-
-public final class modulecheck/reporting/logging/Report$ReportEntry$FailureHeader : modulecheck/reporting/logging/Report$ReportEntry, modulecheck/reporting/logging/Report$ReportEntry$AppendNewLine {
-	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/reporting/logging/Report$ReportEntry$FailureHeader;
-	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
-	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
-	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
-	public fun getMessage ()Ljava/lang/String;
-	public fun hashCode ()I
-	public static fun hashCode-impl (Ljava/lang/String;)I
-	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
-	public final synthetic fun unbox-impl ()Ljava/lang/String;
-}
-
-public final class modulecheck/reporting/logging/Report$ReportEntry$FailureLine : modulecheck/reporting/logging/Report$ReportEntry, modulecheck/reporting/logging/Report$ReportEntry$AppendNewLine {
-	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/reporting/logging/Report$ReportEntry$FailureLine;
-	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
-	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
-	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
-	public fun getMessage ()Ljava/lang/String;
-	public fun hashCode ()I
-	public static fun hashCode-impl (Ljava/lang/String;)I
-	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
-	public final synthetic fun unbox-impl ()Ljava/lang/String;
-}
-
-public final class modulecheck/reporting/logging/Report$ReportEntry$Header : modulecheck/reporting/logging/Report$ReportEntry {
-	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/reporting/logging/Report$ReportEntry$Header;
-	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
-	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
-	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
-	public fun getMessage ()Ljava/lang/String;
-	public fun hashCode ()I
-	public static fun hashCode-impl (Ljava/lang/String;)I
-	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
-	public final synthetic fun unbox-impl ()Ljava/lang/String;
-}
-
-public final class modulecheck/reporting/logging/Report$ReportEntry$HeaderLine : modulecheck/reporting/logging/Report$ReportEntry, modulecheck/reporting/logging/Report$ReportEntry$AppendNewLine {
-	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/reporting/logging/Report$ReportEntry$HeaderLine;
 	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
 	public fun equals (Ljava/lang/Object;)Z
 	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
@@ -158,50 +80,8 @@ public final class modulecheck/reporting/logging/Report$ReportEntry$Info : modul
 	public final synthetic fun unbox-impl ()Ljava/lang/String;
 }
 
-public final class modulecheck/reporting/logging/Report$ReportEntry$InfoLine : modulecheck/reporting/logging/Report$ReportEntry, modulecheck/reporting/logging/Report$ReportEntry$AppendNewLine {
-	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/reporting/logging/Report$ReportEntry$InfoLine;
-	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
-	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
-	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
-	public fun getMessage ()Ljava/lang/String;
-	public fun hashCode ()I
-	public static fun hashCode-impl (Ljava/lang/String;)I
-	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
-	public final synthetic fun unbox-impl ()Ljava/lang/String;
-}
-
 public final class modulecheck/reporting/logging/Report$ReportEntry$Success : modulecheck/reporting/logging/Report$ReportEntry {
 	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/reporting/logging/Report$ReportEntry$Success;
-	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
-	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
-	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
-	public fun getMessage ()Ljava/lang/String;
-	public fun hashCode ()I
-	public static fun hashCode-impl (Ljava/lang/String;)I
-	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
-	public final synthetic fun unbox-impl ()Ljava/lang/String;
-}
-
-public final class modulecheck/reporting/logging/Report$ReportEntry$SuccessHeader : modulecheck/reporting/logging/Report$ReportEntry, modulecheck/reporting/logging/Report$ReportEntry$AppendNewLine {
-	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/reporting/logging/Report$ReportEntry$SuccessHeader;
-	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
-	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
-	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
-	public fun getMessage ()Ljava/lang/String;
-	public fun hashCode ()I
-	public static fun hashCode-impl (Ljava/lang/String;)I
-	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
-	public final synthetic fun unbox-impl ()Ljava/lang/String;
-}
-
-public final class modulecheck/reporting/logging/Report$ReportEntry$SuccessLine : modulecheck/reporting/logging/Report$ReportEntry, modulecheck/reporting/logging/Report$ReportEntry$AppendNewLine {
-	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/reporting/logging/Report$ReportEntry$SuccessLine;
 	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
 	public fun equals (Ljava/lang/Object;)Z
 	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
@@ -228,17 +108,16 @@ public final class modulecheck/reporting/logging/Report$ReportEntry$Warning : mo
 	public final synthetic fun unbox-impl ()Ljava/lang/String;
 }
 
-public final class modulecheck/reporting/logging/Report$ReportEntry$WarningLine : modulecheck/reporting/logging/Report$ReportEntry, modulecheck/reporting/logging/Report$ReportEntry$AppendNewLine {
-	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/reporting/logging/Report$ReportEntry$WarningLine;
-	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
-	public fun equals (Ljava/lang/Object;)Z
-	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
-	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
-	public fun getMessage ()Ljava/lang/String;
-	public fun hashCode ()I
-	public static fun hashCode-impl (Ljava/lang/String;)I
-	public fun toString ()Ljava/lang/String;
-	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
-	public final synthetic fun unbox-impl ()Ljava/lang/String;
+public final class modulecheck/reporting/logging/TerminalModule {
+	public static final field INSTANCE Lmodulecheck/reporting/logging/TerminalModule;
+	public final fun provideTerminal ()Lcom/github/ajalt/mordant/terminal/Terminal;
+}
+
+public final class modulecheck/reporting/logging/TerminalModule_ProvideTerminalFactory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/reporting/logging/TerminalModule_ProvideTerminalFactory;
+	public static final fun create ()Lmodulecheck/reporting/logging/TerminalModule_ProvideTerminalFactory;
+	public fun get ()Lcom/github/ajalt/mordant/terminal/Terminal;
+	public synthetic fun get ()Ljava/lang/Object;
+	public static final fun provideTerminal ()Lcom/github/ajalt/mordant/terminal/Terminal;
 }
 

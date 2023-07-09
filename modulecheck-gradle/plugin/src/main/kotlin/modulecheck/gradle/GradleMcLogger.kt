@@ -15,104 +15,54 @@
 
 package modulecheck.gradle
 
+import com.github.ajalt.mordant.rendering.Theme
+import com.github.ajalt.mordant.terminal.Terminal
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.RootGradleProject
 import modulecheck.dagger.TaskScope
-import modulecheck.parsing.gradle.model.GradleProject
+import modulecheck.parsing.gradle.model.GradleLogging
 import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.logging.Report
 import modulecheck.reporting.logging.Report.ReportEntry.Failure
-import modulecheck.reporting.logging.Report.ReportEntry.FailureHeader
-import modulecheck.reporting.logging.Report.ReportEntry.FailureLine
-import modulecheck.reporting.logging.Report.ReportEntry.Header
-import modulecheck.reporting.logging.Report.ReportEntry.HeaderLine
 import modulecheck.reporting.logging.Report.ReportEntry.Info
-import modulecheck.reporting.logging.Report.ReportEntry.InfoLine
 import modulecheck.reporting.logging.Report.ReportEntry.Success
-import modulecheck.reporting.logging.Report.ReportEntry.SuccessHeader
-import modulecheck.reporting.logging.Report.ReportEntry.SuccessLine
 import modulecheck.reporting.logging.Report.ReportEntry.Warning
-import modulecheck.reporting.logging.Report.ReportEntry.WarningLine
-import org.gradle.configurationcache.extensions.serviceOf
-import org.gradle.internal.logging.text.StyledTextOutput
-import org.gradle.internal.logging.text.StyledTextOutputFactory
+import org.gradle.api.logging.Logger
 import javax.inject.Inject
 
 @ContributesBinding(TaskScope::class)
 class GradleMcLogger @Inject constructor(
-  @RootGradleProject
-  project: GradleProject
+  private val terminal: Terminal
 ) : McLogger {
 
-  private val output: StyledTextOutput = project
-    .serviceOf<StyledTextOutputFactory>()
-    .create("modulecheck")
+  private val logger: Logger by lazy { GradleLogging.getLogger("ktlint logger Gradle") }
+
+  private val theme: Theme by lazy { terminal.theme }
 
   override fun printReport(report: Report) {
     report.entries
       .forEach { reportEntry ->
         when (reportEntry) {
-          is Failure -> printFailure(reportEntry.message)
-          is FailureHeader -> printFailureHeader(reportEntry.message)
-          is FailureLine -> printFailureLine(reportEntry.message)
-          is Header -> printHeader(reportEntry.message)
-          is HeaderLine -> printHeaderLine(reportEntry.message)
-          is Info -> printInfo(reportEntry.message)
-          is InfoLine -> printInfoLine(reportEntry.message)
-          is Success -> printSuccess(reportEntry.message)
-          is SuccessHeader -> printSuccessHeader(reportEntry.message)
-          is SuccessLine -> printSuccessLine(reportEntry.message)
-          is Warning -> printWarning(reportEntry.message)
-          is WarningLine -> printWarningLine(reportEntry.message)
+          is Failure -> failure(reportEntry.message)
+          is Info -> info(reportEntry.message)
+          is Success -> success(reportEntry.message)
+          is Warning -> warning(reportEntry.message)
         }
       }
   }
 
-  override fun printHeader(message: String) {
-    output.withStyle(StyledTextOutput.Style.Header).text(message)
+  override fun warning(message: String) {
+    logger.lifecycle(theme.warning(message))
   }
 
-  override fun printHeaderLine(message: String) {
-    output.withStyle(StyledTextOutput.Style.Header).println(message)
+  override fun info(message: String) {
+    logger.lifecycle(theme.info(message))
   }
 
-  override fun printWarning(message: String) {
-    output.withStyle(StyledTextOutput.Style.Description).text(message)
+  override fun failure(message: String) {
+    logger.lifecycle(theme.danger(message))
   }
 
-  override fun printWarningLine(message: String) {
-    output.withStyle(StyledTextOutput.Style.Description).println(message)
-  }
-
-  override fun printInfo(message: String) {
-    output.withStyle(StyledTextOutput.Style.Description).text(message)
-  }
-
-  override fun printInfoLine(message: String) {
-    output.withStyle(StyledTextOutput.Style.Description).println(message)
-  }
-
-  override fun printFailure(message: String) {
-    output.withStyle(StyledTextOutput.Style.Failure).text(message)
-  }
-
-  override fun printFailureLine(message: String) {
-    output.withStyle(StyledTextOutput.Style.Failure).println(message)
-  }
-
-  override fun printFailureHeader(message: String) {
-    output.withStyle(StyledTextOutput.Style.FailureHeader).println(message)
-  }
-
-  override fun printSuccess(message: String) {
-    output.withStyle(StyledTextOutput.Style.Success).text(message)
-  }
-
-  override fun printSuccessLine(message: String) {
-    output.withStyle(StyledTextOutput.Style.Success).println(message)
-  }
-
-  override fun printSuccessHeader(message: String) {
-    output.withStyle(StyledTextOutput.Style.SuccessHeader).println(message)
+  override fun success(message: String) {
+    logger.lifecycle(theme.success(message))
   }
 }

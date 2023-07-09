@@ -16,55 +16,10 @@
 package modulecheck.reporting.logging
 
 class PrintLogger : McLogger {
-  override fun printReport(report: Report) {
-    println(report.joinToString())
-  }
 
-  override fun printHeader(message: String) {
-    print(message)
-  }
-
-  override fun printHeaderLine(message: String) {
-    println(message)
-  }
-
-  override fun printWarning(message: String) {
-    print(message)
-  }
-
-  override fun printWarningLine(message: String) {
-    println(message)
-  }
-
-  override fun printInfo(message: String) {
-    print(message)
-  }
-
-  override fun printInfoLine(message: String) {
-    println(message)
-  }
-
-  override fun printFailure(message: String) {
-    print(message)
-  }
-
-  override fun printFailureLine(message: String) {
-    println(message)
-  }
-
-  override fun printFailureHeader(message: String) {
-    println(message)
-  }
-
-  override fun printSuccess(message: String) {
-    print(message)
-  }
-
-  override fun printSuccessLine(message: String) {
-    println(message)
-  }
-
-  override fun printSuccessHeader(message: String) {
-    println(message)
-  }
+  override fun failure(message: String) = println(message)
+  override fun info(message: String) = println(message)
+  override fun printReport(report: Report) = println(report.joinToString())
+  override fun success(message: String) = println(message)
+  override fun warning(message: String) = println(message)
 }

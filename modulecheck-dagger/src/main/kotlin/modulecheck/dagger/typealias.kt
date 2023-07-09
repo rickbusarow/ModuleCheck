@@ -28,3 +28,6 @@ typealias DaggerSet<T> = Set<@JvmSuppressWildcards T>
  * @since 0.12.0
  */
 typealias DaggerList<T> = List<@JvmSuppressWildcards T>
+
+/** shorthand for `dagger.Lazy<@JvmSuppressWildcards T>` */
+typealias DaggerLazy<T> = dagger.Lazy<@JvmSuppressWildcards T>

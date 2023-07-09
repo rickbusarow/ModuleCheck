@@ -22,7 +22,6 @@ import modulecheck.finding.FindingName
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.runtime.test.RunnerTestEnvironment
-import modulecheck.utils.remove
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -108,11 +107,10 @@ internal class TextReportingTest : RunnerTest() {
     ).isSuccess shouldBe true
 
     outputFile.readText()
-      .clean()
-      .remove("\u200B") shouldBe """
-      :dependentPath
-             configuration        dependency              name                            source          build file
-          ✔  configurationName    dependencyIdentifier    use-anvil-factory-generation    sourceOrNull    buildFile: (1, 2):
-    """
+      .clean() shouldBeNoTrimIndent """
+        |    :dependentPath
+        |           configuration        dependency              name                            source          build file
+        |        ✔  configurationName    dependencyIdentifier    use-anvil-factory-generation    sourceOrNull    buildFile: (1, 2):
+    """.trimMargin()
   }
 }

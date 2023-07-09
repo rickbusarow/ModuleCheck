@@ -15,51 +15,72 @@
 
 package modulecheck.reporting.console
 
+import com.github.ajalt.mordant.rendering.OverflowWrap
+import com.github.ajalt.mordant.rendering.TextAlign
+import com.github.ajalt.mordant.rendering.Whitespace
+import com.github.ajalt.mordant.table.grid
+import com.github.ajalt.mordant.terminal.Terminal
 import modulecheck.api.DepthFinding
 import modulecheck.model.sourceset.SourceSetName
-import modulecheck.reporting.logging.Report
+import modulecheck.utils.mapLines
+import javax.inject.Inject
 
-class DepthLogFactory {
+/**
+ * Creates the depth report content as it is printed to the console -- not a file.
+ *
+ * ex:
+ * ```
+ * -- ModuleCheck main source set depth results --
+ *      depth    modules
+ *      0        [:lib1]
+ *      1        [:debug1, :lib2]
+ *      2        [:app, :debug2]
+ * ```
+ */
+class DepthLogFactory @Inject constructor(private val terminal: Terminal) {
+/** */
+  fun create(results: List<DepthFinding>): String = buildString {
 
-  fun create(results: List<DepthFinding>): Report = Report.build {
-
-    headerLine("-- ModuleCheck main source set depth results --")
+    appendLine(terminal.theme.warning("-- ModuleCheck main source set depth results --"))
 
     val depthHeader = "depth"
     val childrenHeader = "modules"
 
-    val depthHeaderLength = depthHeader.length + DEPTH_PADDING
+    grid {
 
-    headerLine(
-      "    " +
-        "${depthHeader.padEnd(depthHeaderLength)} " +
-        childrenHeader
-    )
+      style = style?.plus(terminal.theme.warning) ?: terminal.theme.warning
+      whitespace = Whitespace.NORMAL
+      overflowWrap = OverflowWrap.NORMAL
+      align = TextAlign.NONE
+      padding { left = PADDING }
 
-    results
-      .filter { it.sourceSetName == SourceSetName.MAIN }
-      .groupBy { it.depth }
-      .toSortedMap()
-      .entries
-      .forEach { (depth, values) ->
+      row(depthHeader, childrenHeader)
 
-        val paths = values.distinctBy { it.dependentPath }
-          .sortedBy { it.dependentPath }
-          .joinToString(
-            separator = ", ",
-            prefix = "[",
-            postfix = "]"
-          ) { it.dependentPath.value }
-
-        infoLine("    ${depth.toString().padEnd(depthHeaderLength)} $paths")
+      column(0) {
+        padding { left = LEADING_PADDING }
       }
 
-    // bottom padding
-    headerLine("")
+      results
+        .filter { it.sourceSetName == SourceSetName.MAIN }
+        .groupBy { it.depth }
+        .toSortedMap()
+        .entries
+        .forEach { (depth, values) ->
+
+          val paths = values
+            .distinctBy { it.dependentPath }
+            .sortedBy { it.dependentPath }
+            .joinToString(separator = ", ", prefix = "[", postfix = "]") { it.dependentPath.value }
+
+          row(depth.toString(), paths)
+        }
+    }
+      .also { grid -> appendLine(terminal.render(grid).mapLines(String::trimEnd)) }
   }
 
   companion object {
 
-    private const val DEPTH_PADDING = 3
+    private const val LEADING_PADDING = 4
+    private const val PADDING = 3
   }
 }

@@ -1,7 +1,11 @@
+:modulecheck-api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-api -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-api -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-api -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-api -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.18
@@ -20,11 +24,17 @@
 :modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-api -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-api -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-core -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-core -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-core -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-core -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-core -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-core -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-core -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-core -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-core -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-core -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-core -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-core -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.18
@@ -43,6 +53,8 @@
 :modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-core -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-core -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-core -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
 :modulecheck-dagger -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22
 :modulecheck-dagger -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22
@@ -135,10 +147,14 @@
 :modulecheck-config:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-config:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
+:modulecheck-finding:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-finding:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-finding:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-finding:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-finding:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-finding:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-finding:api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-finding:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-finding:api -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-finding:api -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-finding:api -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -155,11 +171,17 @@
 :modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-finding:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-finding:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-finding:api -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-finding:api -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-finding:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-finding:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-finding:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-finding:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-finding:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-finding:impl -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-finding:impl -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-finding:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-finding:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-finding:impl -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-finding:impl -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -176,11 +198,17 @@
 :modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-finding:impl -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-finding:impl-android -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-finding:impl-android -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-finding:impl-android -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-finding:impl-android -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-finding:impl-android -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-finding:impl-android -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-finding:impl-android -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-finding:impl-android -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-finding:impl-android -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-finding:impl-android -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-finding:impl-android -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -197,11 +225,17 @@
 :modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-finding:impl-android -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-finding:impl-sort -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-finding:impl-sort -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-finding:impl-sort -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-finding:impl-sort -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-finding:impl-sort -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-finding:impl-sort -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-finding:impl-sort -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-finding:impl-sort -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-finding:impl-sort -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-finding:impl-sort -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-finding:impl-sort -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -218,7 +252,14 @@
 :modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-finding:impl-sort -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-finding:name -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-finding:name -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-finding:name -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-finding:name -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
+:modulecheck-finding:name -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22
@@ -227,7 +268,13 @@
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.2
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-finding:name -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-finding:name -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.4
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.4
@@ -245,7 +292,7 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- guru.nidi:graphviz-java-min-deps:0.18.1
 :modulecheck-gradle:plugin -- runtimeClasspath -- guru.nidi:graphviz-java:0.18.1
 :modulecheck-gradle:plugin -- runtimeClasspath -- javax.inject:javax.inject:1
-:modulecheck-gradle:plugin -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-gradle:plugin -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:ST4:4.3.4
@@ -270,6 +317,8 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.slf4j:jcl-over-slf4j:1.7.30
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.slf4j:jul-to-slf4j:1.7.30
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.slf4j:slf4j-api:1.7.30
@@ -294,8 +343,12 @@
 :modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
-:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:ST4:4.3.4
@@ -317,7 +370,13 @@
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-parsing:java -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-parsing:java -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-parsing:java -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-parsing:java -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-parsing:java -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-parsing:java -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.4
 :modulecheck-parsing:java -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.4
@@ -327,7 +386,7 @@
 :modulecheck-parsing:java -- runtimeClasspath -- com.google.guava:guava-parent:32.1.1-jre
 :modulecheck-parsing:java -- runtimeClasspath -- com.google.guava:guava:32.1.1-jre
 :modulecheck-parsing:java -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-parsing:java -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-parsing:java -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:java -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:java -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-parsing:java -- runtimeClasspath -- org.javassist:javassist:3.29.2-GA
@@ -345,12 +404,18 @@
 :modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-parsing:psi -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-parsing:psi -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-parsing:psi -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-parsing:psi -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-parsing:psi -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-parsing:psi -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-parsing:psi -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-parsing:psi -- runtimeClasspath -- javax.inject:javax.inject:1
-:modulecheck-parsing:psi -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-parsing:psi -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:psi -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:psi -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -367,7 +432,13 @@
 :modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.4
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.4
@@ -379,7 +450,7 @@
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-parsing:wiring -- runtimeClasspath -- javax.inject:javax.inject:1
-:modulecheck-parsing:wiring -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-parsing:wiring -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:wiring -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:ST4:4.3.4
@@ -404,11 +475,17 @@
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-project:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-project:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-project:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-project:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-project:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-project:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-project:api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-project:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-project:api -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-project:api -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-project:api -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-project:api -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -425,11 +502,17 @@
 :modulecheck-project:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-project:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-project:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-project:api -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-project:api -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-project:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-project:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-project:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-project:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-project:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-project:impl -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-project:impl -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-project:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-project:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-project:impl -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-project:impl -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-project:impl -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.18
@@ -448,7 +531,13 @@
 :modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-project:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-project:impl -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-project:impl -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-project:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-project:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-project:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-project:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-project:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-project:testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
 :modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.4
@@ -471,7 +560,7 @@
 :modulecheck-project:testing -- runtimeClasspath -- io.kotest:kotest-common:5.6.2
 :modulecheck-project:testing -- runtimeClasspath -- io.kotest:kotest-property-jvm:5.6.2
 :modulecheck-project:testing -- runtimeClasspath -- javax.inject:javax.inject:1
-:modulecheck-project:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-project:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-project:testing -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-project:testing -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-project:testing -- runtimeClasspath -- org.antlr:ST4:4.3.4
@@ -496,6 +585,8 @@
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 :modulecheck-project:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-api:5.9.3
 :modulecheck-project:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-engine:5.9.3
 :modulecheck-project:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-params:5.9.3
@@ -504,6 +595,10 @@
 :modulecheck-project:testing -- runtimeClasspath -- org.junit:junit-bom:5.9.3
 :modulecheck-project:testing -- runtimeClasspath -- org.opentest4j:opentest4j:1.2.0
 
+:modulecheck-project-generation:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-project-generation:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-project-generation:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-project-generation:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.4
@@ -526,7 +621,7 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- io.kotest:kotest-common:5.6.2
 :modulecheck-project-generation:api -- runtimeClasspath -- io.kotest:kotest-property-jvm:5.6.2
 :modulecheck-project-generation:api -- runtimeClasspath -- javax.inject:javax.inject:1
-:modulecheck-project-generation:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-project-generation:api -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-project-generation:api -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-project-generation:api -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:ST4:4.3.4
@@ -551,6 +646,8 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 :modulecheck-project-generation:api -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-api:5.9.3
 :modulecheck-project-generation:api -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-engine:5.9.3
 :modulecheck-project-generation:api -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-params:5.9.3
@@ -559,10 +656,14 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- org.junit:junit-bom:5.9.3
 :modulecheck-project-generation:api -- runtimeClasspath -- org.opentest4j:opentest4j:1.2.0
 
+:modulecheck-reporting:checkstyle -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-reporting:checkstyle -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-reporting:checkstyle -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-reporting:checkstyle -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-reporting:checkstyle -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-reporting:checkstyle -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -579,12 +680,18 @@
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-reporting:checkstyle -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- org.unbescape:unbescape:1.1.6.RELEASE
 
+:modulecheck-reporting:console -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-reporting:console -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-reporting:console -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-reporting:console -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-reporting:console -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-reporting:console -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-reporting:console -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-reporting:console -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-reporting:console -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-reporting:console -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-reporting:console -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-reporting:console -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.18
@@ -603,14 +710,20 @@
 :modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-reporting:graphviz -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-reporting:graphviz -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-reporting:graphviz -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-reporting:graphviz -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-reporting:graphviz -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-reporting:graphviz -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-reporting:graphviz -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-reporting:graphviz -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-reporting:graphviz -- runtimeClasspath -- guru.nidi:graphviz-java-min-deps:0.18.1
 :modulecheck-reporting:graphviz -- runtimeClasspath -- guru.nidi:graphviz-java:0.18.1
-:modulecheck-reporting:graphviz -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-reporting:graphviz -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-reporting:graphviz -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.18
@@ -629,16 +742,22 @@
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.slf4j:jcl-over-slf4j:1.7.30
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.slf4j:jul-to-slf4j:1.7.30
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.slf4j:slf4j-api:1.7.30
 
+:modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.squareup.okio:okio:2.10.0
-:modulecheck-reporting:sarif -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-reporting:sarif -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -655,11 +774,17 @@
 :modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-reporting:sarif -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-rule:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-rule:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-rule:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-rule:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-rule:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-rule:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-rule:api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-rule:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-rule:api -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-rule:api -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-rule:api -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -676,11 +801,17 @@
 :modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-rule:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-rule:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-rule:api -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-rule:api -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-rule:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-rule:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-rule:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-rule:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-rule:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-rule:impl -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-rule:impl -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-rule:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-rule:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-rule:impl -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-rule:impl -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-rule:impl -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.18
@@ -699,11 +830,17 @@
 :modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-rule:impl-factory -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-rule:impl-factory -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-rule:impl-factory -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-rule:impl-factory -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-rule:impl-factory -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-rule:impl-factory -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-rule:impl-factory -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-rule:impl-factory -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-rule:impl-factory -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-rule:impl-factory -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-rule:impl-factory -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-rule:impl-factory -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.18
@@ -722,14 +859,20 @@
 :modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-rule:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-rule:testing -- runtimeClasspath -- com.google.dagger:dagger:2.46.1
 :modulecheck-rule:testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-rule:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-rule:testing -- runtimeClasspath -- com.squareup.anvil:annotations:2.4.6
 :modulecheck-rule:testing -- runtimeClasspath -- javax.inject:javax.inject:1
-:modulecheck-rule:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-rule:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-rule:testing -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-rule:testing -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-rule:testing -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.18
@@ -748,7 +891,13 @@
 :modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-runtime:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-runtime:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-runtime:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-runtime:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-runtime:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-runtime:api -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-runtime:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
@@ -757,7 +906,7 @@
 :modulecheck-runtime:api -- runtimeClasspath -- com.squareup.okio:okio:2.10.0
 :modulecheck-runtime:api -- runtimeClasspath -- guru.nidi:graphviz-java-min-deps:0.18.1
 :modulecheck-runtime:api -- runtimeClasspath -- guru.nidi:graphviz-java:0.18.1
-:modulecheck-runtime:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-runtime:api -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-runtime:api -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-runtime:api -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-runtime:api -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.18
@@ -776,11 +925,17 @@
 :modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 :modulecheck-runtime:api -- runtimeClasspath -- org.slf4j:jcl-over-slf4j:1.7.30
 :modulecheck-runtime:api -- runtimeClasspath -- org.slf4j:jul-to-slf4j:1.7.30
 :modulecheck-runtime:api -- runtimeClasspath -- org.slf4j:slf4j-api:1.7.30
 :modulecheck-runtime:api -- runtimeClasspath -- org.unbescape:unbescape:1.1.6.RELEASE
 
+:modulecheck-runtime:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-runtime:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-runtime:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-runtime:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.4
@@ -808,7 +963,7 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- io.kotest:kotest-common:5.6.2
 :modulecheck-runtime:testing -- runtimeClasspath -- io.kotest:kotest-property-jvm:5.6.2
 :modulecheck-runtime:testing -- runtimeClasspath -- javax.inject:javax.inject:1
-:modulecheck-runtime:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-runtime:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-runtime:testing -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-runtime:testing -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:ST4:4.3.4
@@ -833,6 +988,8 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 :modulecheck-runtime:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-api:5.9.3
 :modulecheck-runtime:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-engine:5.9.3
 :modulecheck-runtime:testing -- runtimeClasspath -- org.junit.jupiter:junit-jupiter-params:5.9.3
@@ -1051,12 +1208,16 @@
 :modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-parsing:kotlin-compiler:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.6
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.google.dagger:dagger:2.46.1
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.18.0
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- javax.inject:javax.inject:1
-:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.checkerframework:checker-qual:3.33.0
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -1073,6 +1234,8 @@
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
 :modulecheck-parsing:source:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-parsing:source:api -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
@@ -1126,17 +1289,31 @@
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.junit:junit-bom:5.9.3
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.opentest4j:opentest4j:1.2.0
 
+:modulecheck-reporting:logging:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-reporting:logging:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-reporting:logging:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-reporting:logging:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
+:modulecheck-reporting:logging:api -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-reporting:logging:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22
 :modulecheck-reporting:logging:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22
 :modulecheck-reporting:logging:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22
 :modulecheck-reporting:logging:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.22
 :modulecheck-reporting:logging:api -- runtimeClasspath -- org.jetbrains:annotations:13.0
+:modulecheck-reporting:logging:api -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-reporting:logging:api -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
+:modulecheck-reporting:logging:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-reporting:logging:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-reporting:logging:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-reporting:logging:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
+:modulecheck-reporting:logging:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-reporting:logging:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22
 :modulecheck-reporting:logging:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22
 :modulecheck-reporting:logging:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22
 :modulecheck-reporting:logging:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib:1.8.22
 :modulecheck-reporting:logging:testing -- runtimeClasspath -- org.jetbrains:annotations:13.0
+:modulecheck-reporting:logging:testing -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-reporting:logging:testing -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
 :modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22
 :modulecheck-utils:coroutines:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22
@@ -1159,7 +1336,11 @@
 :modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-utils:coroutines:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
-:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
+:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.22
@@ -1175,8 +1356,14 @@
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
-:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
+:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.22
@@ -1192,8 +1379,14 @@
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
-:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
+:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.22
@@ -1209,8 +1402,14 @@
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
-:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
+:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
+:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.0
+:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.0
+:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.8.22
@@ -1226,6 +1425,8 @@
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.2
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
+:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains:markdown-jvm:0.4.1
+:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains:markdown:0.4.1
 
 :modulecheck-parsing:gradle:model:api -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-parsing:gradle:model:api -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0

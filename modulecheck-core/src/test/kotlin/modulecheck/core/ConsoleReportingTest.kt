@@ -61,13 +61,13 @@ internal class ConsoleReportingTest : RunnerTest() {
     logger.collectReport()
       .joinToString()
       .clean()
-      .remove("\u200B") shouldBe """
-          :lib1
-                 configuration    dependency                           name                            source    build file
-              X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib1/build.gradle.kts:
-
-      ModuleCheck found 1 issue
-    """
+      .remove("\u200B") shouldBeNoTrimIndent """
+      |    :lib1
+      |           configuration    dependency                           name                            source    build file
+      |        X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib1/build.gradle.kts:
+      |
+      |ModuleCheck found 1 issue
+    """.trimMargin()
   }
 
   @Test
@@ -94,17 +94,17 @@ internal class ConsoleReportingTest : RunnerTest() {
     logger.collectReport()
       .joinToString()
       .clean()
-      .remove("\u200B") shouldBe """
-        :lib1
-               configuration    dependency                           name                            source    build file
-            X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib1/build.gradle.kts:
-
-        :lib2
-               configuration    dependency                           name                            source    build file
-            X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib2/build.gradle.kts:
-
-    ModuleCheck found 2 issues
-    """
+      .remove("\u200B") shouldBeNoTrimIndent """
+      |    :lib1
+      |           configuration    dependency                           name                            source    build file
+      |        X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib1/build.gradle.kts:
+      |
+      |    :lib2
+      |           configuration    dependency                           name                            source    build file
+      |        X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib2/build.gradle.kts:
+      |
+      |ModuleCheck found 2 issues
+    """.trimMargin()
   }
 
   @Test

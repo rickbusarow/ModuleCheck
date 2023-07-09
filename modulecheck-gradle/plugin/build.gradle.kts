@@ -118,6 +118,7 @@ dependencies {
   compileOnly(libs.kotlin.gradle.plugin.api)
   compileOnly(libs.square.anvil.gradle)
 
+  implementation(libs.ajalt.mordant)
   implementation(libs.google.dagger.api)
   implementation(libs.semVer)
 
@@ -146,6 +147,7 @@ dependencies {
   "integrationTestImplementation"(project(path = ":modulecheck-parsing:gradle:model:impl-typesafe"))
   "integrationTestImplementation"(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-parsing:wiring"))
+  "integrationTestImplementation"(project(path = ":modulecheck-reporting:logging:api"))
   "integrationTestImplementation"(project(path = ":modulecheck-rule:api"))
   "integrationTestImplementation"(project(path = ":modulecheck-rule:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-rule:impl-factory"))

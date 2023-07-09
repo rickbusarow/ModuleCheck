@@ -40,7 +40,7 @@ interface VersionsFactoryTest<T> :
   }
 
   /**
-   * @return a list of [DynamicTest] from all valid versions combinations,
+   * @return a stream of [DynamicTest] from all valid versions combinations,
    *   optionally filtered by [filter]. [action] is performed against each element.
    */
   @SkipInStackTrace
@@ -50,22 +50,7 @@ interface VersionsFactoryTest<T> :
     action: suspend T.() -> Unit
   ): Stream<out DynamicNode> = testFactory {
 
-    versions(exhaustive = exhaustive)
-      .letIf(filter != null) { versions ->
-
-        val (included, excluded) = allVersions
-          .partition(filter.requireNotNull())
-
-        "The filter excludes all possible versions".asClue {
-          included.shouldNotBeEmpty()
-        }
-
-        "The filter does not exclude any versions".asClue {
-          excluded.shouldNotBeEmpty()
-        }
-
-        versions.filter(filter.requireNotNull())
-      }
+    testVersionsPrivate(exhaustive, filter)
       .asTests { subject ->
         test(
           params = subject.newParams(rootStackFrame),
@@ -74,6 +59,41 @@ interface VersionsFactoryTest<T> :
       }
   }
 
+  /**
+   * @return a stream of [DynamicNode] from all valid versions combinations,
+   *   optionally filtered by [filter]. [builder] is performed against each element.
+   */
+  @SkipInStackTrace
+  fun factoryContainers(
+    exhaustive: Boolean = this.exhaustive,
+    filter: ((TestVersions) -> Boolean)? = null,
+    builder: TestNodeBuilder.(TestVersions) -> Unit
+  ): Stream<out DynamicNode> = testFactory {
+    testVersionsPrivate(exhaustive, filter)
+      .asContainers { testVersions -> builder(testVersions) }
+  }
+
   /** hook for creating a custom TestEnvironment within a base test class */
   fun TestVersions.newParams(stackFrame: StackFrame): TestEnvironmentParams
 }
+
+@PublishedApi
+internal fun VersionsFactoryTest<*>.testVersionsPrivate(
+  exhaustive: Boolean,
+  filter: ((TestVersions) -> Boolean)?
+): List<TestVersions> = versions(exhaustive = exhaustive)
+  .letIf(filter != null) { versions ->
+
+    val (included, excluded) = allVersions
+      .partition(filter.requireNotNull())
+
+    "The filter excludes all possible versions".asClue {
+      included.shouldNotBeEmpty()
+    }
+
+    "The filter does not exclude any versions".asClue {
+      excluded.shouldNotBeEmpty()
+    }
+
+    versions.filter(filter.requireNotNull())
+  }

@@ -21,9 +21,14 @@ import modulecheck.testing.TestEnvironmentParams
 import modulecheck.testing.TestVersions
 import modulecheck.testing.VersionsFactoryTest
 import modulecheck.utils.remove
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode.SAME_THREAD
+import org.junit.jupiter.api.parallel.ResourceLock
 import java.lang.StackWalker.StackFrame
 
 @Suppress("UnnecessaryAbstractClass")
+@ResourceLock("Gradle")
+@Execution(SAME_THREAD)
 abstract class BaseGradleTest :
   BaseTest<GradleTestEnvironment>(),
   VersionsFactoryTest<GradleTestEnvironment> {
