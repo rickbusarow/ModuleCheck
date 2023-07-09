@@ -16,8 +16,8 @@
 package modulecheck.utils.traversal
 
 import modulecheck.utils.mapLines
+import modulecheck.utils.noAnsi
 import modulecheck.utils.traversal.AbstractTreePrinter.Color.Companion.colorized
-import modulecheck.utils.traversal.AbstractTreePrinter.Color.Companion.noColors
 import modulecheck.utils.traversal.AbstractTreePrinter.NameType.SIMPLE
 import modulecheck.utils.traversal.AbstractTreePrinter.NameType.TYPE
 
@@ -168,7 +168,7 @@ abstract class AbstractTreePrinter<T : Any>(
     return getCurrentColor()
   }
 
-  private fun String.countVisibleChars(): Int = noColors().length
+  private fun String.countVisibleChars(): Int = noAnsi().length
 
   private enum class NameType {
     SIMPLE,
@@ -204,8 +204,6 @@ abstract class AbstractTreePrinter<T : Any>(
     companion object {
 
       private val supported = "win" !in System.getProperty("os.name").lowercase()
-
-      fun String.noColors(): String = "\u001B\\[[;\\d]*m".toRegex().replace(this, "")
 
       /** returns a string in the given color */
       fun String.colorized(color: Color): String {

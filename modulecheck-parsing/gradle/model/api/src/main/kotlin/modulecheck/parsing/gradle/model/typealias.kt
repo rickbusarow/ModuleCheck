@@ -42,3 +42,15 @@ typealias GradleProject = org.gradle.api.Project
  * @since 0.12.0
  */
 typealias GradleProjectDependency = org.gradle.api.artifacts.ProjectDependency
+
+/** [org.gradle.api.logging.Logger] */
+typealias GradleLogger = org.gradle.api.logging.Logger
+
+/** [org.gradle.api.logging.Logging] */
+typealias GradleLogging = org.gradle.api.logging.Logging
+
+/** [org.gradle.api.provider.Property] */
+typealias GradleProperty<T> = org.gradle.api.provider.Property<T>
+
+/** [org.gradle.api.provider.Provider] */
+typealias GradleProvider<T> = org.gradle.api.provider.Provider<T>

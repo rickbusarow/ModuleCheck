@@ -23,6 +23,7 @@ import com.github.javaparser.ast.body.VariableDeclarator
 import com.github.javaparser.ast.expr.SimpleName
 import com.github.javaparser.resolution.Resolvable
 import com.github.javaparser.resolution.declarations.ResolvedDeclaration
+import modulecheck.utils.getOrNull
 import modulecheck.utils.traversal.Traversals
 
 internal inline fun Node.visit(crossinline predicate: (node: Node) -> Boolean): Sequence<Node> {

@@ -15,6 +15,7 @@
 
 package modulecheck.runtime.test
 
+import com.github.ajalt.mordant.terminal.Terminal
 import dispatch.core.DispatcherProvider
 import io.kotest.assertions.asClue
 import kotlinx.coroutines.runBlocking
@@ -31,10 +32,12 @@ import modulecheck.project.ProjectProvider
 import modulecheck.project.test.ProjectTest
 import modulecheck.project.toTypeSafeProjectPathResolver
 import modulecheck.reporting.checkstyle.CheckstyleReporter
+import modulecheck.reporting.console.DepthLogFactory
 import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
 import modulecheck.reporting.logging.McLogger
+import modulecheck.reporting.logging.TerminalModule
 import modulecheck.reporting.logging.test.ReportingLogger
 import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.rule.FindingFactory
@@ -46,7 +49,6 @@ import modulecheck.rule.test.AllRulesComponent
 import modulecheck.runtime.ModuleCheckRunner
 import modulecheck.testing.TestEnvironmentParams
 import modulecheck.utils.mapToSet
-import modulecheck.utils.toStringPretty
 import java.lang.StackWalker.StackFrame
 
 @Suppress("UnnecessaryAbstractClass")
@@ -123,7 +125,8 @@ abstract class RunnerTest : ProjectTest<RunnerTestEnvironment>() {
     logger: McLogger = this.logger,
     projectProvider: ProjectProvider = this.projectProvider,
     findingResultFactory: FindingResultFactory = RealFindingResultFactory(),
-    reportFactory: ReportFactory = ReportFactory(),
+    terminal: Terminal = TerminalModule.provideTerminal(),
+    reportFactory: ReportFactory = ReportFactory(terminal),
     checkstyleReporter: CheckstyleReporter = CheckstyleReporter(),
     graphvizFileWriter: GraphvizFileWriter = GraphvizFileWriter(
       settings = settings,
@@ -140,7 +143,6 @@ abstract class RunnerTest : ProjectTest<RunnerTestEnvironment>() {
     }
 
     val result = ModuleCheckRunner(
-      autoCorrect = autoCorrect,
       settings = settings,
       findingFactory = findingFactory,
       logger = logger,
@@ -149,15 +151,15 @@ abstract class RunnerTest : ProjectTest<RunnerTestEnvironment>() {
       checkstyleReporter = checkstyleReporter,
       graphvizFileWriter = graphvizFileWriter,
       dispatcherProvider = dispatcherProvider,
-      projectProvider = projectProvider,
       sarifReportFactory = SarifReportFactory(
         websiteUrl = { "https://rbusarow.github.io/ModuleCheck" },
         moduleCheckVersion = { "0.12.1-SNAPSHOT" }
       ) { workingDir },
-      rules = rules
+      depthLogFactoryLazy = { DepthLogFactory(terminal) },
+      projectProvider = projectProvider,
+      rules = rules,
+      autoCorrect = autoCorrect
     )
-      // TODO <Rick> delete me
-      .also { println(it.toStringPretty()) }
       .run(allProjects())
 
     if (autoCorrect) {

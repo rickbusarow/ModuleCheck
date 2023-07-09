@@ -16,13 +16,28 @@
 package modulecheck.reporting.console
 
 import modulecheck.api.DepthFinding
-import modulecheck.reporting.logging.Report
 
+/**
+ * Creates the depth report content as it is written to a text file -- not the console.
+ *
+ * ex:
+ * ```
+ * -- ModuleCheck Depth results --
+ *
+ * :app
+ *     source set      depth    most expensive dependencies
+ *     main            2        [:lib2]
+ *
+ * :lib2
+ *     source set      depth    most expensive dependencies
+ *     main            1        [:lib1]
+ * ```
+ */
 class DepthReportFactory {
+  /** */
+  fun create(results: List<DepthFinding>): String = buildString {
 
-  fun create(results: List<DepthFinding>): Report = Report.build {
-
-    headerLine("-- ModuleCheck Depth results --")
+    appendLine("-- ModuleCheck Depth results --")
 
     results.filter { it.shouldReport() }
       .groupBy { it.dependentPath }
@@ -30,7 +45,7 @@ class DepthReportFactory {
       .entries
       .forEach { (path, values) ->
 
-        headerLine("\n${path.value}")
+        appendLine("\n${path.value}")
 
         val nameHeader = "source set"
         val depthHeader = "depth"
@@ -42,7 +57,7 @@ class DepthReportFactory {
 
         val depthHeaderLength = depthHeader.length + DEPTH_PADDING
 
-        headerLine(
+        appendLine(
           "    " +
             "${nameHeader.padEnd(maxSourceSetNameLength)} " +
             "${depthHeader.padEnd(depthHeaderLength)} " +
@@ -51,7 +66,7 @@ class DepthReportFactory {
 
         values.sortedBy { it.sourceSetName.value }
           .forEach { depthFinding ->
-            infoLine(
+            appendLine(
               "    " +
                 "${depthFinding.sourceSetName.value.padEnd(maxSourceSetNameLength)} " +
                 "${depthFinding.depth.toString().padEnd(depthHeaderLength)} " +
@@ -65,7 +80,7 @@ class DepthReportFactory {
       }
 
     // bottom padding
-    headerLine("")
+    appendLine("")
   }
 
   private fun DepthFinding.shouldReport(): Boolean {

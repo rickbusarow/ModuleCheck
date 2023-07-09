@@ -16,6 +16,8 @@
 package modulecheck.testing
 
 import modulecheck.testing.assert.TrimmedAsserts
+import modulecheck.utils.mapLines
+import modulecheck.utils.noAnsi
 import modulecheck.utils.normaliseLineSeparators
 import modulecheck.utils.remove
 import java.io.File
@@ -74,6 +76,8 @@ fun String.clean(workingDir: File): String {
       "See https://rbusarow.github.io/ModuleCheck/docs/suppressing-findings for more info."
     )
     .remove("in [\\d.]+ seconds\\.".toRegex())
+    .noAnsi()
+    .mapLines { it.trimEnd() }
     .trimEnd()
     .trimStart('\n')
 }

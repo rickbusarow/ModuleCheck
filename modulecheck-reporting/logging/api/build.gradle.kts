@@ -25,4 +25,10 @@ mcbuild {
 }
 
 dependencies {
+
+  api(libs.ajalt.mordant)
+
+  compileOnly(libs.google.dagger.api)
+
+  implementation(project(path = ":modulecheck-dagger"))
 }

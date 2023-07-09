@@ -27,7 +27,7 @@ abstract class TestConventionPlugin : Plugin<Project> {
 
   override fun apply(target: Project) {
     target.tasks.withType(Test::class.java).configureEach { task ->
-      task.maxHeapSize = "1g"
+
       task.useJUnitPlatform()
 
       task.testLogging {
@@ -50,7 +50,7 @@ abstract class TestConventionPlugin : Plugin<Project> {
       val ci = System.getenv("CI")?.toBoolean() == true
       if (ci) {
         // defaults to 512m.
-        // task.maxHeapSize = "512m"
+        task.maxHeapSize = "1g"
         // Allow JUnit4 tests to run in parallel
         task.maxParallelForks = Runtime.getRuntime().availableProcessors() / 2
       } else {
@@ -65,9 +65,6 @@ abstract class TestConventionPlugin : Plugin<Project> {
             // remove parentheses from test display names
             "junit.jupiter.displayname.generator.default" to
               "org.junit.jupiter.api.DisplayNameGenerator\$Simple",
-
-            // single class instance for all tests
-            "junit.jupiter.testinstance.lifecycle.default" to "per_class",
 
             // https://junit.org/junit5/docs/snapshot/user-guide/#writing-tests-parallel-execution-config-properties
             // Allow unit tests to run in parallel

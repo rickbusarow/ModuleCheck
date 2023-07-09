@@ -16,6 +16,7 @@
 package modulecheck.parsing.java
 
 import com.github.javaparser.ast.Node
+import modulecheck.utils.getOrNull
 import modulecheck.utils.traversal.AbstractTreePrinter
 
 internal class JavaTreePrinter(

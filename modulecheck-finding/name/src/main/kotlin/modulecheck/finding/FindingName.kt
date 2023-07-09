@@ -107,7 +107,7 @@ data class FindingName(
       }
 
       if (migrated != null) {
-        logger.printWarningLine(
+        logger.warning(
           "The suppressed issue `$legacyID` is using a deprecated ID.  " +
             "The new name for this issue is `$migrated`."
         )

@@ -34,6 +34,7 @@ dependencies {
   api(project(path = ":modulecheck-rule:api"))
 
   implementation(project(path = ":modulecheck-dagger"))
+  implementation(project(path = ":modulecheck-reporting:logging:api"))
   implementation(project(path = ":modulecheck-rule:impl"))
 
   testImplementation(libs.bundles.junit)

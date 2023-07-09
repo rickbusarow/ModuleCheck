@@ -13,8 +13,9 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.java
+package modulecheck.utils
 
 import java.util.Optional
 
-internal fun <T> Optional<T>.getOrNull(): T? = takeIf { it.isPresent }?.get()
+/** shorthand for `takeIf { it.isPresent }?.get()` */
+fun <T> Optional<T>.getOrNull(): T? = takeIf { it.isPresent }?.get()

@@ -16,6 +16,7 @@
 package modulecheck.utils
 
 import java.util.Locale
+import kotlin.LazyThreadSafetyMode.NONE
 
 /**
  * Appends the specified [prefix] to this [CharSequence] and returns the resulting string.
@@ -158,12 +159,40 @@ fun String.remove(vararg patterns: Regex): String = patterns.fold(this) { acc, r
  * @since 0.12.0
  */
 fun String.trimSegments(delimiter: String = "."): String {
-  val escapedDelimiter = Regex.escape(delimiter)
-  return replaceRegex(
-    regex = """(?>\s+$escapedDelimiter\s+)|(?>\s+$escapedDelimiter)|(?>$escapedDelimiter\s+)""",
-    replacement = delimiter
-  )
-    .trim()
+
+  val regex = regex {
+    val escaped = Regex.escapeReplacement(delimiter)
+    append("""^\s+""")
+    or()
+    append("""\s+($escaped)\s+""")
+    or()
+    append("""\s+($escaped)""")
+    or()
+    append("""($escaped)\s+""")
+    or()
+    append("""\s+$""")
+  }
+  return replace(regex) { it.groupValues.getOrElse(1) { "" } }
+}
+
+/** shorthand for `splitAndMap(*delimiters) { it.trim() }` */
+fun String.splitAndTrim(vararg delimiters: String): List<String> {
+  return splitAndMap(*delimiters) { it.trim() }
+}
+
+/** shorthand for `splitAndMap(*delimiters) { it.trim() }` */
+fun String.splitAndTrim(vararg delimiters: Char): List<String> {
+  return splitAndMap(*delimiters) { it.trim() }
+}
+
+/** shorthand for `split(*delimiters).map { /* ... */ }` */
+inline fun <T> String.splitAndMap(vararg delimiters: String, transform: (String) -> T): List<T> {
+  return split(*delimiters).map(transform)
+}
+
+/** shorthand for `split(*delimiters).map { /* ... */ }` */
+inline fun <T> String.splitAndMap(vararg delimiters: Char, transform: (String) -> T): List<T> {
+  return split(*delimiters).map(transform)
 }
 
 /**
@@ -344,4 +373,45 @@ fun String.trimIndentAfterFirstLine(): String {
   val first = split.first()
   val remaining = split.drop(1).joinToString("\n").trimIndent()
   return "$first\n$remaining"
+}
+
+/** Removes  */
+fun String.noAnsi(): String = """\u001B\[[;\d]*m""".toRegex().replace(this, "")
+
+/** replace ` ` with `·` */
+val String.dots: String get() = replace(" ", "·")
+
+/** replace ` ` with `·` */
+val String.interpuncts: String get() = replace(" ", "·")
+
+/** replace `·` with ` ` */
+val String.noDots: String get() = replace("·", " ")
+
+/** replace `·` with ` ` */
+val String.noInterpuncts: String get() = replace("·", " ")
+
+/**
+ * Adjusts the indentation of each line in the string to match the indentation
+ * of the first non-blank line. The first non-blank line determines the
+ * target indentation level, and subsequent lines are adjusted accordingly.
+ *
+ * @return The string with adjusted indentation.
+ */
+fun String.justifyToFirstLine(): String {
+  val targetIndent = lineSequence()
+    .firstOrNull { it.isNotBlank() }
+    ?.indentWidth()
+    ?: 0
+
+  val indent by lazy(NONE) { " ".repeat(targetIndent) }
+
+  return mapLines { line ->
+
+    if (line.indentWidth() < targetIndent) {
+      "$indent$line"
+    } else {
+      line
+    }
+  }
+    .trimIndent()
 }
