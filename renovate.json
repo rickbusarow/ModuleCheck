@@ -26,5 +26,6 @@
       "groupName": "KtLint things"
     }
   ],
+  "rebaseWhen": "conflicted",
   "stopUpdatingLabel": "renovate-ignore"
 }
