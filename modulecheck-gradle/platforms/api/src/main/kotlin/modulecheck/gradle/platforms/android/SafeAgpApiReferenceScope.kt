@@ -15,10 +15,10 @@
 
 package modulecheck.gradle.platforms.android
 
+import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.model.dependency.AndroidPlatformPlugin
 import modulecheck.model.dependency.Configurations
-import modulecheck.parsing.gradle.model.GradleProject
 import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
 
@@ -90,7 +90,7 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
   /**
    * @return if this [BaseVariant][com.android.build.gradle.api.BaseVariant] is a
    *   [TestedVariant][com.android.build.gradle.internal.api.TestedVariant], returns its
-   *   [testVariant][com.android.build.gradle.internal.api.TestedVariant.testVariant].
+   *   [testVariant][com.android.build.gradle.internal.api.TestedVariant.getUnitTestVariant].
    *   Otherwise, returns null.
    * @since 0.13.0
    */
@@ -104,7 +104,7 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
   /**
    * @return if this [BaseVariant][com.android.build.gradle.api.BaseVariant] is a
    *   [TestedVariant][com.android.build.gradle.internal.api.TestedVariant], returns its
-   *   [unitTestVariant][com.android.build.gradle.internal.api.TestedVariant.unitTestVariant].
+   *   [unitTestVariant][com.android.build.gradle.internal.api.TestedVariant.getUnitTestVariant].
    *   Otherwise, returns null.
    * @since 0.13.0
    */
@@ -115,22 +115,25 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
     }
   }
 
+  /**
+   * Syntactic sugar for getting application or library
+   * variants, since they don't have a common function in AGP
+   */
   @UnsafeDirectAgpApiReference
-  fun AndroidBaseExtension.baseVariants(): DomainObjectSet<out AndroidBaseVariant> =
-    when (this) {
-      is AndroidAppExtension -> applicationVariants
-      is AndroidLibraryExtension -> libraryVariants
-      is AndroidTestExtension -> applicationVariants
-      else -> TODO()
-      // else -> DefaultDomainObjectSet(BaseVariant::class.java, CollectionCallbackActionDecorator.NOOP)
-    }
+  fun AndroidBaseExtension.baseVariants(): DomainObjectSet<out AndroidBaseVariant> = when (this) {
+    is AndroidAppExtension -> applicationVariants
+    is AndroidLibraryExtension -> libraryVariants
+    is AndroidTestExtension -> applicationVariants
+    else -> TODO()
+    // else -> DefaultDomainObjectSet(BaseVariant::class.java, CollectionCallbackActionDecorator.NOOP)
+  }
 
+  /** */
   @UnsafeDirectAgpApiReference
-  fun AndroidBaseExtension.testingVariants(): Set<AndroidBaseVariant> =
-    when (this) {
-      is AndroidTestedExtension -> testVariants + unitTestVariants
-      else -> emptySet()
-    }
+  fun AndroidBaseExtension.testingVariants(): Set<AndroidBaseVariant> = when (this) {
+    is AndroidTestedExtension -> testVariants + unitTestVariants
+    else -> emptySet()
+  }
 
   private fun hasAgpTestFixtures(): Boolean = gradleProject.extensions
     .findByType(AndroidTestedExtension::class.java)
@@ -144,14 +147,7 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
       extension.testFixtures.enable
     } ?: false
 
-  /**
-   * `api`, `implementation`, `compileOnly`, and
-   * `runtimeOnly` configuration names for this source set.
-   *
-   * Inspired by
-   * [KotlinSourceSet.relatedConfigurationNames][org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet.relatedConfigurationNames].
-   */
-  @Suppress("UnstableApiUsage")
+  /** Inspired by [org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet.relatedConfigurationNames]. */
   val AndroidSourceSet.relatedConfigurationNames: List<String>
     get() = listOf(
       apiConfigurationName,

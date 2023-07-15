@@ -38,11 +38,22 @@ import modulecheck.utils.lazy.dataSource
 import modulecheck.utils.lazy.dataSourceOf
 import modulecheck.utils.lazy.lazySet
 
+/**
+ * Cache of all declarations in a project
+ *
+ * @property delegate A cache that stores the declarations for different keys.
+ * @property project The project for which the declarations are being fetched.
+ */
 class Declarations private constructor(
   private val delegate: SafeCache<DeclarationsKey, LazySet<DeclaredName>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
+  /**
+   * Fetches all declarations in the project.
+   *
+   * @return A `LazySet` of all declarations in the project.
+   */
   override val key: ProjectContext.Key<Declarations>
     get() = Key
 
@@ -64,10 +75,14 @@ class Declarations private constructor(
     }
   }
 
-  suspend fun get(
-    sourceSetName: SourceSetName,
-    includeUpstream: Boolean
-  ): LazySet<DeclaredName> {
+  /**
+   * Fetches declarations for a given source set.
+   *
+   * @param sourceSetName The name of the source set for which the declarations are to be fetched.
+   * @param includeUpstream Whether to include upstream declarations in the result.
+   * @return A `LazySet` of declarations for the given source set.
+   */
+  suspend fun get(sourceSetName: SourceSetName, includeUpstream: Boolean): LazySet<DeclaredName> {
     val key = if (includeUpstream) {
       WithUpstream(sourceSetName)
     } else {
@@ -121,14 +136,15 @@ class Declarations private constructor(
   }
 }
 
+/**
+ * shorthand for `get(Declarations)`
+ *
+ * @return The [Declarations] for the project.
+ */
 suspend fun ProjectContext.declarations(): Declarations = get(Declarations)
 
-/**
- * @return all declarations in the receiver dependency
- */
-suspend fun ConfiguredDependency.declarations(
-  projectCache: ProjectCache
-): LazySet<DeclaredName> {
+/** @return all declarations in the receiver dependency */
+suspend fun ConfiguredDependency.declarations(projectCache: ProjectCache): LazySet<DeclaredName> {
 
   this as? ProjectDependency
     ?: TODO("external dependency declarations are not supported yet")

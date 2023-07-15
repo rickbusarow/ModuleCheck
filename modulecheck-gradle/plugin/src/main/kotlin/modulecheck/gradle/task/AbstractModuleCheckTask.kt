@@ -32,8 +32,10 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.workers.WorkerExecutor
 import javax.inject.Inject
 
+/** Represents a task that checks a specific source set for module issues. */
 abstract class ModuleCheckSourceSetTask : AbstractModuleCheckTask(), HasSourceSetName
 
+/** Represents a task that checks for module issues. */
 abstract class AbstractModuleCheckTask : DefaultTask() {
 
   init {
@@ -41,6 +43,7 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
   }
 }
 
+/** Represents a task that checks for module issues according to a specific rule. */
 abstract class AbstractModuleCheckRuleTask(
   @Internal
   val workerExecutor: WorkerExecutor,
@@ -50,6 +53,7 @@ abstract class AbstractModuleCheckRuleTask(
   @get:Input
   val autoCorrect: Property<Boolean> = objectFactory.property(Boolean::class.java)
 
+  /** Provides the rule filter for the task. */
   protected abstract fun ruleFilter(): RuleFilter
 
   @get:Input
@@ -68,6 +72,7 @@ abstract class AbstractModuleCheckRuleTask(
       )
   }
 
+  /** Executes the task. */
   @TaskAction
   fun run() {
     try {
@@ -91,6 +96,11 @@ abstract class AbstractModuleCheckRuleTask(
     }
   }
 
+  /**
+   * Disables configuration caching if the given condition is true.
+   *
+   * @param disableConfigCache The condition to disable configuration caching.
+   */
   protected fun maybeDisableConfigurationCaching(disableConfigCache: Boolean) {
     if (disableConfigCache) {
       // If the runtime Gradle distro is 7.4+, disable configuration caching.
@@ -100,11 +110,18 @@ abstract class AbstractModuleCheckRuleTask(
   }
 }
 
+/** Represents a task that checks for module issues according to multiple rules. */
 open class MultiRuleModuleCheckTask @Inject constructor(
   workerExecutor: WorkerExecutor,
   objectFactory: ObjectFactory
 ) : AbstractModuleCheckRuleTask(workerExecutor, objectFactory) {
 
+  /**
+   * Configures the task with the given parameters.
+   *
+   * @param autoCorrect Determines whether the task should auto-correct issues.
+   * @param disableConfigCache The condition to disable configuration caching.
+   */
   internal fun configure(autoCorrect: Boolean, disableConfigCache: Boolean) {
     this.autoCorrect.set(autoCorrect)
 
@@ -117,17 +134,26 @@ open class MultiRuleModuleCheckTask @Inject constructor(
     maybeDisableConfigurationCaching(disableConfigCache)
   }
 
+  /** @return The default rule filter. */
   override fun ruleFilter() = RuleFilter.DEFAULT
 }
 
+/** Represents a task that checks for module issues according to a single rule. */
 open class SingleRuleModuleCheckTask @Inject constructor(
   workerExecutor: WorkerExecutor,
   objectFactory: ObjectFactory
 ) : AbstractModuleCheckRuleTask(workerExecutor, objectFactory) {
-
+/** */
   @get:Input
   val findingName: Property<FindingName> = objectFactory.property(FindingName::class.java)
 
+  /**
+   * Configures the task with the given parameters.
+   *
+   * @param findingName The name of the finding that the rule checks for.
+   * @param autoCorrect Determines whether the task should auto-correct issues.
+   * @param disableConfigCache The condition to disable configuration caching.
+   */
   internal fun configure(
     findingName: FindingName,
     autoCorrect: Boolean,
@@ -145,6 +171,7 @@ open class SingleRuleModuleCheckTask @Inject constructor(
     }
   }
 
+  /** @return A rule filter that only includes the rule with the same name as the finding. */
   override fun ruleFilter() = RuleFilter { rule, _ ->
     rule.name == findingName.get()
   }

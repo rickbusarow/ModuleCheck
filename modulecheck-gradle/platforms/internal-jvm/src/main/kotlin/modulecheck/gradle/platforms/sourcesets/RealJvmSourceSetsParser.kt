@@ -18,6 +18,7 @@ package modulecheck.gradle.platforms.sourcesets
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.Classpath
+import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.gradle.platforms.jvm.JvmSourceSetsParser
 import modulecheck.gradle.platforms.kotlin.KotlinEnvironmentFactory
 import modulecheck.gradle.platforms.kotlin.getKotlinExtensionOrNull
@@ -31,7 +32,6 @@ import modulecheck.model.dependency.SourceSets
 import modulecheck.model.dependency.asConfigurationName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
-import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.requireNotNull
@@ -56,6 +56,7 @@ class RealJvmSourceSetsParser @Inject constructor(
       val projectPath = StringProjectPath(gradleProject.path)
 
       if (kotlinExtensionOrNull != null) {
+
         kotlinExtensionOrNull.sourceSets
           .forEach { kotlinSourceSet: KotlinSourceSet ->
 
@@ -81,6 +82,7 @@ class RealJvmSourceSetsParser @Inject constructor(
                 projectPath = projectPath,
                 sourceSetName = sourceSetName,
                 classpathFiles = lazyDeferred {
+
                   Classpath.from(
                     gradleProject,
                     sourceSetName
@@ -192,7 +194,9 @@ class RealJvmSourceSetsParser @Inject constructor(
 
     val upstreamLazy = lazy {
       configurations
-        .flatMapToSet { it.upstream.map { upstreamConfig -> upstreamConfig.name.toSourceSetName() } }
+        .flatMapToSet {
+          it.upstream.map { upstreamConfig -> upstreamConfig.name.toSourceSetName() }
+        }
         .filterNot { it == sourceSetName }
         .filter { this@parseHierarchy.contains(it) }
         .distinct()
@@ -200,7 +204,9 @@ class RealJvmSourceSetsParser @Inject constructor(
 
     val downstreamLazy = lazy {
       configurations
-        .flatMapToSet { it.downstream.map { downstreamConfig -> downstreamConfig.name.toSourceSetName() } }
+        .flatMapToSet {
+          it.downstream.map { downstreamConfig -> downstreamConfig.name.toSourceSetName() }
+        }
         .filterNot { it == sourceSetName }
         .filter { this@parseHierarchy.contains(it) }
         .distinct()

@@ -58,6 +58,7 @@ class ExternalDependencies(
   }
 }
 
+/** */
 object ExternalDependenciesSerializer : KSerializer<ExternalDependencies> {
 
   private val delegate: KSerializer<Map<ConfigurationName, Set<ExternalDependency>>> = serializer()

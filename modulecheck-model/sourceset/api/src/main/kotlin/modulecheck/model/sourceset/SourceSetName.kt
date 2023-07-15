@@ -48,33 +48,46 @@ value class SourceSetName(val value: String) : JavaSerializable {
   }
 }
 
+/** */
 fun SourceSetName.toProto() = SourceSetName_Proto(value)
+
+/** */
 fun SourceSetName.toPojo() = SourceSetName(value)
 
+/** */
 fun String.asSourceSetName(): SourceSetName = SourceSetName(this)
 
-fun SourceSetName.removePrefix(prefix: String): SourceSetName = value.removePrefix(prefix)
-  .decapitalize()
-  .asSourceSetName()
+/** */
+fun SourceSetName.removePrefix(prefix: String): SourceSetName =
+  value.removePrefix(prefix).decapitalize().asSourceSetName()
 
+/** */
 fun SourceSetName.removePrefix(prefix: SourceSetName): SourceSetName = removePrefix(prefix.value)
 
+/** */
 fun SourceSetName.hasPrefix(prefix: String): Boolean = value.startsWith(prefix)
+
+/** */
 fun SourceSetName.hasPrefix(prefix: SourceSetName): Boolean = hasPrefix(prefix.value)
 
-fun SourceSetName.addPrefix(prefix: String): SourceSetName = prefix.plus(value.capitalize())
-  .asSourceSetName()
+/** */
+fun SourceSetName.addPrefix(prefix: String): SourceSetName =
+  prefix.plus(value.capitalize()).asSourceSetName()
 
+/** */
 fun SourceSetName.addPrefix(prefix: SourceSetName): SourceSetName = addPrefix(prefix.value)
 
+/** */
 fun SourceSetName.removeSuffix(suffix: String): SourceSetName =
-  value.removeSuffix(suffix.capitalize())
-    .asSourceSetName()
+  value.removeSuffix(suffix.capitalize()).asSourceSetName()
 
+/** */
 fun SourceSetName.removeSuffix(suffix: SourceSetName): SourceSetName =
   removeSuffix(suffix.value.capitalize())
 
-fun SourceSetName.addSuffix(suffix: String): SourceSetName = value.plus(suffix.capitalize())
-  .asSourceSetName()
+/** */
+fun SourceSetName.addSuffix(suffix: String): SourceSetName =
+  value.plus(suffix.capitalize()).asSourceSetName()
 
+/** */
 fun SourceSetName.addSuffix(suffix: SourceSetName): SourceSetName = addSuffix(suffix.value)

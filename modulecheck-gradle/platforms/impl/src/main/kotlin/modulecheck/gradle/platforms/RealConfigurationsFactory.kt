@@ -17,15 +17,15 @@ package modulecheck.gradle.platforms
 
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.TaskScope
+import modulecheck.gradle.platforms.internal.GradleConfiguration
+import modulecheck.gradle.platforms.internal.GradleProject
+import modulecheck.gradle.platforms.internal.GradleProjectDependency
 import modulecheck.model.dependency.ConfigFactory
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.ExternalDependency
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.dependency.asConfigurationName
-import modulecheck.parsing.gradle.model.GradleConfiguration
-import modulecheck.parsing.gradle.model.GradleProject
-import modulecheck.parsing.gradle.model.GradleProjectDependency
 import modulecheck.utils.mapToSet
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ModuleDependency

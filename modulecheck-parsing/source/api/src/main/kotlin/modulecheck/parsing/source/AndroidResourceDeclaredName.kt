@@ -125,9 +125,10 @@ class QualifiedAndroidResourceDeclaredName(
 /**
  * example: `com.example.databinding.FragmentListBinding`
  *
+ * @property sourceLayout the layout file which triggers code generation for the binding
+ * @property packageName the base package for this android module
  * @since 0.12.0
  */
-
 @Serializable
 class AndroidDataBindingDeclaredName(
   val sourceLayout: UnqualifiedAndroidResourceReferenceName,

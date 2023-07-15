@@ -41,6 +41,7 @@ class SourceSets(
   delegate: Map<SourceSetName, McSourceSet>
 ) : Map<SourceSetName, McSourceSet> by delegate
 
+/** */
 object SourceSetsSerializer : KSerializer<SourceSets> {
 
   private val delegate: KSerializer<Map<SourceSetName, McSourceSet>> = serializer()

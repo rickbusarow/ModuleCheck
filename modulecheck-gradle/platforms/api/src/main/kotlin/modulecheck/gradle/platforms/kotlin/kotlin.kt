@@ -15,14 +15,15 @@
 
 package modulecheck.gradle.platforms.kotlin
 
+import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.gradle.platforms.internal.toJavaVersion
-import modulecheck.parsing.gradle.model.GradleProject
 import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.JavaPluginExtension
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 
+/** Safely returns KGP's `kotlin` extension if it exists */
 fun GradleProject.getKotlinExtensionOrNull(): KotlinProjectExtension? =
   extensions.findByName("kotlin") as? KotlinProjectExtension
 

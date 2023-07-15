@@ -12,34 +12,57 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 @file:UseSerializers(FileAsStringSerializer::class)
 
 package modulecheck.gradle.platforms
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
+import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.model.dependency.AndroidSdk.Companion.parseAndroidSdkJarFromPath
 import modulecheck.model.dependency.Identifier
 import modulecheck.model.dependency.MavenCoordinates.Companion.parseMavenCoordinatesFromGradleCache
 import modulecheck.model.sourceset.SourceSetName
-import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.project.McProject
 import modulecheck.utils.requireExists
 import modulecheck.utils.serialization.FileAsStringSerializer
 import java.io.File
 
+/**
+ * Represents a classpath with a list of Maven coordinates and their corresponding files.
+ *
+ * @property mavenCoordinatesWithFiles The list of Maven coordinates and their corresponding files.
+ */
 @Serializable
 data class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFile>) {
 
+  /** Returns the list of Maven coordinates. */
   fun coordinates() = mavenCoordinatesWithFiles.map { it.identifier }
+
+  /** Returns the list of files. */
   fun files() = mavenCoordinatesWithFiles.map { it.file }
 
   companion object {
 
+    /**
+     * Returns the report file for the given project and source set name.
+     *
+     * @param project The project.
+     * @param sourceSetName The source set name.
+     * @return The report file.
+     */
     fun reportFile(project: GradleProject, sourceSetName: SourceSetName): File {
       return project.buildDir.reportFile(sourceSetName)
     }
 
+    /**
+     * Returns the report file for the given project and source set name.
+     *
+     * @param project The project.
+     * @param sourceSetName The source set name.
+     * @return The report file.
+     */
     fun reportFile(project: McProject, sourceSetName: SourceSetName): File {
       return project.projectDir.resolve("build").reportFile(sourceSetName)
     }
@@ -48,10 +71,24 @@ data class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFil
       return resolve("outputs/modulecheck/classpath/${sourceSetName.value}.txt")
     }
 
+    /**
+     * Returns a classpath from the report file of the given project and source set name.
+     *
+     * @param project The project.
+     * @param sourceSetName The source set name.
+     * @return The classpath.
+     */
     fun from(project: GradleProject, sourceSetName: SourceSetName): Classpath {
       return reportFile(project, sourceSetName).parseToClasspath()
     }
 
+    /**
+     * Returns a classpath from the report file of the given project and source set name.
+     *
+     * @param project The project.
+     * @param sourceSetName The source set name.
+     * @return The classpath.
+     */
     fun from(project: McProject, sourceSetName: SourceSetName): Classpath {
       return reportFile(project, sourceSetName).parseToClasspath()
     }
@@ -107,6 +144,12 @@ data class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFil
     }
   }
 
+  /**
+   * Represents a Maven coordinate with its corresponding file.
+   *
+   * @property identifier The Maven coordinate.
+   * @property file The file.
+   */
   @Serializable
   data class MavenCoordinatesWithFile(
     val identifier: Identifier,

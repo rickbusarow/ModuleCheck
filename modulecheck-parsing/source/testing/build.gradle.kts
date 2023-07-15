@@ -30,6 +30,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-utils:lazy"))
 
+  implementation(project(path = ":modulecheck-utils:stdlib"))
   implementation(project(path = ":modulecheck-utils:trace"))
 
   testImplementation(libs.bundles.junit)

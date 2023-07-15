@@ -134,6 +134,7 @@ sealed class QualifiedDeclaredName : DeclaredName, McName, HasPackageName, HasSi
     "(${this::class.java.simpleName}) `$name`  language=$languages"
 }
 
+/** */
 @Serializable
 class QualifiedDeclaredNameImpl(
   override val packageName: PackageName,

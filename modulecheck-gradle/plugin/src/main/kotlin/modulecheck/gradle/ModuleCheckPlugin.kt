@@ -16,11 +16,11 @@
 package modulecheck.gradle
 
 import modulecheck.gradle.platforms.android.AgpApiAccess
+import modulecheck.gradle.platforms.internal.GradleConfiguration
+import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.gradle.platforms.kotlin.getJavaPluginExtensionOrNull
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
-import modulecheck.parsing.gradle.model.GradleConfiguration
-import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.utils.mapToSet
 import org.gradle.api.Plugin
 import org.gradle.language.base.plugins.LifecycleBasePlugin

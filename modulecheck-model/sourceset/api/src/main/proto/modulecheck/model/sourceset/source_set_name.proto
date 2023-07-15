@@ -89,7 +89,6 @@ message McConfiguration_Proto {
   repeated RuntimeProjectDependency_Proto runtime_project_dependencies = 2;
   repeated CodeGeneratorProjectDependency_Proto code_generator_project_dependencies = 3;
 
-
   repeated ExternalRuntimeDependency_Proto runtime_external_dependencies = 4;
   repeated ExternalCodeGeneratorDependency_Proto code_generator_external_dependencies = 5;
 

@@ -23,6 +23,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import java.io.File
 
+/** */
 object FileAsStringSerializer : KSerializer<File> {
   override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
     FileAsStringSerializer::class.java.canonicalName,

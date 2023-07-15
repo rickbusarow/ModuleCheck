@@ -57,11 +57,11 @@ internal class McMessageCollector(
 
       WARNINGS_AS_WARNINGS -> when {
         severity.isError -> {
-          logger.printFailureLine(messageRenderer.render(severity, message, location))
+          logger.failure(messageRenderer.render(severity, message, location))
         }
 
         severity.isWarning -> {
-          logger.printWarningLine(messageRenderer.render(severity, message, location))
+          logger.warning(messageRenderer.render(severity, message, location))
         }
       }
 
@@ -71,7 +71,7 @@ internal class McMessageCollector(
         }
 
         severity.isWarning -> {
-          logger.printWarningLine(messageRenderer.render(severity, message, location))
+          logger.warning(messageRenderer.render(severity, message, location))
         }
 
         else -> {

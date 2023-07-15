@@ -114,19 +114,11 @@ fun Project.applyBinaryCompatibility() {
   }
 }
 
-private fun Project.versionIsSnapshot(): Boolean {
-  return VERSION_NAME.endsWith("-SNAPSHOT")
-}
-
 private fun Project.configurePublish(artifactId: String, pomDescription: String, groupId: String) {
 
   version = VERSION_NAME
 
   this@configurePublish.artifactId = artifactId
-
-  if (!versionIsSnapshot()) {
-    configureArtifactory()
-  }
 
   @Suppress("UnstableApiUsage")
   extensions.configure(MavenPublishBaseExtension::class.java) { extension ->
@@ -218,29 +210,6 @@ private fun Project.configurePublish(artifactId: String, pomDescription: String,
     it.notCompatibleWithConfigurationCache("")
     // skip signing for -SNAPSHOT publishing
     it.onlyIf { !(version as String).endsWith("SNAPSHOT") }
-  }
-}
-
-private fun Project.configureArtifactory() {
-  extensions.configure(PublishingExtension::class.java) { extension ->
-    extension.repositories { repositoryHandler ->
-
-      repositoryHandler.maven { repository ->
-        repository.name = "artifactory"
-
-        repository.url = if (versionIsSnapshot()) {
-          error("need snapshot permissions for artifactory")
-          // uri("https://maven.global.square/artifactory/snapshots/")
-        } else {
-          uri("https://maven.global.square/artifactory/releases/")
-        }
-
-        repository.credentials { credentials ->
-          credentials.username = project.property("SQUARE_NEXUS_USERNAME") as String
-          credentials.password = project.property("SQUARE_NEXUS_PASSWORD") as String
-        }
-      }
-    }
   }
 }
 

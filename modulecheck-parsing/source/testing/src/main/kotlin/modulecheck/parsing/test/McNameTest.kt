@@ -130,6 +130,7 @@ interface McNameTest : TrimmedAsserts {
     val other = JvmFileBuilder().also { it.config() }
 
     assertSoftly {
+
       "references".asClue {
         references shouldBe other.referenceNames
       }
@@ -200,6 +201,10 @@ interface McNameTest : TrimmedAsserts {
 
   fun unqualifiedAndroidResource(name: String): UnqualifiedAndroidResourceReferenceName =
     UnqualifiedAndroidResourceReferenceName(name, defaultLanguage)
+}
+
+fun JvmFile.prettyPring(): String = buildString {
+  this@prettyPring
 }
 
 fun Collection<McName>.prettyPrint(): String = asSequence()

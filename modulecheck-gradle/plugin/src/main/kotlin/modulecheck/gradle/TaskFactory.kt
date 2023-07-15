@@ -17,33 +17,35 @@
 
 package modulecheck.gradle
 
-import com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet
-import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
-import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
-import com.android.build.gradle.internal.tasks.VariantAwareTask
-import com.android.build.gradle.tasks.GenerateBuildConfig
-import com.android.build.gradle.tasks.ManifestProcessorTask
 import modulecheck.finding.FindingName
 import modulecheck.gradle.internal.configuring
 import modulecheck.gradle.internal.dependsOn
+import modulecheck.gradle.internal.whenElementRegistered
 import modulecheck.gradle.platforms.Classpath
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.AndroidBaseExtension
 import modulecheck.gradle.platforms.android.AndroidBaseVariant
+import modulecheck.gradle.platforms.android.AndroidDefaultAndroidSourceDirectorySet
+import modulecheck.gradle.platforms.android.AndroidGenerateBuildConfig
+import modulecheck.gradle.platforms.android.AndroidGenerateLibraryRFileTask
+import modulecheck.gradle.platforms.android.AndroidLinkApplicationAndroidResourcesTask
+import modulecheck.gradle.platforms.android.AndroidManifestProcessorTask
+import modulecheck.gradle.platforms.android.AndroidVariantAwareTask
 import modulecheck.gradle.platforms.android.SafeAgpApiReferenceScope
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
 import modulecheck.gradle.platforms.android.internal.onAndroidPlugin
+import modulecheck.gradle.platforms.internal.GradleConfiguration
+import modulecheck.gradle.platforms.internal.GradleProject
+import modulecheck.gradle.platforms.internal.UnsafeInternalGradleApiReference
 import modulecheck.gradle.platforms.kotlin.getKotlinExtensionOrNull
 import modulecheck.gradle.task.ModuleCheckDependencyResolutionTask
 import modulecheck.gradle.task.MultiRuleModuleCheckTask
 import modulecheck.gradle.task.SingleRuleModuleCheckTask
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
-import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.utils.capitalize
 import org.gradle.api.DefaultTask
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.FileCollectionDependency
 import org.gradle.api.file.FileCollection
 import org.gradle.api.internal.artifacts.dependencies.DefaultSelfResolvingDependency
@@ -56,57 +58,58 @@ import java.io.File
 import kotlin.reflect.KClass
 
 internal class TaskFactory(
-  private val target: GradleProject,
+  private val rootProject: GradleProject,
   private val agpApiAccess: AgpApiAccess
 ) {
 
+  private val configFactory by lazy { ResolutionConfigFactory() }
+
   // Gradle doesn't use semantic versioning, so for instance `7.4` is "7.4" and not "7.4.0".
   // Fortunately `7.0` was "7.0" and not "7".  It's safe to use a simple string comparison.
-  val disableConfigCache = target.gradle.gradleVersion >= "7.4"
+  private val disableConfigCache = rootProject.gradle.gradleVersion >= "7.4"
 
   fun registerRootTasks(settings: ModuleCheckExtension) {
-    target.registerSingleRuleTasks(
+    registerSingleRuleTasks(
       taskName = "moduleCheckSortDependencies",
       findingName = FindingName("sort-dependencies"),
       includeAuto = true
     )
-    target.registerSingleRuleTasks(
+    registerSingleRuleTasks(
       taskName = "moduleCheckSortPlugins",
       findingName = FindingName("sort-plugins"),
       includeAuto = true
     )
-    target.registerSingleRuleTasks(
+    registerSingleRuleTasks(
       taskName = "moduleCheckDepths",
       findingName = FindingName("project-depth"),
-      includeAuto = false,
-      doFirstAction = {
-        settings.checks.depths = true
-        settings.reports.depths.enabled = true
-      }
-    )
-    target.registerSingleRuleTasks(
+      includeAuto = false
+    ) {
+      settings.checks.depths = true
+      settings.reports.depths.enabled = true
+    }
+    registerSingleRuleTasks(
       taskName = "moduleCheckGraphs",
       findingName = FindingName("project-depth"),
-      includeAuto = false,
-      doFirstAction = {
-        settings.reports.graphs.enabled = true
-      }
-    )
+      includeAuto = false
+    ) {
+      settings.reports.graphs.enabled = true
+    }
 
-    target.registerMultiRuleTasks(
+    registerMultiRuleTasks(
+      rootProject = rootProject,
       taskName = "moduleCheck",
       includeAuto = true
     )
   }
 
-  private fun GradleProject.registerSingleRuleTasks(
+  private fun registerSingleRuleTasks(
     taskName: String,
     findingName: FindingName,
     includeAuto: Boolean,
     doFirstAction: (() -> Unit)? = null
   ) = buildList {
-    add(
-      tasks.register(taskName, SingleRuleModuleCheckTask::class.java) { task ->
+    this.add(
+      rootProject.tasks.register(taskName, SingleRuleModuleCheckTask::class.java) { task ->
         task.configure(
           findingName = findingName,
           autoCorrect = false,
@@ -118,8 +121,11 @@ internal class TaskFactory(
       }
     )
     if (includeAuto) {
-      add(
-        tasks.register("${taskName}Auto", SingleRuleModuleCheckTask::class.java) { task ->
+      this.add(
+        rootProject.tasks.register(
+          "${taskName}Auto",
+          SingleRuleModuleCheckTask::class.java
+        ) { task ->
           task.configure(
             findingName = findingName,
             autoCorrect = true,
@@ -133,33 +139,50 @@ internal class TaskFactory(
     }
   }
 
-  private fun GradleProject.registerMultiRuleTasks(
+  private fun registerMultiRuleTasks(
+    rootProject: GradleProject,
     taskName: String,
     includeAuto: Boolean,
     doFirstAction: (() -> Unit)? = null
   ) {
 
-    val tasks = buildList {
+    val rootTasks = buildList {
 
-      add(
-        tasks.register(taskName, MultiRuleModuleCheckTask::class.java) {
+      this.add(
+        rootProject.tasks.register(taskName, MultiRuleModuleCheckTask::class.java) {
           it.configure(autoCorrect = false, disableConfigCache = disableConfigCache)
         }
       )
       if (includeAuto) {
-        add(
-          tasks.register("${taskName}Auto", MultiRuleModuleCheckTask::class.java) {
+        this.add(
+          rootProject.tasks.register("${taskName}Auto", MultiRuleModuleCheckTask::class.java) {
             it.configure(autoCorrect = true, disableConfigCache = disableConfigCache)
           }
         )
       }
     }
 
-    val resolveTasks = allprojects.map { project ->
-      project.registerResolutionTask(tasks)
+    val resolveTasks = rootProject.allprojects.map { anyProject ->
+
+      @OptIn(UnsafeDirectAgpApiReference::class)
+      anyProject.onAndroidPlugin(agpApiAccess) {
+        handleAndroidPlugin(anyProject, configFactory, rootTasks)
+      }
+
+      anyProject.pluginManager.withPlugin("java") {
+        handleKotlinJvmPlugin(anyProject, configFactory, rootTasks)
+      }
+
+      anyProject.pluginManager.withPlugin("kotlin") {
+        handleKotlinJvmPlugin(anyProject, configFactory, rootTasks)
+      }
+
+      anyProject.pluginManager.withPlugin("com.jetbrains.kotlin.jvm") {
+        handleKotlinJvmPlugin(anyProject, configFactory, rootTasks)
+      }
     }
 
-    tasks.forEach { taskProvider ->
+    rootTasks.forEach { taskProvider ->
 
       if (doFirstAction != null) {
         taskProvider.configure {
@@ -170,65 +193,47 @@ internal class TaskFactory(
     }
   }
 
-  private fun GradleProject.registerResolutionTask(
-    rootTasks: List<TaskProvider<*>>
-  ) {
-
-    val configFactory = ResolutionConfigFactory()
-
-    onAndroidPlugin(agpApiAccess) {
-      handleAndroidPlugin(configFactory, rootTasks)
-    }
-
-    pluginManager.withPlugin("java") {
-      handleKotlinJvmPlugin(configFactory, rootTasks)
-    }
-
-    pluginManager.withPlugin("kotlin") {
-      handleKotlinJvmPlugin(configFactory, rootTasks)
-    }
-
-    pluginManager.withPlugin("com.jetbrains.kotlin.jvm") {
-      handleKotlinJvmPlugin(configFactory, rootTasks)
-    }
-  }
-
-  private fun GradleProject.handleKotlinJvmPlugin(
+  private fun handleKotlinJvmPlugin(
+    anyProject: GradleProject,
     resolutionConfigFactory: ResolutionConfigFactory,
     rootTasks: List<TaskProvider<*>>
   ) {
 
-    getKotlinExtensionOrNull()?.sourceSets
-      ?.forEach { sourceSet ->
+    val sourceSetContainer = anyProject.getKotlinExtensionOrNull()?.sourceSets ?: return
 
-        val sourceSetName = sourceSet.name.asSourceSetName()
+    @OptIn(UnsafeInternalGradleApiReference::class)
+    sourceSetContainer.whenElementRegistered { name ->
 
-        val jarDependencyConfigs = project.provider {
-          sourceSet.relatedConfigurationNames
-            .jarDependencyResolutionConfigs(project, resolutionConfigFactory)
+      val sourceSetName = name.asSourceSetName()
+
+      val jarDependencyConfigs = anyProject.project.provider {
+        sourceSetContainer.getByName(name)
+          .relatedConfigurationNames
+          .jarDependencyResolutionConfigs(anyProject.project, resolutionConfigFactory)
+      }
+
+      val resolveTask = ModuleCheckDependencyResolutionTask
+        .register(project = anyProject.project, sourceSetName = sourceSetName)
+        .configuring { task ->
+
+          task.classpathReportFile.set(Classpath.reportFile(anyProject.project, sourceSetName))
+
+          task.classpathToResolve.from(jarDependencyConfigs)
+          task.dependsOn(jarDependencyConfigs)
         }
 
-        val resolveTask = ModuleCheckDependencyResolutionTask
-          .register(project = project, sourceSetName = sourceSetName)
-          .configuring { task ->
-
-            task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
-
-            task.dependsOn(jarDependencyConfigs)
-            task.inputs.files(jarDependencyConfigs)
-          }
-
-        rootTasks.forEach { it.dependsOn(resolveTask) }
-      }
+      rootTasks.forEach { it.dependsOn(resolveTask) }
+    }
   }
 
   @OptIn(UnsafeDirectAgpApiReference::class)
-  private fun GradleProject.handleAndroidPlugin(
+  private fun handleAndroidPlugin(
+    anyProject: GradleProject,
     configFactory: ResolutionConfigFactory,
     rootTasks: List<TaskProvider<*>>
   ) {
 
-    agpApiAccess.ifSafeOrNull(this) {
+    agpApiAccess.ifSafeOrNull(anyProject) {
 
       val registered = mutableSetOf<SourceSetName>()
 
@@ -238,7 +243,7 @@ internal class TaskFactory(
         val sourceSetName = variant.sourceSets.last().name.asSourceSetName()
         if (registered.add(sourceSetName)) {
           afterAndroidVariants(
-            project = this@handleAndroidPlugin,
+            project = anyProject,
             sourceSetName = sourceSetName,
             variantName = variant.name,
             isTestingSourceSet = isTestingSourceSet,
@@ -252,7 +257,7 @@ internal class TaskFactory(
       fun register(sourceSetName: SourceSetName, isTestingSourceSet: Boolean) {
         if (registered.add(sourceSetName)) {
           afterAndroidVariants(
-            project = this@handleAndroidPlugin,
+            project = anyProject,
             sourceSetName = sourceSetName,
             variantName = null,
             isTestingSourceSet = isTestingSourceSet,
@@ -278,23 +283,6 @@ internal class TaskFactory(
         register(SourceSetName.ANDROID_TEST, isTestingSourceSet = true)
         register(SourceSetName.TEST, isTestingSourceSet = true)
       }
-
-      // baseExtension.buildTypes.configureEach { buildType ->
-      //
-      //   val sourceSetName = buildType.name.asSourceSetName()
-      //
-      //   if (registered.add(sourceSetName)) {
-      //     afterAndroidVariants(
-      //       project = this@handleAndroidPlugin,
-      //       sourceSetName = sourceSetName,
-      //       variantName = buildType.name,
-      //       isTestingSourceSet = false,
-      //       resolutionConfigFactory = configFactory,
-      //       baseExtension = baseExtension,
-      //       rootTasks = rootTasks
-      //     )
-      //   }
-      // }
     }
   }
 
@@ -334,7 +322,7 @@ internal class TaskFactory(
       .register(project = project, sourceSetName = sourceSetName)
       .configuring { task ->
 
-        task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
+        task.classpathReportFile.set(Classpath.reportFile(project, sourceSetName))
 
         task.dependsOn(jarDependencyConfigs)
         task.inputs.files(jarDependencyConfigs)
@@ -342,38 +330,35 @@ internal class TaskFactory(
         task.dependsOn(androidResourceArtifactsConfig)
         task.inputs.files(androidResourceArtifactsConfig)
 
-        fun <T> TaskContainer.variantTask(
-          tClass: KClass<T>,
-          predicate: (T) -> Boolean = { true }
-        ): TaskCollection<T>
-          where T : VariantAwareTask,
-                T : DefaultTask {
-          return withType(tClass.java)
-            .matching { it.variantName == variantName && predicate(it) }
-        }
-
-        val hasSourceFiles = (sourceSet.kotlin as DefaultAndroidSourceDirectorySet)
+        val hasSourceFiles = (sourceSet.kotlin as AndroidDefaultAndroidSourceDirectorySet)
           .srcDirs.any { dir -> dir.hasSource() } ||
-          (sourceSet.java as DefaultAndroidSourceDirectorySet)
+          (sourceSet.java as AndroidDefaultAndroidSourceDirectorySet)
             .srcDirs.any { dir -> dir.hasSource() } ||
           sourceSet.res.srcDirs.any { it.hasSource() }
 
         val isApplication = baseExtension.isAndroidAppExtension()
 
         sequenceOf(
-          project.tasks.variantTask(ManifestProcessorTask::class) {
-            sourceSet.manifest.srcFile.exists()
-          },
-          project.tasks.variantTask(GenerateBuildConfig::class),
-          project.tasks.variantTask(LinkApplicationAndroidResourcesTask::class) {
+          project.tasks.variantTask(
+            tClass = AndroidManifestProcessorTask::class,
+            variantName = variantName
+          ) { sourceSet.manifest.srcFile.exists() },
+          project.tasks.variantTask(AndroidGenerateBuildConfig::class, variantName = variantName),
+          project.tasks.variantTask(
+            tClass = AndroidLinkApplicationAndroidResourcesTask::class,
+            variantName = variantName
+          ) {
 
             when {
               it.name != "process${variantName?.capitalize()}Resources" -> false
-              isApplication -> true // hasSourceFiles
+              isApplication -> true
               else -> !isTestingSourceSet || hasSourceFiles
             }
           },
-          project.tasks.variantTask(GenerateLibraryRFileTask::class) {
+          project.tasks.variantTask(
+            tClass = AndroidGenerateLibraryRFileTask::class,
+            variantName = variantName
+          ) {
 
             hasSourceFiles // && it.name == "generate${variantName?.capitalize()}Resources"
           }
@@ -395,16 +380,30 @@ internal class TaskFactory(
   private fun List<String>.jarDependencyResolutionConfigs(
     project: GradleProject,
     resolutionConfigFactory: ResolutionConfigFactory
-  ): List<Configuration> {
+  ): List<GradleConfiguration> {
     return mapNotNull { configName -> project.configurations.findByName(configName) }
       .map { config ->
         resolutionConfigFactory.create(project = project, sourceConfiguration = config)
       }
   }
+
+  @UnsafeDirectAgpApiReference
+  private fun <T> TaskContainer.variantTask(
+    tClass: KClass<T>,
+    variantName: String?,
+    predicate: (T) -> Boolean = { true }
+  ): TaskCollection<T>
+    where T : AndroidVariantAwareTask,
+          T : DefaultTask {
+    return withType(tClass.java)
+      .matching { it.variantName == variantName && predicate(it) }
+  }
 }
 
+/** */
 fun File.hasSource() = walkBottomUp()
   .any { file -> file.isFile && (file.isKotlinFile() || file.isJavaFile()) }
 
+/** */
 fun FileCollection.asDependency(): FileCollectionDependency =
   DefaultSelfResolvingDependency(this as FileCollectionInternal)

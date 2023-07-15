@@ -23,7 +23,7 @@ import modulecheck.dagger.RootGradleProject
 import modulecheck.dagger.SingleIn
 import modulecheck.dagger.TaskScope
 import modulecheck.gradle.internal.GradleProjectProvider
-import modulecheck.parsing.gradle.model.GradleProject
+import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.project.ProjectRoot
 import modulecheck.rule.RuleFilter
 import modulecheck.rule.RulesComponent

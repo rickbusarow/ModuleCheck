@@ -23,6 +23,7 @@ import kotlinx.serialization.encoding.Encoder
 import net.swiftzer.semver.SemVer
 import org.jetbrains.kotlin.name.FqName
 
+/** */
 @Serializable
 data class AnvilGradlePlugin(
   @Serializable(SemVerSerializer::class)
@@ -55,6 +56,7 @@ internal data class SemVerSurrogate(
   val buildMetadata: String? = null
 )
 
+/** */
 object SemVerSerializer : KSerializer<SemVer> {
   override val descriptor: SerialDescriptor = SemVerSurrogate.serializer().descriptor
 

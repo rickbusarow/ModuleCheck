@@ -20,6 +20,12 @@ import modulecheck.utils.capitalize
 import modulecheck.utils.lazy.unsafeLazy
 import java.util.Locale
 
+/**
+ * A Gradle project path, which could be either of:
+ *
+ * - **StringProjectPath**: ":some-module-group:api"
+ * - **TypeSafeProjectPath**: "someModuleGroup.api"
+ */
 @Serializable
 sealed class ProjectPath : Identifier {
 

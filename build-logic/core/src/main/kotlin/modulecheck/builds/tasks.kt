@@ -69,17 +69,6 @@ fun <T : Task> TaskProvider<T>.dependsOn(vararg objects: Any): TaskProvider<T> {
 }
 
 /**
- * Finds all tasks named [taskName] in all projects.
- * Does not throw if there are no tasks with that name.
- *
- * @throws IllegalStateException if the project is not the root project
- */
-fun Project.allProjectsTasksMatchingName(taskName: String): List<TaskCollection<Task>> {
-  checkProjectIsRoot { "only call `allProjectsTasksMatchingName(...)` from the root project." }
-  return allprojects.map { proj -> proj.tasks.matchingName(taskName) }
-}
-
-/**
  * Returns a collection containing the objects in this collection of the given
  * type. The returned collection is live, so that when matching objects are later
  * added to this collection, they are also visible in the filtered collection.

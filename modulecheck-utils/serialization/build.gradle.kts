@@ -18,13 +18,12 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-utils-serialization"
+  published(artifactId = "modulecheck-utils-serialization")
   serialization()
 }
 
 dependencies {
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

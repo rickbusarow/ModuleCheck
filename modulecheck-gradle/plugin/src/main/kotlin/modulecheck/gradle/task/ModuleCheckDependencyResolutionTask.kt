@@ -16,27 +16,40 @@
 package modulecheck.gradle.task
 
 import com.android.builder.aar.AarExtractor
-import modulecheck.gradle.internal.configuring
+import modulecheck.gradle.internal.registerOnce
 import modulecheck.gradle.platforms.Classpath
+import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.model.sourceset.SourceSetName
-import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.utils.capitalize
 import modulecheck.utils.createSafely
 import modulecheck.utils.mkdirsInline
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
+import org.gradle.api.tasks.Classpath as GradleClasspath
 
+/**
+ * Resolves all external dependencies for a given classpath. That
+ * resolution must be done on a thread managed by Gradle, such as in a task.
+ */
 abstract class ModuleCheckDependencyResolutionTask : ModuleCheckSourceSetTask() {
 
   init {
     description = "Resolves all external dependencies"
   }
 
+  /** */
+  @get:InputFiles
+  @get:GradleClasspath
+  abstract val classpathToResolve: ConfigurableFileCollection
+
+  /** */
   @get:Internal
   abstract val sourceSetNameProp: Property<SourceSetName>
 
@@ -44,76 +57,74 @@ abstract class ModuleCheckDependencyResolutionTask : ModuleCheckSourceSetTask() 
   override val sourceSetName: SourceSetName
     get() = sourceSetNameProp.get()
 
+  /** */
   @get:OutputFile
-  abstract val classpathFile: RegularFileProperty
+  abstract val classpathReportFile: RegularFileProperty
 
+  /** Executes the task. */
   @TaskAction
   fun execute() {
 
-    val unzippedDir = classpathFile.asFile.get()
+    val unzippedDir = classpathReportFile.asFile.get()
       .resolveSibling("unzipped")
 
     fun File.unzippedAarDir(): File {
       return unzippedDir.resolve(nameWithoutExtension)
     }
 
-    inputs.files
+    classpathToResolve.files
+      .asSequence()
       .flatMap { javaFile ->
-        if (javaFile.isDirectory) {
-          javaFile.walkBottomUp().filter { it.isFile }.toList()
+        if (javaFile.isFile) {
+          sequenceOf(javaFile)
         } else {
-          listOf(javaFile)
+          javaFile.walkBottomUp()
+            .filter { it.isFile }
         }
       }
-      .filter { it.name.endsWith(".aar") }
-      .forEach { aar ->
+      .onEach { file ->
+        if (file.extension == "aar") {
 
-        val dir = aar.unzippedAarDir()
+          val dir = file.unzippedAarDir()
 
-        if (dir.list().isNullOrEmpty()) {
-          AarExtractor().extract(aar, dir.mkdirsInline())
-        }
-      }
-
-    inputs.files
-      .flatMap { file ->
-        when {
-          file.isDirectory -> {
-            file.walkBottomUp().filter { it.isFile }.toList()
-          }
-
-          else -> {
-            listOf(file)
+          if (dir.list().isNullOrEmpty()) {
+            AarExtractor().extract(file, dir.mkdirsInline())
           }
         }
       }
+      .filter { it.extension == "jar" }
+      .toSet()
       .plus(
         unzippedDir
           .walkBottomUp()
           .filter { it.isFile && it.extension == "jar" }
-          .toList()
       )
-      .distinct()
       .sorted()
       .joinToString("\n")
       .also { txt ->
-        classpathFile.asFile.get()
+        classpathReportFile.asFile.get()
           .createSafely(txt)
       }
   }
 
   companion object {
+    /**
+     * Registers the task.
+     *
+     * @param project The Gradle project.
+     * @param sourceSetName The source set name.
+     * @return The task provider.
+     */
     fun register(
       project: GradleProject,
       sourceSetName: SourceSetName
     ): TaskProvider<ModuleCheckDependencyResolutionTask> {
       val sourceSetCaps = sourceSetName.value.capitalize()
-      return project.tasks.register(
-        "resolve${sourceSetCaps}NonProjectDependencies",
-        ModuleCheckDependencyResolutionTask::class.java
-      ).configuring { task ->
+      return project.tasks.registerOnce<ModuleCheckDependencyResolutionTask>(
+        "resolve${sourceSetCaps}NonProjectDependencies"
+      ) { task ->
 
-        task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
+        task.classpathReportFile.set(Classpath.reportFile(project, sourceSetName))
         task.sourceSetNameProp.set(sourceSetName)
       }
     }

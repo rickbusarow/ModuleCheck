@@ -58,6 +58,7 @@ class ProjectDependencies(
   }
 }
 
+/** */
 object ProjectDependenciesSerializer : KSerializer<ProjectDependencies> {
 
   private val delegate: KSerializer<Map<ConfigurationName, Set<ProjectDependency>>> = serializer()

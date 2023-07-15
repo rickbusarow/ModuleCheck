@@ -15,10 +15,9 @@
 
 package modulecheck.gradle.platforms.android
 
-import com.android.build.gradle.BasePlugin
 import modulecheck.dagger.SingleIn
 import modulecheck.dagger.TaskScope
-import modulecheck.parsing.gradle.model.GradleProject
+import modulecheck.gradle.platforms.internal.GradleProject
 import net.swiftzer.semver.SemVer
 import javax.inject.Inject
 
@@ -105,7 +104,8 @@ class AgpApiAccess @Inject constructor() {
 
     if (!androidIsInClasspath) return
 
-    project.plugins.withType(BasePlugin::class.java) {
+    @OptIn(UnsafeDirectAgpApiReference::class)
+    project.plugins.withType(AndroidBasePlugin::class.java).configureEach {
       SafeAgpApiReferenceScope(this, project).action()
     }
   }

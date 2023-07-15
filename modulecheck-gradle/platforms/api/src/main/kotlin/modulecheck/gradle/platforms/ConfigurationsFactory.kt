@@ -15,8 +15,8 @@
 
 package modulecheck.gradle.platforms
 
+import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.model.dependency.Configurations
-import modulecheck.parsing.gradle.model.GradleProject
 
 interface ConfigurationsFactory {
   fun create(gradleProject: GradleProject): Configurations

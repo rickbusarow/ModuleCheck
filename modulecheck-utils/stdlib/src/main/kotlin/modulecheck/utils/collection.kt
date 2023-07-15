@@ -81,7 +81,6 @@ inline fun <T, R> Sequence<T>.mapToSet(
   return mapTo(destination, transform)
 }
 
-
 /**
  * Transforms each element of the receiver iterable to an
  * iterable and flattens these iterables into a single set.

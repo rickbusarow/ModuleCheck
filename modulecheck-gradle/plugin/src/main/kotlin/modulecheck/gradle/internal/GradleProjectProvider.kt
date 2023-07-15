@@ -23,6 +23,7 @@ import modulecheck.dagger.TaskScope
 import modulecheck.gradle.GradleMcLogger
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.AndroidPlatformPluginFactory
+import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.gradle.platforms.jvm.JvmPlatformPluginFactory
 import modulecheck.gradle.platforms.kotlin.jvmTarget
 import modulecheck.model.dependency.AllProjectPathsProvider
@@ -31,7 +32,6 @@ import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
 import modulecheck.model.dependency.TypeSafeProjectPathResolver
 import modulecheck.parsing.gradle.dsl.BuildFileParser
-import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.wiring.RealJvmFileProvider
 import modulecheck.project.McProject

@@ -238,70 +238,69 @@ class ClasspathResolutionTest : BaseGradleTest() {
   }
 
   @TestFactory
-  fun `android application with project dependency`() =
-    factory {
-      val lib = androidLibrary(":lib", "com.modulecheck.lib1") {
-        buildFile {
-          """
-          plugins {
-            id("com.android.library")
-            kotlin("android")
-          }
-
-          android {
-            defaultConfig {
-              minSdkVersion(23)
-              compileSdkVersion(30)
-              targetSdkVersion(30)
-            }
-          }
-          dependencies {
-            implementation("com.google.auto:auto-common:1.0.1")
-          }
-          """
+  fun `android application with project dependency`() = factory {
+    androidLibrary(":lib", "com.modulecheck.lib1") {
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
         }
-      }
-      val app = androidApplication(":app", "com.modulecheck.app") {
 
-        buildFile {
-          """
-          plugins {
-            id("com.android.application")
-            kotlin("android")
+        android {
+          defaultConfig {
+            minSdkVersion(23)
+            compileSdkVersion(30)
+            targetSdkVersion(30)
           }
-
-          android {
-            defaultConfig {
-              minSdkVersion(23)
-              compileSdkVersion(30)
-              targetSdkVersion(30)
-            }
-          }
-          dependencies {
-            implementation(project(":lib"))
-          }
-          """
         }
+        dependencies {
+          implementation("com.google.auto:auto-common:1.0.1")
+        }
+        """
       }
+    }
+    val app = androidApplication(":app", "com.modulecheck.app") {
 
-      shouldSucceed("moduleCheck").apply {
-        // Assert that nothing else executed.
-        // If ModuleCheck is relying upon buildConfig tasks, they'll be in this list.
-        // tasks.map { it.path }.sorted() shouldContainAll listOf(
-        //           ":lib:generateDebugAndroidTestBuildConfig",
-        //           ":lib:generateDebugBuildConfig",
-        //           ":lib:generateReleaseBuildConfig",
-        //           ":moduleCheck"
-        //         )
-        tasks.map { it.path }.sorted().joinToString("\n") shouldBe ""
+      buildFile {
+        """
+        plugins {
+          id("com.android.application")
+          kotlin("android")
+        }
+
+        android {
+          defaultConfig {
+            minSdkVersion(23)
+            compileSdkVersion(30)
+            targetSdkVersion(30)
+          }
+        }
+        dependencies {
+          implementation(project(":lib"))
+        }
+        """
       }
+    }
 
-      app.classpathFileText(SourceSetName.MAIN) shouldBe """
+    shouldSucceed("moduleCheck").apply {
+      // Assert that nothing else executed.
+      // If ModuleCheck is relying upon buildConfig tasks, they'll be in this list.
+      // tasks.map { it.path }.sorted() shouldContainAll listOf(
+      //           ":lib:generateDebugAndroidTestBuildConfig",
+      //           ":lib:generateDebugBuildConfig",
+      //           ":lib:generateReleaseBuildConfig",
+      //           ":moduleCheck"
+      //         )
+      tasks.map { it.path }.sorted().joinToString("\n") shouldBe ""
+    }
+
+    app.classpathFileText(SourceSetName.MAIN) shouldBe """
         com.google.auto/auto-common/1.0.1/auto-common-1.0.1.jar
         org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
       """
 
-      app.classpathFileText(SourceSetName.DEBUG) shouldBe """
+    app.classpathFileText(SourceSetName.DEBUG) shouldBe """
         /lib/build/generated/source/buildConfig/debug/com/modulecheck/lib1/BuildConfig.java
         /lib/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
         /lib/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
@@ -316,9 +315,9 @@ class ClasspathResolutionTest : BaseGradleTest() {
         org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
       """
 
-      app.classpathFileText(SourceSetName.ANDROID_TEST) shouldBe ""
+    app.classpathFileText(SourceSetName.ANDROID_TEST) shouldBe ""
 
-      app.classpathFileText("androidTestDebug".asSourceSetName()) shouldBe """
+    app.classpathFileText("androidTestDebug".asSourceSetName()) shouldBe """
         /lib/build/generated/source/buildConfig/androidTest/debug/com/modulecheck/lib1/test/BuildConfig.java
         /lib/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debugAndroidTest/R.jar
         /lib/build/intermediates/manifest_merge_blame_file/debugAndroidTest/manifest-merger-blame-debug-androidTest-report.txt
@@ -329,8 +328,9 @@ class ClasspathResolutionTest : BaseGradleTest() {
         /lib/build/intermediates/runtime_symbol_list/debugAndroidTest/R.txt
         /lib/build/intermediates/symbol_list_with_package_name/debugAndroidTest/package-aware-r.txt
       """
-    }
+  }
 
+  context(GradleTestEnvironment)
   fun McProject.classpathFileText(sourceSetName: SourceSetName): String {
 
     val testKitM2 = testKitDir.resolve("caches/modules-2/files-2.1")
@@ -360,7 +360,7 @@ class ClasspathResolutionTest : BaseGradleTest() {
         }
 
         else -> {
-          remove(testProjectDir.absolutePath)
+          remove(workingDir.absolutePath)
         }
       }
     }

@@ -24,6 +24,13 @@ import modulecheck.project.ProjectContext
 import modulecheck.project.project
 import modulecheck.utils.cache.SafeCache
 
+/**
+ * Represents a collection of resolved declared names in a project.
+ *
+ * @property delegate A cache that stores the source
+ *   results for different declarations in source sets.
+ * @property project The project for which the resolved declared names are being fetched.
+ */
 data class ResolvedDeclaredNames internal constructor(
   private val delegate: SafeCache<DeclarationInSourceSet, SourceResult>,
   private val project: McProject
@@ -32,21 +39,42 @@ data class ResolvedDeclaredNames internal constructor(
   override val key: ProjectContext.Key<ResolvedDeclaredNames>
     get() = Key
 
+  /**
+   * Represents a declaration in a source set.
+   *
+   * @property declaredName The qualified declared name.
+   * @property sourceSetName The name of the source set in which the declaration is present.
+   */
   internal data class DeclarationInSourceSet(
     val declaredName: QualifiedDeclaredName,
     val sourceSetName: SourceSetName
   )
 
+  /** Represents the result of searching for a source of a declaration. */
   internal sealed interface SourceResult {
     data class Found(val sourceProject: McProjectWithSourceSetName) : SourceResult
     object NOT_PRESENT : SourceResult
   }
 
+  /**
+   * Represents a project with a source set name.
+   *
+   * @property project The project.
+   * @property sourceSetName The name of the source set.
+   */
   data class McProjectWithSourceSetName(
     val project: McProject,
     val sourceSetName: SourceSetName
   )
 
+  /**
+   * Fetches the source of a given declared name in a given source set.
+   *
+   * @param declaredName The qualified declared name.
+   * @param sourceSetName The name of the source set.
+   * @return The project with the source set name where
+   *   the declared name is found, or `null` if not found.
+   */
   suspend fun getSource(
     declaredName: QualifiedDeclaredName,
     sourceSetName: SourceSetName
@@ -59,6 +87,13 @@ data class ResolvedDeclaredNames internal constructor(
     return (existing as? Found)?.sourceProject
   }
 
+  /**
+   * Fetches the source of a given declared name in a given source set.
+   *
+   * @param declaredName The qualified declared name.
+   * @param sourceSetName The name of the source set.
+   * @return The result of searching for the source of the declared name.
+   */
   private suspend fun fetchNewSource(
     declaredName: QualifiedDeclaredName,
     sourceSetName: SourceSetName
@@ -100,5 +135,10 @@ data class ResolvedDeclaredNames internal constructor(
   }
 }
 
+/**
+ * Fetches the resolved declared names for a project.
+ *
+ * @return The `ResolvedDeclaredNames` for the project.
+ */
 suspend fun ProjectContext.resolvedDeclaredNames(): ResolvedDeclaredNames =
   get(ResolvedDeclaredNames)

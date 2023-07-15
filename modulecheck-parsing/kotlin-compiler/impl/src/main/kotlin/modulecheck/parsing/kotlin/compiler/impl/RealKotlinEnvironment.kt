@@ -191,6 +191,7 @@ data class RealKotlinEnvironment(
       renderDiagnosticName = false
     )
 
+    @Suppress("MagicNumber")
     println("start analysis ${projectPath.value.padStart(36)} -- ${sourceSetName.value}")
 
     analyzer.analyzeAndReport(ktFiles) {
@@ -211,6 +212,7 @@ data class RealKotlinEnvironment(
       mc.printIssuesCountIfAny()
     }
 
+    @Suppress("MagicNumber")
     println(
       "                                                                      " +
         "finish analysis ${projectPath.value.padStart(36)} -- ${sourceSetName.value}"

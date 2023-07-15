@@ -17,17 +17,16 @@
 
 package modulecheck.gradle.platforms.android.internal
 
-import com.android.build.api.variant.AndroidComponentsExtension
-import com.android.build.gradle.BasePlugin
 import modulecheck.gradle.platforms.android.AgpApiAccess
+import modulecheck.gradle.platforms.android.AndroidBasePlugin
 import modulecheck.gradle.platforms.android.AndroidTestedExtension
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
+import modulecheck.gradle.platforms.internal.GradleConfiguration
+import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.model.dependency.SourceSets
 import modulecheck.model.dependency.isTestingOnly
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
-import modulecheck.parsing.gradle.model.GradleConfiguration
-import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.PackageName.Companion.asPackageName
 import modulecheck.utils.mapToSet
@@ -104,17 +103,24 @@ fun GradleProject.mainAndroidManifest(agpApiAccess: AgpApiAccess): File? {
 }
 
 /**
+ * invokes [action] if this project has an AGP plugin applied
+ *
  * @param agpApiAccess the [AgpApiAccess] to use for safe access
+ * @param action invoked lazily via `configureEach` if the plugin exists
  * @return the main src `AndroidManifest.xml` file if it exists. This will
  *   typically be `$projectDir/src/main/AndroidManifest.xml`, but if the position
  *   has been changed in the Android extension, the new path will be used.
  * @since 0.12.0
  */
-fun GradleProject.onAndroidPlugin(agpApiAccess: AgpApiAccess, action: BasePlugin.() -> Unit) {
+@OptIn(UnsafeDirectAgpApiReference::class)
+inline fun GradleProject.onAndroidPlugin(
+  agpApiAccess: AgpApiAccess,
+  crossinline action: AndroidBasePlugin.() -> Unit
+) {
 
   agpApiAccess.whenSafe(this) {
 
-    plugins.withType(BasePlugin::class.java) { plugin ->
+    plugins.withType(AndroidBasePlugin::class.java).configureEach { plugin ->
       action(plugin)
     }
   }
@@ -132,6 +138,7 @@ fun GradleProject.onAndroidPlugin(agpApiAccess: AgpApiAccess, action: BasePlugin
  *   callback, or `null` if the project does not have AGP
  */
 @Suppress("UnstableApiUsage")
+@UnsafeDirectAgpApiReference
 inline fun GradleProject.onAndroidCompileConfigurationsOrNull(
   agpApiAccess: AgpApiAccess,
   crossinline configAction: (SourceSetName, Set<GradleConfiguration>) -> Unit
@@ -140,7 +147,8 @@ inline fun GradleProject.onAndroidCompileConfigurationsOrNull(
 
     val commonExtension = requireCommonExtension()
 
-    val componentsExtension = extensions.getByType(AndroidComponentsExtension::class.java)
+    val componentsExtension = extensions
+      .getByType(com.android.build.api.variant.AndroidComponentsExtension::class.java)
 
     componentsExtension.onVariants { variant ->
 

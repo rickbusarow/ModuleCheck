@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.gradle.model
+package modulecheck.gradle.platforms.internal
 
 /**
  * [org.gradle.api.tasks.SourceSet]
@@ -43,6 +43,14 @@ typealias GradleProject = org.gradle.api.Project
  */
 typealias GradleProjectDependency = org.gradle.api.artifacts.ProjectDependency
 
+/**
+ * [org.gradle.api.internal.artifacts.dependencies.ProjectDependencyInternal]
+ *
+ * @since 0.12.0
+ */
+@UnsafeInternalGradleApiReference
+typealias GradleProjectDependencyInternal = org.gradle.api.internal.artifacts.dependencies.ProjectDependencyInternal
+
 /** [org.gradle.api.logging.Logger] */
 typealias GradleLogger = org.gradle.api.logging.Logger
 
@@ -54,3 +62,20 @@ typealias GradleProperty<T> = org.gradle.api.provider.Property<T>
 
 /** [org.gradle.api.provider.Provider] */
 typealias GradleProvider<T> = org.gradle.api.provider.Provider<T>
+
+/**
+ * Indicates that the referenced API is not guaranteed to be
+ * stable between Gradle releases, and should be used with caution.
+ */
+@Target(
+  AnnotationTarget.TYPEALIAS,
+  AnnotationTarget.VALUE_PARAMETER,
+  AnnotationTarget.FUNCTION,
+  AnnotationTarget.CLASS
+)
+@RequiresOptIn(
+  message = "This references an internal Gradle API " +
+    "which is not guaranteed to be stable between releases.",
+  level = RequiresOptIn.Level.ERROR
+)
+annotation class UnsafeInternalGradleApiReference

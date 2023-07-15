@@ -38,10 +38,6 @@ inline fun File.requireExists(
   require(exists(), lazyMessage)
 }
 
-fun File.child(vararg childPath: String): File {
-  return File(this, childPath.joinToString(File.separator))
-}
-
 /**
  * vararg overload of [kotlin.io.resolve]
  *
@@ -56,9 +52,6 @@ fun File.resolve(vararg relative: String): File {
     parent.resolve(relative = relativePath)
   }
 }
-
-@Deprecated("no")
-fun File.child(vararg childPath: String): File = resolve(*relative)
 
 /**
  * vararg overload of [java.nio.file.Path.resolve]
@@ -109,7 +102,7 @@ fun File.createSafely(content: String? = null, overwrite: Boolean = true): File 
  * @receiver [File] The directories to create.
  * @return The directory file.
  */
-internal fun File.mkdirsInline(): File = apply(File::mkdirs)
+fun File.mkdirsInline(): File = apply(File::mkdirs)
 
 /**
  * Creates the parent directory of the receiver [File] if it doesn't already exist.
@@ -117,26 +110,10 @@ internal fun File.mkdirsInline(): File = apply(File::mkdirs)
  * @receiver [File] The file whose parent directory is to be created.
  * @return The file with its parent directory created.
  */
-internal fun File.makeParentDir(): File = apply {
+fun File.makeParentDir(): File = apply {
   val fileParent = requireNotNull(parentFile) { "File's `parentFile` must not be null." }
   fileParent.mkdirs()
 }
-
-/**
- * Resolves the given child path against the receiver [File].
- *
- * @param child The child path to be resolved against the receiver [File].
- * @return The resultant [File].
- */
-operator fun File.div(child: String): File = resolve(child)
-
-/**
- * Splits the receiver [File]'s path into its individual segments.
- *
- * @receiver [File] The file to process.
- * @return A list of strings representing the segments of the file's path.
- */
-fun File.segments(): List<String> = path.split(File.separatorChar)
 
 /**
  * all parents starting from the direct parent. Does not include the receiver file.

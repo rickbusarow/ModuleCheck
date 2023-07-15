@@ -16,10 +16,13 @@
 package modulecheck.model.dependency
 
 import kotlinx.serialization.Serializable
+import modulecheck.model.dependency.AndroidSdk.CoreForSystemModules
+import modulecheck.model.dependency.AndroidSdk.Full
 import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.segments
 import java.io.File
 
+/** ex: `com.google.dagger:dagger:2.32` */
 @Serializable
 data class MavenCoordinates(
   /**
@@ -82,6 +85,7 @@ data class MavenCoordinates(
   }
 }
 
+/** Some sort of name */
 @Serializable
 sealed interface Identifier : Comparable<Identifier> {
   val name: String
@@ -91,15 +95,22 @@ sealed interface Identifier : Comparable<Identifier> {
   }
 }
 
+/**
+ * Models the [name][java.io.File.getName] of an Android SDK .jar
+ * file. This will be either [Full] or [CoreForSystemModules].
+ */
 @Serializable
 sealed class AndroidSdk : Identifier {
+  /** The SDK **number**, like `29` or `32` */
   abstract val version: Int
 
+  /** `android-sdk-jar-$version-full` */
   @Serializable
   data class Full(override val version: Int) : AndroidSdk() {
     override val name: String = "android-sdk-jar-$version-full"
   }
 
+  /** `android-sdk-jar-$version-core` */
   @Serializable
   data class CoreForSystemModules(override val version: Int) : AndroidSdk() {
     override val name: String = "android-sdk-jar-$version-core"
@@ -109,7 +120,7 @@ sealed class AndroidSdk : Identifier {
 
   companion object {
 
-    private val MATCHER = """.*\/sdk\/platforms\/android-(\d{2})\/([^\/\.]*)\.jar""".toRegex()
+    private val MATCHER = """.*/sdk/platforms/android-(\d{2})/([^/.]*)\.jar""".toRegex()
 
     /**
      * Given a gradle cache path like:

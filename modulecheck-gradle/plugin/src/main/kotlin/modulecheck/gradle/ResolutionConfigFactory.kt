@@ -15,30 +15,37 @@
 
 package modulecheck.gradle
 
+import modulecheck.gradle.platforms.internal.GradleConfiguration
+import modulecheck.gradle.platforms.internal.GradleProject
+import modulecheck.gradle.platforms.internal.GradleProjectDependency
 import modulecheck.model.dependency.apiConfig
 import modulecheck.model.dependency.asConfigurationName
 import modulecheck.model.sourceset.SourceSetName
-import modulecheck.parsing.gradle.model.GradleProject
+import modulecheck.utils.filterToSet
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.singletonSet
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.Dependency
-import org.gradle.api.artifacts.ProjectDependency
+import org.gradle.api.artifacts.SelfResolvingDependency
 import org.gradle.api.attributes.Attribute
 import org.gradle.api.attributes.HasConfigurableAttributes
 import org.gradle.api.internal.artifacts.DefaultDependencySet
 import org.gradle.api.internal.artifacts.configurations.ConfigurationInternal.InternalState.UNRESOLVED
 import org.gradle.api.internal.artifacts.configurations.DefaultConfiguration
-import org.gradle.api.internal.artifacts.dependencies.ProjectDependencyInternal
 
+/** A factory class for creating resolution configurations. */
 class ResolutionConfigFactory {
 
-  private fun ProjectDependency.externalDependencies(
-    sourceConfiguration: Configuration,
+  /**
+   * Fetches the external dependencies of a project dependency.
+   *
+   * @param sourceConfiguration The configuration from which the dependencies are fetched.
+   * @param visited A set of visited configurations to avoid cyclic dependencies.
+   * @return A set of dependencies.
+   */
+  private fun GradleProjectDependency.externalDependencies(
+    sourceConfiguration: GradleConfiguration,
     visited: Set<String>
   ): Set<Dependency> {
-
-    // println("<Rick> 40 -- ${dependencyProject.path}  --  ${sourceConfiguration.name}")
 
     val contributingConfigName = sourceConfiguration.name
       .asConfigurationName()
@@ -55,19 +62,31 @@ class ResolutionConfigFactory {
 
     return deps.plus(
       deps.flatMapToSet { dep ->
-        if (dep is ProjectDependencyInternal && contributingConfig.name !in visited) {
-          dep.externalDependencies(contributingConfig, visited + contributingConfig.name)
+        if (dep is GradleProjectDependency && contributingConfig.name !in visited) {
+
+          dep.externalDependencies(
+            contributingConfig,
+            visited + contributingConfig.name
+          )
         } else {
           emptySet()
         }
       }
     )
+      .filterToSet { it !is GradleProjectDependency }
   }
 
+  /**
+   * Creates a new configuration for a given project and source configuration.
+   *
+   * @param project The project for which the configuration is created.
+   * @param sourceConfiguration The source configuration.
+   * @return The created configuration.
+   */
   fun create(
     project: GradleProject,
-    sourceConfiguration: Configuration
-  ): Configuration {
+    sourceConfiguration: GradleConfiguration
+  ): GradleConfiguration {
 
     val copy = sourceConfiguration.copyRecursive().setTransitive(true)
 
@@ -85,26 +104,24 @@ class ResolutionConfigFactory {
       copy.exclude(mapOf("group" to er.group, "module" to er.module))
     }
 
-    sourceConfiguration.allDependencies
-      .configureEach { dependency ->
+    if (copy.resolvedState == UNRESOLVED) {
 
-        if (copy.resolvedState == UNRESOLVED) {
+      val deps = sourceConfiguration.allDependencies
+        .flatMapToSet { dependency ->
 
-          val deps = when (dependency) {
-            is ProjectDependency -> dependency.externalDependencies(
+          when (dependency) {
+            is GradleProjectDependency -> dependency.externalDependencies(
               sourceConfiguration,
               setOf(sourceConfiguration.name)
             )
-              .filter { it !is ProjectDependency }
 
             else -> dependency.singletonSet()
           }
-
-          for (trans in deps) {
-            dest.add(trans)
-          }
+            .filterToSet { it !is GradleProjectDependency && it !is SelfResolvingDependency }
         }
-      }
+
+      dest.addAll(deps)
+    }
 
     val metadata = project.configurations.findByName("commonMainMetadataElements")
     if (metadata == null) {
@@ -120,6 +137,12 @@ class ResolutionConfigFactory {
     return copy
   }
 
+  /**
+   * Adds attributes from a source configuration to the current configuration.
+   *
+   * @param source The source configuration from which the attributes are fetched.
+   * @param predicate A function to filter the attributes to be added.
+   */
   private fun HasConfigurableAttributes<*>.addAttributes(
     source: HasConfigurableAttributes<*>,
     predicate: (String) -> Boolean = { true }

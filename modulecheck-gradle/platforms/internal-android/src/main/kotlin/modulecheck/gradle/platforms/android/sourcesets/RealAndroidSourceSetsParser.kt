@@ -30,6 +30,7 @@ import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetN
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.BuildTypeName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.ConcatenatedFlavorsName
 import modulecheck.gradle.platforms.android.sourcesets.internal.ParsedNames
+import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.gradle.platforms.kotlin.KotlinEnvironmentFactory
 import modulecheck.gradle.platforms.kotlin.jvmTarget
 import modulecheck.gradle.platforms.kotlin.kotlinLanguageVersionOrNull
@@ -44,7 +45,6 @@ import modulecheck.model.dependency.names
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.model.sourceset.removePrefix
-import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.utils.capitalize
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
@@ -571,7 +571,9 @@ class RealAndroidSourceSetsParser private constructor(
             runtimeOnlyConfiguration = parsedConfigurations
               .getValue(androidSourceSet.runtimeOnlyConfigurationName.asConfigurationName()),
             annotationProcessorConfiguration = parsedConfigurations
-              .getValue(androidSourceSet.annotationProcessorConfigurationName.asConfigurationName()),
+              .getValue(
+                androidSourceSet.annotationProcessorConfigurationName.asConfigurationName()
+              ),
             jvmFiles = jvmFiles,
             resourceFiles = resourceFiles,
             layoutFiles = layoutFiles,

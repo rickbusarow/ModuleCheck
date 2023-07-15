@@ -35,6 +35,7 @@ class Configurations(
   }
 }
 
+/** */
 object ConfigurationsSerializer : KSerializer<Configurations> {
 
   private val delegate: KSerializer<Map<ConfigurationName, McConfiguration>> = serializer()
@@ -50,6 +51,7 @@ object ConfigurationsSerializer : KSerializer<Configurations> {
   }
 }
 
+/** */
 @OptIn(ExperimentalSerializationApi::class)
 fun main() {
   val descriptors = listOf(

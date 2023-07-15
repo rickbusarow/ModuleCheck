@@ -31,7 +31,6 @@ dependencies {
 
   api(project(path = ":modulecheck-gradle:platforms:api"))
   api(project(path = ":modulecheck-model:dependency:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(gradleApi())

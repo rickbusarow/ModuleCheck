@@ -15,9 +15,12 @@
 
 package modulecheck.gradle.internal
 
+import org.gradle.api.Action
 import org.gradle.api.Task
+import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
 
+/** lazily adds [tasks] as dependencies to the receiver task */
 fun <T : Task> TaskProvider<out T>.dependsOn(
   tasks: Collection<TaskProvider<out Task>>
 ): TaskProvider<out T> {
@@ -28,6 +31,7 @@ fun <T : Task> TaskProvider<out T>.dependsOn(
   return this
 }
 
+/** lazily adds [tasks] as dependencies to the receiver task */
 fun <T : Task> TaskProvider<out T>.dependsOn(
   vararg tasks: TaskProvider<out Task>
 ): TaskProvider<out T> {
@@ -50,4 +54,28 @@ fun <T : Task> TaskProvider<out T>.dependsOn(
  */
 fun <T : Task> TaskProvider<T>.configuring(action: (T) -> Unit) = apply {
   configure(action)
+}
+
+/**
+ * Adds a task of this name and type if it doesn't exist. [configurationAction]
+ * is performed on the new task, or the existing task if one already existed.
+ */
+@JvmName("registerOnceInline")
+inline fun <reified T : Task> TaskContainer.registerOnce(
+  name: String,
+  configurationAction: Action<in T>
+): TaskProvider<T> = registerOnce(name, T::class.java, configurationAction)
+
+/**
+ * Adds a task of this name and type if it doesn't exist. [configurationAction]
+ * is performed on the new task, or the existing task if one already existed.
+ */
+fun <T : Task> TaskContainer.registerOnce(
+  name: String,
+  type: Class<T>,
+  configurationAction: Action<in T>
+): TaskProvider<T> = if (names.contains(name)) {
+  named(name, type, configurationAction)
+} else {
+  register(name, type, configurationAction)
 }

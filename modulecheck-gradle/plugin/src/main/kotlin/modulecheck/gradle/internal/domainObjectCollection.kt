@@ -13,8 +13,9 @@
  * limitations under the License.
  */
 
-package modulecheck.builds
+package modulecheck.gradle.internal
 
+import modulecheck.gradle.platforms.internal.UnsafeInternalGradleApiReference
 import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectCollection
 import org.gradle.api.internal.DefaultNamedDomainObjectCollection
@@ -29,6 +30,7 @@ import org.gradle.api.internal.DefaultNamedDomainObjectCollection
  * @throws IllegalArgumentException if the receiver collection
  *   does not extend [DefaultNamedDomainObjectCollection].
  */
+@UnsafeInternalGradleApiReference
 inline fun <reified T : Named> NamedDomainObjectCollection<T>.whenElementRegistered(
   crossinline action: (name: String) -> Unit
 ) {

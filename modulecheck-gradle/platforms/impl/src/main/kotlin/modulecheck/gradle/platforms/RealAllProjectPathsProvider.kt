@@ -13,14 +13,14 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.gradle.model.impl
+package modulecheck.gradle.platforms
 
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.RootGradleProject
 import modulecheck.dagger.TaskScope
+import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.model.dependency.AllProjectPathsProvider
 import modulecheck.model.dependency.ProjectPath
-import modulecheck.parsing.gradle.model.GradleProject
 import javax.inject.Inject
 
 @ContributesBinding(TaskScope::class)

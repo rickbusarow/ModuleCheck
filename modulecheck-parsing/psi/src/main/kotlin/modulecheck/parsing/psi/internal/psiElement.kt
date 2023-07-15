@@ -65,7 +65,8 @@ import org.jetbrains.kotlin.types.KotlinType
 import java.io.File
 import kotlin.contracts.contract
 
-inline fun <reified T : PsiElement> PsiElement.isPartOf(): Boolean = getNonStrictParentOfType<T>() != null
+inline fun <reified T : PsiElement> PsiElement.isPartOf(): Boolean =
+  getNonStrictParentOfType<T>() != null
 
 /**
  * @return a sequence of child nodes of this [PsiElement] in depth-first
@@ -150,7 +151,10 @@ fun KtPropertyDelegate.returnType(bindingContext: BindingContext): KotlinType? {
 
 fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean {
 
-  if (annotationEntries.any { it.typeReference?.typeElement?.text == annotationFqName.asString() }) {
+  if (annotationEntries.any {
+      it.typeReference?.typeElement?.text == annotationFqName.asString()
+    }
+  ) {
     return true
   }
 

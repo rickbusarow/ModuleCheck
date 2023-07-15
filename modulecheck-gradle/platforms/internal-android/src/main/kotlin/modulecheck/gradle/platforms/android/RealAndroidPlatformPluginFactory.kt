@@ -36,6 +36,7 @@ import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Typ
 import modulecheck.gradle.platforms.android.internal.androidManifests
 import modulecheck.gradle.platforms.android.internal.androidNamespaces
 import modulecheck.gradle.platforms.android.internal.orPropertyDefault
+import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.model.dependency.AndroidPlatformPlugin
 import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidApplicationPlugin
 import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
@@ -43,7 +44,6 @@ import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidTestPlugin
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
-import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.utils.cast
 import modulecheck.utils.requireNotNull
@@ -182,7 +182,9 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
   ): MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> {
     fun AndroidCommonExtension.mergedFlavors(): List<MergedFlavor> {
       return when (this) {
-        is AppExtension -> applicationVariants.map { it.cast<ApplicationVariantImpl>().mergedFlavor }
+        is AppExtension -> applicationVariants.map {
+          it.cast<ApplicationVariantImpl>().mergedFlavor
+        }
         is LibraryExtension -> libraryVariants.map { it.cast<LibraryVariantImpl>().mergedFlavor }
         else -> emptyList()
       }

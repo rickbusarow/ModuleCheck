@@ -10,7 +10,7 @@ google-ksp = "1.8.22-1.0.11"
 square-anvil = "2.4.6"
 
 ajalt-clikt = "4.1.0"
-ajalt-mordant = "2.0.1"
+ajalt-mordant = "2.0.0"
 
 androidTools = "8.0.2"
 
@@ -67,7 +67,8 @@ rickBusarow-dispatch = "1.0.0-beta10"
 rickBusarow-doks = "0.1.4"
 rickBusarow-ktlint = "0.1.8"
 rickBusarow-ktrules = "1.1.3"
-rickBusarow-moduleCheck = "0.12.5"
+rickBusarow-moduleCheck = "0.13.0-LOCAL"
+#rickBusarow-moduleCheck = "0.12.5"
 rickBusarow-tangle = "0.15.1"
 semVer = "1.3.0"
 slf4j = "2.0.7"

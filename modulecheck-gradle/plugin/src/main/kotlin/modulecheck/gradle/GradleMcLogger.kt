@@ -19,7 +19,7 @@ import com.github.ajalt.mordant.rendering.Theme
 import com.github.ajalt.mordant.terminal.Terminal
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.TaskScope
-import modulecheck.parsing.gradle.model.GradleLogging
+import modulecheck.gradle.platforms.internal.GradleLogging
 import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.logging.Report
 import modulecheck.reporting.logging.Report.ReportEntry.Failure

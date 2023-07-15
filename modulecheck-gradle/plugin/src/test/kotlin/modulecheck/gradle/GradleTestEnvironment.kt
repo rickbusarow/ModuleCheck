@@ -18,6 +18,7 @@ package modulecheck.gradle
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.internal.defaultCodeGeneratorBindings
 import modulecheck.gradle.internal.BuildProperties
+import modulecheck.gradle.internal.TestBuildProperties
 import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.project.ProjectCache
 import modulecheck.project.generation.ProjectCollector
@@ -62,6 +63,8 @@ class GradleTestEnvironment(
   )
 
   override val root: File get() = workingDir
+
+  val testKitDir: File get() = File(TestBuildProperties.testKitDir)
 
   val kotlinVersion get() = testVersions.kotlin
   val agpVersion get() = testVersions.agp
@@ -150,7 +153,7 @@ class GradleTestEnvironment(
     GradleRunner.create()
       .forwardOutput()
       .withGradleVersion(gradleVersion)
-      // .withTestKitDir(testKitDir)
+      .withTestKitDir(testKitDir)
       // .withPluginClasspath()
       .withDebug(true)
       .withProjectDir(workingDir)
