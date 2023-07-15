@@ -20,6 +20,7 @@ import io.kotest.assertions.throwables.shouldNotThrow
 import modulecheck.parsing.kotlin.compiler.HasAnalysisResult
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccessImpl.PendingRequest
 import modulecheck.testing.BaseTest
+import modulecheck.testing.TestEnvironment
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
@@ -29,7 +30,7 @@ import org.jetbrains.kotlin.resolve.BindingContext
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 
-internal class PendingRequestSortingTest : BaseTest() {
+internal class PendingRequestSortingTest : BaseTest<TestEnvironment>() {
 
   @Test
   fun `sorting does not violate general contract`() {

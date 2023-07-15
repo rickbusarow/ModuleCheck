@@ -1,0 +1,38 @@
+public final class modulecheck/finding/sort/SortDependenciesFinding : modulecheck/finding/Finding, modulecheck/finding/Fixable {
+	public fun <init> (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;Ljava/util/Comparator;)V
+	public fun fix (Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getBuildFile ()Ljava/io/File;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public fun getMessage ()Ljava/lang/String;
+	public fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementTextOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+}
+
+public final class modulecheck/finding/sort/SortPluginsFinding : modulecheck/finding/Finding, modulecheck/finding/Fixable {
+	public static final field Companion Lmodulecheck/finding/sort/SortPluginsFinding$Companion;
+	public fun <init> (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;Ljava/util/Comparator;)V
+	public fun fix (Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getBuildFile ()Ljava/io/File;
+	public final fun getComparator ()Ljava/util/Comparator;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public fun getMessage ()Ljava/lang/String;
+	public fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementTextOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+}
+
+public final class modulecheck/finding/sort/SortPluginsFinding$Companion {
+	public final fun getNAME ()Lmodulecheck/finding/FindingName;
+}
+
+public final class modulecheck/finding/sort/SortPluginsFindingKt {
+	public static final fun sortedPlugins (Lmodulecheck/parsing/gradle/dsl/PluginsBlock;Ljava/util/Comparator;)Ljava/lang/String;
+}
+

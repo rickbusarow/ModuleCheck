@@ -41,14 +41,28 @@ import org.jetbrains.annotations.Contract
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
+/**
+ * Collects all projects within the scope of analysis.
+ *
+ * It provides the ability to create, edit and resolve references for
+ * different types of projects, including Java, Kotlin, Android Library,
+ * Android Application, Android Dynamic Feature, and Android Test.
+ */
 interface ProjectCollector {
 
+  /** Root directory of the project hierarchy. */
   val root: File
+
+  /** Cache of the projects. */
   val projectCache: ProjectCache
+
+  /** Provides access to dependency module descriptors. */
   val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess
 
+  /** List of bindings for code generation. */
   val codeGeneratorBindings: List<CodeGeneratorBinding>
 
+  /** Provides projects from the cache. */
   val projectProvider: ProjectProvider
     get() = object : ProjectProvider {
 
@@ -66,14 +80,25 @@ interface ProjectCollector {
       }
     }
 
+  /**
+   * Fetches all projects from the project cache.
+   *
+   * @return List of all projects.
+   */
   fun allProjects(): List<McProject> = projectCache.values.toList()
 
+  /**
+   * Transforms a platform plugin to its builder form.
+   *
+   * @return Instance of the [PlatformPluginBuilder] corresponding to the plugin type.
+   */
   suspend fun PlatformPlugin.toBuilder(): PlatformPluginBuilder<*> {
     return when (this) {
       is AndroidApplicationPlugin -> AndroidApplicationPluginBuilder(
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
         manifests = manifests.toMutableMap(),
+        namespaces = namespaces.toMutableMap(),
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
       )
@@ -83,6 +108,7 @@ interface ProjectCollector {
         kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
         buildConfigEnabled = buildConfigEnabled,
         manifests = manifests.toMutableMap(),
+        namespaces = namespaces.toMutableMap(),
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
       )
@@ -93,6 +119,7 @@ interface ProjectCollector {
         buildConfigEnabled = buildConfigEnabled,
         androidResourcesEnabled = androidResourcesEnabled,
         manifests = manifests.toMutableMap(),
+        namespaces = namespaces.toMutableMap(),
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
       )
@@ -102,6 +129,7 @@ interface ProjectCollector {
         kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
         buildConfigEnabled = buildConfigEnabled,
         manifests = manifests.toMutableMap(),
+        namespaces = namespaces.toMutableMap(),
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
       )
@@ -118,6 +146,11 @@ interface ProjectCollector {
     }
   }
 
+  /**
+   * Transforms a [McProject] to a builder form that can be further configured.
+   *
+   * @return Instance of [McProjectBuilder] for the project.
+   */
   suspend fun <P : PlatformPluginBuilder<*>> McProject.toProjectBuilder(): McProjectBuilder<P> {
     @Suppress("UNCHECKED_CAST")
     return McProjectBuilder(
@@ -138,6 +171,12 @@ interface ProjectCollector {
     )
   }
 
+  /**
+   * Edits a project with a provided configuration.
+   *
+   * @param config Configuration to be applied on the project builder.
+   * @return Updated instance of the project.
+   */
   @Contract(pure = true, value = "_->new")
   suspend fun McProject.editSimple(
     config: McProjectBuilder<PlatformPluginBuilder<PlatformPlugin>>.() -> Unit = {}
@@ -147,6 +186,13 @@ interface ProjectCollector {
       .toRealMcProject()
   }
 
+  /**
+   * Creates a new Java project.
+   *
+   * @param path Project path.
+   * @param config Configuration to be applied on the project builder.
+   * @return Instance of the newly created Java project.
+   */
   fun javaProject(
     path: String,
     config: McProjectBuilder<JavaLibraryPluginBuilder>.() -> Unit = {}
@@ -166,6 +212,13 @@ interface ProjectCollector {
     )
   }
 
+  /**
+   * Constructs a Kotlin-based project with the provided configuration.
+   *
+   * @param path the relative path of the project
+   * @param config an optional configuration block for the project builder
+   * @return an instance of [McProject] representing the newly created Kotlin project
+   */
   fun kotlinProject(
     path: String,
     config: McProjectBuilder<KotlinJvmPluginBuilder>.() -> Unit = {}
@@ -185,6 +238,14 @@ interface ProjectCollector {
     )
   }
 
+  /**
+   * Constructs an Android application project with the provided configuration.
+   *
+   * @param path the relative path of the project
+   * @param androidPackage the Android package name for the project
+   * @param config an optional configuration block for the project builder
+   * @return an instance of [McProject] representing the newly created Android application project
+   */
   fun androidApplication(
     path: String,
     androidPackage: String,
@@ -203,6 +264,14 @@ interface ProjectCollector {
     )
   }
 
+  /**
+   * Constructs an Android library project with the provided configuration.
+   *
+   * @param path the relative path of the project
+   * @param androidPackage the Android package name for the project
+   * @param config an optional configuration block for the project builder
+   * @return an instance of [McProject] representing the newly created Android library project
+   */
   fun androidLibrary(
     path: String,
     androidPackage: String,
@@ -221,6 +290,15 @@ interface ProjectCollector {
     )
   }
 
+  /**
+   * Constructs an Android dynamic feature module with the provided configuration.
+   *
+   * @param path the relative path of the project
+   * @param androidPackage the Android package name for the project
+   * @param config an optional configuration block for the project builder
+   * @return an instance of [McProject] representing
+   *   the newly created Android dynamic feature module
+   */
   fun androidDynamicFeature(
     path: String,
     androidPackage: String,
@@ -239,6 +317,14 @@ interface ProjectCollector {
     )
   }
 
+  /**
+   * Constructs an Android test project with the provided configuration.
+   *
+   * @param path the relative path of the project
+   * @param androidPackage the Android package name for the project
+   * @param config an optional configuration block for the project builder
+   * @return an instance of [McProject] representing the newly created Android test project
+   */
   fun androidTest(
     path: String,
     androidPackage: String,
@@ -257,28 +343,45 @@ interface ProjectCollector {
     )
   }
 
-  fun simpleProject(
-    buildFileText: String? = null,
-    path: String = ":lib"
-  ): McProject = this.kotlinProject(path) {
-    if (buildFileText != null) {
-      buildFile.writeText(buildFileText)
-    }
+  /**
+   * Constructs a simple Kotlin project. If the build file text is provided, it writes
+   * the text to the build file. The created project will have a source file in the
+   * 'main' source set with the package 'com.lib1' and a class named 'Lib1Class'.
+   *
+   * @param buildFileText optional text to be written into the build file
+   * @param path the relative path of the project, defaults to ':lib'
+   * @return an instance of [McProject] representing the newly created simple Kotlin project
+   */
+  fun simpleProject(buildFileText: String? = null, path: String = ":lib"): McProject =
+    this.kotlinProject(path) {
+      if (buildFileText != null) {
+        buildFile.writeText(buildFileText)
+      }
 
-    addKotlinSource(
-      """
+      addKotlinSource(
+        """
       package com.lib1
 
       class Lib1Class
       """,
-      SourceSetName.MAIN
-    )
-  }
+        SourceSetName.MAIN
+      )
+    }
 
+  /**
+   * Writes text to a file.
+   *
+   * @param text Text to be written to the file.
+   */
   operator fun File.invoke(text: () -> String) {
     writeText(text().trimIndent())
   }
 
+  /**
+   * Resolves all references in the project scope, validating dependencies and declarations.
+   *
+   * Throws a failure if any reference is unresolved.
+   */
   suspend fun resolveReferences() {
     projectCache.values
       .forEach { project ->

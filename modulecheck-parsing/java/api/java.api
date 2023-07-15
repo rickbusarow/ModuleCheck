@@ -1,0 +1,34 @@
+public final class modulecheck/parsing/java/JavaParserNodeResolver {
+	public synthetic fun <init> (Lmodulecheck/project/McProject;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun fqNameOrNull (Lcom/github/javaparser/ast/type/ClassOrInterfaceType;Ljava/lang/String;Ljava/util/Collection;Ljava/util/Collection;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/java/RealJavaFile : modulecheck/parsing/source/JavaFile {
+	public fun <init> (Ljava/io/File;Lorg/jetbrains/kotlin/com/intellij/psi/PsiJavaFile;Lorg/jetbrains/kotlin/config/JvmTarget;Lmodulecheck/parsing/source/internal/NameParser;)V
+	public fun getApiReferences ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getDeclarations ()Ljava/util/Set;
+	public fun getFile ()Ljava/io/File;
+	public fun getImportsLazy ()Lkotlin/Lazy;
+	public fun getName ()Ljava/lang/String;
+	public fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+	public synthetic fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiFile;
+	public fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiJavaFile;
+	public fun getReferences ()Lmodulecheck/utils/lazy/LazySet;
+}
+
+public final class modulecheck/parsing/java/RealJavaFileKt {
+	public static final fun apiReferences (Lcom/github/javaparser/ast/body/FieldDeclaration;)Ljava/util/List;
+	public static final fun apiReferences (Lcom/github/javaparser/ast/body/MethodDeclaration;)Ljava/util/List;
+	public static final fun canBeImported (Lcom/github/javaparser/ast/nodeTypes/modifiers/NodeWithStaticModifier;)Z
+	public static final fun canBeResolved (Lcom/github/javaparser/ast/nodeTypes/modifiers/NodeWithStaticModifier;)Z
+	public static final fun typeReferencesRecursive (Lcom/github/javaparser/ast/type/ClassOrInterfaceType;)Lkotlin/sequences/Sequence;
+}
+
+public final class modulecheck/parsing/java/VisitorKt {
+	public static final fun childrenBreadthFirst (Lcom/github/javaparser/ast/Node;)Lkotlin/sequences/Sequence;
+	public static final fun childrenBreadthFirst (Lcom/github/javaparser/ast/Node;Lkotlin/jvm/functions/Function1;)Lkotlin/sequences/Sequence;
+	public static final fun childrenDepthFirst (Lcom/github/javaparser/ast/Node;Lkotlin/jvm/functions/Function1;)Lkotlin/sequences/Sequence;
+	public static final fun fqNameOrNull (Lcom/github/javaparser/ast/Node;Ljava/util/List;)Ljava/lang/String;
+	public static final fun simpleName (Lcom/github/javaparser/ast/Node;)Ljava/lang/String;
+}
+

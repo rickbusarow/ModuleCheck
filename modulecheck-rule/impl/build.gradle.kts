@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-rule-impl"
+  published(
+    artifactId = "modulecheck-rule-impl"
+  )
   anvil()
 }
 
@@ -36,6 +38,7 @@ dependencies {
   api(project(path = ":modulecheck-finding:impl-sort"))
   api(project(path = ":modulecheck-finding:name"))
   api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-rule:api"))
@@ -49,7 +52,6 @@ dependencies {
   implementation(project(path = ":modulecheck-utils:coroutines:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

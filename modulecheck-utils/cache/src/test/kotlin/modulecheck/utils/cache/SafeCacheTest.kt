@@ -15,7 +15,6 @@
 
 package modulecheck.utils.cache
 
-import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineStart.UNDISPATCHED
@@ -26,12 +25,16 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
 import java.util.concurrent.atomic.AtomicInteger
 
-internal class SafeCacheTest : HermitJUnit5() {
-
-  val expectCount by resets { AtomicInteger(0) }
+internal class SafeCacheTest {
 
   @Test
   fun `concurrent misses should only execute the lambda once`() = runTestTraced {
+
+    val expectCount = AtomicInteger(0)
+
+    fun expect(value: Int) {
+      expectCount.incrementAndGet() shouldBe value
+    }
 
     val cache = SafeCache<String, Int>(listOf("cache"))
     val lock = CompletableDeferred<Unit>()
@@ -59,6 +62,12 @@ internal class SafeCacheTest : HermitJUnit5() {
   @Test
   fun `loaders can access other keys in the same cache`() = runTestTraced {
 
+    val expectCount = AtomicInteger(0)
+
+    fun expect(value: Int) {
+      expectCount.incrementAndGet() shouldBe value
+    }
+
     val cache = SafeCache<String, Int>(listOf("cache"))
 
     val one = lazyDeferred {
@@ -72,9 +81,5 @@ internal class SafeCacheTest : HermitJUnit5() {
 
     two.await() shouldBe 1
     one.await() shouldBe 1
-  }
-
-  fun expect(value: Int) {
-    expectCount.incrementAndGet() shouldBe value
   }
 }

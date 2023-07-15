@@ -22,16 +22,16 @@ import io.kotest.matchers.file.shouldExist
 import io.kotest.matchers.nulls.shouldNotBeNull
 import modulecheck.rule.impl.DocumentedRule.Companion.RULES_BASE_URL
 import modulecheck.runtime.test.RunnerTest
-import modulecheck.utils.child
 import modulecheck.utils.remove
 import modulecheck.utils.requireNotNull
+import modulecheck.utils.resolve
 import org.junit.jupiter.api.Test
 import java.io.File
 
 class RuleUrlValidationTest : RunnerTest() {
 
   @Test
-  fun `each rule documentation url must correspond to a docs file and sidebar entry`() {
+  fun `each rule documentation url must correspond to a docs file and sidebar entry`() = test {
 
     val websiteDir = File(BuildProperties.websiteDir)
 
@@ -43,7 +43,7 @@ class RuleUrlValidationTest : RunnerTest() {
       websiteDir.shouldExist()
     }
 
-    val sidebarsFile = websiteDir.child("sidebars.js")
+    val sidebarsFile = websiteDir.resolve("sidebars.js")
 
     "The path must point to the project website's `sidebars.js` file: $sidebarsFile ".asClue {
       sidebarsFile.shouldExist()
@@ -61,7 +61,7 @@ class RuleUrlValidationTest : RunnerTest() {
       }
       .toSet()
 
-    val rulesDocsDir = websiteDir.child("docs", "rules")
+    val rulesDocsDir = websiteDir.resolve("docs", "rules")
 
     // Find all markdown docs within the /website/docs/rules directory,
     // then parse their defined IDs and slugs.

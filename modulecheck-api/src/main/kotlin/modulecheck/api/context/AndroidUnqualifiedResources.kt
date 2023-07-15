@@ -118,5 +118,4 @@ suspend fun ProjectContext.androidUnqualifiedResources(): AndroidUnqualifiedReso
  */
 suspend fun ProjectContext.androidUnqualifiedResourcesForSourceSetName(
   sourceSetName: SourceSetName
-): LazySet<UnqualifiedAndroidResource> =
-  androidUnqualifiedResources().get(sourceSetName)
+): LazySet<UnqualifiedAndroidResource> = androidUnqualifiedResources().get(sourceSetName)

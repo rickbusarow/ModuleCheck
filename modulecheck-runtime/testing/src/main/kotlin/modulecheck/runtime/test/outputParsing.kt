@@ -15,6 +15,7 @@
 
 package modulecheck.runtime.test
 
+import modulecheck.reporting.console.ReportFactory
 import modulecheck.runtime.test.ProjectFindingReport.depth
 import modulecheck.runtime.test.ProjectFindingReport.disableAndroidResources
 import modulecheck.runtime.test.ProjectFindingReport.disableViewBinding
@@ -29,138 +30,159 @@ import modulecheck.runtime.test.ProjectFindingReport.unusedKaptPlugin
 import modulecheck.runtime.test.ProjectFindingReport.unusedKaptProcessor
 import modulecheck.runtime.test.ProjectFindingReport.unusedKotlinAndroidExtensions
 import modulecheck.runtime.test.ProjectFindingReport.useAnvilFactories
+import modulecheck.utils.noAnsi
 import modulecheck.utils.remove
-import modulecheck.utils.requireNotNull
 import kotlin.properties.Delegates
 
 private typealias ProjectPath = String
 
-@Suppress("LocalVariableName", "VariableNaming")
+@Suppress("VariableNaming")
 internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFindingReport>>> {
 
-  val DELIM = "\u200B"
-  val FIXED = "✔"
-  val ERROR = "X"
-
-  val resultLineStarters = listOf(FIXED, ERROR)
+  val resultLineStarters = listOf(ReportFactory.FIXED, ReportFactory.ERROR)
 
   // use a LinkedHashMap so that the order of paths is preserved
   val map = LinkedHashMap<ProjectPath, MutableList<ProjectFindingReport>>()
 
-  val lines = lines()
-    .filterNot { it.isBlank() || it.isEmpty() }
-    .filterNot {
-      it.trim()
-        .replace(" {2,}".toRegex(), " ") == "configuration dependency name source build file"
-    }
-    .map { line ->
-
-      line
-        .removePrefix(DELIM)
-        .trim()
-        .removePrefix(DELIM)
-        .trim()
-        .remove("/[^/]*/build\\.gradle(?:\\.kts)?".toRegex())
-    }
-
   var currentPath by Delegates.notNull<String>()
+  var fixedIndex = -1
+  var configurationIndex = -1
+  var dependencyIndex = -1
+  var ruleNameIndex = -1
+  var sourceIndex = -1
+  var positionIndex = -1
 
-  lines.forEach { line ->
-    when {
-      line.startsWith(":") -> {
-        require(map[line] == null) {
-          "An entry for `$line` already exists in the map of results.  " +
-            "Are there two header lines for this path in the console output?"
-        }
-        map[line] = mutableListOf()
-        currentPath = line
-        return@forEach
-      }
-      resultLineStarters.any { line.startsWith(it) } -> {
+  val currentPathRegex = " *:\\S.*".toRegex()
+  val header = " *configuration *dependency *name *source *build file *".toRegex()
+  val filePathRegex = """/[^/]*/build\.gradle(?:\.kts)?:""".toRegex()
 
-        val split = line.split(DELIM)
-          .map { segment -> segment.trim().takeIf { it.isNotBlank() } }
+  lineSequence()
+    .map { it.noAnsi() }
+    .filter { it.isNotBlank() }
+    .map { it.remove(filePathRegex) }
+    .onEach { println(" line 1 ---  $it") }
+    .forEach { line ->
+      val trimmed = line.trim()
 
-        val (fixedString, configuration, dependency, nameWithTokens, source) = split
-        // Destructuring a List<String> only supports 5 components, so do the 6th manually.
-        val positionRaw = split[5]
-
-        val name = nameWithTokens.requireNotNull().trim()
-
-        val position = positionRaw?.let {
-          """.*\((\d+, \d+)\):""".toRegex().find(it)?.destructured?.component1()
-        }
-
-        val fixed = when (fixedString) {
-          FIXED -> true
-          ERROR -> false
-          else -> error(
-            "The parsed string `$fixedString` must be one of " +
-              "[${resultLineStarters.joinToString { "`$it`" }}]."
-          )
+      when {
+        line.matches(header) -> {
+          configurationIndex = line.indexOf("configuration")
+          fixedIndex = configurationIndex - (ReportFactory.PADDING + 2)
+          dependencyIndex = line.indexOf("dependency")
+          ruleNameIndex = line.indexOf("name")
+          sourceIndex = line.indexOf("source")
+          positionIndex = line.indexOf("build file")
         }
 
-        val t = when (name) {
-          "inherited-dependency" -> inheritedDependency(
-            fixed,
-            configuration,
-            dependency,
-            source,
-            position
-          )
-          "must-be-api" -> mustBeApi(
-            fixed = fixed,
-            configuration = configuration,
-            dependency = dependency,
-            position = position
-          )
-          "overshot-dependency" -> overshot(
-            fixed = fixed,
-            configuration = configuration,
-            dependency = dependency,
-            position = position
-          )
-          "redundant-dependency" -> redundant(
-            fixed = fixed,
-            configuration = configuration,
-            dependency = dependency,
-            source = source,
-            position = position
-          )
-          "unused-dependency" -> unusedDependency(
-            fixed = fixed,
-            configuration = configuration,
-            dependency = dependency,
-            position = position
-          )
-          "project-depth" -> depth(fixed)
-          "use-anvil-factory-generation" -> useAnvilFactories(fixed)
-          "disable-view-binding" -> disableViewBinding(fixed = fixed, position = position)
-          "sort-dependencies" -> unsortedDependencies(fixed)
-          "sort-plugins" -> unsortedPlugins(fixed)
-          "unused-kapt-plugin" -> unusedKaptPlugin(
-            fixed = fixed,
-            dependency = dependency,
-            position = position
-          )
-          "unused-kapt-processor" -> unusedKaptProcessor(
-            fixed = fixed,
-            configuration = configuration,
-            dependency = dependency,
-            position = position
-          )
-          "unused-kotlin-android-extensions" -> unusedKotlinAndroidExtensions(
-            fixed = fixed,
-            position = position
-          )
-          "disable-android-resources" -> disableAndroidResources(fixed = fixed, position = position)
-          else -> error("could not parse a finding result type for name of `$name`.")
+        line.matches(currentPathRegex) -> {
+          require(map[trimmed] == null) {
+            "An entry for `$trimmed` already exists in the map of results.  " +
+              "Are there two header lines for this path in the console output?"
+          }
+          map[trimmed] = mutableListOf()
+          currentPath = trimmed
         }
 
-        map.getValue(currentPath).add(t)
+        resultLineStarters.any { trimmed.startsWith(it) } -> {
+
+          val fixedString = line.substring(fixedIndex until configurationIndex).trim()
+
+          val configuration = line.substring(configurationIndex until dependencyIndex)
+            .trim()
+            .takeIf { it.isNotBlank() }
+          val dependency = line.substring(dependencyIndex until ruleNameIndex)
+            .trim()
+            .takeIf { it.isNotBlank() }
+          val ruleName = line.substring(ruleNameIndex until sourceIndex).trim()
+          val source = line.substring(sourceIndex until positionIndex).trim().takeIf {
+            it.isNotBlank()
+          }
+          val position = line.drop(positionIndex).trim()
+            .takeIf { it.isNotBlank() }
+            ?.remove("""[():]""".toRegex())
+
+          val fixed = when (fixedString) {
+            ReportFactory.FIXED -> true
+            ReportFactory.ERROR -> false
+            else -> error(
+              "The parsed string `$fixedString` must be one of " +
+                "[${resultLineStarters.joinToString { "`$it`" }}]."
+            )
+          }
+
+          val t = when (ruleName) {
+            "inherited-dependency" -> inheritedDependency(
+              fixed,
+              configuration,
+              dependency,
+              source,
+              position
+            )
+
+            "must-be-api" -> mustBeApi(
+              fixed = fixed,
+              configuration = configuration,
+              dependency = dependency,
+              position = position
+            )
+
+            "overshot-dependency" -> overshot(
+              fixed = fixed,
+              configuration = configuration,
+              dependency = dependency,
+              position = position
+            )
+
+            "redundant-dependency" -> redundant(
+              fixed = fixed,
+              configuration = configuration,
+              dependency = dependency,
+              source = source,
+              position = position
+            )
+
+            "unused-dependency" -> unusedDependency(
+              fixed = fixed,
+              configuration = configuration,
+              dependency = dependency,
+              position = position
+            )
+
+            "project-depth" -> depth(fixed)
+            "use-anvil-factory-generation" -> useAnvilFactories(fixed)
+            "disable-view-binding" -> disableViewBinding(fixed = fixed, position = position)
+            "sort-dependencies" -> unsortedDependencies(fixed)
+            "sort-plugins" -> unsortedPlugins(fixed)
+            "unused-kapt-plugin" -> unusedKaptPlugin(
+              fixed = fixed,
+              dependency = dependency,
+              position = position
+            )
+
+            "unused-kapt-processor" -> unusedKaptProcessor(
+              fixed = fixed,
+              configuration = configuration,
+              dependency = dependency,
+              position = position
+            )
+
+            "unused-kotlin-android-extensions" -> unusedKotlinAndroidExtensions(
+              fixed = fixed,
+              position = position
+            )
+
+            "disable-android-resources" -> disableAndroidResources(
+              fixed = fixed,
+              position = position
+            )
+
+            else -> error("could not parse a finding result type for name of `$ruleName`.")
+          }
+
+          map.getValue(currentPath).add(t)
+        }
       }
     }
-  }
 
   return map.toList()
 }

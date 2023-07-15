@@ -35,9 +35,7 @@ interface HasSourceSets {
   val sourceSets: SourceSets
 }
 
-/**
- * Cache of [sourceSets][McSourceSet], probably at the project level.
- */
+/** Cache of [sourceSets][McSourceSet], probably at the project level. */
 @Serializable(with = SourceSetsSerializer::class)
 class SourceSets(
   delegate: Map<SourceSetName, McSourceSet>
@@ -89,7 +87,6 @@ object SourceSetsSerializer : KSerializer<SourceSets> {
  * @since 0.12.0
  */
 @Serializable
-@Suppress("LongParameterList")
 class McSourceSet(
   val name: SourceSetName,
   val compileOnlyConfiguration: McConfiguration,
@@ -226,14 +223,11 @@ fun Collection<McSourceSet>.sortedByInheritance(): Sequence<McSourceSet> {
   }
 }
 
-/**
- * Upstream source set names **not** including the receiver name.
- */
-fun SourceSetName.upstream(
-  hasSourceSets: HasSourceSets
-): List<SourceSetName> = hasSourceSets.sourceSets[this]
-  ?.upstream
-  .orEmpty()
+/** Upstream source set names **not** including the receiver name. */
+fun SourceSetName.upstream(hasSourceSets: HasSourceSets): List<SourceSetName> =
+  hasSourceSets.sourceSets[this]
+    ?.upstream
+    .orEmpty()
 
 /**
  * Upstream source set names *including the receiver name.*
@@ -244,22 +238,17 @@ fun SourceSetName.upstream(
  * of a directed graph where the receiver [SourceSetName] is the root. The first
  * returned name is the receiver, followed by the source sets it directly inherits.
  */
-fun SourceSetName.withUpstream(
-  hasSourceSets: HasSourceSets
-): List<SourceSetName> = hasSourceSets.sourceSets[this]
-  ?.withUpstream()
-  .orEmpty()
+fun SourceSetName.withUpstream(hasSourceSets: HasSourceSets): List<SourceSetName> =
+  hasSourceSets.sourceSets[this]
+    ?.withUpstream()
+    .orEmpty()
 
-fun SourceSetName.withDownStream(
-  hasSourceSets: HasSourceSets
-): List<SourceSetName> = hasSourceSets.sourceSets[this]
-  ?.withDownstream()
-  .orEmpty()
+fun SourceSetName.withDownStream(hasSourceSets: HasSourceSets): List<SourceSetName> =
+  hasSourceSets.sourceSets[this]
+    ?.withDownstream()
+    .orEmpty()
 
-fun SourceSetName.inheritsFrom(
-  other: SourceSetName,
-  hasSourceSets: HasSourceSets
-): Boolean {
+fun SourceSetName.inheritsFrom(other: SourceSetName, hasSourceSets: HasSourceSets): Boolean {
 
   // SourceSets can't inherit from themselves, so quit early and skip some lookups.
   if (this == other) return false

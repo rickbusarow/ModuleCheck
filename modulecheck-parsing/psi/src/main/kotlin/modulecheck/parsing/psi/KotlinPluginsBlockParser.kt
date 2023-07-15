@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
+import modulecheck.parsing.psi.internal.childrenOfTypeBreadthFirst
 import modulecheck.parsing.psi.internal.nameSafe
 import modulecheck.reporting.logging.McLogger
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
@@ -33,12 +33,12 @@ class KotlinPluginsBlockParser @Inject constructor(
   private val logger: McLogger
 ) {
 
-  @Suppress("ReturnCount")
+  /** @return all `plugins` blocks for the build file */
   fun parse(file: KtFile): KotlinPluginsBlock? {
 
     var block: KotlinPluginsBlock? = null
 
-    file.getChildrenOfTypeRecursive<KtCallExpression>()
+    file.childrenOfTypeBreadthFirst<KtCallExpression>()
       .firstOrNull { it.nameSafe() == "plugins" }
       ?.let { fullBlock ->
 
@@ -81,6 +81,7 @@ class KotlinPluginsBlockParser @Inject constructor(
                   suppressed = suppressed + blockSuppressed
                 )
               }
+
               is KtBinaryExpression,
               is KtCallExpression,
               is KtNameReferenceExpression -> {

@@ -64,13 +64,14 @@ data class UnusedDependencyFinding(
     }
 
   override fun toString(): String {
-    return """UnusedDependency(
-    	dependentPath='$dependentPath',
-    	buildFile=$buildFile,
-    	dependency=$dependency,
-    	dependencyIdentifier='$dependencyIdentifier',
-    	configurationName=$configurationName
-    )
+    return """
+      UnusedDependency(
+      	dependentPath='$dependentPath',
+      	buildFile=$buildFile,
+      	dependency=$dependency,
+      	dependencyIdentifier='$dependencyIdentifier',
+      	configurationName=$configurationName
+      )
     """.trimIndent()
   }
 

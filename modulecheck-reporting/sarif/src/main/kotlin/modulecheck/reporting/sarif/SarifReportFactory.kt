@@ -35,10 +35,7 @@ class SarifReportFactory @Inject constructor(
   private val projectRoot: ProjectRoot
 ) {
 
-  fun create(
-    findingResults: List<Finding.FindingResult>,
-    rules: List<ModuleCheckRule<*>>
-  ): String {
+  fun create(findingResults: List<Finding.FindingResult>, rules: List<ModuleCheckRule<*>>): String {
 
     val sarifRules = rules.map { rule ->
       rule.toSarifRule()

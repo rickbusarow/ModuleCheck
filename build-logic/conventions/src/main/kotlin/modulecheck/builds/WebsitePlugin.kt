@@ -66,9 +66,7 @@ abstract class WebsitePlugin : Plugin<Project> {
       }
     }
 
-    /**
-     * Updates the "moduleCheck" version in package.json.
-     */
+    /** Updates the "moduleCheck" version in package.json. */
     target.tasks.register("updateWebsitePackageJsonVersion") { task ->
 
       task.description = "Updates the \"ModuleCheck\" version in package.json"
@@ -104,9 +102,7 @@ abstract class WebsitePlugin : Plugin<Project> {
       }
     }
 
-    /**
-     * Updates the "moduleCheck" version in package.json.
-     */
+    /** Updates the "moduleCheck" version in package.json. */
     target.tasks.register("checkWebsitePackageJsonVersion") { task ->
 
       task.description = "Checks the \"ModuleCheck\" version in package.json"

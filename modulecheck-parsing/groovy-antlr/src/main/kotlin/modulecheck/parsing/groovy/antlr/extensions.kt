@@ -20,6 +20,8 @@ import groovyjarjarantlr4.v4.runtime.ParserRuleContext
 import groovyjarjarantlr4.v4.runtime.RuleContext
 import groovyjarjarantlr4.v4.runtime.misc.Interval
 import groovyjarjarantlr4.v4.runtime.tree.RuleNode
+import groovyjarjarantlr4.v4.runtime.tree.Tree
+import modulecheck.utils.traversal.Traversals
 import org.apache.groovy.parser.antlr4.GroovyParser.AssignmentExprAltContext
 import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementsContext
@@ -39,8 +41,6 @@ import org.apache.groovy.parser.antlr4.GroovyParser.ScriptStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ScriptStatementsContext
 import org.apache.groovy.parser.antlr4.GroovyParser.SepContext
 import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
-import kotlin.reflect.KClass
-import kotlin.reflect.safeCast
 
 internal inline fun <reified T> RuleContext.parentOfType(): T? {
   return generateSequence(this as? RuleContext?) { it.parent }
@@ -48,27 +48,66 @@ internal inline fun <reified T> RuleContext.parentOfType(): T? {
     .firstOrNull()
 }
 
-internal inline fun <reified T : Any> ParserRuleContext.childrenOfTypeRecursive(): Sequence<T> {
-  return childrenOfTypeRecursive(T::class)
+/**
+ * @return a sequence of child nodes of this [Tree] in depth-first
+ *   order. The sequence starts with the first child node of this [Tree],
+ *   followed by the first child node of the first child node, and so on.
+ */
+fun Tree.childrenDepthFirst(): Sequence<Tree> {
+  return Traversals.depthFirstTraversal(this) { children().toList() }
 }
 
-internal fun <T : Any> ParserRuleContext.childrenOfTypeRecursive(
-  clazz: KClass<T>
-): Sequence<T> {
+/**
+ * @return a sequence of child nodes of type [T] of this [Tree] in depth-first
+ *   order. The sequence starts with the first child node of this [Tree],
+ *   followed by the first child node of the first child node, and so on.
+ */
+inline fun <reified T : Tree> Tree.childrenOfTypeDepthFirst(): Sequence<T> {
+  return Traversals.depthFirstTraversal(this) { children().toList() }
+    .filterIsInstance<T>()
+}
 
-  val childrenSequence = children
-    .orEmpty()
-    .asSequence()
-    .flatMap { child ->
-      when (child) {
-        is ParserRuleContext -> child.childrenOfTypeRecursive(clazz)
-        else -> sequenceOf(child)
-      }
-    }
+/**
+ * @param predicate stops visiting child nodes of the given node once this predicate returns false
+ * @return a sequence of child nodes of this [Tree] in depth-first order that satisfy
+ *   the given [predicate]. The sequence starts with the first child node of this
+ *   [Tree], followed by the first child node of the first child node, and so on.
+ */
+fun Tree.childrenDepthFirst(predicate: (Tree) -> Boolean): Sequence<Tree> =
+  Traversals.depthFirstTraversal(this) { children().filter(predicate).toList() }
 
-  return sequenceOf(this)
-    .plus(childrenSequence)
-    .mapNotNull { clazz.safeCast(it) }
+/**
+ * @return a sequence of child nodes of type [T] of this [Tree] in breadth-first
+ *   order. The sequence starts with the first child node of this [Tree],
+ *   followed by the first child node of the second child node, and so on.
+ */
+inline fun <reified T : Tree> Tree.childrenOfTypeBreadthFirst(): Sequence<T> {
+  return Traversals.breadthFirstTraversal(this) { children().toList() }
+    .filterIsInstance<T>()
+}
+
+/**
+ * @return a sequence of child nodes of this [Tree] in breadth-first
+ *   order. The sequence starts with all the child nodes of this [Tree],
+ *   followed by all the child nodes of the first child node, and so on.
+ */
+fun Tree.childrenBreadthFirst(): Sequence<Tree> {
+  return Traversals.breadthFirstTraversal(this) { children().toList() }
+}
+
+/**
+ * @param [predicate] stops visiting child nodes of the parent
+ *   of the given node once this predicate returns false
+ * @return a sequence of child nodes of this [Tree] in breadth-first order that
+ *   satisfy the given [predicate]. The sequence starts with all the child nodes of
+ *   this [Tree], followed by all the child nodes of the first child node, and so on.
+ */
+fun Tree.childrenBreadthFirst(predicate: (Tree) -> Boolean): Sequence<Tree> =
+  Traversals.breadthFirstTraversal(this) { children().filter(predicate).toList() }
+
+/** @return a sequence of the children [Tree] nodes. */
+fun Tree.children(): Sequence<Tree> = sequence {
+  (0 until childCount).forEach { yield(getChild(it)) }
 }
 
 internal inline fun <reified T> ParserRuleContext.childrenOfType(): List<T> {

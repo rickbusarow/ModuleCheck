@@ -40,8 +40,7 @@ fun HasProjectPath.project(projectCache: ProjectCache): McProject =
  * @since 0.12.0
  */
 fun HasProjectPath.project(hasProjectCache: HasProjectCache): McProject =
-  hasProjectCache.projectCache
-    .getValue(projectPath)
+  hasProjectCache.projectCache.getValue(projectPath)
 
 /**
  * @param projectCache the project cache which contains the desired project
@@ -49,9 +48,8 @@ fun HasProjectPath.project(hasProjectCache: HasProjectCache): McProject =
  * @return the project associated with the path in the receiver
  * @since 0.12.0
  */
-fun DownstreamDependency.project(
-  projectCache: ProjectCache
-): McProject = projectCache.getValue(dependentProjectPath)
+fun DownstreamDependency.project(projectCache: ProjectCache): McProject =
+  projectCache.getValue(dependentProjectPath)
 
 /**
  * @param hasProjectCache has the project cache which contains the desired project
@@ -59,6 +57,5 @@ fun DownstreamDependency.project(
  * @return the project associated with the path in the receiver
  * @since 0.12.0
  */
-fun DownstreamDependency.project(
-  hasProjectCache: HasProjectCache
-): McProject = hasProjectCache.projectCache.getValue(dependentProjectPath)
+fun DownstreamDependency.project(hasProjectCache: HasProjectCache): McProject =
+  hasProjectCache.projectCache.getValue(dependentProjectPath)

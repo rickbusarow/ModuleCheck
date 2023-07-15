@@ -29,7 +29,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
   val dagger = "com.google.dagger:dagger-compiler:2.40.5"
 
   @Test
-  fun `unused from kapt configuration without autoCorrect should fail`() {
+  fun `unused from kapt configuration without autoCorrect should fail`() = test {
 
     val app = kotlinProject(":app") {
       hasKapt = true
@@ -83,15 +83,16 @@ class UnusedKaptProcessorTest : RunnerTest() {
   }
 
   @Test
-  fun `unused from kapt configuration with alternate plugin id without autoCorrect should fail`() {
+  fun `unused from kapt configuration with alternate plugin id without autoCorrect should fail`() =
+    test {
 
-    val app = kotlinProject(":app") {
-      hasKapt = true
+      val app = kotlinProject(":app") {
+        hasKapt = true
 
-      addExternalDependency(ConfigurationName.kapt, dagger)
+        addExternalDependency(ConfigurationName.kapt, dagger)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           id("kotlin-jvm")
           id("kotlin-kapt")
@@ -101,14 +102,14 @@ class UnusedKaptProcessorTest : RunnerTest() {
           kapt("$dagger")
         }
         """
+        }
       }
-    }
 
-    run(
-      autoCorrect = false
-    ).isSuccess shouldBe false
+      run(
+        autoCorrect = false
+      ).isSuccess shouldBe false
 
-    app.buildFile shouldHaveText """
+      app.buildFile shouldHaveText """
         plugins {
           id("kotlin-jvm")
           id("kotlin-kapt")
@@ -119,32 +120,33 @@ class UnusedKaptProcessorTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":app" to listOf(
-        unusedKaptProcessor(
-          fixed = false,
-          configuration = "kapt",
-          dependency = dagger,
-          position = "7, 3"
-        ),
-        unusedKaptPlugin(
-          fixed = false,
-          dependency = "org.jetbrains.kotlin.kapt",
-          position = "3, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":app" to listOf(
+          unusedKaptProcessor(
+            fixed = false,
+            configuration = "kapt",
+            dependency = dagger,
+            position = "7, 3"
+          ),
+          unusedKaptPlugin(
+            fixed = false,
+            dependency = "org.jetbrains.kotlin.kapt",
+            position = "3, 3"
+          )
         )
       )
-    )
-  }
+    }
 
   @Test
-  fun `processor in non-kapt configuration without autoCorrect should pass without changes`() {
+  fun `processor in non-kapt configuration without autoCorrect should pass without changes`() =
+    test {
 
-    val app = kotlinProject(":app") {
+      val app = kotlinProject(":app") {
 
-      addExternalDependency(ConfigurationName.api, dagger)
+        addExternalDependency(ConfigurationName.api, dagger)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -153,14 +155,14 @@ class UnusedKaptProcessorTest : RunnerTest() {
           api("$dagger")
         }
         """
+        }
       }
-    }
 
-    run(
-      autoCorrect = false
-    ).isSuccess shouldBe true
+      run(
+        autoCorrect = false
+      ).isSuccess shouldBe true
 
-    app.buildFile shouldHaveText """
+      app.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -170,11 +172,11 @@ class UnusedKaptProcessorTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `used in main with main kapt should pass without changes`() {
+  fun `used in main with main kapt should pass without changes`() = test {
 
     val app = kotlinProject(":app") {
       hasKapt = true
@@ -219,11 +221,11 @@ class UnusedKaptProcessorTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `used in test with test kapt should pass without changes`() {
+  fun `used in test with test kapt should pass without changes`() = test {
 
     val app = kotlinProject(":app") {
       hasKapt = true
@@ -269,11 +271,11 @@ class UnusedKaptProcessorTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `used in debug with main kapt should be auto-corrected to kaptDebug as overshot`() {
+  fun `used in debug with main kapt should be auto-corrected to kaptDebug as overshot`() = test {
 
     val app = androidLibrary(":app", "com.modulecheck.app") {
       hasKapt = true
@@ -339,15 +341,16 @@ class UnusedKaptProcessorTest : RunnerTest() {
   }
 
   @Test
-  fun `unused with main kapt with autoCorrect and no other processors should remove processor and plugin`() {
+  fun `unused with main kapt with autoCorrect and no other processors should remove processor and plugin`() =
+    test {
 
-    val app = kotlinProject(":app") {
-      hasKapt = true
+      val app = kotlinProject(":app") {
+        hasKapt = true
 
-      addExternalDependency(ConfigurationName.kapt, dagger)
+        addExternalDependency(ConfigurationName.kapt, dagger)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -357,12 +360,12 @@ class UnusedKaptProcessorTest : RunnerTest() {
           kapt("$dagger")
         }
         """
+        }
       }
-    }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    app.buildFile shouldHaveText """
+      app.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
         // kotlin("kapt")  // ModuleCheck finding [unused-kapt-plugin]
@@ -373,33 +376,34 @@ class UnusedKaptProcessorTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":app" to listOf(
-        unusedKaptProcessor(
-          fixed = true,
-          configuration = "kapt",
-          dependency = dagger,
-          position = "7, 3"
-        ),
-        unusedKaptPlugin(
-          fixed = true,
-          dependency = "org.jetbrains.kotlin.kapt",
-          position = "3, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":app" to listOf(
+          unusedKaptProcessor(
+            fixed = true,
+            configuration = "kapt",
+            dependency = dagger,
+            position = "7, 3"
+          ),
+          unusedKaptPlugin(
+            fixed = true,
+            dependency = "org.jetbrains.kotlin.kapt",
+            position = "3, 3"
+          )
         )
       )
-    )
-  }
+    }
 
   @Test
-  fun `unused with main kapt with alternate plugin id with autoCorrect and no other processors should remove processor and plugin`() {
+  fun `unused with main kapt with alternate plugin id with autoCorrect and no other processors should remove processor and plugin`() =
+    test {
 
-    val app = kotlinProject(":app") {
-      hasKapt = true
+      val app = kotlinProject(":app") {
+        hasKapt = true
 
-      addExternalDependency(ConfigurationName.kapt, dagger)
+        addExternalDependency(ConfigurationName.kapt, dagger)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           id("kotlin-jvm")
           id("kotlin-kapt")
@@ -409,12 +413,12 @@ class UnusedKaptProcessorTest : RunnerTest() {
           kapt("$dagger")
         }
         """
+        }
       }
-    }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    app.buildFile shouldHaveText """
+      app.buildFile shouldHaveText """
       plugins {
         id("kotlin-jvm")
         // id("kotlin-kapt")  // ModuleCheck finding [unused-kapt-plugin]
@@ -425,25 +429,25 @@ class UnusedKaptProcessorTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":app" to listOf(
-        unusedKaptProcessor(
-          fixed = true,
-          configuration = "kapt",
-          dependency = dagger,
-          position = "7, 3"
-        ),
-        unusedKaptPlugin(
-          fixed = true,
-          dependency = "org.jetbrains.kotlin.kapt",
-          position = "3, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":app" to listOf(
+          unusedKaptProcessor(
+            fixed = true,
+            configuration = "kapt",
+            dependency = dagger,
+            position = "7, 3"
+          ),
+          unusedKaptPlugin(
+            fixed = true,
+            dependency = "org.jetbrains.kotlin.kapt",
+            position = "3, 3"
+          )
         )
       )
-    )
-  }
+    }
 
   @Test
-  fun `unused processor should not be unused if suppressed`() {
+  fun `unused processor should not be unused if suppressed`() = test {
 
     val app = kotlinProject(":app") {
       hasKapt = true
@@ -479,6 +483,6 @@ class UnusedKaptProcessorTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 }

@@ -30,9 +30,13 @@ const val VERSION_NAME = "0.13.0-SNAPSHOT"
 const val SOURCE_WEBSITE = "https://github.com/rbusarow/ModuleCheck"
 const val DOCS_WEBSITE = "https://rbusarow.github.io/ModuleCheck"
 
-/**
- * "1.6", "1.7", "1.8", etc.
- */
+var Project.artifactId: String?
+  get() = extras.getOrNullAs("artifactId")
+  set(value) {
+    extras.set("artifactId", value)
+  }
+
+/** "1.6", "1.7", "1.8", etc. */
 val Project.KOTLIN_API: String
   get() = libsCatalog.version("kotlinApi")
 
@@ -52,9 +56,7 @@ val Project.JVM_TARGET: String
 val Project.JDK: String
   get() = libsCatalog.version("jdk")
 
-/**
- * `6`, `8`, `11`, etc.
- */
+/** `6`, `8`, `11`, etc. */
 val Project.JVM_TARGET_INT: Int
   get() = JVM_TARGET.substringAfterLast('.').toInt()
 
@@ -97,4 +99,17 @@ fun VersionCatalog.dependency(alias: String): Provider<MinimalExternalModuleDepe
  */
 fun VersionCatalog.version(alias: String): String {
   return findVersion(alias).get().requiredVersion
+}
+
+/**
+ * non-dsl version of `libs.findPlugin(_____).get().get().pluginId`
+ *
+ * ex:
+ *
+ * ```
+ * val anvilPluginId = project.libsCatalog.pluginId("anvil")
+ * ```
+ */
+fun VersionCatalog.pluginId(alias: String): String {
+  return findPlugin(alias).get().get().pluginId
 }

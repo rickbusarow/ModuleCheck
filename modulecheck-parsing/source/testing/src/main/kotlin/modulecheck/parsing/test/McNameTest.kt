@@ -39,13 +39,12 @@ import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqNam
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.parsing.source.asDeclaredName
-import modulecheck.testing.FancyShould
-import modulecheck.testing.trimmedShouldBe
+import modulecheck.testing.assert.TrimmedAsserts
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.trace.Trace
 
-interface McNameTest : FancyShould {
+interface McNameTest : TrimmedAsserts {
 
   val defaultLanguage: CompatibleLanguage
 
@@ -102,34 +101,31 @@ interface McNameTest : FancyShould {
       fun kotlin(
         name: String,
         packageName: PackageName = PackageName("com.subject")
-      ): QualifiedDeclaredName =
-        DeclaredName.kotlin(
-          packageName,
-          name.stripPackageNameFromFqName(packageName)
-        )
-          .also { declarations.add(it) }
+      ): QualifiedDeclaredName = DeclaredName.kotlin(
+        packageName,
+        name.stripPackageNameFromFqName(packageName)
+      )
+        .also { declarations.add(it) }
 
       fun java(
         name: String,
         packageName: PackageName = PackageName("com.subject")
-      ): QualifiedDeclaredName =
-        DeclaredName.java(
-          packageName,
-          name.stripPackageNameFromFqName(packageName)
-        )
-          .also { declarations.add(it) }
+      ): QualifiedDeclaredName = DeclaredName.java(
+        packageName,
+        name.stripPackageNameFromFqName(packageName)
+      )
+        .also { declarations.add(it) }
 
       fun agnostic(
         name: String,
         packageName: PackageName = PackageName("com.subject")
-      ): QualifiedDeclaredName =
-        name.stripPackageNameFromFqName(packageName)
-          .asDeclaredName(packageName)
-          .also { declarations.add(it) }
+      ): QualifiedDeclaredName = name.stripPackageNameFromFqName(packageName)
+        .asDeclaredName(packageName)
+        .also { declarations.add(it) }
     }
   }
 
-  infix fun JvmFile.shouldBe(config: JvmFileBuilder.() -> Unit) {
+  infix fun JvmFile.shouldBeJvmFile(config: JvmFileBuilder.() -> Unit) {
 
     val other = JvmFileBuilder().also { it.config() }
 

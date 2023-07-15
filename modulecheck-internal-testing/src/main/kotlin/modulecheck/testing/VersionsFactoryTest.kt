@@ -15,45 +15,85 @@
 
 package modulecheck.testing
 
+import io.kotest.assertions.asClue
+import io.kotest.matchers.collections.shouldNotBeEmpty
+import modulecheck.utils.letIf
+import modulecheck.utils.requireNotNull
+import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
+import java.lang.StackWalker.StackFrame
+import java.util.stream.Stream
 
 /**
  * Convenience interface for a test which uses [VersionsFactory]
- * in order to create [dynamicTest]s for a JUnit5 test factory.
+ * in order to create [DynamicTest]s for a JUnit5 test factory.
  */
-interface VersionsFactoryTest : VersionsFactory {
+interface VersionsFactoryTest<T> :
+  VersionsFactory,
+  HasTestEnvironment<T>
+  where T : TestEnvironment,
+        T : HasTestVersions {
 
-  /**
-   * @return the latest version of valid dependencies which is not excluded by the current rules
-   */
+  /** @return the latest version of valid dependencies which is not excluded by the current rules */
   fun defaultTestVersions(): TestVersions {
     return nonExhaustiveDefaults()
   }
 
   /**
-   * @return a list of [DynamicTest] from all valid versions combinations,
+   * @return a stream of [DynamicTest] from all valid versions combinations,
    *   optionally filtered by [filter]. [action] is performed against each element.
    */
+  @SkipInStackTrace
   fun factory(
     exhaustive: Boolean = this.exhaustive,
-    filter: (TestVersions) -> Boolean = { true },
-    action: TestVersions.() -> Unit
-  ): List<DynamicTest> {
+    filter: ((TestVersions) -> Boolean)? = null,
+    action: suspend T.() -> Unit
+  ): Stream<out DynamicNode> = testFactory {
 
-    return versions(exhaustive = exhaustive)
-      .filter { filter(it) }
-      .map { subject ->
-        dynamicTest(subject, subject.toString(), action)
+    testVersionsPrivate(exhaustive, filter)
+      .asTests { subject ->
+        test(
+          params = subject.newParams(rootStackFrame),
+          action = action
+        )
       }
   }
 
   /**
-   * hook for performing setup/teardown for each test within a base test class
-   *
+   * @return a stream of [DynamicNode] from all valid versions combinations,
+   *   optionally filtered by [filter]. [builder] is performed against each element.
    */
-  fun dynamicTest(
-    subject: TestVersions,
-    testName: String,
-    action: (TestVersions) -> Unit
-  ): DynamicTest
+  @SkipInStackTrace
+  fun factoryContainers(
+    exhaustive: Boolean = this.exhaustive,
+    filter: ((TestVersions) -> Boolean)? = null,
+    builder: TestNodeBuilder.(TestVersions) -> Unit
+  ): Stream<out DynamicNode> = testFactory {
+    testVersionsPrivate(exhaustive, filter)
+      .asContainers { testVersions -> builder(testVersions) }
+  }
+
+  /** hook for creating a custom TestEnvironment within a base test class */
+  fun TestVersions.newParams(stackFrame: StackFrame): TestEnvironmentParams
 }
+
+@PublishedApi
+internal fun VersionsFactoryTest<*>.testVersionsPrivate(
+  exhaustive: Boolean,
+  filter: ((TestVersions) -> Boolean)?
+): List<TestVersions> = versions(exhaustive = exhaustive)
+  .letIf(filter != null) { versions ->
+
+    val (included, excluded) = allVersions
+      .partition(filter.requireNotNull())
+
+    "The filter excludes all possible versions".asClue {
+      included.shouldNotBeEmpty()
+    }
+
+    "The filter does not exclude any versions".asClue {
+      excluded.shouldNotBeEmpty()
+    }
+
+    versions.filter(filter.requireNotNull())
+  }

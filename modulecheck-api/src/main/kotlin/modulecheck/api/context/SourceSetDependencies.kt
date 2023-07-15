@@ -37,9 +37,7 @@ data class SourceSetDependencies(
     sourceSetName: SourceSetName
   ): List<TransitiveProjectDependency> {
 
-    fun sourceConfigs(
-      isTestFixtures: Boolean
-    ): Set<SourceSetName> = setOfNotNull(
+    fun sourceConfigs(isTestFixtures: Boolean): Set<SourceSetName> = setOfNotNull(
       SourceSetName.MAIN,
       SourceSetName.TEST_FIXTURES.takeIf { isTestFixtures }
     )

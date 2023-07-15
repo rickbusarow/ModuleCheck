@@ -19,7 +19,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-groovy-antlr"
+  published(
+    artifactId = "modulecheck-parsing-groovy-antlr"
+  )
 }
 
 dependencies {
@@ -38,8 +40,8 @@ dependencies {
   implementation(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-utils:stdlib"))
+  implementation(project(path = ":modulecheck-utils:traversal"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 

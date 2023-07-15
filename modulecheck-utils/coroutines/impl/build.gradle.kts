@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-utils-coroutines-impl"
+  published(
+    artifactId = "modulecheck-utils-coroutines-impl"
+  )
   anvil()
 }
 
@@ -28,10 +30,10 @@ dependencies {
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
 
-  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-utils:coroutines:api"))
 
-  testImplementation(libs.bundles.hermit)
+  implementation(project(path = ":modulecheck-dagger"))
+
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.square.turbine)

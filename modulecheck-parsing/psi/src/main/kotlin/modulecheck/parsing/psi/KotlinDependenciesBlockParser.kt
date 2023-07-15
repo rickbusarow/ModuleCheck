@@ -23,7 +23,7 @@ import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.gradle.dsl.ProjectAccessor
 import modulecheck.parsing.gradle.dsl.buildFileInvocationText
 import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
-import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
+import modulecheck.parsing.psi.internal.childrenOfTypeBreadthFirst
 import modulecheck.parsing.psi.internal.nameSafe
 import modulecheck.reporting.logging.McLogger
 import modulecheck.utils.requireNotNull
@@ -46,14 +46,14 @@ class KotlinDependenciesBlockParser @Inject constructor(
   private val projectDependency: ProjectDependency.Factory
 ) {
 
-  @Suppress("ReturnCount")
+  /** @return all `dependencies` blocks for the project modeled by [invokesConfigurationNames] */
   suspend fun parse(
     invokesConfigurationNames: InvokesConfigurationNames
   ): List<KotlinDependenciesBlock> {
 
     val file = psiFileFactory.createKotlin(invokesConfigurationNames.buildFile)
 
-    val blocks = file.getChildrenOfTypeRecursive<KtCallExpression>()
+    return file.childrenOfTypeBreadthFirst<KtCallExpression>()
       .filter { it.nameSafe() == "dependencies" }
       .filterNot { it.inBuildscript() }
       .mapNotNull { fullBlock ->
@@ -93,15 +93,13 @@ class KotlinDependenciesBlockParser @Inject constructor(
               }
 
               is KtCallExpression -> {
-                element.parseStatements(block, listOf())
+                element.parseStatements(block, emptyList())
               }
             }
           }
 
         block
-      }
-
-    return blocks
+      }.toList()
   }
 }
 
@@ -171,32 +169,30 @@ private fun KtCallExpression.parseStatements(
   )
 }
 
-/* ktlint-disable no-multi-spaces */
-
 internal fun KtCallExpression.getStringModuleNameOrNull(): Pair<String, String>? {
-  return this                                             // implementation(project(path = ":foo:bar"))
-    .valueArguments                                       // [project(path = ":foo:bar")]
-    .firstOrNull()                                        // project(path = ":foo:bar")
-    ?.getChildOfType<KtCallExpression>()                  // project(path = ":foo:bar")
+  return this // implementation(project(path = ":foo:bar"))
+    .valueArguments // [project(path = ":foo:bar")]
+    .firstOrNull() // project(path = ":foo:bar")
+    ?.getChildOfType<KtCallExpression>() // project(path = ":foo:bar")
     ?.let { projectAccessorCallExpression ->
 
       val projectAccessor = projectAccessorCallExpression.text
 
       projectAccessorCallExpression
-        .valueArguments                                   // [path = ":foo:bar"]
-        .firstOrNull()                                    // path = ":foo:bar"
-        ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
-        ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
+        .valueArguments // [path = ":foo:bar"]
+        .firstOrNull() // path = ":foo:bar"
+        ?.getChildOfType<KtStringTemplateExpression>() // ":foo:bar"
+        ?.getChildOfType<KtLiteralStringTemplateEntry>() // :foo:bar
         ?.text
         ?.let { moduleRef -> projectAccessor to moduleRef }
     }
 }
 
 internal fun KtCallExpression.getTypeSafeModuleNameOrNull(): Pair<String, String>? {
-  return this                                       // implementation(projects.foo.bar)
-    .valueArguments                                 // [projects.foo.bar]
-    .firstOrNull()                                  // projects.foo.bar
-    ?.getChildOfType<KtDotQualifiedExpression>()    // projects.foo.bar
+  return this // implementation(projects.foo.bar)
+    .valueArguments // [projects.foo.bar]
+    .firstOrNull() // projects.foo.bar
+    ?.getChildOfType<KtDotQualifiedExpression>() // projects.foo.bar
     ?.let { projectAccessorCallExpression ->
 
       val projectAccessor = projectAccessorCallExpression.text
@@ -209,35 +205,35 @@ internal fun KtCallExpression.getTypeSafeModuleNameOrNull(): Pair<String, String
 }
 
 internal fun KtCallExpression.getStringTestFixturesModuleNameOrNull(): Pair<String, String>? {
-  return this                                             // implementation(testFixtures(project(path = ":foo:bar")))
-    .valueArguments                                       // [testFixtures(project(path = ":foo:bar"))]
-    .firstOrNull()                                        // testFixtures(project(path = ":foo:bar"))
-    ?.getChildOfType<KtCallExpression>()                  // testFixtures(project(path = ":foo:bar"))
-    ?.valueArguments                                      // [project(path = ":foo:bar")]
-    ?.firstOrNull()                                       // project(path = ":foo:bar")
-    ?.getChildOfType<KtCallExpression>()                  // project(path = ":foo:bar")
+  return this // implementation(testFixtures(project(path = ":foo:bar")))
+    .valueArguments // [testFixtures(project(path = ":foo:bar"))]
+    .firstOrNull() // testFixtures(project(path = ":foo:bar"))
+    ?.getChildOfType<KtCallExpression>() // testFixtures(project(path = ":foo:bar"))
+    ?.valueArguments // [project(path = ":foo:bar")]
+    ?.firstOrNull() // project(path = ":foo:bar")
+    ?.getChildOfType<KtCallExpression>() // project(path = ":foo:bar")
     ?.let { projectAccessorCallExpression ->
 
       val projectAccessor = projectAccessorCallExpression.text
 
       projectAccessorCallExpression
-        .valueArguments                                   // [path = ":foo:bar"]
-        .firstOrNull()                                    // path = ":foo:bar"
-        ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
-        ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
+        .valueArguments // [path = ":foo:bar"]
+        .firstOrNull() // path = ":foo:bar"
+        ?.getChildOfType<KtStringTemplateExpression>() // ":foo:bar"
+        ?.getChildOfType<KtLiteralStringTemplateEntry>() // :foo:bar
         ?.text
         ?.let { moduleRef -> projectAccessor to moduleRef }
     }
 }
 
 internal fun KtCallExpression.getTypeSafeTestFixturesModuleNameOrNull(): Pair<String, String>? {
-  return this                                       // implementation(testFixtures(projects.foo.bar))
-    .valueArguments                                 // [testFixtures(projects.foo.bar)]
-    .firstOrNull()                                  // testFixtures(projects.foo.bar)
-    ?.getChildOfType<KtCallExpression>()            // testFixtures(projects.foo.bar)
-    ?.valueArguments                                // [projects.foo.bar]
-    ?.firstOrNull()                                 // projects.foo.bar
-    ?.getChildOfType<KtDotQualifiedExpression>()    // projects.foo.bar
+  return this // implementation(testFixtures(projects.foo.bar))
+    .valueArguments // [testFixtures(projects.foo.bar)]
+    .firstOrNull() // testFixtures(projects.foo.bar)
+    ?.getChildOfType<KtCallExpression>() // testFixtures(projects.foo.bar)
+    ?.valueArguments // [projects.foo.bar]
+    ?.firstOrNull() // projects.foo.bar
+    ?.getChildOfType<KtDotQualifiedExpression>() // projects.foo.bar
     ?.let { projectAccessorCallExpression ->
 
       val projectAccessor = projectAccessorCallExpression.text
@@ -250,23 +246,21 @@ internal fun KtCallExpression.getTypeSafeTestFixturesModuleNameOrNull(): Pair<St
     }
 }
 
-@Suppress("MaxLineLength")
 internal fun KtCallExpression.getMavenCoordinatesOrNull(): MavenCoordinates? {
-  return this                                         // implementation(dependencyNotation = "com.google.dagger:dagger:2.32")
-    .valueArguments                                   // [dependencyNotation = "com.google.dagger:dagger:2.32"]
-    .firstOrNull()                                    // dependencyNotation = "com.google.dagger:dagger:2.32"
-    ?.getChildOfType<KtStringTemplateExpression>()    // "com.google.dagger:dagger:2.32"
-    ?.getChildOfType<KtLiteralStringTemplateEntry>()  // com.google.dagger:dagger:2.32
-    ?.text                                            // com.google.dagger:dagger:2.32
+  return this // implementation(dependencyNotation = "com.google.dagger:dagger:2.32")
+    .valueArguments // [dependencyNotation = "com.google.dagger:dagger:2.32"]
+    .firstOrNull() // dependencyNotation = "com.google.dagger:dagger:2.32"
+    ?.getChildOfType<KtStringTemplateExpression>() // "com.google.dagger:dagger:2.32"
+    ?.getChildOfType<KtLiteralStringTemplateEntry>() // com.google.dagger:dagger:2.32
+    ?.text // com.google.dagger:dagger:2.32
     ?.let { MavenCoordinates.parseOrNull(it) }
 }
 
-@Suppress("MaxLineLength")
 internal fun KtCallExpression.getUnknownArgumentOrNull(): String? {
-  return this                                         // implementation(libs.ktlint)
-    .valueArguments                                   // [libs.ktlint]
-    .firstOrNull()                                    // libs.ktlint
-    ?.text                                            // libs.ktlint
+  return this // implementation(libs.ktlint)
+    .valueArguments // [libs.ktlint]
+    .firstOrNull() // libs.ktlint
+    ?.text // libs.ktlint
 }
 
 inline fun blockExpressionRecursiveVisitor(

@@ -1,0 +1,55 @@
+public final class anvil/hint/binding/modulecheck/rule/impl/RealFindingResultFactoryKt {
+	public static final fun getModulecheck_rule_impl_RealFindingResultFactory_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_rule_impl_RealFindingResultFactory_scope0 ()Lkotlin/reflect/KClass;
+}
+
+public final class anvil/hint/merge/modulecheck/rule/impl/FindingFactoryModuleKt {
+	public static final fun getModulecheck_rule_impl_FindingFactoryModule_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_rule_impl_FindingFactoryModule_scope0 ()Lkotlin/reflect/KClass;
+}
+
+public final class modulecheck/rule/impl/FindingFactoryImpl : modulecheck/rule/FindingFactory, modulecheck/utils/trace/HasTraceTags {
+	public fun <init> (Ljava/util/List;)V
+	public fun evaluateFixable (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun evaluateReports (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun evaluateSorts (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getTags ()Ljava/lang/Iterable;
+}
+
+public final class modulecheck/rule/impl/FindingFactoryImpl_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/rule/impl/FindingFactoryImpl_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/rule/impl/FindingFactoryImpl_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/FindingFactoryImpl;
+	public static final fun newInstance (Ljava/util/List;)Lmodulecheck/rule/impl/FindingFactoryImpl;
+}
+
+public final class modulecheck/rule/impl/FindingFactoryImpl_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/rule/impl/FindingFactoryImpl_Factory;
+	public final fun newInstance (Ljava/util/List;)Lmodulecheck/rule/impl/FindingFactoryImpl;
+}
+
+public abstract interface class modulecheck/rule/impl/FindingFactoryModule {
+	public abstract fun bindFindingFactory (Lmodulecheck/rule/impl/FindingFactoryImpl;)Lmodulecheck/rule/FindingFactory;
+}
+
+public final class modulecheck/rule/impl/ProjectQueue : modulecheck/utils/trace/HasTraceTags {
+	public fun <init> (Ljava/util/List;)V
+	public fun getTags ()Ljava/lang/Iterable;
+	public final fun process (Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class modulecheck/rule/impl/RealFindingResultFactory : modulecheck/finding/FindingResultFactory {
+	public fun <init> ()V
+	public fun create (Ljava/util/List;ZZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/rule/impl/RealFindingResultFactory_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/rule/impl/RealFindingResultFactory_Factory;
+	public static final fun create ()Lmodulecheck/rule/impl/RealFindingResultFactory_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/RealFindingResultFactory;
+	public static final fun newInstance ()Lmodulecheck/rule/impl/RealFindingResultFactory;
+}
+

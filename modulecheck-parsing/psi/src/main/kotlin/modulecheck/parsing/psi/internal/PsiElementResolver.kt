@@ -24,9 +24,7 @@ class PsiElementResolver(
   private val project: McProject,
   private val sourceSetName: SourceSetName
 ) {
-  suspend fun declaredNameOrNull(
-    token: PsiElement
-  ): QualifiedDeclaredName? {
+  suspend fun declaredNameOrNull(token: PsiElement): QualifiedDeclaredName? {
     return token.declaredNameOrNull(project, sourceSetName)
   }
 }

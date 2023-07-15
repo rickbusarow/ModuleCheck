@@ -1,0 +1,84 @@
+public final class modulecheck/core/context/OverShotDependencies : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/core/context/OverShotDependencies$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/core/context/OverShotDependencies;
+	public static synthetic fun copy$default (Lmodulecheck/core/context/OverShotDependencies;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/core/context/OverShotDependencies;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-KxNpj4Q (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/core/context/OverShotDependencies$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/core/context/OverShotDependenciesKt {
+	public static final fun overshotDependencies (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/core/context/RedundantDependencies : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/core/context/RedundantDependencies$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/core/context/RedundantDependencies;
+	public static synthetic fun copy$default (Lmodulecheck/core/context/RedundantDependencies;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/core/context/RedundantDependencies;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-YJqa9SQ (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/core/context/RedundantDependencies$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/core/context/RedundantDependenciesKt {
+	public static final fun redundantDependencies (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/core/context/UnusedDependencies : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/core/context/UnusedDependencies$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/core/context/UnusedDependencies;
+	public static synthetic fun copy$default (Lmodulecheck/core/context/UnusedDependencies;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/core/context/UnusedDependencies;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-KxNpj4Q (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/core/context/UnusedDependencies$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/core/context/UnusedDependenciesKt {
+	public static final fun unusedDependencies (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/core/context/UnusedKaptProcessors : modulecheck/project/ProjectContext$Element {
+	public static final field Key Lmodulecheck/core/context/UnusedKaptProcessors$Key;
+	public fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)V
+	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/core/context/UnusedKaptProcessors;
+	public static synthetic fun copy$default (Lmodulecheck/core/context/UnusedKaptProcessors;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/core/context/UnusedKaptProcessors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get-KxNpj4Q (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/core/context/UnusedKaptProcessors$Key : modulecheck/project/ProjectContext$Key {
+	public fun invoke (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/core/context/UnusedKaptProcessorsKt {
+	public static final fun unusedKaptProcessors (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

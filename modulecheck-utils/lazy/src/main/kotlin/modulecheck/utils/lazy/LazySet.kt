@@ -32,9 +32,7 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
 
   suspend fun contains(element: Any?): Boolean
 
-  /**
-   * @return true if the two LazySets have any element in common, otherwise false
-   */
+  /** @return true if the two LazySets have any element in common, otherwise false */
   suspend fun containsAny(other: LazySet<Any?>): Boolean
 
   suspend fun isEmpty(): Boolean
@@ -115,75 +113,53 @@ suspend fun <T : B, E : B, B> LazySet<T>.containsAny(elements: Collection<E>): B
   return elements.any { contains(it) }
 }
 
-fun <E> Flow<E>.asDataSource(
-  priority: Priority = MEDIUM
-): DataSource<E> = dataSource(priority) { toSet() }
+fun <E> Flow<E>.asDataSource(priority: Priority = MEDIUM): DataSource<E> =
+  dataSource(priority) { toSet() }
 
-fun <E> LazyDeferred<Set<E>>.asDataSource(
-  priority: Priority = MEDIUM
-): DataSource<E> = dataSource(priority) { await() }
+fun <E> LazyDeferred<Set<E>>.asDataSource(priority: Priority = MEDIUM): DataSource<E> =
+  dataSource(priority) { await() }
 
-fun <E> Lazy<Set<E>>.asDataSource(
-  priority: Priority = MEDIUM
-): DataSource<E> = dataSource(priority) { value }
+fun <E> Lazy<Set<E>>.asDataSource(priority: Priority = MEDIUM): DataSource<E> =
+  dataSource(priority) { value }
 
-fun <E> dataSourceOf(
-  vararg elements: E,
-  priority: Priority = MEDIUM
-): DataSource<E> = DataSourceImpl(priority, lazyDeferred { elements.toSet() })
+fun <E> dataSourceOf(vararg elements: E, priority: Priority = MEDIUM): DataSource<E> =
+  DataSourceImpl(priority, lazyDeferred { elements.toSet() })
 
 /**
  * @return A DataSource<E> from this [priority] and [factory]
  * @since 0.12.0
  */
-fun <E> dataSource(
-  priority: Priority = MEDIUM,
-  factory: LazyDeferred<Set<E>>
-): DataSource<E> = DataSourceImpl(priority, factory)
+fun <E> dataSource(priority: Priority = MEDIUM, factory: LazyDeferred<Set<E>>): DataSource<E> =
+  DataSourceImpl(priority, factory)
 
 /**
  * @return A DataSource<E> from this [priority] and [factory]
  * @since 0.12.0
  */
-fun <E> dataSource(
-  priority: Priority = MEDIUM,
-  factory: suspend () -> Set<E>
-): DataSource<E> {
+fun <E> dataSource(priority: Priority = MEDIUM, factory: suspend () -> Set<E>): DataSource<E> {
   return DataSourceImpl(priority, lazyDeferred { factory() })
 }
 
 fun <E> Collection<LazySetComponent<E>>.toLazySet(): LazySet<E> = lazySet(this)
 
-fun <E> lazySet(
-  vararg children: LazySetComponent<E>
-): LazySet<E> {
+fun <E> lazySet(vararg children: LazySetComponent<E>): LazySet<E> {
   return lazySet(children.asList())
 }
 
-fun <E> lazySet(
-  priority: Priority = MEDIUM,
-  dataSource: suspend () -> Set<E>
-): LazySet<E> {
+fun <E> lazySet(priority: Priority = MEDIUM, dataSource: suspend () -> Set<E>): LazySet<E> {
   return lazySet(dataSource(priority, dataSource))
 }
 
 @JvmName("lazySetSingle")
-fun <E> lazySet(
-  priority: Priority = MEDIUM,
-  dataSource: suspend () -> E
-): LazySet<E> {
+fun <E> lazySet(priority: Priority = MEDIUM, dataSource: suspend () -> E): LazySet<E> {
   return lazySet(dataSource(priority) { setOf(dataSource()) })
 }
 
-fun <E> Flow<E>.toLazySet(
-  priority: Priority = MEDIUM
-): LazySet<E> {
+fun <E> Flow<E>.toLazySet(priority: Priority = MEDIUM): LazySet<E> {
   return lazySet(priority) { toSet() }
 }
 
-fun <E> lazySet(
-  children: Collection<LazySetComponent<E>>
-): LazySet<E> {
+fun <E> lazySet(children: Collection<LazySetComponent<E>>): LazySet<E> {
   val (sets, dataSources) = children.partition { it is LazySet<*> }
   @Suppress("UNCHECKED_CAST")
   return createLazySet(
@@ -193,7 +169,7 @@ fun <E> lazySet(
 }
 
 fun <E> emptyLazySet(): LazySet<E> {
-  return createLazySet(listOf(), listOf())
+  return createLazySet(emptyList(), emptyList())
 }
 
 internal fun <E> createLazySet(

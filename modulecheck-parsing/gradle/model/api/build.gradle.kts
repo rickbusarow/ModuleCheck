@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-gradle-model-api"
+  published(
+    artifactId = "modulecheck-parsing-gradle-model-api"
+  )
   anvil()
 }
 
@@ -31,7 +33,6 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

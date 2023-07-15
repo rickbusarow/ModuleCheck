@@ -22,9 +22,7 @@ import modulecheck.utils.mapToSet
 
 class ConcatenatingParsingInterceptor : ParsingInterceptor {
 
-  override suspend fun intercept(
-    chain: ParsingInterceptor.Chain
-  ): NameParser.NameParserPacket {
+  override suspend fun intercept(chain: ParsingInterceptor.Chain): NameParser.NameParserPacket {
 
     val packet = chain.packet
 
@@ -78,9 +76,7 @@ class ConcatenatingParsingInterceptor : ParsingInterceptor {
     return chain.proceed(newPacket)
   }
 
-  private fun String.inlineAliasOrNull(
-    aliasedImports: Map<String, ReferenceName>
-  ): String? {
+  private fun String.inlineAliasOrNull(aliasedImports: Map<String, ReferenceName>): String? {
 
     val toResolve = this
     // in `Lib1R.string.app_name`, firstName is `Lib1R`

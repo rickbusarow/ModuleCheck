@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-finding-name"
+  published(
+    artifactId = "modulecheck-finding-name"
+  )
   anvil()
 }
 dependencies {
@@ -27,7 +29,6 @@ dependencies {
 
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

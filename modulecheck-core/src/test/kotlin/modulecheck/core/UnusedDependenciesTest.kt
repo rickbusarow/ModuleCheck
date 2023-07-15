@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test
 class UnusedDependenciesTest : RunnerTest() {
 
   @Test
-  fun `unused without auto-correct should fail`() {
+  fun `unused without auto-correct should fail`() = test {
 
     val lib1 = kotlinProject(":lib1")
 
@@ -73,7 +73,7 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `unused with auto-correct should be commented out`() {
+  fun `unused with auto-correct should be commented out`() = test {
 
     val lib1 = kotlinProject(":lib1")
 
@@ -118,7 +118,7 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `unused with auto-correct and deleteUnused should be deleted`() {
+  fun `unused with auto-correct and deleteUnused should be deleted`() = test {
 
     settings.deleteUnused = true
 
@@ -164,7 +164,7 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `unused but suppressed with auto-correct and deleteUnused should not be changed`() {
+  fun `unused but suppressed with auto-correct and deleteUnused should not be changed`() = test {
 
     settings.deleteUnused = true
 
@@ -200,11 +200,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `unused but suppressed at the block level should not be changed`() {
+  fun `unused but suppressed at the block level should not be changed`() = test {
 
     settings.deleteUnused = true
 
@@ -240,11 +240,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `unused and suppressed with legacy name should not be changed`() {
+  fun `unused and suppressed with legacy name should not be changed`() = test {
 
     settings.deleteUnused = true
 
@@ -280,21 +280,22 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `unused with auto-correct with preceding typesafe external dependency should be deleted`() {
+  fun `unused with auto-correct with preceding typesafe external dependency should be deleted`() =
+    test {
 
-    settings.deleteUnused = true
+      settings.deleteUnused = true
 
-    val lib1 = kotlinProject(":lib1")
+      val lib1 = kotlinProject(":lib1")
 
-    val lib2 = kotlinProject(":lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -304,12 +305,12 @@ class UnusedDependenciesTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
+        }
       }
-    }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -319,30 +320,31 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib2" to listOf(
-        unusedDependency(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib1",
-          position = "7, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":lib2" to listOf(
+          unusedDependency(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib1",
+            position = "7, 3"
+          )
         )
       )
-    )
-  }
+    }
 
   @Test
-  fun `unused with auto-correct with string extension function for config should be deleted`() {
+  fun `unused with auto-correct with string extension function for config should be deleted`() =
+    test {
 
-    settings.deleteUnused = true
+      settings.deleteUnused = true
 
-    val lib1 = kotlinProject(":lib1")
+      val lib1 = kotlinProject(":lib1")
 
-    val lib2 = kotlinProject(":lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -351,12 +353,12 @@ class UnusedDependenciesTest : RunnerTest() {
           "implementation"(project(path = ":lib1"))
         }
         """
+        }
       }
-    }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -365,20 +367,20 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib2" to listOf(
-        unusedDependency(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib1",
-          position = "6, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":lib2" to listOf(
+          unusedDependency(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib1",
+            position = "6, 3"
+          )
         )
       )
-    )
-  }
+    }
 
   @Test
-  fun `unused without auto-correct with string extension function for config should fail`() {
+  fun `unused without auto-correct with string extension function for config should fail`() = test {
 
     settings.deleteUnused = true
 
@@ -427,17 +429,18 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `unused with auto-correct and deleteUnused following dependency config block should be deleted`() {
+  fun `unused with auto-correct and deleteUnused following dependency config block should be deleted`() =
+    test {
 
-    settings.deleteUnused = true
+      settings.deleteUnused = true
 
-    val lib1 = kotlinProject(":lib1")
+      val lib1 = kotlinProject(":lib1")
 
-    val lib2 = kotlinProject(":lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -448,12 +451,12 @@ class UnusedDependenciesTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
+        }
       }
-    }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -464,30 +467,31 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib2" to listOf(
-        unusedDependency(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib1",
-          position = "8, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":lib2" to listOf(
+          unusedDependency(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib1",
+            position = "8, 3"
+          )
         )
       )
-    )
-  }
+    }
 
   @Test
-  fun `unused with auto-correct following dependency config block should be commented out`() {
+  fun `unused with auto-correct following dependency config block should be commented out`() =
+    test {
 
-    settings.deleteUnused = false
+      settings.deleteUnused = false
 
-    val lib1 = kotlinProject(":lib1")
+      val lib1 = kotlinProject(":lib1")
 
-    val lib2 = kotlinProject(":lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -498,12 +502,12 @@ class UnusedDependenciesTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
+        }
       }
-    }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -515,20 +519,20 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib2" to listOf(
-        unusedDependency(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib1",
-          position = "8, 3"
+      logger.parsedReport() shouldBe listOf(
+        ":lib2" to listOf(
+          unusedDependency(
+            fixed = true,
+            configuration = "implementation",
+            dependency = ":lib1",
+            position = "8, 3"
+          )
         )
       )
-    )
-  }
+    }
 
   @Test
-  fun `dependencies from non-jvm configurations should be ignored`() {
+  fun `dependencies from non-jvm configurations should be ignored`() = test {
 
     settings.deleteUnused = false
 
@@ -581,7 +585,7 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `fully qualified reference from kotlin file should not be unused`() {
+  fun `fully qualified reference from kotlin file should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -643,7 +647,7 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `fully qualified method reference from java file should not be unused`() {
+  fun `fully qualified method reference from java file should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -708,7 +712,7 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `fully qualified property reference from java file should not be unused`() {
+  fun `fully qualified property reference from java file should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -772,7 +776,7 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `static import from java file should not be unused`() {
+  fun `static import from java file should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -835,14 +839,15 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `module contributing a named companion object, consumed in the same package should not be unused`() {
-    // https://github.com/RBusarow/ModuleCheck/issues/705
+  fun `module contributing a named companion object, consumed in the same package should not be unused`() =
+    test {
+      // https://github.com/RBusarow/ModuleCheck/issues/705
 
-    settings.deleteUnused = false
+      settings.deleteUnused = false
 
-    val lib1 = kotlinProject(":lib1") {
-      addKotlinSource(
-        """
+      val lib1 = kotlinProject(":lib1") {
+        addKotlinSource(
+          """
         package com.modulecheck.common
 
         class Lib1Class {
@@ -850,15 +855,15 @@ class UnusedDependenciesTest : RunnerTest() {
             fun create() = Lib1Class()
           }
         }
-        """.trimIndent()
-      )
-    }
+          """.trimIndent()
+        )
+      }
 
-    val lib2 = kotlinProject(":lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -867,10 +872,10 @@ class UnusedDependenciesTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.common
 
         fun foo() {
@@ -878,14 +883,14 @@ class UnusedDependenciesTest : RunnerTest() {
         }
 
         fun bar(any: Any) = Unit
-        """.trimIndent(),
-        SourceSetName.MAIN
-      )
-    }
+          """.trimIndent(),
+          SourceSetName.MAIN
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -895,18 +900,19 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `module contributing a named companion object, consumed by the companion name should not be unused`() {
-    // https://github.com/RBusarow/ModuleCheck/issues/705
+  fun `module contributing a named companion object, consumed by the companion name should not be unused`() =
+    test {
+      // https://github.com/RBusarow/ModuleCheck/issues/705
 
-    settings.deleteUnused = false
+      settings.deleteUnused = false
 
-    val lib1 = kotlinProject(":lib1") {
-      addKotlinSource(
-        """
+      val lib1 = kotlinProject(":lib1") {
+        addKotlinSource(
+          """
         package com.modulecheck.common
 
         class Lib1Class {
@@ -914,15 +920,15 @@ class UnusedDependenciesTest : RunnerTest() {
             fun create() = Lib1Class()
           }
         }
-        """.trimIndent()
-      )
-    }
+          """.trimIndent()
+        )
+      }
 
-    val lib2 = kotlinProject(":lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           kotlin("jvm")
         }
@@ -931,10 +937,10 @@ class UnusedDependenciesTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.common
 
         import com.modulecheck.common.Lib1Class.Factory
@@ -944,14 +950,14 @@ class UnusedDependenciesTest : RunnerTest() {
         }
 
         fun bar(any: Any) = Unit
-        """.trimIndent(),
-        SourceSetName.MAIN
-      )
-    }
+          """.trimIndent(),
+          SourceSetName.MAIN
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -961,11 +967,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `testImplementation used in test should not be unused`() {
+  fun `testImplementation used in test should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -1018,11 +1024,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `androidTestImplementation used in androidTest should not be unused`() {
+  fun `androidTestImplementation used in androidTest should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -1077,11 +1083,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `custom view used in a layout file should not be unused`() {
+  fun `custom view used in a layout file should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -1144,11 +1150,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `module contributing a used generated DataBinding object should not be unused`() {
+  fun `module contributing a used generated DataBinding object should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -1204,11 +1210,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `module contributing a used layout with non-transitive R should not be unused`() {
+  fun `module contributing a used layout with non-transitive R should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -1264,11 +1270,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `module contributing a used layout with local R should not be unused`() {
+  fun `module contributing a used layout with local R should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -1322,20 +1328,21 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `module contributing a used id from a layout with non-transitive R should not be unused`() {
+  fun `module contributing a used id from a layout with non-transitive R should not be unused`() =
+    test {
 
-    settings.deleteUnused = false
+      settings.deleteUnused = false
 
-    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
-      platformPlugin.viewBindingEnabled = true
+      val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+        platformPlugin.viewBindingEnabled = true
 
-      addLayoutFile(
-        "fragment_lib1.xml",
-        """
+        addLayoutFile(
+          "fragment_lib1.xml",
+          """
         <LinearLayout
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
@@ -1346,14 +1353,14 @@ class UnusedDependenciesTest : RunnerTest() {
           tools:ignore="UnusedResources"
           />
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
-      addDependency(ConfigurationName.api, lib1)
+      val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+        addDependency(ConfigurationName.api, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -1363,23 +1370,23 @@ class UnusedDependenciesTest : RunnerTest() {
           api(project(path = ":lib1"))
         }
         """
-      }
-      platformPlugin.viewBindingEnabled = false
+        }
+        platformPlugin.viewBindingEnabled = false
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         import com.modulecheck.lib1.R
 
         val id = R.id.fragment_container
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -1390,11 +1397,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `module contributing a used id from a layout with local R should not be unused`() {
+  fun `module contributing a used id from a layout with local R should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -1456,11 +1463,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `declaration used via a wildcard import should not be unused`() {
+  fun `declaration used via a wildcard import should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -1512,11 +1519,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `testFixtures declaration used in test should not be unused`() {
+  fun `testFixtures declaration used in test should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -1570,11 +1577,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `unused from testFixtures with auto-correct should be fixed`() {
+  fun `unused from testFixtures with auto-correct should be fixed`() = test {
 
     settings.deleteUnused = false
 
@@ -1630,7 +1637,7 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `unused from testFixtures but used main source should be fixed`() {
+  fun `unused from testFixtures but used main source should be fixed`() = test {
 
     settings.deleteUnused = false
 
@@ -1713,31 +1720,32 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `string resource declaration should not be unused if's used with a different R namespace`() {
+  fun `string resource declaration should not be unused if's used with a different R namespace`() =
+    test {
 
-    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
-      buildFile {
-        """
+      val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
         }
         """
-      }
-      addResourceFile(
-        "values/strings.xml",
-        """<resources>
+        }
+        addResourceFile(
+          "values/strings.xml",
+          """<resources>
             |  <string name="string_from_lib1">lib1</string>
             |</resources>
-        """.trimMargin()
-      )
-    }
+          """.trimMargin()
+        )
+      }
 
-    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
-      addDependency(ConfigurationName.api, lib1)
+      val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+        addDependency(ConfigurationName.api, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -1747,16 +1755,16 @@ class UnusedDependenciesTest : RunnerTest() {
           api(project(":lib1"))
         }
         """
+        }
       }
-    }
 
-    androidLibrary(":lib3", "com.modulecheck.lib3") {
-      addDependency(ConfigurationName.implementation, lib1)
-      addDependency(ConfigurationName.implementation, lib2)
-      platformPlugin.androidResourcesEnabled = false
+      androidLibrary(":lib3", "com.modulecheck.lib3") {
+        addDependency(ConfigurationName.implementation, lib1)
+        addDependency(ConfigurationName.implementation, lib2)
+        platformPlugin.androidResourcesEnabled = false
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -1767,22 +1775,22 @@ class UnusedDependenciesTest : RunnerTest() {
           implementation(project(":lib2"))
         }
         """
-      }
-      addSource(
-        "com/modulecheck/lib3/internal/Source.kt",
-        """
+        }
+        addSource(
+          "com/modulecheck/lib3/internal/Source.kt",
+          """
         package com.modulecheck.lib3
 
         import com.modulecheck.lib2.R
 
         val r = R.string.string_from_lib1
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -1793,11 +1801,11 @@ class UnusedDependenciesTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `static member declaration used via wildcard import should not be unused`() {
+  fun `static member declaration used via wildcard import should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -1853,11 +1861,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `string resource used in module should not be unused`() {
+  fun `string resource used in module should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -1911,11 +1919,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `string resource used in manifest should not be unused`() {
+  fun `string resource used in manifest should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -1981,11 +1989,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `style resource with dot-qualified name used in kotlin source should not be unused`() {
+  fun `style resource with dot-qualified name used in kotlin source should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -2039,11 +2047,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `style resource with dot-qualified name used in manifest should not be unused`() {
+  fun `style resource with dot-qualified name used in manifest should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -2109,31 +2117,32 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `style resource with dot-qualified name used in downstream style should not be unused`() {
+  fun `style resource with dot-qualified name used in downstream style should not be unused`() =
+    test {
 
-    settings.deleteUnused = false
+      settings.deleteUnused = false
 
-    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
 
-      addResourceFile(
-        "values/styles.xml",
-        """
+        addResourceFile(
+          "values/styles.xml",
+          """
         <resources>
           <style name="AppTheme.ClearActionBar" parent="Theme.AppCompat.Light.DarkActionBar"/>
         </resources>
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
-      addDependency(ConfigurationName.api, lib1)
+      val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+        addDependency(ConfigurationName.api, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -2143,21 +2152,21 @@ class UnusedDependenciesTest : RunnerTest() {
           api(project(path = ":lib1"))
         }
         """
-      }
+        }
 
-      addResourceFile(
-        "values/styles.xml",
-        """
+        addResourceFile(
+          "values/styles.xml",
+          """
         <resources>
           <style name="AppTheme.ClearActionBar2" parent="AppTheme.ClearActionBar"/>
         </resources>
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -2168,11 +2177,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `debug dependency using the dependency's debug source should not be unused`() {
+  fun `debug dependency using the dependency's debug source should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -2229,31 +2238,32 @@ class UnusedDependenciesTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `testImplementation dependency using the dependency's debug source should not be unused`() {
+  fun `testImplementation dependency using the dependency's debug source should not be unused`() =
+    test {
 
-    settings.deleteUnused = false
+      settings.deleteUnused = false
 
-    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         class Lib1Class
         """,
-        SourceSetName.DEBUG
-      )
-    }
+          SourceSetName.DEBUG
+        )
+      }
 
-    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
-      addDependency(ConfigurationName.testImplementation, lib1)
+      val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+        addDependency(ConfigurationName.testImplementation, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -2263,23 +2273,23 @@ class UnusedDependenciesTest : RunnerTest() {
           testImplementation(project(path = ":lib1"))
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         import com.modulecheck.lib1.Lib1Class
 
         val lib1Class = Lib1Class()
         """,
-        SourceSetName.TEST
-      )
-    }
+          SourceSetName.TEST
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -2290,31 +2300,32 @@ class UnusedDependenciesTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `androidTestImplementation dependency using the dependency's debug source should not be unused`() {
+  fun `androidTestImplementation dependency using the dependency's debug source should not be unused`() =
+    test {
 
-    settings.deleteUnused = false
+      settings.deleteUnused = false
 
-    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib1
 
         class Lib1Class
         """,
-        SourceSetName.DEBUG
-      )
-    }
+          SourceSetName.DEBUG
+        )
+      }
 
-    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
-      addDependency(ConfigurationName.androidTestImplementation, lib1)
+      val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+        addDependency(ConfigurationName.androidTestImplementation, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -2324,23 +2335,23 @@ class UnusedDependenciesTest : RunnerTest() {
           androidTestImplementation(project(path = ":lib1"))
         }
         """
-      }
+        }
 
-      addKotlinSource(
-        """
+        addKotlinSource(
+          """
         package com.modulecheck.lib2
 
         import com.modulecheck.lib1.Lib1Class
 
         val lib1Class = Lib1Class()
         """,
-        SourceSetName.ANDROID_TEST
-      )
-    }
+          SourceSetName.ANDROID_TEST
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -2351,31 +2362,32 @@ class UnusedDependenciesTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `color resource with dot-qualified name used in downstream style should not be unused`() {
+  fun `color resource with dot-qualified name used in downstream style should not be unused`() =
+    test {
 
-    settings.deleteUnused = false
+      settings.deleteUnused = false
 
-    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
 
-      addResourceFile(
-        "values/styles.xml",
-        """
+        addResourceFile(
+          "values/styles.xml",
+          """
         <resources>
           <color name="medium_darkish_light_blue">#00000F</color>
         </resources>
         """
-      )
-    }
+        )
+      }
 
-    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
-      addDependency(ConfigurationName.api, lib1)
+      val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+        addDependency(ConfigurationName.api, lib1)
 
-      buildFile {
-        """
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -2385,23 +2397,23 @@ class UnusedDependenciesTest : RunnerTest() {
           api(project(path = ":lib1"))
         }
         """
-      }
+        }
 
-      addResourceFile(
-        "values/styles.xml",
-        """
+        addResourceFile(
+          "values/styles.xml",
+          """
         <resources>
           <style name="AppTheme.ClearActionBar2">
             <item name="colorPrimary">@color/medium_darkish_light_blue</item>
           </style>
         </resources>
         """
-      )
-    }
+        )
+      }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib2.buildFile shouldHaveText """
+      lib2.buildFile shouldHaveText """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -2412,11 +2424,11 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `declaration used via class reference with wildcard import should not be unused`() {
+  fun `declaration used via class reference with wildcard import should not be unused`() = test {
 
     settings.deleteUnused = false
 
@@ -2475,6 +2487,6 @@ class UnusedDependenciesTest : RunnerTest() {
         }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 }

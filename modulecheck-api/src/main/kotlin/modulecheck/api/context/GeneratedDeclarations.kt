@@ -45,16 +45,12 @@ class GeneratedDeclarations private constructor(
    * [ReferenceName][modulecheck.parsing.source.ReferenceName]. This
    * is more efficient than a linear search/filter of a full list of
    * [Generated] when there will be lookups for more than one source.
-   *
    */
   private val reversed: SafeCache<SourceSetName, Map<McName, Set<Generated>>> by lazy {
     SafeCache(listOf(project.projectPath, GeneratedDeclarations::class))
   }
 
-  /**
-   * Just a cache of the results from filtering all generated for a particular set of sources.
-   *
-   */
+  /** Just a cache of the results from filtering all generated for a particular set of sources. */
   private val filtered: SafeCache<SourceSetWithDeclarations, LazySet<Generated>> by lazy {
     SafeCache(listOf(project.projectPath, GeneratedDeclarations::class))
   }
@@ -67,9 +63,7 @@ class GeneratedDeclarations private constructor(
   override val key: ProjectContext.Key<GeneratedDeclarations>
     get() = Key
 
-  /**
-   * @return all [Generated] declarations for a given source set
-   */
+  /** @return all [Generated] declarations for a given source set */
   suspend fun get(sourceSetName: SourceSetName): LazySet<Generated> {
 
     return allGenerated.getOrPut(sourceSetName) {
@@ -120,10 +114,7 @@ class GeneratedDeclarations private constructor(
     }
   }
 
-  /**
-   * The [ProjectContext] key for [GeneratedDeclarations].
-   *
-   */
+  /** The [ProjectContext] key for [GeneratedDeclarations]. */
   companion object Key : ProjectContext.Key<GeneratedDeclarations> {
     override suspend operator fun invoke(project: McProject): GeneratedDeclarations {
       return GeneratedDeclarations(project)
@@ -131,18 +122,13 @@ class GeneratedDeclarations private constructor(
   }
 }
 
-/**
- * shorthand for `project.get(GeneratedDeclarations)`
- */
+/** shorthand for `project.get(GeneratedDeclarations)` */
 suspend fun ProjectContext.generatedDeclarations(): GeneratedDeclarations =
   get(GeneratedDeclarations)
 
-/**
- * @return all [Generated] declarations for a given source set
- */
-suspend fun ProjectContext.generatedDeclarations(
-  sourceSetName: SourceSetName
-): LazySet<Generated> = generatedDeclarations().get(sourceSetName)
+/** @return all [Generated] declarations for a given source set */
+suspend fun ProjectContext.generatedDeclarations(sourceSetName: SourceSetName): LazySet<Generated> =
+  generatedDeclarations().get(sourceSetName)
 
 /**
  * @return all [Generated] declarations from a given source set which

@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-java"
+  published(
+    artifactId = "modulecheck-parsing-java"
+  )
 }
 
 dependencies {
@@ -28,7 +30,6 @@ dependencies {
   api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(gradleApi())
 
@@ -36,9 +37,10 @@ dependencies {
   implementation(libs.javaParser.symbols)
   implementation(libs.kotlin.reflect)
 
+  implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
+  implementation(project(path = ":modulecheck-utils:traversal"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 
@@ -47,5 +49,4 @@ dependencies {
   testImplementation(project(path = ":modulecheck-parsing:java"))
   testImplementation(project(path = ":modulecheck-parsing:source:testing"))
   testImplementation(project(path = ":modulecheck-project:testing"))
-  testImplementation(project(path = ":modulecheck-utils:trace"))
 }

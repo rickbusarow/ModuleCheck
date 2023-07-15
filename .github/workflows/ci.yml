@@ -4,100 +4,165 @@ on:
   pull_request:
   workflow_dispatch:
 
-env:
-  macosGradleArgs: '-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
-  ubuntuGradleArgs: '-Dorg.gradle.jvmargs=-Xmx5g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
-  windowsGradleArgs: '-Dorg.gradle.jvmargs=-Xmx3g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
-
-concurrency:
-  group: ci-${{ github.ref }}-${{ github.head_ref }}
-  cancel-in-progress: true
-
 jobs:
 
-  static-analysis:
-
+  cancel-previoius-runs:
     runs-on: ubuntu-latest
     steps:
-      - name: check out with token (used by forks)
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+
+  validate-wrapper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
+      - uses: gradle/wrapper-validation-action@v1
 
-      - name: check out with PAT (used by main repo)
+  build-logic:
+    needs: validate-wrapper
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ macos, ubuntu, windows ]
+    runs-on: ${{ matrix.runner }}-latest
+    steps:
+      - name: check out
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - name: build build-logic
+        uses: ./.github/actions/gradle-task
         with:
-          distribution: 'zulu'
-          java-version: '11'
+          task: jar compileKotlin
+          write-cache-key: build-logic-artifacts
 
-      - name: ci versions matrix check (used by everyone but Renovate)
-        if: github.actor != 'renovate[bot]'
-        uses: gradle/gradle-build-action@v2
+  build-all:
+    needs: build-logic
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ macos, ubuntu, windows ]
+    runs-on: ${{ matrix.runner }}-latest
+    steps:
+      - name: check out
+        uses: actions/checkout@v3
+
+      - name: main build
+        uses: ./.github/actions/gradle-task
         with:
-          arguments: versionsMatrixYamlCheck
-          cache-read-only: false
+          task: jar compileKotlin
+          write-cache-key: main-build-artifacts
+          restore-cache-key: build-logic-artifacts
 
-      - name: ci versions matrix update (used by Renovate)
-        if: github.actor == 'renovate[bot]'
-        uses: gradle/gradle-build-action@v2
+  ktlint:
+    runs-on: ubuntu-latest
+    needs: build-logic
+    steps:
+      - uses: actions/checkout@v3
+      - name: ktlint
+        uses: ./.github/actions/gradle-task-with-commit
         with:
-          arguments: versionsMatrixGenerateYaml
-          cache-read-only: false
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: ktlintFormat
+          check-task: ktlintCheck
 
-      # If the versions matrix was just updated, commit and push those changes.
-      - name: commit dependency-guard baseline changes (used by main repo)
-        if: github.actor == 'renovate[bot]'
-        uses: stefanzweifel/git-auto-commit-action@v4
+  ci-matrices:
+    runs-on: ubuntu-latest
+    needs: build-logic
+    steps:
+      - uses: actions/checkout@v3
+      - name: ci-matrices
+        uses: ./.github/actions/gradle-task-with-commit
         with:
-          commit_message: update versions matrix in yaml
-          commit_options: '--no-verify --signoff'
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: versionsMatrixYamlUpdate unitTestShardMatrixYamlUpdate
+          check-task: versionsMatrixYamlCheck unitTestShardMatrixYamlCheck
 
-      - name: dependency-guard check (used by everyone but Renovate)
-        if: github.actor != 'renovate[bot]'
-        uses: gradle/gradle-build-action@v2
+  dependency-guard:
+    runs-on: ubuntu-latest
+    needs: build-logic
+    steps:
+      - uses: actions/checkout@v3
+      - name: dependency-guard
+        uses: ./.github/actions/gradle-task-with-commit
         with:
-          arguments: dependencyGuard
-          cache-read-only: false --refresh-dependencies
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: dependencyGuardBaseline
+          check-task: dependencyGuard
 
-      - name: dependency-guard baseline (used by Renovate)
-        if: github.actor == 'renovate[bot]'
-        uses: gradle/gradle-build-action@v2
+  moduleCheck:
+    runs-on: ubuntu-latest
+    needs: build-logic
+    steps:
+      - uses: actions/checkout@v3
+      - name: moduleCheck
+        uses: ./.github/actions/gradle-task-with-commit
         with:
-          arguments: dependencyGuardBaseline
-          cache-read-only: false --refresh-dependencies
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: moduleCheckAuto
+          check-task: moduleCheck
 
-      # If dependency-guard generated changes, commit and push those changes.
-      - name: commit dependency-guard baseline changes (used by main repo)
-        if: github.actor == 'renovate[bot]'
-        uses: stefanzweifel/git-auto-commit-action@v4
+  doks:
+    runs-on: ubuntu-latest
+    needs: build-logic
+    steps:
+      - uses: actions/checkout@v3
+      - name: doks
+        uses: ./.github/actions/gradle-task-with-commit
         with:
-          commit_message: update dependency-guard baseline
-          commit_options: '--no-verify --signoff'
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: doks
+          check-task: doksCheck
 
-      - name: artifacts check
-        uses: gradle/gradle-build-action@v2
+  website-versioning:
+    runs-on: ubuntu-latest
+    needs: build-logic
+    steps:
+      - uses: actions/checkout@v3
+      - name: website versioning
+        uses: ./.github/actions/gradle-task-with-commit
         with:
-          arguments: artifactsCheck
-          cache-read-only: false
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: updateWebsiteNextDocsVersionRefs updateWebsitePackageJsonVersion updateWebsiteChangelog
+          check-task: checkWebsiteNextDocsVersionRefs checkWebsitePackageJsonVersion
 
+  artifacts-check:
+    runs-on: ubuntu-latest
+    needs: build-logic
+    steps:
+      - uses: actions/checkout@v3
+      - name: artifacts-check
+        uses: ./.github/actions/gradle-task-with-commit
+        with:
+          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fix-task: artifactsDump
+          check-task: artifactsCheck
+
+  check-version-is-snapshot:
+    runs-on: ubuntu-latest
+    needs: build-logic
+    steps:
+      - uses: actions/checkout@v3
+      - name: check version is snapshot
+        uses: ./.github/actions/gradle-task
+        with:
+          task: checkVersionIsSnapshot
+
+  detekt:
+    runs-on: macos-latest
+    needs: build-all
+    steps:
+      - uses: actions/checkout@v3
       - name: detektAll
-        uses: gradle/gradle-build-action@v2
+        uses: ./.github/actions/gradle-task
         with:
-          arguments: detektAll
-          cache-read-only: false
+          task: detektAll
+          restore-cache-key: main-build-artifacts
 
       - name: merge detekt SARIF reports
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: detektReportMerge
-          cache-read-only: false
+        run: ./gradlew detektReportMerge
 
       - name: Upload SARIF to Github using the upload-sarif action
         uses: github/codeql-action/upload-sarif@v2
@@ -105,232 +170,29 @@ jobs:
         with:
           sarif_file: build/reports/detekt/merged.sarif
 
-  ktlint:
-
-    runs-on: ubuntu-latest
-    if: github.actor != 'renovate[bot]'
-    steps:
-      - name: check out with token (used by forks)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '11'
-
-      - name: KtLint format (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: ktlintFormat
-          cache-read-only: false
-
-      # If KtLint generated changes, commit and push those changes.
-      - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Apply KtLint format
-          commit_options: '--no-verify --signoff'
-
-      - name: KtLint check (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: ktlintCheck
-          cache-read-only: false
-
-  modulecheck:
-
-    runs-on: ubuntu-latest
-    if: github.actor != 'renovate[bot]'
-    steps:
-      - name: check out with token (used by forks)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '11'
-
-      - name: ModuleCheck with auto-correct (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: moduleCheckAuto
-          cache-read-only: false
-
-      # If KtLint generated changes, commit and push those changes.
-      - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Apply ModuleCheck fixes
-          commit_options: '--no-verify --signoff'
-
-      - name: ModuleCheck check (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: moduleCheck
-          cache-read-only: false
-
-  doks:
-
-    runs-on: ubuntu-latest
-    if: github.actor != 'renovate[bot]'
-    steps:
-      - name: check out with token (used by forks)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '11'
-
-      - name: Doks with auto-correct (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: doks
-          cache-read-only: false
-
-      # If Doks generated changes, commit and push those changes.
-      - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Apply Doks updates
-          commit_options: '--no-verify --signoff'
-
-      - name: Doks check (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: doksCheck
-          cache-read-only: false
-
-  versioning:
-
-    runs-on: ubuntu-latest
-    if: github.actor != 'renovate[bot]'
-    steps:
-      - name: check out with token (used by forks)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '11'
-
-      - name: Check that the version is a -SNAPSHOT version
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: checkVersionIsSnapshot
-          cache-read-only: false
-
-      - name: Sync versions in website docs (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: updateWebsiteNextDocsVersionRefs
-          cache-read-only: false
-
-      - name: Check versions in website docs (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: checkWebsiteNextDocsVersionRefs
-          cache-read-only: false
-
-      - name: commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: update docs versions
-          commit_options: '--no-verify --signoff'
-
-      - name: Update version in website package.json (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: updateWebsitePackageJsonVersion
-          cache-read-only: false
-
-      - name: Check version in website package.json (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: checkWebsitePackageJsonVersion
-          cache-read-only: false
-
-      - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: update website versions
-          commit_options: '--no-verify --signoff'
-
-      - name: Update website changelog from root CHANGELOG (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: updateWebsiteChangelog
-          cache-read-only: false
-
-      - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: update website changelog
-          commit_options: '--no-verify --signoff'
-
-  website:
-    name: build website
+  build-website:
     runs-on: macos-latest
+    needs: build-all
     steps:
-
-      - name: Check out repo
+      - name: check out
         uses: actions/checkout@v3
+
+      - name: dokkaHtmlMultiModule
+        uses: ./.github/actions/gradle-task
+        with:
+          task: dokkaHtmlMultiModule
+          restore-cache-key: main-build-artifacts
+          write-cache-key: dokka-build-artifacts
+
+      - name: website build cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            website/.docusaurus
+            website/build
+            website/node_modules
+          key: website-build
+          enableCrossOsArchive: true
 
       # Node is required for npm
       - name: Set up Node
@@ -344,170 +206,41 @@ jobs:
         working-directory: website
         run: yarn install --frozen-lockfile
 
-      - uses: gradle/wrapper-validation-action@v1
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - name: build website
+        uses: ./.github/actions/gradle-task
         with:
-          distribution: 'zulu'
-          java-version: '11'
-
-      - name: compileKotlin
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: compileKotlin "${{ env.macosGradleArgs }}"
-          cache-read-only: false
-
-      - name: dokkaHtmlMultiModule
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: dokkaHtmlMultiModule "${{ env.macosGradleArgs }}"
-          cache-read-only: false
-
-      - name: buildSite
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: buildSite "${{ env.macosGradleArgs }}"
-          cache-read-only: false
+          task: buildSite
+          write-cache-key: website-build
 
       - name: knit check
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: knitCheck
-          cache-read-only: false
+        run: ./gradlew knitCheck
 
-  tests-macos:
-
-    runs-on: macos-latest
-
-    steps:
-      - name: check out with token
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '11'
-
-      - name: all tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: test "${{ env.macosGradleArgs }}"
-          cache-read-only: false
-
-      - name: Archive test results
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: test-results-macos
-          path: ./**/build/reports/tests/
-
-      - name: Unit test results
-        uses: mikepenz/action-junit-report@v3
-        if: failure()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          report_paths: '**/build/**/TEST-*.xml'
-          check_name: Unit Test Results - macos
-
-  publish-local-ubuntu:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '11'
-
-      - name: publishToMavenLocalNoDokka integrationTestClasses
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: publishToMavenLocalNoDokka integrationTestClasses "${{ env.ubuntuGradleArgs }}"
-          cache-read-only: false
-
-  integration-tests-matrix-ubuntu:
-
-    runs-on: ubuntu-latest
-    needs: publish-local-ubuntu
-
+  unit-tests:
+    needs: build-all
     strategy:
       fail-fast: false
-      ### <start-matrix>
       matrix:
-        kotlin-version: [ 1.8.0, 1.8.10, 1.8.20 ]
-        gradle-version: [ 7.5.1, 7.6.1, 8.0.2, 8.1 ]
-        agp-version: [ 7.3.1, 7.4.2 ]
-        anvil-version: [ 2.4.5 ]
-        exclude:
-          - gradle-version: 8.1
-            agp-version: 7.3.1
-          - gradle-version: 8.1
-            agp-version: 7.4.2
-      ### <end-matrix>
-
+        runner: [ ubuntu, windows ]
+        ### <start-unit-test-shards>
+        shardNum: [ 1, 2, 3, 4 ]
+        ### <end-unit-test-shards>
+    runs-on: ${{ matrix.runner }}-latest
     steps:
       - name: check out
         uses: actions/checkout@v3
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - name: unit tests
+        uses: ./.github/actions/gradle-task
         with:
-          distribution: 'zulu'
-          java-version: '11'
-
-      - name: integration tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: |
-            integrationTest
-            "${{ env.ubuntuGradleArgs }}"
-            -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }}
-            -Pmodulecheck.agpVersion=${{ matrix.agp-version }}
-            -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }}
-            -Pmodulecheck.anvilVersion=${{ matrix.anvil-version }}
-            -Pmodulecheck.exhaustive=false
-
-      - name: Unit test results
-        uses: mikepenz/action-junit-report@v3
-        if: failure()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          report_paths: '**/build/**/TEST-*.xml'
-          check_name: Integration Test Results - macos
-
-  tests-windows:
-
-    runs-on: windows-latest
-
-    steps:
-
-      - name: check out with token
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '11'
-
-      - name: all tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: test "${{ env.windowsGradleArgs }}"
-          cache-read-only: false
+          task: testShard${{ matrix.shardNum }}
+          restore-cache-key: main-build-artifacts
 
       - name: Archive test results
         uses: actions/upload-artifact@v3
         if: failure()
         with:
-          name: test-results-windows
-          path: ./**/build/reports/tests/
+          name: test-results
+          path: ${{ github.workspace }}/**/build/reports/tests/
 
       - name: Unit test results
         uses: mikepenz/action-junit-report@v3
@@ -515,44 +248,70 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           report_paths: '**/build/**/TEST-*.xml'
-          check_name: Unit Test Results - Windows
+          check_name: Unit Test Results - ${{runner.os}}
+
+  integration-tests-ubuntu:
+    needs: build-all
+    strategy:
+      fail-fast: false
+      ### <start-versions-matrix>
+      matrix:
+        kotlin-version: [ 1.8.0, 1.8.10, 1.8.22 ]
+        gradle-version: [ 7.6.1, 8.0.2, 8.1.1 ]
+        agp-version: [ 7.3.1, 8.0.2 ]
+        anvil-version: [ 2.4.6 ]
+        exclude:
+          - gradle-version: 8.1.1
+            agp-version: 7.3.1
+          - gradle-version: 7.6.1
+            agp-version: 8.0.2
+      ### <end-versions-matrix>
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: integration-tests
+        uses: ./.github/actions/gradle-task
+        with:
+          task: |
+            integrationTest
+              -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }}
+              -Pmodulecheck.agpVersion=${{ matrix.agp-version }}
+              -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }}
+              -Pmodulecheck.anvilVersion=${{ matrix.anvil-version }}
+              -Pmodulecheck.exhaustive=false
+          restore-cache-key: main-build-artifacts
+
+      - name: Unit test results
+        uses: mikepenz/action-junit-report@v3
+        if: failure()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          report_paths: '**/build/**/TEST-*.xml'
+          check_name: Integration Test Results
 
   integration-tests-windows:
-
+    needs: build-all
+    strategy:
+      fail-fast: false
+      matrix:
+        ### <start-integration-test-shards>
+        shardNum: [ 1, 2, 3, 4, 5, 6 ]
+        ### <end-integration-test-shards>
     runs-on: windows-latest
-
     steps:
-
-      - name: check out
-        uses: actions/checkout@v3
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - uses: actions/checkout@v3
+      - name: integration-tests-windows
+        uses: ./.github/actions/gradle-task
         with:
-          distribution: 'zulu'
-          java-version: '11'
-
-      - name: publishToMavenLocal
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: publishToMavenLocalNoDokka "${{ env.windowsGradleArgs }}"
-          cache-read-only: false
-
-      - name: integration tests
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: |
-            integrationTest
-            "${{ env.windowsGradleArgs }}"
-            -Pmodulecheck.exhaustive=false
-          cache-read-only: false
+          task: integrationTestShard${{ matrix.shardNum }} -Pmodulecheck.exhaustive=false
+          restore-cache-key: main-build-artifacts
 
       - name: Archive integration test results
         uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: integration-test-results-windows
-          path: ./**/build/reports/tests/
+          path: ${{ github.workspace }}/**/build/reports/tests/
 
       - name: Integration test results
         uses: mikepenz/action-junit-report@v3
@@ -566,20 +325,22 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     needs:
+      - artifacts-check
+      - build-website
+      - check-version-is-snapshot
+      - ci-matrices
+      - dependency-guard
+      - detekt
       - doks
-      - integration-tests-matrix-ubuntu
+      - integration-tests-ubuntu
       - integration-tests-windows
       - ktlint
-      - modulecheck
-      - publish-local-ubuntu
-      - static-analysis
-      - tests-macos
-      - tests-windows
-      - versioning
-      - website
+      - moduleCheck
+      - unit-tests
+      - validate-wrapper
+      - website-versioning
     steps:
       - name: require that all other jobs have passed
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: doks, ktlint, modulecheck, versioning
           jobs: ${{ toJSON(needs) }}

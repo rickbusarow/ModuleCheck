@@ -1,0 +1,133 @@
+public final class modulecheck/utils/lazy/EmptyResetManager : modulecheck/utils/lazy/ResetManager {
+	public static final field INSTANCE Lmodulecheck/utils/lazy/EmptyResetManager;
+	public fun child (Ljava/util/Collection;)Lmodulecheck/utils/lazy/EmptyResetManager;
+	public synthetic fun child (Ljava/util/Collection;)Lmodulecheck/utils/lazy/ResetManager;
+	public fun dispose ()V
+	public fun register (Lmodulecheck/utils/lazy/Resets;)V
+	public fun reset ()V
+}
+
+public abstract interface class modulecheck/utils/lazy/LazyDeferred {
+	public abstract fun await (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getCompleted ()Ljava/lang/Object;
+	public abstract fun isCompleted ()Z
+}
+
+public final class modulecheck/utils/lazy/LazyDeferredKt {
+	public static final fun asLazyDeferred (Lkotlin/jvm/functions/Function1;)Lmodulecheck/utils/lazy/LazyDeferred;
+	public static final fun awaitAll (Ljava/util/Collection;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun lazyDeferred (Lkotlin/jvm/functions/Function1;)Lmodulecheck/utils/lazy/LazyDeferred;
+}
+
+public final class modulecheck/utils/lazy/LazyKt {
+	public static final fun lazyVar (Lkotlin/jvm/functions/Function0;)Lkotlin/properties/ReadWriteProperty;
+	public static final fun unsafeLazy (Lkotlin/jvm/functions/Function0;)Lkotlin/Lazy;
+}
+
+public abstract interface class modulecheck/utils/lazy/LazyResets : kotlin/Lazy, modulecheck/utils/lazy/Resets {
+}
+
+public final class modulecheck/utils/lazy/LazyResetsKt {
+	public static final fun LazyResets (Lmodulecheck/utils/lazy/ResetManager;Lkotlin/jvm/functions/Function0;)Lmodulecheck/utils/lazy/LazyResets;
+}
+
+public abstract interface class modulecheck/utils/lazy/LazySet : kotlinx/coroutines/flow/Flow, modulecheck/utils/lazy/LazySetComponent {
+	public abstract fun contains (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun containsAny (Lmodulecheck/utils/lazy/LazySet;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun isEmpty (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun isFullyCached ()Z
+	public abstract fun isNotEmpty (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun snapshot ()Lmodulecheck/utils/lazy/LazySet$State;
+}
+
+public abstract interface class modulecheck/utils/lazy/LazySet$DataSource : java/lang/Comparable, modulecheck/utils/lazy/LazyDeferred, modulecheck/utils/lazy/LazySetComponent {
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lmodulecheck/utils/lazy/LazySet$DataSource;)I
+	public abstract fun get (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getPriority ()Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;
+}
+
+public final class modulecheck/utils/lazy/LazySet$DataSource$Priority : java/lang/Enum, java/lang/Comparable {
+	public static final field HIGH Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;
+	public static final field LOW Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;
+	public static final field MEDIUM Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;
+	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;
+	public static fun values ()[Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;
+}
+
+public final class modulecheck/utils/lazy/LazySet$State {
+	public fun <init> (Ljava/util/Set;Ljava/util/List;)V
+	public final fun getCache ()Ljava/util/Set;
+	public final fun getRemaining ()Ljava/util/List;
+	public final fun nextSources ()Lkotlin/sequences/Sequence;
+}
+
+public abstract interface class modulecheck/utils/lazy/LazySetComponent {
+}
+
+public final class modulecheck/utils/lazy/LazySetKt {
+	public static final fun asDataSource (Lkotlin/Lazy;Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;)Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public static final fun asDataSource (Lkotlinx/coroutines/flow/Flow;Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;)Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public static final fun asDataSource (Lmodulecheck/utils/lazy/LazyDeferred;Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;)Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public static synthetic fun asDataSource$default (Lkotlin/Lazy;Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;ILjava/lang/Object;)Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public static synthetic fun asDataSource$default (Lkotlinx/coroutines/flow/Flow;Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;ILjava/lang/Object;)Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public static synthetic fun asDataSource$default (Lmodulecheck/utils/lazy/LazyDeferred;Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;ILjava/lang/Object;)Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public static final fun containsAny (Lmodulecheck/utils/lazy/LazySet;Ljava/util/Collection;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun dataSource (Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;Lkotlin/jvm/functions/Function1;)Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public static final fun dataSource (Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;Lmodulecheck/utils/lazy/LazyDeferred;)Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public static synthetic fun dataSource$default (Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public static synthetic fun dataSource$default (Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;Lmodulecheck/utils/lazy/LazyDeferred;ILjava/lang/Object;)Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public static final fun dataSourceOf ([Ljava/lang/Object;Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;)Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public static synthetic fun dataSourceOf$default ([Ljava/lang/Object;Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;ILjava/lang/Object;)Lmodulecheck/utils/lazy/LazySet$DataSource;
+	public static final fun emptyLazySet ()Lmodulecheck/utils/lazy/LazySet;
+	public static final fun lazySet (Ljava/util/Collection;)Lmodulecheck/utils/lazy/LazySet;
+	public static final fun lazySet (Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;Lkotlin/jvm/functions/Function1;)Lmodulecheck/utils/lazy/LazySet;
+	public static final fun lazySet ([Lmodulecheck/utils/lazy/LazySetComponent;)Lmodulecheck/utils/lazy/LazySet;
+	public static synthetic fun lazySet$default (Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lmodulecheck/utils/lazy/LazySet;
+	public static final fun lazySetSingle (Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;Lkotlin/jvm/functions/Function1;)Lmodulecheck/utils/lazy/LazySet;
+	public static synthetic fun lazySetSingle$default (Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lmodulecheck/utils/lazy/LazySet;
+	public static final fun toLazySet (Ljava/util/Collection;)Lmodulecheck/utils/lazy/LazySet;
+	public static final fun toLazySet (Lkotlinx/coroutines/flow/Flow;Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;)Lmodulecheck/utils/lazy/LazySet;
+	public static synthetic fun toLazySet$default (Lkotlinx/coroutines/flow/Flow;Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;ILjava/lang/Object;)Lmodulecheck/utils/lazy/LazySet;
+}
+
+public final class modulecheck/utils/lazy/RealResetManager : kotlinx/coroutines/DisposableHandle, modulecheck/utils/lazy/ResetManager {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/Collection;)V
+	public synthetic fun <init> (Ljava/util/Collection;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun child (Ljava/util/Collection;)Lmodulecheck/utils/lazy/RealResetManager;
+	public synthetic fun child (Ljava/util/Collection;)Lmodulecheck/utils/lazy/ResetManager;
+	public fun dispose ()V
+	public fun register (Lmodulecheck/utils/lazy/Resets;)V
+	public fun reset ()V
+}
+
+public abstract interface class modulecheck/utils/lazy/ResetManager : modulecheck/utils/lazy/Resets, org/jetbrains/kotlin/com/intellij/openapi/Disposable {
+	public static final field Companion Lmodulecheck/utils/lazy/ResetManager$Companion;
+	public abstract fun child (Ljava/util/Collection;)Lmodulecheck/utils/lazy/ResetManager;
+	public static synthetic fun child$default (Lmodulecheck/utils/lazy/ResetManager;Ljava/util/Collection;ILjava/lang/Object;)Lmodulecheck/utils/lazy/ResetManager;
+	public abstract fun dispose ()V
+	public abstract fun register (Lmodulecheck/utils/lazy/Resets;)V
+	public abstract fun reset ()V
+}
+
+public final class modulecheck/utils/lazy/ResetManager$Companion {
+	public final fun invoke ()Lmodulecheck/utils/lazy/ResetManager;
+}
+
+public abstract interface class modulecheck/utils/lazy/Resets {
+	public abstract fun reset ()V
+}
+
+public final class modulecheck/utils/lazy/internal/DataSourceImpl : modulecheck/utils/lazy/LazyDeferred, modulecheck/utils/lazy/LazySet$DataSource {
+	public fun <init> (Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;Lmodulecheck/utils/lazy/LazyDeferred;)V
+	public fun await (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun get (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun getCompleted ()Ljava/lang/Object;
+	public fun getCompleted ()Ljava/util/Set;
+	public fun getPriority ()Lmodulecheck/utils/lazy/LazySet$DataSource$Priority;
+	public fun hashCode ()I
+	public fun isCompleted ()Z
+}
+

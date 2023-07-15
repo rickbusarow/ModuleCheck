@@ -24,20 +24,19 @@ import org.junit.jupiter.api.TestFactory
 class RuntimeClasspathValidationTest : BaseGradleTest() {
 
   @TestFactory
-  fun `all tasks should succeed without any other libraries in the build classpath`() =
-    factory {
-      rootBuild.writeText(
-        """
+  fun `all tasks should succeed without any other libraries in the build classpath`() = factory {
+    rootBuild.writeText(
+      """
           plugins {
             id("com.rickbusarow.module-check")
           }
           """
-      )
-      // This is the same settings as the default used in other tests,
-      // except no `google()` repository.  `google()` shouldn't be necessary since there should be
-      // no dependency upon AGP.
-      rootSettings.writeText(
-        """
+    )
+    // This is the same settings as the default used in other tests,
+    // except no `google()` repository.  `google()` shouldn't be necessary since there should be
+    // no dependency upon AGP.
+    rootSettings.writeText(
+      """
         rootProject.name = "root"
 
         pluginManagement {
@@ -49,16 +48,16 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
           resolutionStrategy {
             eachPlugin {
               if (requested.id.id.startsWith("com.android")) {
-                useVersion("$agp")
+                useVersion("$agpVersion")
               }
               if (requested.id.id == "com.rickbusarow.module-check") {
                 useVersion("${BuildProperties.version}")
               }
               if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
-                useVersion("$kotlin")
+                useVersion("$kotlinVersion")
               }
               if (requested.id.id == "com.squareup.anvil") {
-                useVersion("$anvil")
+                useVersion("$anvilVersion")
               }
             }
           }
@@ -70,22 +69,22 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
             mavenLocal()
           }
         }
-        """.trimIndent()
-      )
+      """.trimIndent()
+    )
 
-      // just double-check that this settings file is in sync with the default
-      rootSettings shouldHaveText DEFAULT_SETTINGS_FILE.remove("\\s*google\\(\\)".toRegex())
+    // just double-check that this settings file is in sync with the default
+    rootSettings shouldHaveText DEFAULT_SETTINGS_FILE.remove("\\s*google\\(\\)".toRegex())
 
-      listOf(
-        "moduleCheckAuto",
-        "moduleCheckDepths",
-        "moduleCheckGraphs",
-        "moduleCheckSortDependenciesAuto",
-        "moduleCheckSortPluginsAuto"
-      ).forAll { taskName ->
-        shouldSucceed(taskName)
-      }
+    listOf(
+      "moduleCheckAuto",
+      "moduleCheckDepths",
+      "moduleCheckGraphs",
+      "moduleCheckSortDependenciesAuto",
+      "moduleCheckSortPluginsAuto"
+    ).forAll { taskName ->
+      shouldSucceed(taskName)
     }
+  }
 
   @TestFactory
   fun `test project should have its own versions for AGP and KGP in classpath`() = factory {
@@ -98,6 +97,7 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
         }
 
         android {
+          namespace = "com.modulecheck.lib"
           defaultConfig {
             minSdkVersion(23)
             compileSdkVersion(30)
@@ -119,8 +119,8 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
 
     shouldSucceed("printClasspath") {
 
-      output shouldContain "com.android.library:com.android.library.gradle.plugin:$agp"
-      output shouldContain "org.jetbrains.kotlin.android:org.jetbrains.kotlin.android.gradle.plugin:$kotlin"
+      output shouldContain "com.android.library:com.android.library.gradle.plugin:$agpVersion"
+      output shouldContain "org.jetbrains.kotlin.android:org.jetbrains.kotlin.android.gradle.plugin:$kotlinVersion"
     }
   }
 

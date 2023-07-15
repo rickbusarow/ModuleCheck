@@ -18,19 +18,10 @@ package modulecheck.reporting.logging.test
 import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.logging.Report
 import modulecheck.reporting.logging.Report.ReportEntry
-import modulecheck.reporting.logging.Report.ReportEntry.AppendNewLine
 import modulecheck.reporting.logging.Report.ReportEntry.Failure
-import modulecheck.reporting.logging.Report.ReportEntry.FailureHeader
-import modulecheck.reporting.logging.Report.ReportEntry.FailureLine
-import modulecheck.reporting.logging.Report.ReportEntry.Header
-import modulecheck.reporting.logging.Report.ReportEntry.HeaderLine
 import modulecheck.reporting.logging.Report.ReportEntry.Info
-import modulecheck.reporting.logging.Report.ReportEntry.InfoLine
 import modulecheck.reporting.logging.Report.ReportEntry.Success
-import modulecheck.reporting.logging.Report.ReportEntry.SuccessHeader
-import modulecheck.reporting.logging.Report.ReportEntry.SuccessLine
 import modulecheck.reporting.logging.Report.ReportEntry.Warning
-import modulecheck.reporting.logging.Report.ReportEntry.WarningLine
 
 class ReportingLogger(
   private val mirrorToStandardOut: Boolean = true
@@ -38,9 +29,7 @@ class ReportingLogger(
 
   private val entries = mutableListOf<ReportEntry>()
 
-  fun collectReport(): Report {
-    return Report(entries)
-  }
+  fun collectReport(): Report = Report(entries)
 
   fun clear() {
     entries.clear()
@@ -50,9 +39,7 @@ class ReportingLogger(
     entries.add(reportEntry)
     if (mirrorToStandardOut) {
       reportEntry.printToStdOut()
-      if (reportEntry is AppendNewLine) {
-        println()
-      }
+      println()
     }
   }
 
@@ -65,51 +52,8 @@ class ReportingLogger(
     }
   }
 
-  override fun printHeader(message: String) {
-    addEntry(Header(message))
-  }
-
-  override fun printHeaderLine(message: String) {
-    addEntry(HeaderLine(message))
-  }
-
-  override fun printWarning(message: String) {
-    addEntry(Warning(message))
-  }
-
-  override fun printWarningLine(message: String) {
-    addEntry(WarningLine(message))
-  }
-
-  override fun printInfo(message: String) {
-    addEntry(Info(message))
-  }
-
-  override fun printInfoLine(message: String) {
-    addEntry(InfoLine(message))
-  }
-
-  override fun printFailure(message: String) {
-    addEntry(Failure(message))
-  }
-
-  override fun printFailureLine(message: String) {
-    addEntry(FailureLine(message))
-  }
-
-  override fun printFailureHeader(message: String) {
-    addEntry(FailureHeader(message))
-  }
-
-  override fun printSuccess(message: String) {
-    addEntry(Success(message))
-  }
-
-  override fun printSuccessLine(message: String) {
-    addEntry(SuccessLine(message))
-  }
-
-  override fun printSuccessHeader(message: String) {
-    addEntry(SuccessHeader(message))
-  }
+  override fun failure(message: String) = addEntry(Failure(message))
+  override fun info(message: String) = addEntry(Info(message))
+  override fun success(message: String) = addEntry(Success(message))
+  override fun warning(message: String) = addEntry(Warning(message))
 }

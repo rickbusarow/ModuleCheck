@@ -15,10 +15,7 @@
 
 package modulecheck.parsing.java
 
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.single
-import kotlinx.coroutines.runBlocking
 import modulecheck.api.context.jvmFiles
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.sourceset.SourceSetName
@@ -28,16 +25,13 @@ import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.PackageName.Companion.asPackageName
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.test.McNameTest
-import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
-import modulecheck.utils.trace.Trace
-import org.intellij.lang.annotations.Language
+import modulecheck.project.test.ProjectTestEnvironment
 import org.jetbrains.kotlin.config.JvmTarget
-import org.jetbrains.kotlin.config.JvmTarget.JVM_11
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-internal class JavaFileTest : ProjectTest(), McNameTest {
+internal class JavaFileTest : ProjectTest<ProjectTestEnvironment>(), McNameTest {
 
   override val defaultLanguage: CompatibleLanguage
     get() = JAVA
@@ -46,31 +40,33 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
   inner class `resolvable declarations` {
 
     @Test
-    fun `enum constants should count as declarations`() {
+    fun `enum constants should count as declarations`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         public enum Color { RED, BLUE }
         """
       )
+      file shouldBeJvmFile {
 
-      file.apiReferences shouldBe listOf()
-      file.references shouldBe listOf()
-      file.declarations shouldBe setOf(
-        agnostic("com.test.Color"),
-        agnostic("com.test.Color.RED"),
-        agnostic("com.test.Color.BLUE")
-      )
+        apiReferences {}
+        references {}
+        declarations {
+          agnostic("com.subject.Color")
+          agnostic("com.subject.Color.RED")
+          agnostic("com.subject.Color.BLUE")
+        }
+      }
     }
 
     @Test
-    fun `nested enum constants should count as declarations`() {
+    fun `nested enum constants should count as declarations`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         public class Constants {
           public enum Color { RED, BLUE }
@@ -78,22 +74,25 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.apiReferences shouldBe listOf()
-      file.references shouldBe listOf()
-      file.declarations shouldBe setOf(
-        agnostic("com.test.Constants"),
-        agnostic("com.test.Constants.Color"),
-        agnostic("com.test.Constants.Color.RED"),
-        agnostic("com.test.Constants.Color.BLUE")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {}
+        references {}
+        declarations {
+          agnostic("com.subject.Constants")
+          agnostic("com.subject.Constants.Color")
+          agnostic("com.subject.Constants.Color.RED")
+          agnostic("com.subject.Constants.Color.BLUE")
+        }
+      }
     }
 
     @Test
-    fun `declared constants should count as declarations`() {
+    fun `declared constants should count as declarations`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         public class Constants {
 
@@ -102,20 +101,23 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.apiReferences shouldBe listOf()
-      file.references shouldBe listOf()
-      file.declarations shouldBe setOf(
-        agnostic("com.test.Constants"),
-        agnostic("com.test.Constants.MY_VALUE")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {}
+        references {}
+        declarations {
+          agnostic("com.subject.Constants")
+          agnostic("com.subject.Constants.MY_VALUE")
+        }
+      }
     }
 
     @Test
-    fun `declared nested constants should count as declarations`() {
+    fun `declared nested constants should count as declarations`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         public class Constants {
 
@@ -127,21 +129,24 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.apiReferences shouldBe listOf()
-      file.references shouldBe listOf()
-      file.declarations shouldBe setOf(
-        agnostic("com.test.Constants"),
-        agnostic("com.test.Constants.Values"),
-        agnostic("com.test.Constants.Values.MY_VALUE")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {}
+        references {}
+        declarations {
+          agnostic("com.subject.Constants")
+          agnostic("com.subject.Constants.Values")
+          agnostic("com.subject.Constants.Values.MY_VALUE")
+        }
+      }
     }
 
     @Test
-    fun `public static methods should count as declarations`() {
+    fun `public static methods should count as declarations`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         public class ParsedClass {
 
@@ -150,21 +155,24 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.apiReferences shouldBe listOf()
-      file.references shouldBe listOf()
-      file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.foo")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {}
+        references {}
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.foo")
+        }
+      }
     }
 
     @Test
-    fun `a record should count as a declaration`() {
+    fun `a record should count as a declaration`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         //language=text
         """
-        package com.test;
+        package com.subject;
 
         import com.lib1.Lib1Class;
 
@@ -173,20 +181,23 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         jvmTarget = JvmTarget.JVM_16
       )
 
-      file.apiReferences shouldBe listOf()
-      file.references shouldBe listOf(
-        java("com.lib1.Lib1Class")
-      )
-      file.declarations shouldBe setOf(
-        agnostic("com.test.MyRecord")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {}
+        references {
+          java("com.lib1.Lib1Class")
+        }
+        declarations {
+          agnostic("com.subject.MyRecord")
+        }
+      }
     }
 
     // reproducer for https://github.com/RBusarow/ModuleCheck/issues/399
     @Test
-    fun `file without package should put declarations at the root`() {
+    fun `file without package should put declarations at the root`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         //language=text
         """
 
@@ -197,31 +208,37 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         jvmTarget = JvmTarget.JVM_16
       )
 
-      file.apiReferences shouldBe listOf()
-      file.references shouldBe listOf(
-        java("com.lib1.Lib1Class")
-      )
-      file.declarations shouldBe setOf(
-        agnostic("MyRecord", PackageName.DEFAULT)
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {}
+        references {
+          java("com.lib1.Lib1Class")
+        }
+        declarations {
+          agnostic("MyRecord", PackageName.DEFAULT)
+        }
+      }
     }
 
     @Test
-    fun `file without imports should still parse`() {
+    fun `file without imports should still parse`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         public class MyClass {}
         """
       )
 
-      file.apiReferences shouldBe listOf()
-      file.references shouldBe listOf()
-      file.declarations shouldBe setOf(
-        agnostic("com.test.MyClass")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {}
+        references {}
+        declarations {
+          agnostic("com.subject.MyClass")
+        }
+      }
     }
   }
 
@@ -229,11 +246,11 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
   inner class `api references` {
 
     @Test
-    fun `public method return type should count as api reference`() {
+    fun `public method return type should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         import com.lib1.Lib1Class;
 
@@ -244,24 +261,27 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.apiReferences shouldBe listOf(
-        java("com.lib1.Lib1Class")
-      )
-      file.references shouldBe listOf(
-        java("com.lib1.Lib1Class")
-      )
-      file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.foo")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {
+          java("com.lib1.Lib1Class")
+        }
+        references {
+          java("com.lib1.Lib1Class")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.foo")
+        }
+      }
     }
 
     @Test
-    fun `private method return type should not count as api reference`() {
+    fun `private method return type should not count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         import com.lib1.Lib1Class;
 
@@ -272,21 +292,24 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.apiReferences shouldBe listOf()
-      file.references shouldBe listOf(
-        java("com.lib1.Lib1Class")
-      )
-      file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {}
+        references {
+          java("com.lib1.Lib1Class")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+        }
+      }
     }
 
     @Test
-    fun `package-private method return type should not count as api reference`() {
+    fun `package-private method return type should not count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         import com.lib1.Lib1Class;
 
@@ -297,22 +320,25 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.apiReferences shouldBe listOf()
-      file.references shouldBe listOf(
-        java("com.lib1.Lib1Class")
-      )
-      file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.foo")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {}
+        references {
+          java("com.lib1.Lib1Class")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.foo")
+        }
+      }
     }
 
     @Test
-    fun `public method with wildcard-imported return type should count as api reference`() {
+    fun `public method with wildcard-imported return type should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         import com.lib1.*;
 
@@ -323,28 +349,27 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.apiReferences shouldBe listOf(
-        java("com.test.Lib1Class"),
-        java("com.lib1.Lib1Class"),
-        java("Lib1Class")
-      )
-      file.references shouldBe listOf(
-        java("com.test.Lib1Class"),
-        java("com.lib1.Lib1Class"),
-        java("Lib1Class")
-      )
-      file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.foo")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {
+          java("com.lib1.Lib1Class")
+        }
+        references {
+          java("com.lib1.Lib1Class")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.foo")
+        }
+      }
     }
 
     @Test
-    fun `public method with fully qualified return type should count as api reference`() {
+    fun `public method with fully qualified return type should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         public class ParsedClass {
 
@@ -353,26 +378,29 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.apiReferences shouldBe listOf(
-        java("com.lib1.Lib1Class"),
-        java("com.test.com.lib1.Lib1Class")
-      )
-      file.references shouldBe listOf(
-        java("com.lib1.Lib1Class"),
-        java("com.test.com.lib1.Lib1Class")
-      )
-      file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.foo")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {
+          java("com.lib1.Lib1Class")
+          java("com.subject.com.lib1.Lib1Class")
+        }
+        references {
+          java("com.lib1.Lib1Class")
+          java("com.subject.com.lib1.Lib1Class")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.foo")
+        }
+      }
     }
 
     @Test
-    fun `public method parameterized return type should count as api reference`() {
+    fun `public method parameterized return type should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         import com.lib1.Lib1Class;
         import java.util.List;
@@ -384,26 +412,29 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.apiReferences shouldBe listOf(
-        java("com.lib1.Lib1Class"),
-        java("java.util.List")
-      )
-      file.references shouldBe listOf(
-        java("com.lib1.Lib1Class"),
-        java("java.util.List")
-      )
-      file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.foo")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {
+          java("com.lib1.Lib1Class")
+          java("java.util.List")
+        }
+        references {
+          java("com.lib1.Lib1Class")
+          java("java.util.List")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.foo")
+        }
+      }
     }
 
     @Test
-    fun `public method generic return type parameter should not count as api reference`() {
+    fun `public method generic return type parameter should not count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         import java.util.List;
 
@@ -414,24 +445,28 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.apiReferences shouldBe listOf(
-        java("java.util.List")
-      )
-      file.references shouldBe listOf(
-        java("java.util.List")
-      )
-      file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.foo")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {
+          java("java.util.List")
+        }
+        references {
+          java("java.util.List")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.foo")
+        }
+      }
     }
 
     @Test
-    fun `import should not be an api reference if it isn't actually part of an api reference`() {
+    fun `import should not be an api reference if it isn't actually part of an api reference`() =
+      test {
 
-      val file = createFile(
-        """
-        package com.test;
+        val file = createJavaFile(
+          """
+        package com.subject;
 
         import com.lib1.Lib1Class;
         import java.util.List;
@@ -441,27 +476,30 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
           public <E> List<E> foo() { return null; }
         }
         """
-      )
+        )
 
-      file.apiReferences shouldBe listOf(
-        java("java.util.List")
-      )
-      file.references shouldBe listOf(
-        java("com.lib1.Lib1Class"),
-        java("java.util.List")
-      )
-      file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.foo")
-      )
-    }
+        file shouldBeJvmFile {
+
+          apiReferences {
+            java("java.util.List")
+          }
+          references {
+            java("com.lib1.Lib1Class")
+            java("java.util.List")
+          }
+          declarations {
+            agnostic("com.subject.ParsedClass")
+            agnostic("com.subject.ParsedClass.foo")
+          }
+        }
+      }
 
     @Test
-    fun `public method generic return type parameter bound should count as api reference`() {
+    fun `public method generic return type parameter bound should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         import java.util.List;
 
@@ -472,26 +510,29 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.apiReferences shouldBe listOf(
-        java("java.util.List"),
-        java("java.lang.CharSequence")
-      )
-      file.references shouldBe listOf(
-        java("java.util.List"),
-        java("java.lang.CharSequence")
-      )
-      file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.foo")
-      )
+      file shouldBeJvmFile {
+
+        apiReferences {
+          java("java.util.List")
+          java("java.lang.CharSequence")
+        }
+        references {
+          java("java.util.List")
+          java("java.lang.CharSequence")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.foo")
+        }
+      }
     }
 
     @Test
-    fun `public method argument should count as api reference`() {
+    fun `public method argument should count as api reference`() = test {
 
-      val file = createFile(
+      val file = createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         import java.util.List;
 
@@ -501,28 +542,29 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         }
         """
       )
+      file shouldBeJvmFile {
 
-      file.apiReferences shouldBe listOf(
-        java("java.util.List"),
-        java("java.lang.String")
-      )
-      file.references shouldBe listOf(
-        java("java.util.List"),
-        java("java.lang.String")
-      )
-      file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.foo")
-      )
+        apiReferences {
+          java("java.util.List")
+          java("java.lang.String")
+        }
+        references {
+          java("java.util.List")
+          java("java.lang.String")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.foo")
+        }
+      }
     }
 
     @Test
-    fun `public member property type with wildcard import should count as api reference`() =
-      test {
+    fun `public member property type with wildcard import should count as api reference`() = test {
 
-        val file = createFile(
-          """
-          package com.test;
+      val file = createJavaFile(
+        """
+          package com.subject;
 
           import com.lib1.*;
 
@@ -531,31 +573,29 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
             public Lib1Class lib1Class;
           }
           """
-        )
+      )
 
-        file.apiReferences shouldBe listOf(
-          java("Lib1Class"),
-          java("com.lib1.Lib1Class"),
-          java("com.test.Lib1Class")
-        )
-        file.references shouldBe listOf(
-          java("Lib1Class"),
-          java("com.lib1.Lib1Class"),
-          java("com.test.Lib1Class")
-        )
-        file.declarations shouldBe setOf(
-          agnostic("com.test.ParsedClass"),
-          agnostic("com.test.ParsedClass.lib1Class")
-        )
+      file shouldBeJvmFile {
+
+        apiReferences {
+          java("com.lib1.Lib1Class")
+        }
+        references {
+          java("com.lib1.Lib1Class")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.lib1Class")
+        }
       }
+    }
 
     @Test
-    fun `public member property type with import should count as api reference`() =
-      test {
+    fun `public member property type with import should count as api reference`() = test {
 
-        val file = createFile(
-          """
-          package com.test;
+      val file = createJavaFile(
+        """
+          package com.subject;
 
           import com.lib1.Lib1Class;
 
@@ -564,27 +604,30 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
             public Lib1Class lib1Class;
           }
           """
-        )
+      )
 
-        file.apiReferences shouldBe listOf(
+      file shouldBeJvmFile {
+
+        apiReferences {
           java("com.lib1.Lib1Class")
-        )
-        file.references shouldBe listOf(
+        }
+        references {
           java("com.lib1.Lib1Class")
-        )
-        file.declarations shouldBe setOf(
-          agnostic("com.test.ParsedClass"),
-          agnostic("com.test.ParsedClass.lib1Class")
-        )
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.lib1Class")
+        }
       }
+    }
 
     @Test
     fun `a public member property with generic type with wildcard import should count as api reference`() =
       test {
 
-        val file = createFile(
+        val file = createJavaFile(
           """
-          package com.test;
+          package com.subject;
 
           import com.lib1.*;
           import java.util.List;
@@ -596,22 +639,21 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
           """
         )
 
-        file.apiReferences shouldBe listOf(
-          java("Lib1Class"),
-          java("java.util.List"),
-          java("com.lib1.Lib1Class"),
-          java("com.test.Lib1Class")
-        )
-        file.references shouldBe listOf(
-          java("Lib1Class"),
-          java("java.util.List"),
-          java("com.lib1.Lib1Class"),
-          java("com.test.Lib1Class")
-        )
-        file.declarations shouldBe setOf(
-          agnostic("com.test.ParsedClass"),
-          agnostic("com.test.ParsedClass.lib1Classes")
-        )
+        file shouldBeJvmFile {
+
+          apiReferences {
+            java("java.util.List")
+            java("com.lib1.Lib1Class")
+          }
+          references {
+            java("java.util.List")
+            java("com.lib1.Lib1Class")
+          }
+          declarations {
+            agnostic("com.subject.ParsedClass")
+            agnostic("com.subject.ParsedClass.lib1Classes")
+          }
+        }
       }
   }
 
@@ -621,11 +663,11 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     @Test
     fun `unqualified android resource reference in base package`() = test {
 
-      val project = androidLibrary(":lib1", "com.test")
+      val project = androidLibrary(":lib1", "com.subject")
 
-      val file = project.createFile(
+      val file = project.createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         public class ParsedClass {
 
@@ -634,16 +676,19 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.references shouldBe listOf(
-        unqualifiedAndroidResource("R.string.app_name"),
-        androidR("com.test".asPackageName()),
-        qualifiedAndroidResource("com.test.R.string.app_name")
-      )
+      file shouldBeJvmFile {
 
-      file.declarations shouldBe listOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.someString")
-      )
+        apiReferences {}
+        references {
+          unqualifiedAndroidResource("R.string.app_name")
+          androidR("com.subject".asPackageName())
+          qualifiedAndroidResource("com.subject.R.string.app_name")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.someString")
+        }
+      }
     }
 
     @Test
@@ -651,12 +696,12 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val otherLib = androidLibrary(":other", "com.modulecheck.other")
 
-      val project = androidLibrary(":lib1", "com.test") {
+      val project = androidLibrary(":lib1", "com.lib1") {
         addDependency(ConfigurationName.implementation, otherLib)
 
         addJavaSource(
           """
-          package com.test;
+          package com.subject;
 
           import com.modulecheck.other.R;
 
@@ -670,16 +715,19 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
-      file.references shouldBe listOf(
-        androidR("com.modulecheck.other".asPackageName()),
-        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
-        unqualifiedAndroidResource("R.string.app_name")
-      )
+      file shouldBeJvmFile {
 
-      file.declarations shouldBe listOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.someString")
-      )
+        apiReferences {}
+        references {
+          androidR("com.modulecheck.other".asPackageName())
+          qualifiedAndroidResource("com.modulecheck.other.R.string.app_name")
+          unqualifiedAndroidResource("R.string.app_name")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.someString")
+        }
+      }
     }
 
     @Test
@@ -687,12 +735,12 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val otherLib = androidLibrary(":other", "com.modulecheck.other")
 
-      val project = androidLibrary(":lib1", "com.test") {
+      val project = androidLibrary(":lib1", "com.lib1") {
         addDependency(ConfigurationName.implementation, otherLib)
 
         addJavaSource(
           """
-          package com.test;
+          package com.subject;
 
           import com.modulecheck.other.R.string;
 
@@ -706,17 +754,20 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
-      file.references shouldBe listOf(
-        androidR("com.modulecheck.other".asPackageName()),
-        java("com.modulecheck.other.R.string"),
-        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
-        unqualifiedAndroidResource("R.string.app_name")
-      )
+      file shouldBeJvmFile {
 
-      file.declarations shouldBe listOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.someString")
-      )
+        apiReferences {}
+        references {
+          androidR("com.modulecheck.other".asPackageName())
+          java("com.modulecheck.other.R.string")
+          qualifiedAndroidResource("com.modulecheck.other.R.string.app_name")
+          unqualifiedAndroidResource("R.string.app_name")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.someString")
+        }
+      }
     }
 
     @Test
@@ -724,12 +775,12 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val otherLib = androidLibrary(":other", "com.modulecheck.other")
 
-      val project = androidLibrary(":lib1", "com.test") {
+      val project = androidLibrary(":lib1", "com.lib1") {
         addDependency(ConfigurationName.implementation, otherLib)
 
         addJavaSource(
           """
-          package com.test;
+          package com.subject;
 
           import com.modulecheck.other.*;
 
@@ -743,16 +794,19 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
-      file.references shouldBe listOf(
-        androidR("com.test".asPackageName()),
-        qualifiedAndroidResource("com.test.R.string.app_name"),
-        unqualifiedAndroidResource("R.string.app_name")
-      )
+      file shouldBeJvmFile {
 
-      file.declarations shouldBe listOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.someString")
-      )
+        apiReferences {}
+        references {
+          androidR("com.modulecheck.other".asPackageName())
+          qualifiedAndroidResource("com.modulecheck.other.R.string.app_name")
+          unqualifiedAndroidResource("R.string.app_name")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.someString")
+        }
+      }
     }
 
     @Test
@@ -760,12 +814,12 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val otherLib = androidLibrary(":other", "com.modulecheck.other")
 
-      val project = androidLibrary(":lib1", "com.test") {
+      val project = androidLibrary(":lib1", "com.lib1") {
         addDependency(ConfigurationName.implementation, otherLib)
 
         addJavaSource(
           """
-          package com.test.internal;
+          package com.subject.internal;
 
           import com.modulecheck.other.*;
 
@@ -779,16 +833,19 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
-      file.references shouldBe listOf(
-        androidR("com.modulecheck.other".asPackageName()),
-        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
-        unqualifiedAndroidResource("R.string.app_name")
-      )
+      file shouldBeJvmFile {
 
-      file.declarations shouldBe listOf(
-        agnostic("com.test.internal.ParsedClass"),
-        agnostic("com.test.internal.ParsedClass.someString")
-      )
+        apiReferences {}
+        references {
+          androidR("com.modulecheck.other".asPackageName())
+          qualifiedAndroidResource("com.modulecheck.other.R.string.app_name")
+          unqualifiedAndroidResource("R.string.app_name")
+        }
+        declarations {
+          agnostic("com.subject.internal.ParsedClass")
+          agnostic("com.subject.internal.ParsedClass.someString")
+        }
+      }
     }
 
     @Test
@@ -796,13 +853,13 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val otherLib = androidLibrary(":other", "com.modulecheck.other")
 
-      val project = androidLibrary(":lib1", "com.test") {
+      val project = androidLibrary(":lib1", "com.lib1") {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createJavaFile(
         """
-        package com.test.internal;
+        package com.subject.internal;
 
         import com.modulecheck.other.R.*;
 
@@ -813,16 +870,19 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.references shouldBe listOf(
-        androidR("com.modulecheck.other".asPackageName()),
-        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
-        unqualifiedAndroidResource("R.string.app_name")
-      )
+      file shouldBeJvmFile {
 
-      file.declarations shouldBe listOf(
-        agnostic("com.test.internal.ParsedClass"),
-        agnostic("com.test.internal.ParsedClass.someString")
-      )
+        apiReferences {}
+        references {
+          androidR("com.modulecheck.other".asPackageName())
+          qualifiedAndroidResource("com.modulecheck.other.R.string.app_name")
+          unqualifiedAndroidResource("R.string.app_name")
+        }
+        declarations {
+          agnostic("com.subject.internal.ParsedClass")
+          agnostic("com.subject.internal.ParsedClass.someString")
+        }
+      }
     }
 
     @Test
@@ -830,13 +890,13 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       val otherLib = androidLibrary(":other", "com.modulecheck.other")
 
-      val project = androidLibrary(":lib1", "com.test") {
+      val project = androidLibrary(":lib1", "com.lib1") {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         import com.modulecheck.other.R.string;
 
@@ -847,17 +907,20 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.references shouldBe listOf(
-        androidR("com.modulecheck.other".asPackageName()),
-        java("com.modulecheck.other.R.string"),
-        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
-        unqualifiedAndroidResource("R.string.app_name")
-      )
+      file shouldBeJvmFile {
 
-      file.declarations shouldBe listOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.someString")
-      )
+        apiReferences {}
+        references {
+          androidR("com.modulecheck.other".asPackageName())
+          java("com.modulecheck.other.R.string")
+          qualifiedAndroidResource("com.modulecheck.other.R.string.app_name")
+          unqualifiedAndroidResource("R.string.app_name")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.someString")
+        }
+      }
     }
 
     @Test
@@ -872,13 +935,13 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         )
       }
 
-      val project = androidLibrary(":lib1", "com.test") {
+      val project = androidLibrary(":lib1", "com.lib1") {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         import com.modulecheck.other.databinding.FragmentOtherBinding;
 
@@ -889,15 +952,20 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.references shouldBe listOf(
-        androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding"),
-        androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding.inflate")
-      )
+      file shouldBeJvmFile {
 
-      file.declarations shouldBe listOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.binding")
-      )
+        apiReferences {
+          java("com.modulecheck.other.databinding.FragmentOtherBinding")
+        }
+        references {
+          androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding")
+          androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding.inflate")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.binding")
+        }
+      }
     }
 
     @Test
@@ -912,13 +980,13 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         )
       }
 
-      val project = androidLibrary(":lib1", "com.test") {
+      val project = androidLibrary(":lib1", "com.lib1") {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         public class ParsedClass {
 
@@ -927,15 +995,18 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.references shouldBe listOf(
-        androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding"),
-        androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding.inflate")
-      )
+      file shouldBeJvmFile {
 
-      file.declarations shouldBe listOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.binding")
-      )
+        apiReferences {}
+        references {
+          androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding")
+          androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding.inflate")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.binding")
+        }
+      }
     }
 
     @Test
@@ -950,13 +1021,13 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         )
       }
 
-      val project = androidLibrary(":lib1", "com.test") {
+      val project = androidLibrary(":lib1", "com.lib1") {
         addDependency(ConfigurationName.implementation, otherLib)
       }
 
-      val file = project.createFile(
+      val file = project.createJavaFile(
         """
-        package com.test;
+        package com.subject;
 
         import com.modulecheck.other.databinding.*;
 
@@ -967,27 +1038,33 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         """
       )
 
-      file.references shouldBe listOf(
-        androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding"),
-        androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding.inflate")
-      )
+      file shouldBeJvmFile {
 
-      file.declarations shouldBe listOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.binding")
-      )
+        apiReferences {
+          java("com.modulecheck.other.databinding.FragmentOtherBinding")
+        }
+        references {
+          androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding")
+          androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding.inflate")
+        }
+        declarations {
+          agnostic("com.subject.ParsedClass")
+          agnostic("com.subject.ParsedClass.binding")
+        }
+      }
     }
+  }
 
-    @Test
-    fun `local classes should not count as declarations`() = test {
+  @Test
+  fun `local classes should not count as declarations`() = test {
 
-      val project = androidLibrary(":lib1", "com.test")
+    val project = androidLibrary(":lib1", "com.lib1")
 
-      val file = project.createFile(
-        """
-        package com.test;
+    val file = project.createJavaFile(
+      """
+        package com.subject;
 
-        import com.test.AnInterface;
+        import com.subject.AnInterface;
         import org.junit.Test;
 
         public class ATest {
@@ -1003,73 +1080,50 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
           }
         }
         """
-      )
+    )
 
-      file.references shouldBe listOf(
-        java("com.test.AnInterface"),
+    file shouldBeJvmFile {
+
+      apiReferences {}
+      references {
+        java("com.subject.AnInterface")
         java("org.junit.Test")
-      )
-
-      file.declarations shouldBe listOf(
-        agnostic("com.test.ATest"),
-        agnostic("com.test.ATest.anonymous_things_can_be_parsed")
-      )
+      }
+      declarations {
+        agnostic("com.subject.ATest")
+        agnostic("com.subject.ATest.anonymous_things_can_be_parsed")
+      }
     }
+  }
 
-    @Test
-    fun `multiple variables in a single line should all be declared`() = test {
+  @Test
+  fun `multiple variables in a single line should all be declared`() = test {
 
-      val project = androidLibrary(":lib1", "com.test")
+    val project = androidLibrary(":lib1", "com.lib1")
 
-      val file = project.createFile(
-        """
-        package com.test;
+    val file = project.createJavaFile(
+      """
+        package com.subject;
 
         public class ParsedClass {
 
           public int i, j, k;
         }
         """
-      )
+    )
 
-      file.references shouldBe listOf()
+    file shouldBeJvmFile {
 
-      file.declarations shouldBe listOf(
-        agnostic("com.test.ParsedClass"),
-        agnostic("com.test.ParsedClass.i"),
-        agnostic("com.test.ParsedClass.j"),
-        agnostic("com.test.ParsedClass.k")
-      )
+      apiReferences {}
+      references {}
+      declarations {
+        agnostic("com.subject.ParsedClass")
+        agnostic("com.subject.ParsedClass.i")
+        agnostic("com.subject.ParsedClass.j")
+        agnostic("com.subject.ParsedClass.k")
+      }
     }
   }
 
   fun java(name: String) = ReferenceName(name, JAVA)
-
-  fun McProject.createFile(
-    @Language("java")
-    content: String,
-    sourceSetName: SourceSetName = SourceSetName.MAIN
-  ): RealJavaFile = runBlocking {
-    createFile(
-      content = content,
-      project = this@createFile,
-      sourceSetName = sourceSetName
-    )
-  }
-
-  fun createFile(
-    @Language("java")
-    content: String,
-    project: McProject = simpleProject(),
-    sourceSetName: SourceSetName = SourceSetName.MAIN,
-    jvmTarget: JvmTarget = JVM_11
-  ): RealJavaFile = runBlocking(Trace.start(listOf(JavaFileTest::class))) {
-    project.editSimple {
-      addJavaSource(content, sourceSetName)
-      this.jvmTarget = jvmTarget
-    }.jvmFiles()
-      .get(sourceSetName)
-      .filterIsInstance<RealJavaFile>()
-      .first { it.file.readText() == content.trimIndent() }
-  }
 }

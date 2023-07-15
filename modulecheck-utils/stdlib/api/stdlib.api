@@ -1,0 +1,182 @@
+public final class modulecheck/utils/ApplyKt {
+	public static final fun alsoIf (Ljava/lang/Object;ZLkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+	public static final fun applyEach (Ljava/lang/Object;Ljava/lang/Iterable;)Ljava/lang/Object;
+	public static final fun applyEach (Ljava/lang/Object;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function2;)Ljava/lang/Object;
+	public static final fun applyEach (Ljava/lang/Object;[Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+	public static final fun applyEachIndexed (Ljava/lang/Object;Ljava/lang/Iterable;Lkotlin/jvm/functions/Function3;)Ljava/lang/Object;
+	public static final fun applyEachIndexed (Ljava/lang/Object;[Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)Ljava/lang/Object;
+	public static final fun applyIf (Ljava/lang/Object;ZLkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+	public static final fun letIf (Ljava/lang/Object;ZLkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+}
+
+public abstract class modulecheck/utils/CaseMatcher {
+	public synthetic fun <init> (Lkotlin/text/Regex;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun matches (Ljava/lang/String;)Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/utils/CaseMatcher$CamelSnakeCaseMatcher : modulecheck/utils/CaseMatcher {
+	public fun <init> ()V
+}
+
+public final class modulecheck/utils/CaseMatcher$CustomMatcher : modulecheck/utils/CaseMatcher {
+	public fun <init> (Lkotlin/text/Regex;)V
+}
+
+public final class modulecheck/utils/CaseMatcher$KebabCaseMatcher : modulecheck/utils/CaseMatcher {
+	public fun <init> ()V
+}
+
+public final class modulecheck/utils/CaseMatcher$LowerCamelCaseMatcher : modulecheck/utils/CaseMatcher {
+	public fun <init> ()V
+}
+
+public final class modulecheck/utils/CaseMatcher$LowerFlatCaseMatcher : modulecheck/utils/CaseMatcher {
+	public fun <init> ()V
+}
+
+public final class modulecheck/utils/CaseMatcher$ScreamingKebabCaseMatcher : modulecheck/utils/CaseMatcher {
+	public fun <init> ()V
+}
+
+public final class modulecheck/utils/CaseMatcher$ScreamingSnakeCaseMatcher : modulecheck/utils/CaseMatcher {
+	public fun <init> ()V
+}
+
+public final class modulecheck/utils/CaseMatcher$SnakeCaseMatcher : modulecheck/utils/CaseMatcher {
+	public fun <init> ()V
+}
+
+public final class modulecheck/utils/CaseMatcher$TrainCaseMatcher : modulecheck/utils/CaseMatcher {
+	public fun <init> ()V
+}
+
+public final class modulecheck/utils/CaseMatcher$UpperCamelCaseMatcher : modulecheck/utils/CaseMatcher {
+	public fun <init> ()V
+}
+
+public final class modulecheck/utils/CaseMatcher$UpperFlatCaseMatcher : modulecheck/utils/CaseMatcher {
+	public fun <init> ()V
+}
+
+public final class modulecheck/utils/CastKt {
+	public static final fun cast (Ljava/lang/Object;)Ljava/lang/Object;
+	public static final fun requireNotNull (Ljava/lang/Object;)Ljava/lang/Object;
+	public static final fun requireNotNull (Ljava/lang/Object;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+}
+
+public final class modulecheck/utils/CollectionKt {
+	public static final fun allValues (Ljava/util/Map;)Ljava/util/List;
+	public static final fun asCollection (Ljava/lang/Iterable;)Ljava/util/Collection;
+	public static final fun asList (Ljava/lang/Iterable;)Ljava/util/List;
+	public static final fun asSet (Ljava/lang/Iterable;)Ljava/util/Set;
+	public static final fun chunkedBy (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static final fun containsAny (Ljava/lang/Iterable;Ljava/lang/Iterable;)Z
+	public static final fun filterToSet (Ljava/lang/Iterable;Ljava/util/Set;Lkotlin/jvm/functions/Function1;)Ljava/util/Set;
+	public static synthetic fun filterToSet$default (Ljava/lang/Iterable;Ljava/util/Set;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/util/Set;
+	public static final fun flatMapToSet (Ljava/lang/Iterable;Ljava/util/Set;Lkotlin/jvm/functions/Function1;)Ljava/util/Set;
+	public static final fun flatMapToSet (Lkotlin/sequences/Sequence;Ljava/util/Set;Lkotlin/jvm/functions/Function1;)Ljava/util/Set;
+	public static synthetic fun flatMapToSet$default (Ljava/lang/Iterable;Ljava/util/Set;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/util/Set;
+	public static synthetic fun flatMapToSet$default (Lkotlin/sequences/Sequence;Ljava/util/Set;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/util/Set;
+	public static final fun indicesOf (Ljava/util/Collection;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static final fun mapToSet (Ljava/util/Collection;Ljava/util/Set;Lkotlin/jvm/functions/Function1;)Ljava/util/Set;
+	public static synthetic fun mapToSet$default (Ljava/util/Collection;Ljava/util/Set;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/util/Set;
+	public static final fun pluralString (Ljava/util/Collection;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/lang/String;
+	public static final fun sequenceOfNotNull ([Ljava/lang/Object;)Lkotlin/sequences/Sequence;
+	public static final fun singletonList (Ljava/lang/Object;)Ljava/util/List;
+	public static final fun singletonSet (Ljava/lang/Object;)Ljava/util/Set;
+	public static final fun sortedWith (Ljava/lang/Iterable;[Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static final fun sortedWith (Lkotlin/sequences/Sequence;[Lkotlin/jvm/functions/Function1;)Lkotlin/sequences/Sequence;
+	public static final fun sortedWithDescending (Ljava/lang/Iterable;[Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static final fun takeWhileInclusive (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+}
+
+public final class modulecheck/utils/ComparableKt {
+	public static final fun isGreaterThan (Ljava/lang/Comparable;Ljava/lang/Object;)Z
+}
+
+public final class modulecheck/utils/FileKt {
+	public static final fun createSafely (Ljava/io/File;Ljava/lang/String;Z)Ljava/io/File;
+	public static synthetic fun createSafely$default (Ljava/io/File;Ljava/lang/String;ZILjava/lang/Object;)Ljava/io/File;
+	public static final fun div (Ljava/io/File;Ljava/lang/String;)Ljava/io/File;
+	public static final fun existsOrNull (Ljava/io/File;)Ljava/io/File;
+	public static final fun findMinimumIndent (Ljava/io/File;)Ljava/lang/String;
+	public static final fun parents (Ljava/io/File;)Lkotlin/sequences/Sequence;
+	public static final fun resolve (Ljava/io/File;[Ljava/lang/String;)Ljava/io/File;
+	public static final fun resolve (Ljava/nio/file/Path;[Ljava/lang/String;)Ljava/nio/file/Path;
+	public static final fun segments (Ljava/io/File;)Ljava/util/List;
+}
+
+public final class modulecheck/utils/OptionalKt {
+	public static final fun getOrNull (Ljava/util/Optional;)Ljava/lang/Object;
+}
+
+public final class modulecheck/utils/RegexBuilder {
+	public fun <init> ()V
+	public final fun anyOf ([Lkotlin/jvm/functions/Function1;)Lmodulecheck/utils/RegexBuilder;
+	public final fun append (Ljava/lang/String;)Lmodulecheck/utils/RegexBuilder;
+	public final fun appendWithoutInjection (Ljava/lang/String;)Lmodulecheck/utils/RegexBuilder;
+	public final fun getStringBuilder ()Ljava/lang/StringBuilder;
+	public final fun grouped (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lmodulecheck/utils/RegexBuilder;
+	public final fun or ()Lmodulecheck/utils/RegexBuilder;
+	public final fun regex (Lkotlin/jvm/functions/Function1;)Ljava/lang/String;
+	public final fun section (Lkotlin/jvm/functions/Function1;)Lmodulecheck/utils/RegexBuilder;
+}
+
+public final class modulecheck/utils/RegexKt {
+	public static final fun regex (Lkotlin/jvm/functions/Function1;)Lkotlin/text/Regex;
+	public static final fun replaceDestructured (Ljava/lang/String;Lkotlin/text/Regex;Lkotlin/jvm/functions/Function1;)Ljava/lang/String;
+	public static final fun replaceDestructured (Ljava/lang/String;Lkotlin/text/Regex;Lkotlin/jvm/functions/Function2;)Ljava/lang/String;
+	public static final fun replaceDestructured (Ljava/lang/String;Lkotlin/text/Regex;Lkotlin/jvm/functions/Function3;)Ljava/lang/String;
+	public static final fun replaceDestructured (Ljava/lang/String;Lkotlin/text/Regex;Lkotlin/jvm/functions/Function4;)Ljava/lang/String;
+	public static final fun replaceDestructured (Ljava/lang/String;Lkotlin/text/Regex;Lkotlin/jvm/functions/Function5;)Ljava/lang/String;
+	public static final fun replaceRegex (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class modulecheck/utils/StringKt {
+	public static final fun capitalize (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun capitalize (Ljava/lang/String;Ljava/util/Locale;)Ljava/lang/String;
+	public static synthetic fun capitalize$default (Ljava/lang/String;Ljava/util/Locale;ILjava/lang/Object;)Ljava/lang/String;
+	public static final fun decapitalize (Ljava/lang/String;Ljava/util/Locale;)Ljava/lang/String;
+	public static synthetic fun decapitalize$default (Ljava/lang/String;Ljava/util/Locale;ILjava/lang/Object;)Ljava/lang/String;
+	public static final fun findMinimumIndent (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static synthetic fun findMinimumIndent$default (Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+	public static final fun getDots (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun getInterpuncts (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun getNoDots (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun getNoInterpuncts (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun indent (Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun indent$default (Ljava/lang/StringBuilder;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun indentByBrackets (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static synthetic fun indentByBrackets$default (Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+	public static final fun joinToStringConcat (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;)Ljava/lang/String;
+	public static final fun joinToStringConcat (Lkotlin/sequences/Sequence;Lkotlin/jvm/functions/Function1;)Ljava/lang/String;
+	public static synthetic fun joinToStringConcat$default (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/lang/String;
+	public static synthetic fun joinToStringConcat$default (Lkotlin/sequences/Sequence;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/lang/String;
+	public static final fun joinToStringIndexed (Lkotlin/sequences/Sequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;ILjava/lang/CharSequence;Lkotlin/jvm/functions/Function2;)Ljava/lang/String;
+	public static synthetic fun joinToStringIndexed$default (Lkotlin/sequences/Sequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;ILjava/lang/CharSequence;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Ljava/lang/String;
+	public static final fun justifyToFirstLine (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun mapLines (Ljava/lang/CharSequence;Lkotlin/jvm/functions/Function1;)Ljava/lang/String;
+	public static final fun mapLinesIndexed (Ljava/lang/CharSequence;Lkotlin/jvm/functions/Function2;)Ljava/lang/String;
+	public static final fun noAnsi (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun normaliseLineSeparators (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun prefix (Ljava/lang/CharSequence;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun prefixIfNot (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun prependContinuationIndent (Ljava/lang/CharSequence;Ljava/lang/String;Z)Ljava/lang/String;
+	public static synthetic fun prependContinuationIndent$default (Ljava/lang/CharSequence;Ljava/lang/String;ZILjava/lang/Object;)Ljava/lang/String;
+	public static final fun prettyToString (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun remove (Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String;
+	public static final fun remove (Ljava/lang/String;[Lkotlin/text/Regex;)Ljava/lang/String;
+	public static final fun splitAndMap (Ljava/lang/String;[CLkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static final fun splitAndMap (Ljava/lang/String;[Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static final fun splitAndTrim (Ljava/lang/String;[C)Ljava/util/List;
+	public static final fun splitAndTrim (Ljava/lang/String;[Ljava/lang/String;)Ljava/util/List;
+	public static final fun suffixIfNot (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun toStringPretty (Ljava/lang/Object;)Ljava/lang/String;
+	public static final fun trimIndentAfterFirstLine (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun trimSegments (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static synthetic fun trimSegments$default (Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+	public static final fun wrapIn (Ljava/lang/CharSequence;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static synthetic fun wrapIn$default (Ljava/lang/CharSequence;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+}
+

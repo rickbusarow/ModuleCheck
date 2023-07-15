@@ -33,6 +33,7 @@ import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.parsing.psi.KotlinAndroidGradleParser
 import modulecheck.parsing.psi.KotlinDependenciesBlockParser
 import modulecheck.parsing.psi.KotlinPluginsBlockParser
+import modulecheck.parsing.source.PackageName.Companion.asPackageName
 import modulecheck.parsing.wiring.JvmFileCache
 import modulecheck.parsing.wiring.RealAndroidGradleSettingsProvider
 import modulecheck.parsing.wiring.RealDependenciesBlocksProvider
@@ -45,12 +46,10 @@ import modulecheck.project.ProjectProvider
 import modulecheck.project.impl.RealMcProject
 import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.logging.PrintLogger
-import modulecheck.utils.child
 import modulecheck.utils.createSafely
 import java.io.File
 
 @PublishedApi
-@Suppress("LongParameterList")
 internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> createProject(
   projectCache: ProjectCache,
   dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
@@ -105,10 +104,7 @@ internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> c
 
         requireNotNull(androidPackageOrNull)
 
-        pluginBuilder.manifests.getOrPut(SourceSetName.MAIN) {
-          projectRoot.child("src/main/AndroidManifest.xml")
-            .createSafely("<manifest package=\"$androidPackageOrNull\" />")
-        }
+        pluginBuilder.namespaces[SourceSetName.MAIN] = androidPackageOrNull.asPackageName()
       }
     }
 

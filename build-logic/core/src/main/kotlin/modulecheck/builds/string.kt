@@ -32,6 +32,11 @@ fun String.capitalize(): String = replaceFirstChar {
   if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString()
 }
 
+/** Replaces the deprecated Kotlin version, but hard-codes `Locale.US` */
+fun String.decapitalize(): String = replaceFirstChar {
+  if (it.isUpperCase()) it.lowercase(Locale.US) else it.toString()
+}
+
 /**
  * Removes trailing whitespaces from all lines in a string.
  *
@@ -40,16 +45,12 @@ fun String.capitalize(): String = replaceFirstChar {
 fun String.trimLineEnds(): String = mapLines { it.trimEnd() }
 
 /** performs [transform] on each line */
-fun String.mapLines(
-  transform: (String) -> CharSequence
-): String = lineSequence()
+fun String.mapLines(transform: (String) -> CharSequence): String = lineSequence()
   .joinToString("\n", transform = transform)
 
-fun String.normaliseLineSeparators(): String =
-  TextUtil.convertLineSeparatorsToUnix(this)
+fun String.normaliseLineSeparators(): String = TextUtil.convertLineSeparatorsToUnix(this)
 
-fun String.prefixIfNot(prefix: String) =
-  if (this.startsWith(prefix)) this else "$prefix$this"
+fun String.prefixIfNot(prefix: String) = if (this.startsWith(prefix)) this else "$prefix$this"
 
 fun CharSequence.normaliseLineSeparators(): String {
   return when (this) {

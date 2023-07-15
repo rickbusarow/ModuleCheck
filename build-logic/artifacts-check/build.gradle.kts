@@ -23,7 +23,6 @@ buildscript {
   }
 }
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   base
   kotlin("jvm")
@@ -44,8 +43,6 @@ dependencies {
 
   api(libs.square.moshi)
 
-  api(project(path = ":core"))
-
   compileOnly(gradleApi())
 
   compileOnly(libs.kotlin.gradle.plugin)
@@ -62,6 +59,8 @@ dependencies {
   implementation(libs.kotlin.stdlib.jdk7)
   implementation(libs.kotlin.stdlib.jdk8)
   implementation(libs.kotlinx.knit)
+
+  implementation(project(path = ":core"))
 
   ksp(libs.square.moshi.codegen)
 }

@@ -13,8 +13,19 @@
  * limitations under the License.
  */
 
+rootProject.name = "ModuleCheck"
+
 pluginManagement {
+
+  val allowMavenLocal = providers
+    .gradleProperty("moduleCheck.allow-maven-local")
+    .orNull.toBoolean()
+
   repositories {
+    if (allowMavenLocal) {
+      logger.lifecycle("${rootProject.name} -- allowing mavenLocal for plugins")
+      mavenLocal()
+    }
     gradlePluginPortal()
     mavenCentral()
     google()
@@ -29,9 +40,17 @@ pluginManagement {
   includeBuild("build-logic")
 }
 
+val allowMavenLocal = providers
+  .gradleProperty("moduleCheck.allow-maven-local")
+  .orNull.toBoolean()
+
 dependencyResolutionManagement {
   @Suppress("UnstableApiUsage")
   repositories {
+    if (allowMavenLocal) {
+      logger.lifecycle("${rootProject.name} -- allowing mavenLocal for dependencies")
+      mavenLocal()
+    }
     mavenCentral()
     google()
     maven("https://plugins.gradle.org/m2/")
@@ -39,7 +58,13 @@ dependencyResolutionManagement {
 }
 
 plugins {
-  id("com.gradle.enterprise").version("3.13")
+  id("com.gradle.enterprise") version "3.13.4"
+}
+
+val isCI = System.getenv("CI")?.toBoolean() == true
+
+if (isCI) {
+  printCiEnvironment()
 }
 
 gradleEnterprise {
@@ -50,19 +75,18 @@ gradleEnterprise {
 
     publishAlways()
 
-    tag(if (System.getenv("CI").isNullOrBlank()) "Local" else "CI")
+    tag(if (isCI) "CI" else "Local")
 
-    val githubActionID = System.getenv("GITHUB_ACTION")
+    val gitHubActions = System.getenv("GITHUB_ACTIONS")?.toBoolean() ?: false
 
-    if (!githubActionID.isNullOrBlank()) {
+    if (gitHubActions) {
+      // ex: `octocat/Hello-World` as in github.com/octocat/Hello-World
+      val repository = System.getenv("GITHUB_REPOSITORY")!!
+      val runId = System.getenv("GITHUB_RUN_ID")!!
+
       link(
-        "WorkflowURL",
-        "https://github.com/" +
-          System.getenv("GITHUB_REPOSITORY") +
-          "/pull/" +
-          System.getenv("PR_NUMBER") +
-          "/checks?check_run_id=" +
-          System.getenv("GITHUB_RUN_ID")
+        "GitHub Action Run",
+        "https://github.com/$repository/actions/runs/$runId"
       )
     }
   }
@@ -77,8 +101,6 @@ rootDir.resolve("gradle.properties")
     target = rootDir.resolve("build-logic/gradle.properties"),
     overwrite = true
   )
-
-rootProject.name = "ModuleCheck"
 
 include(
   ":modulecheck-api",
@@ -139,5 +161,37 @@ include(
   ":modulecheck-utils:serialization",
   ":modulecheck-utils:stdlib",
   ":modulecheck-utils:trace",
-  ":modulecheck-utils:trace-testing"
+  ":modulecheck-utils:trace-testing",
+  ":modulecheck-utils:traversal"
 )
+
+fun printCiEnvironment() {
+  fun Long.gigabytes(): String {
+    return "%.1f GB".format(toDouble() / (1024 * 1024 * 1024)).padEnd(52)
+  }
+
+  val os = System.getProperty("os.name").toString().padEnd(52)
+  val processors = Runtime.getRuntime().availableProcessors().toString().padEnd(52)
+  val totalMemory = Runtime.getRuntime().totalMemory().gigabytes()
+  val freeMemory = Runtime.getRuntime().freeMemory().gigabytes()
+  val maxMemory = Runtime.getRuntime().maxMemory().gigabytes()
+  println(
+    """
+    ╔══════════════════════════════════════════════════╗
+    ║                  CI environment                  ║
+    ║                                                  ║
+    ║                     OS - $os                     ║
+    ║   available processors - $processors             ║
+    ║                                                  ║
+    ║       allocated memory - $totalMemory            ║
+    ║            free memory - $freeMemory             ║
+    ║             max memory - $maxMemory              ║
+    ╚══════════════════════════════════════════════════╝
+    """.trimIndent()
+      .lineSequence()
+      .joinToString("\n") { line ->
+        val sub = line.substringBeforeLast('║', "")
+        if (sub.length > 51) sub.substring(0..50) + '║' else line
+      }
+  )
+}

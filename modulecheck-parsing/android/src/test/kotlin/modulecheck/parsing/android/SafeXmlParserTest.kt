@@ -16,15 +16,16 @@
 package modulecheck.parsing.android
 
 import modulecheck.testing.BaseTest
-import modulecheck.utils.child
+import modulecheck.testing.TestEnvironment
 import modulecheck.utils.createSafely
 import modulecheck.utils.requireNotNull
+import modulecheck.utils.resolve
 import org.junit.jupiter.api.Test
 
-internal class SafeXmlParserTest : BaseTest() {
+internal class SafeXmlParserTest : BaseTest<TestEnvironment>() {
 
   @Test
-  fun `should parse if the node contains a zero width space`() {
+  fun `should parse if the node contains a zero width space`() = test {
 
     val text = """
       <?xml version="1.0" encoding="utf-8"?>
@@ -34,8 +35,8 @@ internal class SafeXmlParserTest : BaseTest() {
       </resources>
     """.trimIndent()
 
-    val xml = testProjectDir
-      .child("styles.xml")
+    val xml = workingDir
+      .resolve("styles.xml")
       .createSafely(text)
 
     val fileNode = SafeXmlParser().parse(xml).requireNotNull()

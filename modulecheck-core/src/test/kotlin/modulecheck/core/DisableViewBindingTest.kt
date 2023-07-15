@@ -22,20 +22,21 @@ import modulecheck.model.dependency.asConfigurationName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.disableViewBinding
 import modulecheck.runtime.test.RunnerTest
-import modulecheck.utils.child
+import modulecheck.runtime.test.RunnerTestEnvironment
 import modulecheck.utils.createSafely
+import modulecheck.utils.resolve
 import org.junit.jupiter.api.Test
 
 class DisableViewBindingTest : RunnerTest() {
 
-  override val settings by resets {
+  override val settings: RunnerTestEnvironment.() -> TestSettings = {
     TestSettings(
       checks = TestChecksSettings(disableViewBinding = true)
     )
   }
 
   @Test
-  fun `used ViewBinding from main sourceset in dependent module with no changes`() {
+  fun `used ViewBinding from main sourceset in dependent module with no changes`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -93,11 +94,11 @@ class DisableViewBindingTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `used ViewBinding from debug sourceset in dependent module with no changes`() {
+  fun `used ViewBinding from debug sourceset in dependent module with no changes`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -157,11 +158,11 @@ class DisableViewBindingTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `used ViewBinding in contributing module`() {
+  fun `used ViewBinding in contributing module`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -214,11 +215,11 @@ class DisableViewBindingTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `ViewBinding from main is used in debug source set`() {
+  fun `ViewBinding from main is used in debug source set`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -249,7 +250,7 @@ class DisableViewBindingTest : RunnerTest() {
       // binding should still reflect the main source set even though it's evaluating a file in
       // debug.
       platformPlugin.manifests[SourceSetName.DEBUG] = projectDir
-        .child("src/debug/AndroidManifest.xml")
+        .resolve("src/debug/AndroidManifest.xml")
         .createSafely("<manifest package=\"com.modulecheck.lib1.debug\" />")
 
       addKotlinSource(
@@ -279,11 +280,11 @@ class DisableViewBindingTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `ViewBinding from debug & release is used in main source set`() {
+  fun `ViewBinding from debug & release is used in main source set`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -329,7 +330,7 @@ class DisableViewBindingTest : RunnerTest() {
       // binding should still reflect the main source set even though it's evaluating a file in
       // debug.
       platformPlugin.manifests[SourceSetName.DEBUG] = projectDir
-        .child("src/debug/AndroidManifest.xml")
+        .resolve("src/debug/AndroidManifest.xml")
         .createSafely("<manifest package=\"com.modulecheck.lib1.debug\" />")
 
       addKotlinSource(
@@ -358,11 +359,11 @@ class DisableViewBindingTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `ViewBinding from debug with different base package is used in debug source set`() {
+  fun `ViewBinding from debug with different base package is used in debug source set`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -391,7 +392,7 @@ class DisableViewBindingTest : RunnerTest() {
       )
 
       platformPlugin.manifests[SourceSetName.DEBUG] = projectDir
-        .child("src/debug/AndroidManifest.xml")
+        .resolve("src/debug/AndroidManifest.xml")
         .createSafely("<manifest package=\"com.modulecheck.lib1.debug\" />")
 
       addKotlinSource(
@@ -421,11 +422,11 @@ class DisableViewBindingTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `ViewBinding from debug without different base package is used in debug source set`() {
+  fun `ViewBinding from debug without different base package is used in debug source set`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -483,11 +484,11 @@ class DisableViewBindingTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `unused ViewBinding should pass if check is disabled`() {
+  fun `unused ViewBinding should pass if check is disabled`() = test {
 
     settings.checks.disableViewBinding = false
 
@@ -517,9 +518,7 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    run(
-      autoCorrect = false
-    ).isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     lib1.buildFile shouldHaveText """
       plugins {
@@ -532,11 +531,11 @@ class DisableViewBindingTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `unused ViewBinding should pass if suppressed`() {
+  fun `unused ViewBinding should pass if suppressed`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -570,11 +569,11 @@ class DisableViewBindingTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `unused ViewBinding without auto-correct should fail`() {
+  fun `unused ViewBinding without auto-correct should fail`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -623,7 +622,7 @@ class DisableViewBindingTest : RunnerTest() {
   }
 
   @Test
-  fun `unused ViewBinding when scoped and then qualified should be fixed`() {
+  fun `unused ViewBinding when scoped and then qualified should be fixed`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -659,7 +658,7 @@ class DisableViewBindingTest : RunnerTest() {
   }
 
   @Test
-  fun `unused ViewBinding without buildFeatures block should be fixed`() {
+  fun `unused ViewBinding without buildFeatures block should be fixed`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -696,22 +695,23 @@ class DisableViewBindingTest : RunnerTest() {
   }
 
   @Test
-  fun `unused ViewBinding without android block should add android block under existing plugins block`() {
+  fun `unused ViewBinding without android block should add android block under existing plugins block`() =
+    test {
 
-    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
-      buildFile {
-        """
+      val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
         }
         """
+        }
       }
-    }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib1.buildFile shouldHaveText """
+      lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -724,29 +724,30 @@ class DisableViewBindingTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib1" to listOf(disableViewBinding(true, null))
-    )
-  }
+      logger.parsedReport() shouldBe listOf(
+        ":lib1" to listOf(disableViewBinding(true, null))
+      )
+    }
 
   @Test
-  fun `unused ViewBinding without android or plugins block should add android block above dependencies block`() {
+  fun `unused ViewBinding without android or plugins block should add android block above dependencies block`() =
+    test {
 
-    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
-      buildFile {
-        """
+      val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+        buildFile {
+          """
         apply(plugin = "com.android.library")
         apply(plugin = "org.jetbrains.kotlin-android")
 
         dependencies {
         }
         """
+        }
       }
-    }
 
-    run().isSuccess shouldBe true
+      run().isSuccess shouldBe true
 
-    lib1.buildFile shouldHaveText """
+      lib1.buildFile shouldHaveText """
       apply(plugin = "com.android.library")
       apply(plugin = "org.jetbrains.kotlin-android")
 
@@ -760,13 +761,13 @@ class DisableViewBindingTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib1" to listOf(disableViewBinding(true, null))
-    )
-  }
+      logger.parsedReport() shouldBe listOf(
+        ":lib1" to listOf(disableViewBinding(true, null))
+      )
+    }
 
   @Test
-  fun `unused ViewBinding when fully qualified should be fixed`() {
+  fun `unused ViewBinding when fully qualified should be fixed`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -809,7 +810,7 @@ class DisableViewBindingTest : RunnerTest() {
   }
 
   @Test
-  fun `unused ViewBinding when fully scoped should be fixed`() {
+  fun `unused ViewBinding when fully scoped should be fixed`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -860,7 +861,7 @@ class DisableViewBindingTest : RunnerTest() {
   }
 
   @Test
-  fun `unused ViewBinding when qualified and then scoped should be fixed`() {
+  fun `unused ViewBinding when qualified and then scoped should be fixed`() = test {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {

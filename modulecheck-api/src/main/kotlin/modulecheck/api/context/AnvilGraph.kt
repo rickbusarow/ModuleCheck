@@ -36,12 +36,24 @@ import modulecheck.project.project
 import modulecheck.utils.cache.SafeCache
 import org.jetbrains.kotlin.name.FqName
 
+/**
+ * Represents a set of Anvil scope declarations including both contributions and merges.
+ * @property scopeName the [AnvilScopeName] for these declarations
+ * @property contributions mutable set of [QualifiedDeclaredName]s that contribute to this scope
+ * @property merges mutable set of [QualifiedDeclaredName]s that are merged into this scope
+ */
 data class AnvilScopedDeclarations(
   val scopeName: AnvilScopeName,
   val contributions: MutableSet<QualifiedDeclaredName>,
   val merges: MutableSet<QualifiedDeclaredName>
 )
 
+/**
+ * Represents a graph of Anvil scopes and their associated declarations.
+ * @property project the [McProject] for which this graph is defined
+ * @property delegate a cache that maps from [SourceSetName]
+ *   to a map of [AnvilScopeName] to [AnvilScopedDeclarations]
+ */
 data class AnvilGraph(
   private val project: McProject,
   private val delegate: SafeCache<SourceSetName, Map<AnvilScopeName, AnvilScopedDeclarations>>
@@ -63,13 +75,22 @@ data class AnvilGraph(
 
   private val allAnnotations = mergeAnnotations + contributeAnnotations
 
+  /** @return the unique key of the Anvil graph within the project context */
   override val key: ProjectContext.Key<AnvilGraph>
     get() = Key
 
+  /**
+   * Retrieves a list of all Anvil scoped declarations for each source set in the project.
+   * @return a list of maps from [AnvilScopeName] to [AnvilScopedDeclarations] for each source set
+   */
   suspend fun all(): List<Map<AnvilScopeName, AnvilScopedDeclarations>> {
     return project.sourceSets.keys.map { get(it) }
   }
 
+  /**
+   * Retrieves a list of all Anvil scope names that have merges.
+   * @return a list of [AnvilScopeName]s with merges
+   */
   suspend fun mergedScopeNames(): List<AnvilScopeName> = all()
     .asSequence()
     .flatMap { it.values }
@@ -77,9 +98,12 @@ data class AnvilGraph(
     .map { it.scopeName }
     .toList()
 
-  suspend fun get(
-    sourceSetName: SourceSetName
-  ): Map<AnvilScopeName, AnvilScopedDeclarations> {
+  /**
+   * Retrieves the Anvil scoped declarations for a specific source set.
+   * @param sourceSetName the [SourceSetName] for which to get the Anvil scoped declarations
+   * @return a map from [AnvilScopeName] to [AnvilScopedDeclarations] for the given source set
+   */
+  suspend fun get(sourceSetName: SourceSetName): Map<AnvilScopeName, AnvilScopedDeclarations> {
     if (project.anvilGradlePlugin == null) return emptyMap()
 
     return delegate.getOrPut(sourceSetName) {
@@ -196,8 +220,13 @@ data class AnvilGraph(
       .toMap()
   }
 
+  /** Companion object that acts as the key for [AnvilGraph] within a [ProjectContext]. */
   companion object Key : ProjectContext.Key<AnvilGraph> {
-
+    /**
+     * Generates an [AnvilGraph] instance for the given project.
+     * @param project the project for which to generate the [AnvilGraph] instance
+     * @return the generated [AnvilGraph] instance
+     */
     override suspend operator fun invoke(project: McProject): AnvilGraph {
       return AnvilGraph(
         project = project,
@@ -207,4 +236,8 @@ data class AnvilGraph(
   }
 }
 
+/**
+ * Extension function to retrieve [AnvilGraph] from the [ProjectContext].
+ * @return the [AnvilGraph] instance from the context
+ */
 suspend fun ProjectContext.anvilGraph(): AnvilGraph = get(AnvilGraph)

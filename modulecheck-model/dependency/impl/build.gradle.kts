@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-model-dependency-impl"
+  published(
+    artifactId = "modulecheck-model-dependency-impl"
+  )
   anvil()
 }
 
@@ -33,7 +35,6 @@ dependencies {
 
   implementation(project(":modulecheck-utils:lazy"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

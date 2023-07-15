@@ -18,20 +18,21 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-kotlin-compiler-api"
+  published(
+    artifactId = "modulecheck-parsing-kotlin-compiler-api"
+  )
 }
 
 dependencies {
   api(libs.kotlin.compiler)
   api(libs.kotlin.reflect)
 
-  api(project(path = ":modulecheck-utils:lazy"))
-
   compileOnly(gradleApi())
 
   compileOnly(libs.agp)
 
-  testImplementation(libs.bundles.hermit)
+  implementation(project(path = ":modulecheck-utils:lazy"))
+
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotest.runner.junit5.jvm)

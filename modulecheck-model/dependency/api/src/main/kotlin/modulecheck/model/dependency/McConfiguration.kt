@@ -24,9 +24,7 @@ import kotlinx.serialization.protobuf.schema.ProtoBufSchemaGenerator
 import kotlinx.serialization.serializer
 import modulecheck.model.sourceset.SourceSetName
 
-/**
- * Cache of [configurations][McConfiguration], probably at the project level.
- */
+/** Cache of [configurations][McConfiguration], probably at the project level. */
 @Serializable(with = ConfigurationsSerializer::class)
 class Configurations(
   delegate: Map<ConfigurationName, McConfiguration>
@@ -106,12 +104,8 @@ data class McConfiguration(
   }
 }
 
-/**
- * convenience for `map { it.name }`
- */
+/** convenience for `map { it.name }` */
 fun Iterable<McConfiguration>.names(): List<ConfigurationName> = map { it.name }
 
-/**
- * convenience for `map { it.name }`
- */
+/** convenience for `map { it.name }` */
 fun Sequence<McConfiguration>.names(): Sequence<ConfigurationName> = map { it.name }

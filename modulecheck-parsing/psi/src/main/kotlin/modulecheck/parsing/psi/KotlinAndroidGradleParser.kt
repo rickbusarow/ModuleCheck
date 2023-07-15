@@ -21,7 +21,7 @@ import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBloc
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
 import modulecheck.parsing.gradle.dsl.Assignment
 import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
-import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
+import modulecheck.parsing.psi.internal.childrenOfTypeDepthFirst
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
 import org.jetbrains.kotlin.psi.KtBinaryExpression
@@ -45,11 +45,11 @@ class KotlinAndroidGradleParser @Inject constructor(
 
     val file = psiFileFactory.createKotlin(buildFile)
 
-    val androidQualifiedSettings = file.getChildrenOfTypeRecursive<KtBinaryExpression>()
+    val androidQualifiedSettings = file.childrenOfTypeDepthFirst<KtBinaryExpression>()
       .filter { it.findDescendantOfType<KtNameReferenceExpression>()?.text == "android" }
       .mapNotNull { it.toAssignmentOrNull(it.text, it.suppressedNames()) }
 
-    val androidQualified = file.getChildrenOfTypeRecursive<KtDotQualifiedExpression>()
+    val androidQualified = file.childrenOfTypeDepthFirst<KtDotQualifiedExpression>()
       .filter { it.getChildOfType<KtNameReferenceExpression>()?.text == "android" }
 
     val androidBlocksPsi = file.androidBlocks()
@@ -61,7 +61,7 @@ class KotlinAndroidGradleParser @Inject constructor(
 
         val fullText = androidBlock.text
 
-        val block = androidBlock.getChildrenOfTypeRecursive<KtBlockExpression>()
+        val block = androidBlock.childrenOfTypeDepthFirst<KtBlockExpression>()
           .firstOrNull()
 
         val content = block?.text ?: return@mapNotNull null
@@ -81,7 +81,7 @@ class KotlinAndroidGradleParser @Inject constructor(
 
             val fullText = android.text
 
-            val contentBlock = buildFeaturesBlock.getChildrenOfTypeRecursive<KtBlockExpression>()
+            val contentBlock = buildFeaturesBlock.childrenOfTypeDepthFirst<KtBlockExpression>()
               .firstOrNull()
               ?: return@mapNotNull null
 
@@ -113,8 +113,9 @@ class KotlinAndroidGradleParser @Inject constructor(
     fullText: String,
     blockSuppressed: List<String>
   ): List<Assignment> {
-    return getChildrenOfTypeRecursive<KtBinaryExpression>()
+    return childrenOfTypeDepthFirst<KtBinaryExpression>()
       .mapNotNull { it.toAssignmentOrNull(fullText, blockSuppressed) }
+      .toList()
   }
 
   private fun KtBinaryExpression.toAssignmentOrNull(

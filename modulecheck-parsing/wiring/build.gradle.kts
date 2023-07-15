@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-wiring"
+  published(
+    artifactId = "modulecheck-parsing-wiring"
+  )
   anvil()
 }
 
@@ -43,7 +45,6 @@ dependencies {
   implementation(project(path = ":modulecheck-utils:coroutines:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

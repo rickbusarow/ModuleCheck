@@ -56,10 +56,7 @@ class JvmFileCache @Inject constructor() {
    * @return a cached [JvmFile], or creates and caches a new one using [default]
    * @since 0.12.0
    */
-  suspend fun getOrPut(
-    file: File,
-    default: suspend () -> JvmFile
-  ): JvmFile {
+  suspend fun getOrPut(file: File, default: suspend () -> JvmFile): JvmFile {
     return delegate.getOrPut(key = file, default)
   }
 }
@@ -72,9 +69,7 @@ class RealJvmFileProvider(
   private val androidDataBindingNameProvider: AndroidDataBindingNameProvider
 ) : JvmFileProvider {
 
-  override suspend fun getOrNull(
-    file: File
-  ): JvmFile? {
+  override suspend fun getOrNull(file: File): JvmFile? {
 
     // ignore anything which isn't Kotlin or Java
     if (!file.isKotlinFile() && !file.isJavaFile()) return null
@@ -123,15 +118,13 @@ class RealJvmFileProvider(
     private val jvmFileCacheProvider: Provider<JvmFileCache>
   ) : JvmFileProvider.Factory {
 
-    override fun create(
-      project: McProject,
-      sourceSetName: SourceSetName
-    ): RealJvmFileProvider = RealJvmFileProvider(
-      jvmFileCache = jvmFileCacheProvider.get(),
-      project = project,
-      sourceSetName = sourceSetName,
-      androidRNameProvider = RealAndroidRNameProvider(project, sourceSetName),
-      androidDataBindingNameProvider = RealAndroidDataBindingNameProvider(project, sourceSetName)
-    )
+    override fun create(project: McProject, sourceSetName: SourceSetName): RealJvmFileProvider =
+      RealJvmFileProvider(
+        jvmFileCache = jvmFileCacheProvider.get(),
+        project = project,
+        sourceSetName = sourceSetName,
+        androidRNameProvider = RealAndroidRNameProvider(project, sourceSetName),
+        androidDataBindingNameProvider = RealAndroidDataBindingNameProvider(project, sourceSetName)
+      )
   }
 }

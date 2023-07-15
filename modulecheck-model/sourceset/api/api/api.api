@@ -1,0 +1,41 @@
+public final class modulecheck/model/sourceset/SourceSetName {
+	public static final field Companion Lmodulecheck/model/sourceset/SourceSetName$Companion;
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/model/sourceset/SourceSetName;
+	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public static final fun isTestFixtures-impl (Ljava/lang/String;)Z
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class modulecheck/model/sourceset/SourceSetName$Companion {
+	public final fun getANDROID_TEST-qrJCKeA ()Ljava/lang/String;
+	public final fun getANVIL-qrJCKeA ()Ljava/lang/String;
+	public final fun getDEBUG-qrJCKeA ()Ljava/lang/String;
+	public final fun getKAPT-qrJCKeA ()Ljava/lang/String;
+	public final fun getMAIN-qrJCKeA ()Ljava/lang/String;
+	public final fun getRELEASE-qrJCKeA ()Ljava/lang/String;
+	public final fun getTEST-qrJCKeA ()Ljava/lang/String;
+	public final fun getTEST_FIXTURES-qrJCKeA ()Ljava/lang/String;
+}
+
+public final class modulecheck/model/sourceset/SourceSetNameKt {
+	public static final fun addPrefix--mDCbI4 (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun addPrefix-YJqa9SQ (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun addSuffix--mDCbI4 (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun addSuffix-YJqa9SQ (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun asSourceSetName (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun hasPrefix--mDCbI4 (Ljava/lang/String;Ljava/lang/String;)Z
+	public static final fun hasPrefix-YJqa9SQ (Ljava/lang/String;Ljava/lang/String;)Z
+	public static final fun removePrefix--mDCbI4 (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun removePrefix-YJqa9SQ (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun removeSuffix--mDCbI4 (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun removeSuffix-YJqa9SQ (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+}
+

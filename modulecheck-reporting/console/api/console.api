@@ -1,0 +1,58 @@
+public final class modulecheck/reporting/console/DepthLogFactory {
+	public static final field Companion Lmodulecheck/reporting/console/DepthLogFactory$Companion;
+	public fun <init> (Lcom/github/ajalt/mordant/terminal/Terminal;)V
+	public final fun create (Ljava/util/List;)Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/console/DepthLogFactory$Companion {
+}
+
+public final class modulecheck/reporting/console/DepthLogFactory_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/reporting/console/DepthLogFactory_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/reporting/console/DepthLogFactory_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/reporting/console/DepthLogFactory;
+	public static final fun newInstance (Lcom/github/ajalt/mordant/terminal/Terminal;)Lmodulecheck/reporting/console/DepthLogFactory;
+}
+
+public final class modulecheck/reporting/console/DepthLogFactory_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/reporting/console/DepthLogFactory_Factory;
+	public final fun newInstance (Lcom/github/ajalt/mordant/terminal/Terminal;)Lmodulecheck/reporting/console/DepthLogFactory;
+}
+
+public final class modulecheck/reporting/console/DepthReportFactory {
+	public static final field Companion Lmodulecheck/reporting/console/DepthReportFactory$Companion;
+	public fun <init> ()V
+	public final fun create (Ljava/util/List;)Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/console/DepthReportFactory$Companion {
+}
+
+public final class modulecheck/reporting/console/ReportFactory {
+	public static final field Companion Lmodulecheck/reporting/console/ReportFactory$Companion;
+	public static final field ERROR Ljava/lang/String;
+	public static final field FIXED Ljava/lang/String;
+	public static final field PADDING I
+	public fun <init> (Lcom/github/ajalt/mordant/terminal/Terminal;)V
+	public final fun create (Ljava/util/List;)Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/console/ReportFactory$Companion {
+}
+
+public final class modulecheck/reporting/console/ReportFactory_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/reporting/console/ReportFactory_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/reporting/console/ReportFactory_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/reporting/console/ReportFactory;
+	public static final fun newInstance (Lcom/github/ajalt/mordant/terminal/Terminal;)Lmodulecheck/reporting/console/ReportFactory;
+}
+
+public final class modulecheck/reporting/console/ReportFactory_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/reporting/console/ReportFactory_Factory;
+	public final fun newInstance (Lcom/github/ajalt/mordant/terminal/Terminal;)Lmodulecheck/reporting/console/ReportFactory;
+}
+

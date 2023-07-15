@@ -23,7 +23,6 @@ buildscript {
   }
 }
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   base
   kotlin("jvm")
@@ -56,7 +55,6 @@ dependencies {
   implementation(libs.dropbox.dependencyGuard)
   implementation(libs.google.dagger.api)
   implementation(libs.google.ksp)
-  implementation(libs.jmailen.kotlinter)
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.gradle.plugin)
   implementation(libs.kotlin.reflect)
@@ -64,6 +62,7 @@ dependencies {
   implementation(libs.kotlin.stdlib.jdk7)
   implementation(libs.kotlin.stdlib.jdk8)
   implementation(libs.kotlinx.knit)
+  implementation(libs.rickBusarow.ktlint)
   implementation(libs.scabbard)
   implementation(libs.square.anvil.gradle)
   implementation(libs.square.kotlinPoet)

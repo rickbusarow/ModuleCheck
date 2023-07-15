@@ -18,19 +18,22 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-reporting-console"
+  published(
+    artifactId = "modulecheck-reporting-console"
+  )
   anvil()
 }
 
 dependencies {
 
+  api(libs.ajalt.mordant)
+
   api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-finding:api"))
-  api(project(path = ":modulecheck-reporting:logging:api"))
 
   implementation(project(path = ":modulecheck-model:sourceset:api"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

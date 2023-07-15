@@ -17,8 +17,6 @@ package modulecheck.reporting.sarif
 
 import io.kotest.assertions.asClue
 import io.kotest.matchers.string.shouldContain
-import kotlinx.coroutines.runBlocking
-import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
 import modulecheck.finding.FindingName
@@ -26,6 +24,8 @@ import modulecheck.finding.UnusedDependencyFinding
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ProjectDependency.RuntimeProjectDependency
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.runtime.test.RunnerTestEnvironment
+import modulecheck.testing.alwaysUnixFileSeparators
 import modulecheck.utils.suffixIfNot
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -33,7 +33,7 @@ import java.io.File
 @Suppress("BlockingMethodInNonBlockingContext")
 class SarifReportTest : RunnerTest() {
 
-  override val settings: ModuleCheckSettings by resets {
+  override val settings: RunnerTestEnvironment.() -> TestSettings = {
     TestSettings(
       checks = TestChecksSettings(
         redundantDependency = true,
@@ -54,12 +54,12 @@ class SarifReportTest : RunnerTest() {
   }
 
   @Test
-  fun `report with unused dependency`() = runBlocking {
+  fun `report with unused dependency`() = test {
 
     val factory = SarifReportFactory(
       websiteUrl = { "https://rbusarow.github.io/ModuleCheck" },
       moduleCheckVersion = { "0.12.1-SNAPSHOT" }
-    ) { testProjectDir }
+    ) { workingDir }
 
     val p1 = kotlinProject(":lib1")
     val p2 = kotlinProject(":lib2") {
@@ -98,7 +98,7 @@ class SarifReportTest : RunnerTest() {
             fromFile shouldContain "\$TEST_DIR"
           }
       }
-      .replace("\$TEST_DIR", testProjectDir.path)
+      .replace("\$TEST_DIR", workingDir.path)
 
     val normalizedReport = reportString
       .replace(
@@ -111,11 +111,11 @@ class SarifReportTest : RunnerTest() {
           .alwaysUnixFileSeparators()
       )
       .replace(
-        testProjectDir.absolutePath
+        workingDir.absolutePath
           .suffixIfNot(File.separator)
           .replace(File.separator, "${Regex.escape(File.separator)}+")
           .toRegex(),
-        testProjectDir.absolutePath
+        workingDir.absolutePath
           .suffixIfNot(File.separator)
           .alwaysUnixFileSeparators()
       ).useRelativePaths()

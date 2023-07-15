@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-source-api"
+  published(
+    artifactId = "modulecheck-parsing-source-api"
+  )
   anvil()
   serialization()
 }
@@ -31,7 +33,6 @@ dependencies {
 
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlin.reflect)

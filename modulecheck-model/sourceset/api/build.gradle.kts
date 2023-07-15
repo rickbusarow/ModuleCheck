@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-model-sourceset-api"
+  published(
+    artifactId = "modulecheck-model-sourceset-api"
+  )
   anvil()
   wire()
   serialization()
@@ -33,7 +35,6 @@ dependencies {
 
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

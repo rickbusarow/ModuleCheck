@@ -120,7 +120,8 @@ data class MustBeApi(
                   // First try to find a normal "implementation" version of the dependency.
                   dependencies
                     .firstOrNull { declared ->
-                      declared.projectPath == cpd.projectPath && declared.isTestFixture == cpd.isTestFixture
+                      declared.projectPath == cpd.projectPath &&
+                        declared.isTestFixture == cpd.isTestFixture
                     }
                     // If that didn't work, look for something where the project matches
                     // (which means it's testFixtures)
@@ -213,7 +214,7 @@ private suspend fun McProject.mustBeApiIn(
     .firstOrNull { ref ->
       declarations.contains(ref)
     }
-    ?.let { return true }
+    ?.also { return true }
 
   val rTypesFromExisting: LazyDeferred<Set<McName>> = lazyDeferred {
     directMainDependencies
@@ -235,9 +236,7 @@ private suspend fun McProject.mustBeApiIn(
  *   if the dependency should be `api`, or `-implementation` otherwise.
  * @since 0.12.0
  */
-suspend inline fun <reified T : ConfiguredDependency> T.maybeAsApi(
-  dependentProject: McProject
-): T {
+suspend inline fun <reified T : ConfiguredDependency> T.maybeAsApi(dependentProject: McProject): T {
   val mustBeApi = when (val dep = this as ConfiguredDependency) {
     is ExternalDependency -> false
     is ProjectDependency -> when {

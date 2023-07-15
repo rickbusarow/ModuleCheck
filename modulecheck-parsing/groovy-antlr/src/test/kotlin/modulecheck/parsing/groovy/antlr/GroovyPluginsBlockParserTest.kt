@@ -18,15 +18,14 @@ package modulecheck.parsing.groovy.antlr
 import modulecheck.parsing.gradle.dsl.PluginDeclaration
 import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.BaseTest
-import modulecheck.testing.requireNotNullOrFail
-import modulecheck.utils.child
+import modulecheck.testing.TestEnvironment
+import modulecheck.testing.assert.requireNotNullOrFail
 import modulecheck.utils.createSafely
+import modulecheck.utils.resolve
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 
-internal class GroovyPluginsBlockParserTest : BaseTest() {
-
-  val logger by resets { PrintLogger() }
+internal class GroovyPluginsBlockParserTest : BaseTest<TestEnvironment>() {
 
   @Test
   fun `external declaration`() = parse(
@@ -155,12 +154,14 @@ internal class GroovyPluginsBlockParserTest : BaseTest() {
   inline fun parse(
     @Language("groovy")
     fileText: String,
-    assertions: GroovyPluginsBlock.() -> Unit
+    crossinline assertions: GroovyPluginsBlock.() -> Unit
   ) {
-    testProjectDir.child("build.gradle")
-      .createSafely(fileText.trimIndent())
-      .let { file -> GroovyPluginsBlockParser(logger).parse(file) }
-      .requireNotNullOrFail()
-      .assertions()
+    test {
+      workingDir.resolve("build.gradle")
+        .createSafely(fileText.trimIndent())
+        .let { file -> GroovyPluginsBlockParser(PrintLogger()).parse(file) }
+        .requireNotNullOrFail()
+        .assertions()
+    }
   }
 }

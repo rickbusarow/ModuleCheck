@@ -24,10 +24,7 @@ import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
 
-fun TaskContainer.maybeNamed(
-  taskName: String,
-  configuration: Task.() -> Unit
-) {
+fun TaskContainer.maybeNamed(taskName: String, configuration: Task.() -> Unit) {
 
   if (names.contains(taskName)) {
     named(taskName, configuration)
@@ -38,12 +35,9 @@ fun TaskContainer.maybeNamed(
     .configureEach(configuration)
 }
 
-/**
- * code golf for `matching { it.name == taskName }`
- */
-fun TaskContainer.matchingName(
-  taskName: String
-): TaskCollection<Task> = matching { it.name == taskName }
+/** code golf for `matching { it.name == taskName }` */
+fun TaskContainer.matchingName(taskName: String): TaskCollection<Task> =
+  matching { it.name == taskName }
 
 /**
  * Finds all tasks named [taskName] in all projects.
@@ -65,15 +59,24 @@ fun <T : Task> TaskCollection<T>.dependOn(vararg objects: Any): TaskCollection<T
   }
 }
 
-/**
- * adds all [objects] as dependencies inside a configuration block, inside a `configure { }`
- */
+/** adds all [objects] as dependencies inside a configuration block, inside a `configure { }` */
 fun <T : Task> TaskProvider<T>.dependsOn(vararg objects: Any): TaskProvider<T> {
   return also { provider ->
     provider.configure { task ->
       task.dependsOn(*objects)
     }
   }
+}
+
+/**
+ * Finds all tasks named [taskName] in all projects.
+ * Does not throw if there are no tasks with that name.
+ *
+ * @throws IllegalStateException if the project is not the root project
+ */
+fun Project.allProjectsTasksMatchingName(taskName: String): List<TaskCollection<Task>> {
+  checkProjectIsRoot { "only call `allProjectsTasksMatchingName(...)` from the root project." }
+  return allprojects.map { proj -> proj.tasks.matchingName(taskName) }
 }
 
 /**

@@ -1,0 +1,9 @@
+public final class modulecheck/parsing/gradle/dsl/DeclarationFactoriesKt {
+	public static final fun ExternalDependencyDeclaration-icYKhJQ (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;)Lmodulecheck/parsing/gradle/dsl/ExternalDependencyDeclaration;
+	public static synthetic fun ExternalDependencyDeclaration-icYKhJQ$default (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/ExternalDependencyDeclaration;
+	public static final fun ModuleDependencyDeclaration-vOfoSHg (Lmodulecheck/model/dependency/ProjectPath;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)Lmodulecheck/parsing/gradle/dsl/ModuleDependencyDeclaration;
+	public static synthetic fun ModuleDependencyDeclaration-vOfoSHg$default (Lmodulecheck/model/dependency/ProjectPath;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/ModuleDependencyDeclaration;
+	public static final fun UnknownDependencyDeclaration-Wz0Wq68 (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)Lmodulecheck/parsing/gradle/dsl/UnknownDependencyDeclaration;
+	public static synthetic fun UnknownDependencyDeclaration-Wz0Wq68$default (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/parsing/gradle/dsl/UnknownDependencyDeclaration;
+}
+

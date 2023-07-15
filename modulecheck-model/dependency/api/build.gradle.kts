@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-model-dependency-api"
+  published(
+    artifactId = "modulecheck-model-dependency-api"
+  )
   anvil()
   serialization()
 }
@@ -36,7 +38,6 @@ dependencies {
   implementation(project(path = ":modulecheck-utils:serialization"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

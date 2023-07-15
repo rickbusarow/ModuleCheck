@@ -1,98 +1,86 @@
 [versions]
 # the jdk used to build the project
-jdk = "11"
+jdk = "17"
 # the jdk used in packaging
 jvmTarget = "11"
 kotlinApi = "1.6"
 
-kotlin = "1.8.20"
-google-ksp = "1.8.20-1.0.10"
-square-anvil = "2.4.5"
+kotlin = "1.8.22"
+google-ksp = "1.8.22-1.0.11"
+square-anvil = "2.4.6"
 
-androidTools = "7.4.2"
+ajalt-clikt = "4.1.0"
+ajalt-mordant = "2.0.1"
 
-androidx-compose = "1.1.0-alpha04"
-androidx-fragment = "1.3.6"
-androidx-lifecycle = "2.3.1"
-androidx-navigation = "2.4.0-alpha09"
-androidx-paging = "3.0.1"
-androidx-room = "2.4.0-alpha04"
-androidx-startup = "1.1.0"
-androidx-test-espresso = "3.4.0"
-androidx-test = "1.4.0"
-androidx-work = "2.6.0"
+androidTools = "8.0.2"
 
-antlr = "4.12.0"
+antlr = "4.13.0"
 autoManifest = "2.0"
 
 benManes-caffeine = "3.1.6"
-benManes-versions = "0.46.0"
-buildconfig = "3.1.0"
+benManes-versions = "0.47.0"
+buildconfig = "4.1.1"
 changeTracker = "0.7.4"
-classgraph = "4.8.157"
-clikt = "3.5.2"
-coil = "1.3.2"
-commons-io = "2.11.0"
-compileSdk = "30"
-dependencyAnalysis = "1.19.0"
-detekt = "1.22.0"
-diffplug-spotless = "6.18.0"
-dokka = "1.8.10"
+classgraph = "4.8.161"
+commons-io = "2.13.0"
+dependencyAnalysis = "1.20.0"
+detekt = "1.23.0"
+diffplug-spotless = "6.19.0"
+dokka = "1.8.20"
 dropbox-dependencyGuard = "0.4.3"
 ec4j = "0.3.0"
 exhaustive = "0.2.0"
 github-release = "2.4.1"
 
-google-auto-common = "1.2.1"
-google-auto-service = "1.0.1"
+google-auto-common = "1.2.2"
+google-auto-service = "1.1.1"
 google-accompanist = "0.18.0"
-google-dagger = "2.45"
+google-dagger = "2.47"
 google-guava = "31.1-jre"
 google-material = "1.4.0"
 gradle-plugin-publish = "1.2.0"
 graphviz = "0.18.1"
-groovy = "3.0.17"
-jUnit = "5.9.2"
+groovy = "3.0.18"
+jUnit = "5.9.3"
 jackson = "2.13.0"
-javaParser = "3.25.2"
+java-diff-utils = "4.12"
+javaParser = "3.25.4"
 jetbrains-markdown = "0.4.1"
-jmailen-kotlinter = "3.14.0"
 johnrengelman-shadow = "8.1.1"
-kaml = "0.53.0"
+kaml = "0.54.0"
 kct = "1.5.0"
 knit = "0.4.0"
-kotest = "5.5.5"
+kotest = "5.6.2"
 kotlinx-atomicfu = "0.16.3"
-kotlinx-binaryCompatibility = "0.13.0"
+kotlinx-binaryCompatibility = "0.13.2"
 kotlinx-cli = "0.3.5"
-kotlinx-coroutines = "1.6.4"
+kotlinx-coroutines = "1.7.2"
 kotlinx-datetime = "0.4.0"
 kotlinx-knit = "0.4.0"
-kotlinx-serialization = "1.5.0"
-ktlint-lib = "0.48.2"
-ktlint-plugin = "11.3.1"
+kotlinx-serialization = "1.5.1"
+ktlint-lib = "0.50.0"
 mavenPublish = "0.13.0"
 prettier = "2.8.4"
 prettier-plugin-sh = "0.12.8"
 rickBusarow-dependencySync = "0.11.2"
 rickBusarow-dispatch = "1.0.0-beta10"
 rickBusarow-doks = "0.1.4"
-rickBusarow-ktrules = "1.0.6"
-rickBusarow-hermit = "0.9.6"
+rickBusarow-ktlint = "0.1.8"
+rickBusarow-ktrules = "1.1.3"
 rickBusarow-moduleCheck = "0.12.5"
 rickBusarow-tangle = "0.15.1"
-semVer = "1.2.0"
+semVer = "1.3.0"
 slf4j = "2.0.7"
-square-kotlinPoet = "1.13.0"
-square-moshi = "1.14.0"
-square-okio = "3.3.0"
+square-kotlinPoet = "1.14.2"
+square-moshi = "1.15.0"
+square-okio = "3.4.0"
 square-retrofit = "2.9.0"
-square-wire = "4.5.5"
+square-wire = "4.7.2"
 square-workflow = "1.0.0"
 
 taskTree = "2.1.1"
 
-vanniktech-publish = "0.25.1"
+vanniktech-publish = "0.25.3"
 
 [plugins]
 
@@ -110,10 +98,9 @@ github-release = { id = "com.github.breadmoirai.github-release", version.ref = "
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-plugin-publish" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlinter = { id = "org.jmailen.kotlinter", version.ref = "jmailen-kotlinter" }
 kotlinx-binaryCompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinx-binaryCompatibility" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-plugin" }
+ktlint = { id = "com.rickbusarow.ktlint", version.ref = "rickBusarow-ktlint" }
 moduleCheck = { id = "com.rickbusarow.module-check", version.ref = "rickBusarow-moduleCheck" }
 shadow = { id = "com.github.johnrengelman.shadow", version.ref = "johnrengelman-shadow" }
 tangle = { id = "com.rickbusarow.tangle", version.ref = "rickBusarow-tangle" }
@@ -131,11 +118,13 @@ antlr-runtime = { module = "org.antlr:antlr4-runtime", version.ref = "antlr" }
 benManes-versions = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "benManes-versions" }
 benManes-caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "benManes-caffeine" }
 
-buildconfig = { module = "com.github.gmazzo:gradle-buildconfig-plugin", version.ref = "buildconfig" }
+buildconfig = { module = "com.github.gmazzo.buildconfig:plugin", version.ref = "buildconfig" }
 
 classgraph = { module = "io.github.classgraph:classgraph", version.ref = "classgraph" }
 
-clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
+ajalt-clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "ajalt-clikt" }
+
+ajalt-mordant = { module = "com.github.ajalt.mordant:mordant", version.ref = "ajalt-mordant" }
 
 commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
 
@@ -180,14 +169,14 @@ graphviz-kotlin = { module = "guru.nidi:graphviz-kotlin", version.ref = "graphvi
 groovy = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }
 groovyXml = { module = "org.codehaus.groovy:groovy-xml", version.ref = "groovy" }
 
+java-diff-utils = { module = "io.github.java-diff-utils:java-diff-utils", version.ref = "java-diff-utils" }
+
 javaParser-core = { module = "com.github.javaparser:javaparser-core", version.ref = "javaParser" }
 javaParser-symbols = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaParser" }
 
 javax-inject = "javax.inject:javax.inject:1"
 
 jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "jetbrains-markdown" }
-
-jmailen-kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "jmailen-kotlinter" }
 
 johnrengelman-shadow = { module = "gradle.plugin.com.github.johnrengelman:shadow", version.ref = "johnrengelman-shadow" }
 
@@ -249,7 +238,6 @@ kotlinx-serialization-protobuf = { module = "org.jetbrains.kotlinx:kotlinx-seria
 kotlinx-serialization-protobuf-jvm = { module = "org.jetbrains.kotlinx:kotlinx-serialization-protobuf-jvm", version.ref = "kotlinx-serialization" }
 
 ktlint-core = { module = "com.pinterest.ktlint:ktlint-core", version.ref = "ktlint-lib" }
-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-plugin" }
 ktlint-ruleset-experimental = { module = "com.pinterest.ktlint:ktlint-ruleset-experimental", version.ref = "ktlint-lib" }
 ktlint-ruleset-standard = { module = "com.pinterest.ktlint:ktlint-ruleset-standard", version.ref = "ktlint-lib" }
 ktlint-test = { module = "com.pinterest.ktlint:ktlint-test", version.ref = "ktlint-lib" }
@@ -264,11 +252,7 @@ rickBusarow-dispatch-test-jUnit4 = { module = "com.rickbusarow.dispatch:dispatch
 rickBusarow-dispatch-test-jUnit5 = { module = "com.rickbusarow.dispatch:dispatch-test-junit5", version.ref = "rickBusarow-dispatch" }
 rickBusarow-dispatch-viewModel = { module = "com.rickbusarow.dispatch:dispatch-android-viewmodel", version.ref = "rickBusarow-dispatch" }
 
-rickBusarow-hermit-core = { module = "com.rickbusarow.hermit:hermit-core", version.ref = "rickBusarow-hermit" }
-rickBusarow-hermit-coroutines = { module = "com.rickbusarow.hermit:hermit-coroutines", version.ref = "rickBusarow-hermit" }
-rickBusarow-hermit-jUnit4 = { module = "com.rickbusarow.hermit:hermit-junit4", version.ref = "rickBusarow-hermit" }
-rickBusarow-hermit-jUnit5 = { module = "com.rickbusarow.hermit:hermit-junit5", version.ref = "rickBusarow-hermit" }
-rickBusarow-hermit-mockk = { module = "com.rickbusarow.hermit:hermit-mockk", version.ref = "rickBusarow-hermit" }
+rickBusarow-ktlint = { module = "com.rickbusarow.ktlint:ktlint-gradle-plugin", version.ref = "rickBusarow-ktlint" }
 
 rickBusarow-ktrules = { module = "com.rickbusarow.ktrules:ktrules", version.ref = "rickBusarow-ktrules" }
 
@@ -305,7 +289,7 @@ square-wire-runtime = { module = "com.squareup.wire:wire-runtime", version.ref =
 square-wire-schema = { module = "com.squareup.wire:wire-schema", version.ref = "square-wire" }
 square-wire-schema-tests = { module = "com.squareup.wire:wire-schema-tests", version.ref = "square-wire" }
 
-square-turbine = "app.cash.turbine:turbine:0.12.3"
+square-turbine = "app.cash.turbine:turbine:1.0.0"
 
 square-wire-gradle = { module = "com.squareup.wire:wire-gradle-plugin", version.ref = "square-wire" }
 
@@ -313,7 +297,7 @@ unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 
 vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktech-publish" }
 
-zacSweers-auto-service-ksp = "dev.zacsweers.autoservice:auto-service-ksp:1.0.0"
+zacSweers-auto-service-ksp = "dev.zacsweers.autoservice:auto-service-ksp:1.1.0"
 
 [bundles]
 junit = [
@@ -326,9 +310,4 @@ kotest = [
   "kotest-assertions-core-jvm",
   "kotest-assertions-shared",
   "kotest-property-jvm"
-]
-hermit = [
-  "rickBusarow-hermit-core",
-  "rickBusarow-hermit-coroutines",
-  "rickBusarow-hermit-jUnit5"
 ]

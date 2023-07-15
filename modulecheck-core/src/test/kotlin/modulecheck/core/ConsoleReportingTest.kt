@@ -29,7 +29,7 @@ import java.io.File
 internal class ConsoleReportingTest : RunnerTest() {
 
   @Test
-  fun `zero findings should report '0 issues' to console`() {
+  fun `zero findings should report '0 issues' to console`() = test {
 
     run(
       autoCorrect = false,
@@ -43,7 +43,7 @@ internal class ConsoleReportingTest : RunnerTest() {
   }
 
   @Test
-  fun `one finding should report '1 issue' to console`() {
+  fun `one finding should report '1 issue' to console`() = test {
 
     run(
       autoCorrect = false,
@@ -52,7 +52,7 @@ internal class ConsoleReportingTest : RunnerTest() {
           CouldUseAnvilFinding(
             findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
-            buildFile = File(testProjectDir, "lib1/build.gradle.kts")
+            buildFile = File(workingDir, "lib1/build.gradle.kts")
           )
         )
       )
@@ -61,17 +61,17 @@ internal class ConsoleReportingTest : RunnerTest() {
     logger.collectReport()
       .joinToString()
       .clean()
-      .remove("\u200B") shouldBe """
-          :lib1
-                 configuration    dependency                           name                            source    build file
-              X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib1/build.gradle.kts:
-
-      ModuleCheck found 1 issue
-    """
+      .remove("\u200B") shouldBeNoTrimIndent """
+      |    :lib1
+      |           configuration    dependency                           name                            source    build file
+      |        X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib1/build.gradle.kts:
+      |
+      |ModuleCheck found 1 issue
+    """.trimMargin()
   }
 
   @Test
-  fun `multiple findings should report 'n issues' to console`() {
+  fun `multiple findings should report 'n issues' to console`() = test {
 
     run(
       autoCorrect = false,
@@ -80,12 +80,12 @@ internal class ConsoleReportingTest : RunnerTest() {
           CouldUseAnvilFinding(
             findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
-            buildFile = File(testProjectDir, "lib1/build.gradle.kts")
+            buildFile = File(workingDir, "lib1/build.gradle.kts")
           ),
           CouldUseAnvilFinding(
             findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib2"),
-            buildFile = File(testProjectDir, "lib2/build.gradle.kts")
+            buildFile = File(workingDir, "lib2/build.gradle.kts")
           )
         )
       )
@@ -94,21 +94,21 @@ internal class ConsoleReportingTest : RunnerTest() {
     logger.collectReport()
       .joinToString()
       .clean()
-      .remove("\u200B") shouldBe """
-        :lib1
-               configuration    dependency                           name                            source    build file
-            X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib1/build.gradle.kts:
-
-        :lib2
-               configuration    dependency                           name                            source    build file
-            X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib2/build.gradle.kts:
-
-    ModuleCheck found 2 issues
-    """
+      .remove("\u200B") shouldBeNoTrimIndent """
+      |    :lib1
+      |           configuration    dependency                           name                            source    build file
+      |        X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib1/build.gradle.kts:
+      |
+      |    :lib2
+      |           configuration    dependency                           name                            source    build file
+      |        X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib2/build.gradle.kts:
+      |
+      |ModuleCheck found 2 issues
+    """.trimMargin()
   }
 
   @Test
-  fun `non-zero findings should print suppression advice to console`() {
+  fun `non-zero findings should print suppression advice to console`() = test {
 
     run(
       autoCorrect = false,
@@ -117,7 +117,7 @@ internal class ConsoleReportingTest : RunnerTest() {
           CouldUseAnvilFinding(
             findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
-            buildFile = File(testProjectDir, "lib1/build.gradle.kts")
+            buildFile = File(workingDir, "lib1/build.gradle.kts")
           )
         )
       )
@@ -126,13 +126,13 @@ internal class ConsoleReportingTest : RunnerTest() {
     logger.collectReport()
       .joinToString() shouldContain "To ignore any of these findings, " +
       "annotate the dependency declaration with " +
-      "@Suppress(\"<the name of the issue>\") in Kotlin, " +
+      """@Suppress("<the name of the issue>") in Kotlin, """ +
       "or //noinspection <the name of the issue> in Groovy.\n" +
       "See https://rbusarow.github.io/ModuleCheck/docs/suppressing-findings for more info."
   }
 
   @Test
-  fun `zero findings should succeed`() {
+  fun `zero findings should succeed`() = test {
 
     run(
       autoCorrect = false,
@@ -141,7 +141,7 @@ internal class ConsoleReportingTest : RunnerTest() {
   }
 
   @Test
-  fun `all findings fixed should succeed`() {
+  fun `all findings fixed should succeed`() = test {
 
     run(
       autoCorrect = false,
@@ -150,7 +150,7 @@ internal class ConsoleReportingTest : RunnerTest() {
           CouldUseAnvilFinding(
             findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
-            buildFile = File(testProjectDir, "lib1/build.gradle.kts")
+            buildFile = File(workingDir, "lib1/build.gradle.kts")
           )
         )
       ),
@@ -173,7 +173,7 @@ internal class ConsoleReportingTest : RunnerTest() {
   }
 
   @Test
-  fun `non-zero unfixed findings should fail`() {
+  fun `non-zero unfixed findings should fail`() = test {
 
     run(
       autoCorrect = false,
@@ -182,7 +182,7 @@ internal class ConsoleReportingTest : RunnerTest() {
           CouldUseAnvilFinding(
             findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
-            buildFile = File(testProjectDir, "lib1/build.gradle.kts")
+            buildFile = File(workingDir, "lib1/build.gradle.kts")
           )
         )
       ),

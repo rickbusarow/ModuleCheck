@@ -18,13 +18,13 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-source-testing"
+  published(
+    artifactId = "modulecheck-parsing-source-testing"
+  )
   anvil()
 }
 
 dependencies {
-
-  api(libs.bundles.hermit)
 
   api(project(path = ":modulecheck-internal-testing"))
   api(project(path = ":modulecheck-parsing:source:api"))
@@ -32,7 +32,6 @@ dependencies {
 
   implementation(project(path = ":modulecheck-utils:trace"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

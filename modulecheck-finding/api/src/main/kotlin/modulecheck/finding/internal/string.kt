@@ -29,6 +29,7 @@ fun String.positionOfStatement(statement: String): Position {
     // if the current row's string isn't long enough, subtract its length from the total index
     // and move on to the next row.  Subtract an additional 1 because the newline character
     // in the full string isn't included in the line's string.
+    @Suppress("UnnecessaryParentheses")
     index -= (lines[row].length + 1)
     row++
   }

@@ -1,0 +1,299 @@
+public abstract class modulecheck/finding/AbstractProjectDependencyFinding : modulecheck/finding/ConfiguredDependencyFinding, modulecheck/finding/DependencyFinding, modulecheck/finding/Finding, modulecheck/finding/Fixable, modulecheck/finding/Problem {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public abstract fun fromStringOrEmpty ()Ljava/lang/String;
+	public final fun getBuildFile ()Ljava/io/File;
+	public final fun getDependentPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementTextOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun hashCode ()I
+	public fun isSuppressed ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun toResult (ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/finding/CouldUseAnvilFinding : modulecheck/finding/Finding, modulecheck/finding/Fixable {
+	public fun <init> (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Ljava/io/File;)V
+	public final fun component1 ()Lmodulecheck/finding/FindingName;
+	public final fun component2 ()Lmodulecheck/project/McProject;
+	public final fun component3 ()Ljava/io/File;
+	public final fun copy (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Ljava/io/File;)Lmodulecheck/finding/CouldUseAnvilFinding;
+	public static synthetic fun copy$default (Lmodulecheck/finding/CouldUseAnvilFinding;Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Ljava/io/File;ILjava/lang/Object;)Lmodulecheck/finding/CouldUseAnvilFinding;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getBuildFile ()Ljava/io/File;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public fun getMessage ()Ljava/lang/String;
+	public fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementTextOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/InheritedDependencyFinding : modulecheck/finding/AbstractProjectDependencyFinding, java/lang/Comparable, modulecheck/finding/AddsDependency {
+	public fun <init> (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/model/dependency/ProjectDependency;)V
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lmodulecheck/finding/InheritedDependencyFinding;)I
+	public final fun component1 ()Lmodulecheck/finding/FindingName;
+	public final fun component2 ()Lmodulecheck/project/McProject;
+	public final fun component3 ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun component4 ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun copy (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/model/dependency/ProjectDependency;)Lmodulecheck/finding/InheritedDependencyFinding;
+	public static synthetic fun copy$default (Lmodulecheck/finding/InheritedDependencyFinding;Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/model/dependency/ProjectDependency;ILjava/lang/Object;)Lmodulecheck/finding/InheritedDependencyFinding;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun fromStringOrEmpty ()Ljava/lang/String;
+	public fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
+	public synthetic fun getDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun getDependency ()Lmodulecheck/model/dependency/ProjectDependency;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public fun getMessage ()Ljava/lang/String;
+	public synthetic fun getNewDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun getNewDependency ()Lmodulecheck/model/dependency/ProjectDependency;
+	public fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public final fun getSource ()Lmodulecheck/model/dependency/ProjectDependency;
+	public fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/MustBeApiFinding : modulecheck/finding/AbstractProjectDependencyFinding, modulecheck/finding/AddsDependency, modulecheck/finding/ModifiesProjectDependency, modulecheck/finding/RemovesDependency {
+	public synthetic fun <init> (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/model/dependency/ProjectDependency;Ljava/lang/String;Lmodulecheck/model/dependency/ProjectDependency;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/finding/FindingName;
+	public final fun component2 ()Lmodulecheck/project/McProject;
+	public final fun component3 ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun component4 ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun component5-9LqIWVA ()Ljava/lang/String;
+	public final fun component6 ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun copy-Ln3dr_g (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/model/dependency/ProjectDependency;Ljava/lang/String;Lmodulecheck/model/dependency/ProjectDependency;)Lmodulecheck/finding/MustBeApiFinding;
+	public static synthetic fun copy-Ln3dr_g$default (Lmodulecheck/finding/MustBeApiFinding;Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/model/dependency/ProjectDependency;Ljava/lang/String;Lmodulecheck/model/dependency/ProjectDependency;ILjava/lang/Object;)Lmodulecheck/finding/MustBeApiFinding;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun fromStringOrEmpty ()Ljava/lang/String;
+	public fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
+	public synthetic fun getDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun getDependency ()Lmodulecheck/model/dependency/ProjectDependency;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public fun getMessage ()Ljava/lang/String;
+	public synthetic fun getNewDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun getNewDependency ()Lmodulecheck/model/dependency/ProjectDependency;
+	public synthetic fun getOldDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun getOldDependency ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun getSource ()Lmodulecheck/model/dependency/ProjectDependency;
+	public fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/OverShotDependency {
+	public fun <init> (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/model/dependency/ConfiguredDependency;)V
+	public final fun component1 ()Lmodulecheck/project/McProject;
+	public final fun component2 ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public final fun component3 ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public final fun copy (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/model/dependency/ConfiguredDependency;)Lmodulecheck/finding/OverShotDependency;
+	public static synthetic fun copy$default (Lmodulecheck/finding/OverShotDependency;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/model/dependency/ConfiguredDependency;ILjava/lang/Object;)Lmodulecheck/finding/OverShotDependency;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDependentProject ()Lmodulecheck/project/McProject;
+	public final fun getNewDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public final fun getOldDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun hashCode ()I
+	public final fun toFinding ()Lmodulecheck/finding/OverShotDependencyFinding;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/OverShotDependencyFinding : modulecheck/finding/AbstractProjectDependencyFinding, modulecheck/finding/AddsDependency {
+	public static final field Companion Lmodulecheck/finding/OverShotDependencyFinding$Companion;
+	public fun <init> (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/model/dependency/ConfiguredDependency;)V
+	public final fun component1 ()Lmodulecheck/project/McProject;
+	public final fun component2 ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public final fun component3 ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public final fun copy (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/model/dependency/ConfiguredDependency;)Lmodulecheck/finding/OverShotDependencyFinding;
+	public static synthetic fun copy$default (Lmodulecheck/finding/OverShotDependencyFinding;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/model/dependency/ConfiguredDependency;ILjava/lang/Object;)Lmodulecheck/finding/OverShotDependencyFinding;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun fromStringOrEmpty ()Ljava/lang/String;
+	public fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
+	public fun getDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public fun getMessage ()Ljava/lang/String;
+	public fun getNewDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public final fun getOldDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/OverShotDependencyFinding$Companion {
+	public final fun getNAME ()Lmodulecheck/finding/FindingName;
+}
+
+public final class modulecheck/finding/RedundantDependency {
+	public synthetic fun <init> (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/project/McProject;
+	public final fun component2 ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun component3-9LqIWVA ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy-TQCk69c (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Ljava/lang/String;Ljava/util/List;)Lmodulecheck/finding/RedundantDependency;
+	public static synthetic fun copy-TQCk69c$default (Lmodulecheck/finding/RedundantDependency;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/finding/RedundantDependency;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
+	public final fun getDependency ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun getDependentProject ()Lmodulecheck/project/McProject;
+	public final fun getFrom ()Ljava/util/List;
+	public fun hashCode ()I
+	public final fun toFinding (Lmodulecheck/finding/FindingName;)Lmodulecheck/finding/RedundantDependencyFinding;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/RedundantDependencyFinding : modulecheck/finding/AbstractProjectDependencyFinding, modulecheck/finding/Deletable, modulecheck/finding/RemovesDependency {
+	public synthetic fun <init> (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/finding/FindingName;
+	public final fun component2 ()Lmodulecheck/project/McProject;
+	public final fun component3 ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun component4-9LqIWVA ()Ljava/lang/String;
+	public final fun component5 ()Ljava/util/List;
+	public final fun copy-qNb6-3M (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Ljava/lang/String;Ljava/util/List;)Lmodulecheck/finding/RedundantDependencyFinding;
+	public static synthetic fun copy-qNb6-3M$default (Lmodulecheck/finding/RedundantDependencyFinding;Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/finding/RedundantDependencyFinding;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun fromStringOrEmpty ()Ljava/lang/String;
+	public fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
+	public synthetic fun getDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun getDependency ()Lmodulecheck/model/dependency/ProjectDependency;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public final fun getFrom ()Ljava/util/List;
+	public fun getMessage ()Ljava/lang/String;
+	public synthetic fun getOldDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun getOldDependency ()Lmodulecheck/model/dependency/ProjectDependency;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/SortDependenciesFinding : modulecheck/finding/Finding, modulecheck/finding/Fixable {
+	public static final field Companion Lmodulecheck/finding/SortDependenciesFinding$Companion;
+	public fun <init> (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;Ljava/util/Comparator;)V
+	public fun fix (Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getBuildFile ()Ljava/io/File;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public fun getMessage ()Ljava/lang/String;
+	public fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementTextOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+}
+
+public final class modulecheck/finding/SortDependenciesFinding$Companion {
+	public final fun getNAME ()Lmodulecheck/finding/FindingName;
+}
+
+public final class modulecheck/finding/SortDependenciesFindingKt {
+	public static final fun sortedDependenciesFileText (Lmodulecheck/parsing/gradle/dsl/DependenciesBlock;Ljava/lang/String;Ljava/util/Comparator;)Ljava/lang/String;
+}
+
+public final class modulecheck/finding/UnusedDependency {
+	public synthetic fun <init> (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/model/dependency/Identifier;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/project/McProject;
+	public final fun component2 ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public final fun component3 ()Lmodulecheck/model/dependency/Identifier;
+	public final fun component4-9LqIWVA ()Ljava/lang/String;
+	public final fun copy-2WiO4sE (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/model/dependency/Identifier;Ljava/lang/String;)Lmodulecheck/finding/UnusedDependency;
+	public static synthetic fun copy-2WiO4sE$default (Lmodulecheck/finding/UnusedDependency;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/model/dependency/Identifier;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/finding/UnusedDependency;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
+	public final fun getDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public final fun getDependencyIdentifier ()Lmodulecheck/model/dependency/Identifier;
+	public final fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun hashCode ()I
+	public final fun toFinding (Lmodulecheck/finding/FindingName;)Lmodulecheck/finding/UnusedDependencyFinding;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/UnusedDependencyFinding : modulecheck/finding/AbstractProjectDependencyFinding, modulecheck/finding/Deletable, modulecheck/finding/RemovesDependency {
+	public synthetic fun <init> (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/finding/FindingName;
+	public final fun component2 ()Lmodulecheck/project/McProject;
+	public final fun component3 ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5-9LqIWVA ()Ljava/lang/String;
+	public final fun copy-qOEscpI (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/finding/UnusedDependencyFinding;
+	public static synthetic fun copy-qOEscpI$default (Lmodulecheck/finding/UnusedDependencyFinding;Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/finding/UnusedDependencyFinding;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun fromStringOrEmpty ()Ljava/lang/String;
+	public fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
+	public fun getDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public fun getMessage ()Ljava/lang/String;
+	public fun getOldDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/UnusedKaptProcessorFinding : modulecheck/finding/ConfigurationFinding, modulecheck/finding/DependencyFinding, modulecheck/finding/Finding, modulecheck/finding/Fixable, modulecheck/finding/Problem, modulecheck/finding/RemovesDependency {
+	public synthetic fun <init> (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;Lmodulecheck/model/dependency/ConfiguredDependency;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lmodulecheck/finding/FindingName;
+	public final fun component2 ()Lmodulecheck/project/McProject;
+	public final fun component3 ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public final fun component4 ()Ljava/io/File;
+	public final fun component5 ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public final fun component6-9LqIWVA ()Ljava/lang/String;
+	public final fun copy-pQ-XbRs (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;Lmodulecheck/model/dependency/ConfiguredDependency;Ljava/lang/String;)Lmodulecheck/finding/UnusedKaptProcessorFinding;
+	public static synthetic fun copy-pQ-XbRs$default (Lmodulecheck/finding/UnusedKaptProcessorFinding;Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;Lmodulecheck/model/dependency/ConfiguredDependency;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/finding/UnusedKaptProcessorFinding;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getBuildFile ()Ljava/io/File;
+	public fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public fun getMessage ()Ljava/lang/String;
+	public fun getOldDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
+	public fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementTextOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/UnusedPluginFinding : modulecheck/finding/Deletable, modulecheck/finding/Finding, modulecheck/finding/Fixable, modulecheck/finding/Problem {
+	public fun <init> (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;Lmodulecheck/finding/FindingName;Lmodulecheck/model/dependency/PluginDefinition;)V
+	public final fun component1 ()Lmodulecheck/project/McProject;
+	public final fun component2 ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public final fun component3 ()Ljava/io/File;
+	public final fun component4 ()Lmodulecheck/finding/FindingName;
+	public final fun component5 ()Lmodulecheck/model/dependency/PluginDefinition;
+	public final fun copy (Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;Lmodulecheck/finding/FindingName;Lmodulecheck/model/dependency/PluginDefinition;)Lmodulecheck/finding/UnusedPluginFinding;
+	public static synthetic fun copy$default (Lmodulecheck/finding/UnusedPluginFinding;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/io/File;Lmodulecheck/finding/FindingName;Lmodulecheck/model/dependency/PluginDefinition;ILjava/lang/Object;)Lmodulecheck/finding/UnusedPluginFinding;
+	public fun delete (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun fix (Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getBuildFile ()Ljava/io/File;
+	public fun getDependencyIdentifier ()Ljava/lang/String;
+	public fun getDependentPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public fun getDependentProject ()Lmodulecheck/project/McProject;
+	public fun getFindingName ()Lmodulecheck/finding/FindingName;
+	public fun getMessage ()Ljava/lang/String;
+	public final fun getPluginDefinition ()Lmodulecheck/model/dependency/PluginDefinition;
+	public fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun getStatementTextOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun hashCode ()I
+	public fun isSuppressed ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/finding/internal/ListKt {
+	public static final fun positionOf-oid5b2s (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/finding/Finding$Position;
+}
+

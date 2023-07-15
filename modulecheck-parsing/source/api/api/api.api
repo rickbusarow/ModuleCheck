@@ -1,0 +1,421 @@
+public final class modulecheck/parsing/source/AndroidDataBindingDeclaredName : modulecheck/parsing/source/QualifiedDeclaredName, modulecheck/parsing/source/AndroidResourceDeclaredName, modulecheck/parsing/source/Generated {
+	public fun <init> (Lmodulecheck/parsing/source/UnqualifiedAndroidResourceReferenceName;Lmodulecheck/parsing/source/PackageName;)V
+	public fun asReferenceName (Lmodulecheck/parsing/source/McName$CompatibleLanguage;)Lmodulecheck/parsing/source/ReferenceName;
+	public fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+	public fun getSimpleNames ()Ljava/util/List;
+	public fun getSources ()Ljava/util/Set;
+}
+
+public final class modulecheck/parsing/source/AndroidDataBindingReferenceName : modulecheck/parsing/source/AndroidResourceReferenceName {
+	public fun <init> (Ljava/lang/String;Lmodulecheck/parsing/source/McName$CompatibleLanguage;)V
+	public fun getLanguage ()Lmodulecheck/parsing/source/McName$CompatibleLanguage;
+}
+
+public final class modulecheck/parsing/source/AndroidRDeclaredName : modulecheck/parsing/source/QualifiedDeclaredName, modulecheck/parsing/source/AndroidResourceDeclaredName {
+	public fun <init> (Lmodulecheck/parsing/source/PackageName;)V
+	public fun asReferenceName (Lmodulecheck/parsing/source/McName$CompatibleLanguage;)Lmodulecheck/parsing/source/ReferenceName;
+	public fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+	public fun getSimpleNames ()Ljava/util/List;
+}
+
+public final class modulecheck/parsing/source/AndroidRReferenceName : modulecheck/parsing/source/AndroidResourceReferenceName {
+	public fun <init> (Lmodulecheck/parsing/source/PackageName;Lmodulecheck/parsing/source/McName$CompatibleLanguage;)V
+	public fun getLanguage ()Lmodulecheck/parsing/source/McName$CompatibleLanguage;
+	public final fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+}
+
+public abstract interface class modulecheck/parsing/source/AndroidResourceDeclaredName : modulecheck/parsing/source/DeclaredName, modulecheck/parsing/source/HasSimpleNames {
+	public static final field Companion Lmodulecheck/parsing/source/AndroidResourceDeclaredName$Companion;
+}
+
+public final class modulecheck/parsing/source/AndroidResourceDeclaredName$Companion {
+	public final fun dataBinding (Lmodulecheck/parsing/source/UnqualifiedAndroidResource;Lmodulecheck/parsing/source/PackageName;)Lmodulecheck/parsing/source/AndroidDataBindingDeclaredName;
+	public final fun dataBinding (Lmodulecheck/parsing/source/UnqualifiedAndroidResourceReferenceName;Lmodulecheck/parsing/source/PackageName;)Lmodulecheck/parsing/source/AndroidDataBindingDeclaredName;
+	public final fun qualifiedAndroidResource (Lmodulecheck/parsing/source/AndroidRReferenceName;Lmodulecheck/parsing/source/UnqualifiedAndroidResourceReferenceName;)Lmodulecheck/parsing/source/QualifiedAndroidResourceDeclaredName;
+	public final fun r (Lmodulecheck/parsing/source/PackageName;)Lmodulecheck/parsing/source/AndroidRDeclaredName;
+}
+
+public abstract class modulecheck/parsing/source/AndroidResourceReferenceName : modulecheck/parsing/source/ReferenceName {
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class modulecheck/parsing/source/AnvilAnnotatedType {
+	public fun <init> (Lmodulecheck/parsing/source/QualifiedDeclaredName;Lmodulecheck/parsing/source/AnvilScopeName;)V
+	public final fun component1 ()Lmodulecheck/parsing/source/QualifiedDeclaredName;
+	public final fun component2 ()Lmodulecheck/parsing/source/AnvilScopeName;
+	public final fun copy (Lmodulecheck/parsing/source/QualifiedDeclaredName;Lmodulecheck/parsing/source/AnvilScopeName;)Lmodulecheck/parsing/source/AnvilAnnotatedType;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/source/AnvilAnnotatedType;Lmodulecheck/parsing/source/QualifiedDeclaredName;Lmodulecheck/parsing/source/AnvilScopeName;ILjava/lang/Object;)Lmodulecheck/parsing/source/AnvilAnnotatedType;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContributedScope ()Lmodulecheck/parsing/source/AnvilScopeName;
+	public final fun getContributedTypeDeclaration ()Lmodulecheck/parsing/source/QualifiedDeclaredName;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/AnvilGradlePlugin {
+	public fun <init> (Lnet/swiftzer/semver/SemVer;Z)V
+	public final fun component1 ()Lnet/swiftzer/semver/SemVer;
+	public final fun component2 ()Z
+	public final fun copy (Lnet/swiftzer/semver/SemVer;Z)Lmodulecheck/parsing/source/AnvilGradlePlugin;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/source/AnvilGradlePlugin;Lnet/swiftzer/semver/SemVer;ZILjava/lang/Object;)Lmodulecheck/parsing/source/AnvilGradlePlugin;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getGenerateDaggerFactories ()Z
+	public final fun getVersion ()Lnet/swiftzer/semver/SemVer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/AnvilScopeName {
+	public fun <init> (Lorg/jetbrains/kotlin/name/FqName;)V
+	public final fun component1 ()Lorg/jetbrains/kotlin/name/FqName;
+	public final fun copy (Lorg/jetbrains/kotlin/name/FqName;)Lmodulecheck/parsing/source/AnvilScopeName;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/source/AnvilScopeName;Lorg/jetbrains/kotlin/name/FqName;ILjava/lang/Object;)Lmodulecheck/parsing/source/AnvilScopeName;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFqName ()Lorg/jetbrains/kotlin/name/FqName;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/AnvilScopeNameEntry {
+	public fun <init> (Lmodulecheck/parsing/source/ReferenceName;)V
+	public final fun component1 ()Lmodulecheck/parsing/source/ReferenceName;
+	public final fun copy (Lmodulecheck/parsing/source/ReferenceName;)Lmodulecheck/parsing/source/AnvilScopeNameEntry;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/source/AnvilScopeNameEntry;Lmodulecheck/parsing/source/ReferenceName;ILjava/lang/Object;)Lmodulecheck/parsing/source/AnvilScopeNameEntry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Lmodulecheck/parsing/source/ReferenceName;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/parsing/source/DeclaredName : modulecheck/parsing/source/HasSimpleNames, modulecheck/parsing/source/McName {
+	public static final field Companion Lmodulecheck/parsing/source/DeclaredName$Companion;
+	public fun getLanguages ()Ljava/util/Set;
+}
+
+public final class modulecheck/parsing/source/DeclaredName$Companion {
+	public final fun agnostic (Lmodulecheck/parsing/source/PackageName;Ljava/lang/Iterable;)Lmodulecheck/parsing/source/QualifiedDeclaredName;
+	public final fun java (Lmodulecheck/parsing/source/PackageName;Ljava/lang/Iterable;)Lmodulecheck/parsing/source/QualifiedDeclaredName;
+	public final fun kotlin (Lmodulecheck/parsing/source/PackageName;Ljava/lang/Iterable;)Lmodulecheck/parsing/source/QualifiedDeclaredName;
+}
+
+public final class modulecheck/parsing/source/DeclaredNameKt {
+	public static final fun asDeclaredName (Ljava/lang/Iterable;Lmodulecheck/parsing/source/PackageName;[Lmodulecheck/parsing/source/McName$CompatibleLanguage;)Lmodulecheck/parsing/source/QualifiedDeclaredName;
+	public static final fun asDeclaredName (Lorg/jetbrains/kotlin/name/FqName;Lmodulecheck/parsing/source/PackageName;[Lmodulecheck/parsing/source/McName$CompatibleLanguage;)Lmodulecheck/parsing/source/QualifiedDeclaredName;
+	public static final fun asDeclaredName-eUF3_40 (Ljava/lang/String;Lmodulecheck/parsing/source/PackageName;[Lmodulecheck/parsing/source/McName$CompatibleLanguage;)Lmodulecheck/parsing/source/QualifiedDeclaredName;
+}
+
+public abstract interface class modulecheck/parsing/source/Generated : modulecheck/parsing/source/McName {
+	public abstract fun getSources ()Ljava/util/Set;
+}
+
+public abstract interface class modulecheck/parsing/source/HasPackageName {
+	public abstract fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+}
+
+public abstract interface class modulecheck/parsing/source/HasReferences {
+	public abstract fun getReferences ()Lmodulecheck/utils/lazy/LazySet;
+}
+
+public abstract interface class modulecheck/parsing/source/HasSimpleNames {
+	public static final field Companion Lmodulecheck/parsing/source/HasSimpleNames$Companion;
+	public abstract fun getSimpleNames ()Ljava/util/List;
+	public fun getSimplestName-Jf_0vz4 ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/HasSimpleNames$Companion {
+}
+
+public abstract interface class modulecheck/parsing/source/JavaFile : modulecheck/parsing/source/JvmFile {
+	public abstract fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiJavaFile;
+}
+
+public abstract interface class modulecheck/parsing/source/JvmFile : modulecheck/parsing/source/HasReferences {
+	public abstract fun getApiReferences ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public abstract fun getDeclarations ()Ljava/util/Set;
+	public abstract fun getFile ()Ljava/io/File;
+	public abstract fun getImportsLazy ()Lkotlin/Lazy;
+	public abstract fun getName ()Ljava/lang/String;
+	public abstract fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+	public abstract fun getPsi ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiFile;
+}
+
+public abstract interface class modulecheck/parsing/source/KotlinFile : modulecheck/parsing/source/JvmFile {
+	public abstract fun getAnvilScopeArguments (Ljava/util/List;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getPsi ()Lorg/jetbrains/kotlin/psi/KtFile;
+}
+
+public final class modulecheck/parsing/source/KotlinFile$ScopeArgumentParseResult {
+	public fun <init> (Ljava/util/Set;Ljava/util/Set;)V
+	public final fun component1 ()Ljava/util/Set;
+	public final fun component2 ()Ljava/util/Set;
+	public final fun copy (Ljava/util/Set;Ljava/util/Set;)Lmodulecheck/parsing/source/KotlinFile$ScopeArgumentParseResult;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/source/KotlinFile$ScopeArgumentParseResult;Ljava/util/Set;Ljava/util/Set;ILjava/lang/Object;)Lmodulecheck/parsing/source/KotlinFile$ScopeArgumentParseResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContributeArguments ()Ljava/util/Set;
+	public final fun getMergeArguments ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/parsing/source/McName : java/lang/Comparable {
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lmodulecheck/parsing/source/McName;)I
+	public fun endsWith (Ljava/lang/String;)Z
+	public fun endsWith (Lmodulecheck/parsing/source/McName;)Z
+	public fun endsWithSimpleName (Ljava/lang/String;)Z
+	public fun endsWithSimpleName-xkB49u4 (Ljava/lang/String;)Z
+	public abstract fun getName ()Ljava/lang/String;
+	public abstract fun getSegments ()Ljava/util/List;
+	public fun getSimpleName ()Ljava/lang/String;
+	public fun startsWith (Lmodulecheck/parsing/source/McName;)Z
+}
+
+public abstract interface class modulecheck/parsing/source/McName$CompatibleLanguage {
+}
+
+public final class modulecheck/parsing/source/McName$CompatibleLanguage$JAVA : modulecheck/parsing/source/McName$CompatibleLanguage {
+	public static final field INSTANCE Lmodulecheck/parsing/source/McName$CompatibleLanguage$JAVA;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/McName$CompatibleLanguage$KOTLIN : modulecheck/parsing/source/McName$CompatibleLanguage {
+	public static final field INSTANCE Lmodulecheck/parsing/source/McName$CompatibleLanguage$KOTLIN;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/McName$CompatibleLanguage$XML : modulecheck/parsing/source/McName$CompatibleLanguage {
+	public static final field INSTANCE Lmodulecheck/parsing/source/McName$CompatibleLanguage$XML;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/parsing/source/PackageName : modulecheck/parsing/source/McName {
+	public static final field Companion Lmodulecheck/parsing/source/PackageName$Companion;
+	public abstract fun append (Ljava/lang/Iterable;)Ljava/lang/String;
+	public abstract fun getName ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/PackageName$Companion {
+	public final fun asPackageName (Ljava/lang/String;)Lmodulecheck/parsing/source/PackageName;
+	public final fun invoke (Ljava/lang/String;)Lmodulecheck/parsing/source/PackageName;
+}
+
+public final class modulecheck/parsing/source/PackageName$DEFAULT : modulecheck/parsing/source/PackageName {
+	public static final field INSTANCE Lmodulecheck/parsing/source/PackageName$DEFAULT;
+	public fun append (Ljava/lang/Iterable;)Ljava/lang/String;
+	public fun getName ()Ljava/lang/String;
+	public fun getSegments ()Ljava/util/List;
+}
+
+public final class modulecheck/parsing/source/PackageNameImpl : modulecheck/parsing/source/PackageName {
+	public fun append (Ljava/lang/Iterable;)Ljava/lang/String;
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lmodulecheck/parsing/source/PackageNameImpl;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/source/PackageNameImpl;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/parsing/source/PackageNameImpl;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getName ()Ljava/lang/String;
+	public fun getSegments ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/PackageNameKt {
+	public static final fun append (Lmodulecheck/parsing/source/PackageName;[Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/QualifiedAndroidResourceDeclaredName : modulecheck/parsing/source/QualifiedDeclaredName, modulecheck/parsing/source/AndroidResourceDeclaredName, modulecheck/parsing/source/Generated {
+	public fun <init> (Lmodulecheck/parsing/source/AndroidRReferenceName;Lmodulecheck/parsing/source/UnqualifiedAndroidResourceReferenceName;)V
+	public fun asReferenceName (Lmodulecheck/parsing/source/McName$CompatibleLanguage;)Lmodulecheck/parsing/source/ReferenceName;
+	public fun getName ()Ljava/lang/String;
+	public fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+	public fun getSimpleNames ()Ljava/util/List;
+	public final fun getSourceR ()Lmodulecheck/parsing/source/AndroidRReferenceName;
+	public final fun getSourceResource ()Lmodulecheck/parsing/source/UnqualifiedAndroidResourceReferenceName;
+	public fun getSources ()Ljava/util/Set;
+}
+
+public final class modulecheck/parsing/source/QualifiedAndroidResourceReferenceName : modulecheck/parsing/source/AndroidResourceReferenceName {
+	public fun <init> (Ljava/lang/String;Lmodulecheck/parsing/source/McName$CompatibleLanguage;)V
+	public fun getLanguage ()Lmodulecheck/parsing/source/McName$CompatibleLanguage;
+}
+
+public abstract class modulecheck/parsing/source/QualifiedDeclaredName : modulecheck/parsing/source/DeclaredName, modulecheck/parsing/source/HasPackageName, modulecheck/parsing/source/HasSimpleNames, modulecheck/parsing/source/McName, modulecheck/parsing/source/ResolvableMcName {
+	public fun asReferenceName (Lmodulecheck/parsing/source/McName$CompatibleLanguage;)Lmodulecheck/parsing/source/ReferenceName;
+	public final fun equals (Ljava/lang/Object;)Z
+	public fun getName ()Ljava/lang/String;
+	public fun getSegments ()Ljava/util/List;
+	public final fun hashCode ()I
+	public final fun isTopLevel ()Z
+	public final fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/RawAnvilAnnotatedType {
+	public fun <init> (Lmodulecheck/parsing/source/QualifiedDeclaredName;Lmodulecheck/parsing/source/AnvilScopeNameEntry;)V
+	public final fun component1 ()Lmodulecheck/parsing/source/QualifiedDeclaredName;
+	public final fun component2 ()Lmodulecheck/parsing/source/AnvilScopeNameEntry;
+	public final fun copy (Lmodulecheck/parsing/source/QualifiedDeclaredName;Lmodulecheck/parsing/source/AnvilScopeNameEntry;)Lmodulecheck/parsing/source/RawAnvilAnnotatedType;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/source/RawAnvilAnnotatedType;Lmodulecheck/parsing/source/QualifiedDeclaredName;Lmodulecheck/parsing/source/AnvilScopeNameEntry;ILjava/lang/Object;)Lmodulecheck/parsing/source/RawAnvilAnnotatedType;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnvilScopeNameEntry ()Lmodulecheck/parsing/source/AnvilScopeNameEntry;
+	public final fun getDeclaredName ()Lmodulecheck/parsing/source/QualifiedDeclaredName;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class modulecheck/parsing/source/ReferenceName : modulecheck/parsing/source/McName, modulecheck/parsing/source/ResolvableMcName {
+	public static final field Companion Lmodulecheck/parsing/source/ReferenceName$Companion;
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public abstract fun getLanguage ()Lmodulecheck/parsing/source/McName$CompatibleLanguage;
+	public final fun getName ()Ljava/lang/String;
+	public fun getSegments ()Ljava/util/List;
+	public final fun hashCode ()I
+	public final fun isJava ()Z
+	public final fun isKotlin ()Z
+	public final fun isXml ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/ReferenceName$Companion {
+	public final fun asReferenceName (Ljava/lang/String;Lmodulecheck/parsing/source/McName$CompatibleLanguage;)Lmodulecheck/parsing/source/ReferenceName;
+	public final fun invoke (Ljava/lang/String;Lmodulecheck/parsing/source/McName$CompatibleLanguage;)Lmodulecheck/parsing/source/ReferenceName;
+}
+
+public abstract interface class modulecheck/parsing/source/ResolvableMcName : modulecheck/parsing/source/McName {
+}
+
+public final class modulecheck/parsing/source/SimpleName : java/lang/Comparable {
+	public static final field Companion Lmodulecheck/parsing/source/SimpleName$Companion;
+	public static final synthetic fun box-impl (Ljava/lang/String;)Lmodulecheck/parsing/source/SimpleName;
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo-xkB49u4 (Ljava/lang/String;)I
+	public static fun compareTo-xkB49u4 (Ljava/lang/String;Ljava/lang/String;)I
+	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/lang/String;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/SimpleName$Companion {
+	public final fun asSimpleName-QX443rU (Ljava/lang/String;)Ljava/lang/String;
+	public final fun asString (Ljava/util/List;)Ljava/lang/String;
+	public final fun stripPackageNameFromFqName (Ljava/lang/String;Lmodulecheck/parsing/source/PackageName;)Ljava/util/List;
+}
+
+public final class modulecheck/parsing/source/UnqualifiedAndroidResource : modulecheck/parsing/source/AndroidResourceDeclaredName, modulecheck/parsing/source/HasSimpleNames, modulecheck/parsing/source/McName {
+	public static final field Companion Lmodulecheck/parsing/source/UnqualifiedAndroidResource$Companion;
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIdentifier-Jf_0vz4 ()Ljava/lang/String;
+	public fun getName ()Ljava/lang/String;
+	public final fun getPrefix-Jf_0vz4 ()Ljava/lang/String;
+	public fun getSegments ()Ljava/util/List;
+	public fun getSimpleNames ()Ljava/util/List;
+	public fun hashCode ()I
+	public final fun toQualifiedDeclaredName (Lmodulecheck/parsing/source/AndroidRDeclaredName;)Lmodulecheck/parsing/source/QualifiedAndroidResourceDeclaredName;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/UnqualifiedAndroidResource$Companion {
+	public final fun anim-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun animator-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun array-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun bool-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun color-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun dimen-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun drawable-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun font-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun fromFile (Ljava/io/File;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun fromValuePair (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun fromXmlString (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun id-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun integer-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun layout-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun menu-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun mipmap-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun raw-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun string-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+	public final fun style-xkB49u4 (Ljava/lang/String;)Lmodulecheck/parsing/source/UnqualifiedAndroidResource;
+}
+
+public final class modulecheck/parsing/source/UnqualifiedAndroidResourceReferenceName : modulecheck/parsing/source/AndroidResourceReferenceName, modulecheck/parsing/source/HasSimpleNames {
+	public fun <init> (Ljava/lang/String;Lmodulecheck/parsing/source/McName$CompatibleLanguage;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIdentifier-Jf_0vz4 ()Ljava/lang/String;
+	public fun getLanguage ()Lmodulecheck/parsing/source/McName$CompatibleLanguage;
+	public final fun getPrefix-Jf_0vz4 ()Ljava/lang/String;
+	public fun getSimpleNames ()Ljava/util/List;
+}
+
+public abstract interface class modulecheck/parsing/source/internal/AndroidDataBindingNameProvider {
+	public abstract fun get (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/source/internal/AndroidRNameProvider {
+	public abstract fun getAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getLocalOrNull (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/source/internal/InterpretingInterceptor : modulecheck/parsing/source/internal/ParsingInterceptor {
+	public fun <init> ()V
+	public fun intercept (Lmodulecheck/parsing/source/internal/ParsingInterceptor$Chain;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/source/internal/NameParser {
+	public abstract fun parse (Lmodulecheck/parsing/source/internal/NameParser$NameParserPacket;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/source/internal/NameParser$NameParserPacket {
+	public fun <init> (Lmodulecheck/parsing/source/PackageName;Ljava/util/Set;Ljava/util/Set;Ljava/util/Map;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Lmodulecheck/parsing/source/McName$CompatibleLanguage;Lkotlin/jvm/functions/Function1;)V
+	public final fun component1 ()Lmodulecheck/parsing/source/PackageName;
+	public final fun component10 ()Lkotlin/jvm/functions/Function1;
+	public final fun component2 ()Ljava/util/Set;
+	public final fun component3 ()Ljava/util/Set;
+	public final fun component4 ()Ljava/util/Map;
+	public final fun component5 ()Ljava/util/Set;
+	public final fun component6 ()Ljava/util/Set;
+	public final fun component7 ()Ljava/util/Set;
+	public final fun component8 ()Ljava/util/Set;
+	public final fun component9 ()Lmodulecheck/parsing/source/McName$CompatibleLanguage;
+	public final fun copy (Lmodulecheck/parsing/source/PackageName;Ljava/util/Set;Ljava/util/Set;Ljava/util/Map;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Lmodulecheck/parsing/source/McName$CompatibleLanguage;Lkotlin/jvm/functions/Function1;)Lmodulecheck/parsing/source/internal/NameParser$NameParserPacket;
+	public static synthetic fun copy$default (Lmodulecheck/parsing/source/internal/NameParser$NameParserPacket;Lmodulecheck/parsing/source/PackageName;Ljava/util/Set;Ljava/util/Set;Ljava/util/Map;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Lmodulecheck/parsing/source/McName$CompatibleLanguage;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lmodulecheck/parsing/source/internal/NameParser$NameParserPacket;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAliasedImports ()Ljava/util/Map;
+	public final fun getApiReferenceNames ()Ljava/util/Set;
+	public final fun getImports ()Ljava/util/Set;
+	public final fun getMustBeApi ()Ljava/util/Set;
+	public final fun getPackageName ()Lmodulecheck/parsing/source/PackageName;
+	public final fun getReferenceLanguage ()Lmodulecheck/parsing/source/McName$CompatibleLanguage;
+	public final fun getResolved ()Ljava/util/Set;
+	public final fun getStdLibNameOrNull ()Lkotlin/jvm/functions/Function1;
+	public final fun getUnresolved ()Ljava/util/Set;
+	public final fun getWildcardImports ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/parsing/source/internal/ParsingChain : modulecheck/parsing/source/internal/ParsingInterceptor$Chain {
+	public synthetic fun <init> (Lmodulecheck/parsing/source/internal/NameParser$NameParserPacket;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getPacket ()Lmodulecheck/parsing/source/internal/NameParser$NameParserPacket;
+	public fun proceed (Lmodulecheck/parsing/source/internal/NameParser$NameParserPacket;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/parsing/source/internal/ParsingChain$Factory : modulecheck/parsing/source/internal/NameParser {
+	public fun <init> (Ljava/util/List;)V
+	public fun parse (Lmodulecheck/parsing/source/internal/NameParser$NameParserPacket;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/source/internal/ParsingInterceptor {
+	public abstract fun intercept (Lmodulecheck/parsing/source/internal/ParsingInterceptor$Chain;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/source/internal/ParsingInterceptor$Chain {
+	public abstract fun getPacket ()Lmodulecheck/parsing/source/internal/NameParser$NameParserPacket;
+	public abstract fun proceed (Lmodulecheck/parsing/source/internal/NameParser$NameParserPacket;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

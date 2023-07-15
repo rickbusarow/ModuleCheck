@@ -14,7 +14,18 @@
         "^com\\.google\\.devtools\\.ksp:(?:[\\w-]+)$",
         "^com\\.square\\.anvil:(?:[\\w-]+)$"
       ],
-      "groupName": "Kotlin and compiler plugins"
+      "groupName": "Kotlin and compiler plugins",
+      "separateMultipleMajor": false
+    },
+    {
+      "matchPackagePatterns": [
+        "^com\\.pinterest\\.ktlint:(?:[\\w-]+)$",
+        "^com\\.rickbusarow\\.ktlint:(?:[\\w-]+)$",
+        "^com\\.rickbusarow\\.ktrules:(?:[\\w-]+)$"
+      ],
+      "groupName": "KtLint things"
     }
-  ]
+  ],
+  "rebaseWhen": "conflicted",
+  "stopUpdatingLabel": "renovate-ignore"
 }

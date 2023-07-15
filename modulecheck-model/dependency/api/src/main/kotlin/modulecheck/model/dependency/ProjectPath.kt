@@ -78,9 +78,7 @@ sealed class ProjectPath : Identifier {
       return TypeSafeProjectPath(value.typeSafeName())
     }
 
-    override fun pathValue(
-      typeSafeProjectPathResolver: TypeSafeProjectPathResolver
-    ): String = value
+    override fun pathValue(typeSafeProjectPathResolver: TypeSafeProjectPathResolver): String = value
   }
 
   @Serializable

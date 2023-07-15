@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-rule-testing"
+  published(
+    artifactId = "modulecheck-rule-testing"
+  )
   dagger()
 }
 
@@ -32,9 +34,9 @@ dependencies {
   api(project(path = ":modulecheck-rule:api"))
 
   implementation(project(path = ":modulecheck-dagger"))
+  implementation(project(path = ":modulecheck-reporting:logging:api"))
   implementation(project(path = ":modulecheck-rule:impl"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

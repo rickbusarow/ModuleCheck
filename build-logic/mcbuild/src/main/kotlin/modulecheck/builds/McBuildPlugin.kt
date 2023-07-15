@@ -19,6 +19,7 @@ import modulecheck.builds.artifacts.ArtifactsPlugin
 import modulecheck.builds.matrix.VersionsMatrixYamlPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.language.base.plugins.LifecycleBasePlugin
 
 abstract class McBuildPlugin : Plugin<Project> {
   override fun apply(target: Project) {
@@ -28,7 +29,6 @@ abstract class McBuildPlugin : Plugin<Project> {
     target.plugins.apply(DependencyGuardConventionPlugin::class.java)
     target.plugins.apply(DetektConventionPlugin::class.java)
     target.plugins.apply(DokkaConventionPlugin::class.java)
-    target.plugins.apply(JavaLibraryConventionPlugin::class.java)
     target.plugins.apply(KotlinJvmConventionPlugin::class.java)
     target.plugins.apply(KtLintConventionPlugin::class.java)
     target.plugins.apply(TestConventionPlugin::class.java)
@@ -42,11 +42,13 @@ abstract class McBuildRootPlugin : Plugin<Project> {
 
     target.checkProjectIsRoot()
 
+    target.plugins.apply(LifecycleBasePlugin::class.java)
     target.plugins.apply(McBuildPlugin::class.java)
 
     target.plugins.apply(ArtifactsPlugin::class.java)
     target.plugins.apply(BenManesVersionsPlugin::class.java)
     target.plugins.apply(DependencyGuardAggregatePlugin::class.java)
+    target.plugins.apply(DokkaVersionArchivePlugin::class.java)
     target.plugins.apply(KnitConventionPlugin::class.java)
     target.plugins.apply(VersionsMatrixYamlPlugin::class.java)
     target.plugins.apply(WebsitePlugin::class.java)

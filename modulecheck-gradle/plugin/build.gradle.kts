@@ -13,15 +13,36 @@
  * limitations under the License.
  */
 
+import modulecheck.builds.ShardTestTask
+import modulecheck.builds.dependsOn
+import modulecheck.builds.shards.registerYamlShardsTasks
+
 plugins {
   id("mcbuild")
-  id("com.gradle.plugin-publish") version "0.21.0"
+  id("com.gradle.plugin-publish")
   id("java-gradle-plugin")
   idea
 }
 
+val pluginId = "com.rickbusarow.module-check"
+
+@Suppress("UnstableApiUsage")
+val pluginDeclaration: NamedDomainObjectProvider<PluginDeclaration> = gradlePlugin.plugins
+  .register("generateProtos") {
+    id = pluginId
+    group = modulecheck.builds.GROUP
+    displayName = "ModuleCheck"
+    implementationClass = "modulecheck.gradle.ModuleCheckPlugin"
+    version = modulecheck.builds.VERSION_NAME
+    description = "Fast dependency graph validation for gradle"
+    tags.addAll("kotlin", "dependencies", "android", "gradle-plugin", "kotlin-compiler-plugin")
+  }
+
 mcbuild {
-  artifactId = "modulecheck-gradle-plugin"
+  published(
+    artifactId = "modulecheck-gradle-plugin"
+  )
+  publishedPlugin(pluginDeclaration)
   dagger()
 
   buildConfig {
@@ -89,7 +110,6 @@ dependencies {
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-reporting:logging:api"))
   api(project(path = ":modulecheck-rule:api"))
-  api(project(path = ":modulecheck-rule:impl-factory"))
   api(project(path = ":modulecheck-runtime:api"))
 
   compileOnly(gradleApi())
@@ -102,6 +122,7 @@ dependencies {
   compileOnly(libs.kotlinx.serialization.core)
   compileOnly(libs.square.anvil.gradle)
 
+  implementation(libs.ajalt.mordant)
   implementation(libs.google.dagger.api)
   implementation(libs.semVer)
 
@@ -116,6 +137,7 @@ dependencies {
   implementation(project(path = ":modulecheck-parsing:source:api"))
   implementation(project(path = ":modulecheck-project:impl"))
   implementation(project(path = ":modulecheck-rule:impl"))
+  implementation(project(path = ":modulecheck-rule:impl-factory"))
   implementation(project(path = ":modulecheck-utils:coroutines:impl"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
@@ -131,6 +153,7 @@ dependencies {
   "integrationTestImplementation"(project(path = ":modulecheck-parsing:gradle:model:impl-typesafe"))
   "integrationTestImplementation"(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-parsing:wiring"))
+  "integrationTestImplementation"(project(path = ":modulecheck-reporting:logging:api"))
   "integrationTestImplementation"(project(path = ":modulecheck-project:api"))
   "integrationTestImplementation"(project(path = ":modulecheck-rule:api"))
   "integrationTestImplementation"(project(path = ":modulecheck-rule:impl"))
@@ -138,52 +161,45 @@ dependencies {
   "integrationTestImplementation"(project(path = ":modulecheck-utils:coroutines:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-project-generation:api"))
-  testImplementation(project(path = ":modulecheck-utils:lazy"))
   testImplementation(project(path = ":modulecheck-utils:stdlib"))
-}
-
-gradlePlugin {
-  plugins {
-    create("moduleCheck") {
-      id = "com.rickbusarow.module-check"
-      group = "com.rickbusarow.modulecheck"
-      displayName = "ModuleCheck"
-      implementationClass = "modulecheck.gradle.ModuleCheckPlugin"
-      version = modulecheck.builds.VERSION_NAME
-      description = "Fast dependency graph validation for gradle"
-    }
-  }
-}
-
-pluginBundle {
-  website = "https://github.com/RBusarow/ModuleCheck"
-  vcsUrl = "https://github.com/RBusarow/ModuleCheck"
-  description = "Fast dependency graph validation for gradle"
-
-  (plugins) {
-    "moduleCheck" {
-      displayName = "ModuleCheck"
-      tags = listOf("kotlin", "dependencies", "android", "gradle-plugin", "kotlin-compiler-plugin")
-    }
-  }
 }
 
 val integrationTestTask = tasks.register("integrationTest", Test::class) {
   val integrationTestSourceSet = java.sourceSets["integrationTest"]
   testClassesDirs = integrationTestSourceSet.output.classesDirs
   classpath = integrationTestSourceSet.runtimeClasspath
-  dependsOn(rootProject.tasks.matching { it.name == "publishToMavenLocalNoDokka" })
+  dependsOn(":publishToMavenLocalNoDokka")
 }
 
-tasks.matching { it.name == "check" }.configureEach {
-  dependsOn(integrationTestTask)
+val shardCount = 6
+(1..shardCount).forEach {
+
+  tasks.register("integrationTestShard$it", ShardTestTask::class) {
+    shardNumber.set(it)
+    totalShards.set(shardCount)
+    testClassesDirs = integrationTest.get().output.classesDirs
+    classpath = integrationTest.get().runtimeClasspath
+    doFirst {
+      setFilter()
+    }
+    dependsOn("integrationTestClasses", ":publishToMavenLocalNoDokka")
+  }
 }
+
+registerYamlShardsTasks(
+  shardCount = shardCount,
+  startTagName = "### <start-integration-test-shards>",
+  endTagName = "### <end-integration-test-shards>",
+  taskNamePart = "integrationTest",
+  yamlFile = rootProject.file(".github/workflows/ci.yml")
+)
+
+tasks.named("check").dependsOn(integrationTestTask)
 
 kotlin {
   val compilations = target.compilations

@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-gradle-dsl-testing"
+  published(
+    artifactId = "modulecheck-parsing-gradle-dsl-testing"
+  )
   anvil()
 }
 
@@ -31,7 +33,6 @@ dependencies {
 
   implementation(project(path = ":modulecheck-parsing:gradle:dsl:api"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

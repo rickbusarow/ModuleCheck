@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-config-fake"
+  published(
+    artifactId = "modulecheck-config-fake"
+  )
   anvil()
 }
 
@@ -28,7 +30,6 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

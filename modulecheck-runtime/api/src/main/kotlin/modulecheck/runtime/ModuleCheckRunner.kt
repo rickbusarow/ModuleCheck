@@ -23,6 +23,7 @@ import kotlinx.coroutines.runBlocking
 import modulecheck.api.DepthFinding
 import modulecheck.api.context.ProjectDepth
 import modulecheck.config.ModuleCheckSettings
+import modulecheck.dagger.DaggerLazy
 import modulecheck.dagger.DaggerList
 import modulecheck.finding.Finding
 import modulecheck.finding.Finding.FindingResult
@@ -51,10 +52,10 @@ import kotlin.system.measureTimeMillis
  * @property findingFactory handles parsing of the projects in order to generate the findings
  * @property findingResultFactory attempts to apply fixes to the findings and
  *   returns a list of [FindingResult][modulecheck.finding.Finding.FindingResult]
- * @property reportFactory handles console output of the results
+ * @property reportFactory handles console output of the main results
+ * @property depthLogFactoryLazy handles console output of the depth results
  * @since 0.12.0
  */
-@Suppress("LongParameterList")
 data class ModuleCheckRunner @AssistedInject constructor(
   val settings: ModuleCheckSettings,
   val findingFactory: FindingFactory<out Finding>,
@@ -65,6 +66,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
   val graphvizFileWriter: GraphvizFileWriter,
   val dispatcherProvider: DispatcherProvider,
   val sarifReportFactory: SarifReportFactory,
+  val depthLogFactoryLazy: DaggerLazy<DepthLogFactory>,
   val projectProvider: ProjectProvider,
   val rules: DaggerList<ModuleCheckRule<*>>,
   @Assisted
@@ -111,7 +113,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
 
       processFindings(reportOnlyFindings)
 
-      allFindings += (fixableFindings + sortFindings + reportOnlyFindings)
+      allFindings += fixableFindings + sortFindings + reportOnlyFindings
 
       fixableResults + sortsResults // + reportResults
     }
@@ -133,15 +135,22 @@ data class ModuleCheckRunner @AssistedInject constructor(
 
     val issuePlural = if (totalFindings == 1) "issue" else "issues"
 
-    logger.printInfoLine("ModuleCheck found $totalFindings $issuePlural in $secondsDouble seconds.")
+    logger.info("ModuleCheck found $totalFindings $issuePlural in $secondsDouble seconds.")
 
     if (totalFindings > 0) {
 
-      logger.printWarning(
-        "\n\nTo ignore any of these findings, annotate the dependency declaration with " +
-          "@Suppress(\"<the name of the issue>\") in Kotlin, or " +
-          "//noinspection <the name of the issue> in Groovy.\n" +
-          "See https://rbusarow.github.io/ModuleCheck/docs/suppressing-findings for more info."
+      logger.warning(
+        buildString {
+          appendLine()
+          appendLine()
+          append("To ignore any of these findings, ")
+          append("annotate the dependency declaration with ")
+          append("""@Suppress("<the name of the issue>") in Kotlin, """)
+          appendLine("or //noinspection <the name of the issue> in Groovy.")
+          appendLine(
+            "See https://rbusarow.github.io/ModuleCheck/docs/suppressing-findings for more info."
+          )
+        }
       )
     }
 
@@ -182,14 +191,13 @@ data class ModuleCheckRunner @AssistedInject constructor(
     val textReport = reportFactory.create(results)
 
     if (results.isNotEmpty()) {
-      logger.printReport(textReport)
+      logger.info(textReport)
     }
 
     if (settings.reports.text.enabled) {
       val path = settings.reports.text.outputPath
 
-      File(path)
-        .createSafely(textReport.joinToString())
+      File(path).createSafely(textReport)
     }
 
     if (settings.reports.sarif.enabled) {
@@ -220,9 +228,9 @@ data class ModuleCheckRunner @AssistedInject constructor(
     // this is a single-rule "task", that means the user is explicitly running 'moduleCheckDepths'
     // (or whatever that has been renamed to in the future) and the results should always be logged.
     if (settings.checks.depths || rules.size == 1) {
-      val depthLog = DepthLogFactory().create(depths)
+      val depthLog = depthLogFactoryLazy.get().create(depths)
 
-      logger.printReport(depthLog)
+      logger.info(depthLog)
     }
   }
 
@@ -232,8 +240,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
 
       val depthReport = DepthReportFactory().create(depths)
 
-      File(path)
-        .createSafely(depthReport.joinToString())
+      File(path).createSafely(depthReport)
     }
   }
 

@@ -19,19 +19,19 @@ import io.kotest.assertions.fail
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 
 internal class FlowAnyTest {
 
   @Test
-  fun `should return true if flow contains matching element`() = runBlocking {
+  fun `should return true if flow contains matching element`() = runTest {
 
     flowOf(1, 2, 3).any { it == 3 } shouldBe true
   }
 
   @Test
-  fun `should stop collecting after matching element is collected`() = runBlocking {
+  fun `should stop collecting after matching element is collected`() = runTest {
 
     flow {
       emit(1)
@@ -43,7 +43,7 @@ internal class FlowAnyTest {
   }
 
   @Test
-  fun `should return false if flow does not contain matching element`() = runBlocking {
+  fun `should return false if flow does not contain matching element`() = runTest {
 
     flowOf(1, 2, 3).any { it == 4 } shouldBe false
   }

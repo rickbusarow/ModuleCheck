@@ -17,6 +17,7 @@ package modulecheck.builds.matrix
 
 import modulecheck.builds.applyOnce
 import modulecheck.builds.checkProjectIsRoot
+import modulecheck.builds.dependsOn
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.language.base.plugins.LifecycleBasePlugin
@@ -32,22 +33,28 @@ abstract class VersionsMatrixYamlPlugin : Plugin<Project> {
     require(ciFile.exists()) {
       "Could not resolve '$ciFile'.  Only add the ci/yaml matrix tasks to the root project."
     }
+    val versionsMatrixYamlUpdate = target.tasks.register(
+      "versionsMatrixYamlUpdate",
+      VersionsMatrixYamlGenerateTask::class.java
+    ) { task ->
+      task.yamlFile.set(ciFile)
+      task.startTagProperty.set("### <start-versions-matrix>")
+      task.endTagProperty.set("### <end-versions-matrix>")
+    }
+
+    target.tasks.named("fix").dependsOn(versionsMatrixYamlUpdate)
 
     val versionsMatrixYamlCheck = target.tasks.register(
       "versionsMatrixYamlCheck",
       VersionsMatrixYamlCheckTask::class.java
     ) { task ->
       task.yamlFile.set(ciFile)
+      task.startTagProperty.set("### <start-versions-matrix>")
+      task.endTagProperty.set("### <end-versions-matrix>")
+      task.mustRunAfter(versionsMatrixYamlUpdate)
     }
 
     // Automatically run `versionsMatrixYamlCheck` when running `check`
-    target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME) { it.dependsOn(versionsMatrixYamlCheck) }
-
-    target.tasks.register(
-      "versionsMatrixGenerateYaml",
-      VersionsMatrixYamlGenerateTask::class.java
-    ) {
-      it.yamlFile.set(ciFile)
-    }
+    target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME).dependsOn(versionsMatrixYamlCheck)
   }
 }

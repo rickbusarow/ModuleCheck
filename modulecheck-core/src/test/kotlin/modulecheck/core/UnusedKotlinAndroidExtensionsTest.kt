@@ -21,12 +21,13 @@ import modulecheck.project.generation.AndroidPlatformPluginBuilder
 import modulecheck.project.generation.McProjectBuilder
 import modulecheck.runtime.test.ProjectFindingReport.unusedKotlinAndroidExtensions
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.runtime.test.RunnerTestEnvironment
 import modulecheck.testing.writeKotlin
 import org.junit.jupiter.api.Test
 
 class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
 
-  override val settings by resets {
+  override val settings: RunnerTestEnvironment.() -> TestSettings = {
     TestSettings(
       checks = TestChecksSettings(
         unusedKotlinAndroidExtensions = true
@@ -35,7 +36,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
   }
 
   @Test
-  fun `unused KotlinAndroidExtensions should pass if check is disabled`() {
+  fun `unused KotlinAndroidExtensions should pass if check is disabled`() = test {
     settings.checks.unusedKotlinAndroidExtensions = false
 
     androidLibrary(":lib1", "com.modulecheck.lib1") {
@@ -44,11 +45,11 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
     }
 
     run(autoCorrect = false).isSuccess shouldBe true
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `unused KotlinAndroidExtensions without auto-correct should fail`() {
+  fun `unused KotlinAndroidExtensions without auto-correct should fail`() = test {
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
       addAnyLayoutFile()
@@ -70,7 +71,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
   }
 
   @Test
-  fun `used KotlinAndroidExtensions synthetics should pass and should not be corrected`() {
+  fun `used KotlinAndroidExtensions synthetics should pass and should not be corrected`() = test {
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
       addAnyLayoutFile()
@@ -103,11 +104,11 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `used KotlinAndroidExtensions parcelize should pass and should not be corrected`() {
+  fun `used KotlinAndroidExtensions parcelize should pass and should not be corrected`() = test {
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
       addKotlinSource(
@@ -133,11 +134,11 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
+    logger.parsedReport() shouldBe emptyList()
   }
 
   @Test
-  fun `unused KotlinAndroidExtensions should be fixed`() {
+  fun `unused KotlinAndroidExtensions should be fixed`() = test {
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
     }
@@ -158,7 +159,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
   }
 
   @Test
-  fun `unused KotlinAndroidExtensions from id should be fixed`() {
+  fun `unused KotlinAndroidExtensions from id should be fixed`() = test {
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
@@ -187,10 +188,11 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
   }
 
   @Test
-  fun `unused KotlinAndroidExtensions from id should be ignored if suppressed at the statement`() {
-    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
-      buildFile {
-        """
+  fun `unused KotlinAndroidExtensions from id should be ignored if suppressed at the statement`() =
+    test {
+      val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -198,12 +200,12 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
           id("org.jetbrains.kotlin.android.extensions")
         }
         """
+        }
       }
-    }
 
-    run(autoCorrect = true).isSuccess shouldBe true
+      run(autoCorrect = true).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+      lib1.buildFile.readText() shouldBe """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -212,14 +214,15 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `unused KotlinAndroidExtensions from id should be ignored if suppressed with old finding name`() {
-    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
-      buildFile {
-        """
+  fun `unused KotlinAndroidExtensions from id should be ignored if suppressed with old finding name`() =
+    test {
+      val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -227,12 +230,12 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
           id("org.jetbrains.kotlin.android.extensions")
         }
         """
+        }
       }
-    }
 
-    run(autoCorrect = true).isSuccess shouldBe true
+      run(autoCorrect = true).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+      lib1.buildFile.readText() shouldBe """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -241,14 +244,15 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   @Test
-  fun `unused KotlinAndroidExtensions from id should be fixed if suppressed with some other finding name`() {
-    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
-      buildFile {
-        """
+  fun `unused KotlinAndroidExtensions from id should be fixed if suppressed with some other finding name`() =
+    test {
+      val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -256,12 +260,12 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
           id("org.jetbrains.kotlin.android.extensions")
         }
         """
+        }
       }
-    }
 
-    run(autoCorrect = true).isSuccess shouldBe true
+      run(autoCorrect = true).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+      lib1.buildFile.readText() shouldBe """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -270,16 +274,17 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf(
-      ":lib1" to listOf(unusedKotlinAndroidExtensions(fixed = true, position = "5, 3"))
-    )
-  }
+      logger.parsedReport() shouldBe listOf(
+        ":lib1" to listOf(unusedKotlinAndroidExtensions(fixed = true, position = "5, 3"))
+      )
+    }
 
   @Test
-  fun `unused KotlinAndroidExtensions from id should be ignored if suppressed at the block`() {
-    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
-      buildFile {
-        """
+  fun `unused KotlinAndroidExtensions from id should be ignored if suppressed at the block`() =
+    test {
+      val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+        buildFile {
+          """
         @Suppress("unused-kotlin-android-extensions")
         plugins {
           id("com.android.library")
@@ -287,12 +292,12 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
           id("org.jetbrains.kotlin.android.extensions")
         }
         """
+        }
       }
-    }
 
-    run(autoCorrect = true).isSuccess shouldBe true
+      run(autoCorrect = true).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+      lib1.buildFile.readText() shouldBe """
       @Suppress("unused-kotlin-android-extensions")
       plugins {
         id("com.android.library")
@@ -301,17 +306,17 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       }
     """
 
-    logger.parsedReport() shouldBe listOf()
-  }
+      logger.parsedReport() shouldBe emptyList()
+    }
 
   private fun McProjectBuilder<*>.writeBuildFileWithPlugin() {
     buildFile.writeKotlin(
       """
-          plugins {
-            id("com.android.library")
-            kotlin("android")
-            kotlin("android-extensions")
-          }
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+          kotlin("android-extensions")
+        }
       """
     )
   }

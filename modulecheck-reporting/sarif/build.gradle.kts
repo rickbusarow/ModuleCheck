@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-reporting-sarif"
+  published(
+    artifactId = "modulecheck-reporting-sarif"
+  )
   anvil()
   ksp()
 }
@@ -35,16 +37,15 @@ dependencies {
 
   "ksp"(libs.square.moshi.codegen)
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.square.okio)
 
-  testImplementation(project(path = ":modulecheck-config:api"))
   testImplementation(project(path = ":modulecheck-config:fake"))
   testImplementation(project(path = ":modulecheck-finding:impl"))
   testImplementation(project(path = ":modulecheck-finding:name"))
+  testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-model:dependency:api"))
   testImplementation(project(path = ":modulecheck-runtime:testing"))
 }

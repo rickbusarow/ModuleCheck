@@ -1,0 +1,18 @@
+public final class modulecheck/parsing/gradle/dsl/ModifyKt {
+	public static final fun addDependency (Lmodulecheck/parsing/gradle/dsl/HasDependencyDeclarations;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration;)V
+	public static synthetic fun addDependency$default (Lmodulecheck/parsing/gradle/dsl/HasDependencyDeclarations;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration;Lmodulecheck/parsing/gradle/dsl/DependencyDeclaration;ILjava/lang/Object;)V
+	public static final fun removeDependencyWithComment (Lmodulecheck/parsing/gradle/dsl/HasDependencyDeclarations;Lmodulecheck/parsing/gradle/dsl/BuildFileStatement;Ljava/lang/String;Lmodulecheck/model/dependency/ConfiguredDependency;)V
+	public static synthetic fun removeDependencyWithComment$default (Lmodulecheck/parsing/gradle/dsl/HasDependencyDeclarations;Lmodulecheck/parsing/gradle/dsl/BuildFileStatement;Ljava/lang/String;Lmodulecheck/model/dependency/ConfiguredDependency;ILjava/lang/Object;)V
+	public static final fun removeDependencyWithDelete (Lmodulecheck/parsing/gradle/dsl/HasDependencyDeclarations;Lmodulecheck/parsing/gradle/dsl/BuildFileStatement;Lmodulecheck/model/dependency/ConfiguredDependency;)V
+	public static synthetic fun removeDependencyWithDelete$default (Lmodulecheck/parsing/gradle/dsl/HasDependencyDeclarations;Lmodulecheck/parsing/gradle/dsl/BuildFileStatement;Lmodulecheck/model/dependency/ConfiguredDependency;ILjava/lang/Object;)V
+}
+
+public final class modulecheck/parsing/gradle/dsl/PrecompiledKt {
+	public static final fun asDeclaration (Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/parsing/gradle/dsl/HasDependencyDeclarations;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun buildFileInvocationText-9A_UJks (Ljava/lang/String;Lmodulecheck/parsing/gradle/dsl/InvokesConfigurationNames;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun closestDeclarationOrNull (Lmodulecheck/parsing/gradle/dsl/HasDependencyDeclarations;Lmodulecheck/model/dependency/ConfiguredDependency;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun createDependencyDeclaration-Wz0Wq68 (Lmodulecheck/parsing/gradle/dsl/HasDependencyDeclarations;Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun createDependencyDeclaration-Wz0Wq68 (Lmodulecheck/parsing/gradle/dsl/HasDependencyDeclarations;Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun isDefinitelyPrecompiledForProject-9A_UJks (Ljava/lang/String;Lmodulecheck/parsing/gradle/dsl/HasDependencyDeclarations;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

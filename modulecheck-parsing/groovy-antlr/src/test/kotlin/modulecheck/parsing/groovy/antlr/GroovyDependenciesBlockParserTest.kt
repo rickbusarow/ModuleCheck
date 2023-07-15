@@ -24,12 +24,13 @@ import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
 import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.BaseTest
-import modulecheck.utils.child
+import modulecheck.testing.TestEnvironment
 import modulecheck.utils.createSafely
+import modulecheck.utils.resolve
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 
-internal class GroovyDependenciesBlockParserTest : BaseTest() {
+internal class GroovyDependenciesBlockParserTest : BaseTest<TestEnvironment>() {
 
   @Test
   fun `external declaration`() = parse(
@@ -101,7 +102,7 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
           configName = ConfigurationName.api,
           declarationText = """api project(':core:android')""",
           statementWithSurroundingText = "  api project(':core:android')",
-          suppressed = listOf()
+          suppressed = emptyList()
         ),
         ModuleDependencyDeclaration(
           projectPath = StringProjectPath(":core:jvm"),
@@ -119,7 +120,7 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
           configName = ConfigurationName.testImplementation,
           declarationText = """testImplementation project(':core:test')""",
           statementWithSurroundingText = "  testImplementation project(':core:test')",
-          suppressed = listOf()
+          suppressed = emptyList()
         )
       )
     }
@@ -144,7 +145,7 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
         configName = ConfigurationName.api,
         declarationText = """api project(':core:android')""",
         statementWithSurroundingText = "  api project(':core:android')",
-        suppressed = listOf()
+        suppressed = emptyList()
       ),
       ModuleDependencyDeclaration(
         projectPath = StringProjectPath(":core:jvm"),
@@ -162,7 +163,7 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
         configName = ConfigurationName.testImplementation,
         declarationText = """testImplementation project(':core:test')""",
         statementWithSurroundingText = "  testImplementation project(':core:test')",
-        suppressed = listOf()
+        suppressed = emptyList()
       )
     )
   }
@@ -667,9 +668,9 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
   inline fun parse(
     @Language("groovy")
     fileText: String,
-    assertions: GroovyDependenciesBlock.() -> Unit
-  ) {
-    testProjectDir.child("build.gradle")
+    crossinline assertions: GroovyDependenciesBlock.() -> Unit
+  ) = test {
+    workingDir.resolve("build.gradle")
       .createSafely(fileText.trimIndent())
       .let { file ->
         GroovyDependenciesBlockParser(

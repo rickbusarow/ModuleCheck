@@ -15,6 +15,7 @@
 
 package modulecheck.builds
 
+import modulecheck.builds.shards.registerYamlShardsTasks
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
@@ -25,7 +26,8 @@ import org.gradle.internal.classpath.Instrumented.systemProperty
 abstract class TestConventionPlugin : Plugin<Project> {
 
   override fun apply(target: Project) {
-    target.tasks.withType(Test::class.java) { task ->
+    target.tasks.withType(Test::class.java).configureEach { task ->
+
       task.useJUnitPlatform()
 
       task.testLogging {
@@ -49,6 +51,8 @@ abstract class TestConventionPlugin : Plugin<Project> {
       if (ci) {
         // defaults to 512m.
         task.maxHeapSize = "1g"
+        // Allow JUnit4 tests to run in parallel
+        task.maxParallelForks = Runtime.getRuntime().availableProcessors() / 2
       } else {
         task.maxHeapSize = "4g"
 
@@ -61,9 +65,6 @@ abstract class TestConventionPlugin : Plugin<Project> {
             // remove parentheses from test display names
             "junit.jupiter.displayname.generator.default" to
               "org.junit.jupiter.api.DisplayNameGenerator\$Simple",
-
-            // single class instance for all tests
-            "junit.jupiter.testinstance.lifecycle.default" to "per_class",
 
             // https://junit.org/junit5/docs/snapshot/user-guide/#writing-tests-parallel-execution-config-properties
             // Allow unit tests to run in parallel
@@ -78,6 +79,70 @@ abstract class TestConventionPlugin : Plugin<Project> {
 
         // Allow JUnit4 tests to run in parallel
         task.maxParallelForks = Runtime.getRuntime().availableProcessors()
+      }
+    }
+
+    if (target.isRootProject()) {
+
+      @Suppress("MagicNumber")
+      val shardCount = 4
+
+      target.registerYamlShardsTasks(
+        shardCount = shardCount,
+        startTagName = "### <start-unit-test-shards>",
+        endTagName = "### <end-unit-test-shards>",
+        taskNamePart = "unitTest",
+        yamlFile = target.rootProject.file(".github/workflows/ci.yml")
+      )
+
+      // Assign each project to a shard.
+      // It's lazy so that the work only happens at task configuration time, but it's outside the
+      // task configuration block so that it only happens once.
+      val shardAssignments by lazy {
+
+        val testAnnotationRegex = "@Test(?!Factory)".toRegex()
+        val testFactoryAnnotationRegex = "@TestFactory".toRegex()
+
+        // Calculate the cost of each project's tests
+        val projectTestCosts = target.subprojects
+          .associateWith { project ->
+            project.file("src/test")
+              .walkTopDown()
+              .filter { it.isFile && it.extension == "kt" }
+              .sumOf { file ->
+                val fileText = file.readText()
+                val testAnnotationCount = testAnnotationRegex.findAll(fileText).count()
+                val testFactoryAnnotationCount =
+                  testFactoryAnnotationRegex.findAll(fileText).count()
+                testAnnotationCount + (testFactoryAnnotationCount * 2)
+              }
+          }
+
+        // Sort the projects by descending test cost, then fall back to the project paths
+        // The path sort is just so that the shard composition is stable.  If the shard composition
+        // isn't stable, the shard tasks may not be up-to-date and build caching in CI is broken.
+        val sortedProjects = projectTestCosts.keys
+          .sortedWith(
+            compareBy(
+              { projectTestCosts.getValue(it) },
+              { it.path }
+            )
+          )
+
+        var shardIndex = 0
+
+        sortedProjects.groupBy { (shardIndex++ % shardCount) + 1 }
+      }
+
+      (1..shardCount).map { shardIndex ->
+
+        target.tasks.register("testShard$shardIndex", Test::class.java) { task ->
+
+          val assignedTests = shardAssignments.getValue(shardIndex)
+            .map { project -> project.tasks.matchingName("test") }
+
+          task.dependsOn(assignedTests)
+        }
       }
     }
   }

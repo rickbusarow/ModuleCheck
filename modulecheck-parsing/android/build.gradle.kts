@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-core"
+  published(
+    artifactId = "modulecheck-parsing-core"
+  )
   anvil()
   serialization()
 }
@@ -37,7 +39,6 @@ dependencies {
   implementation(project(path = ":modulecheck-utils:serialization"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 

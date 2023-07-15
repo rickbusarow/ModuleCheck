@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-gradle-dsl-api"
+  published(
+    artifactId = "modulecheck-parsing-gradle-dsl-api"
+  )
   anvil()
 }
 
@@ -34,7 +36,6 @@ dependencies {
   implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

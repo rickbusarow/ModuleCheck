@@ -18,10 +18,16 @@ package modulecheck.finding.internal
 import modulecheck.finding.Finding.Position
 import modulecheck.model.dependency.ConfigurationName
 
-fun List<String>.positionOf(
-  path: String,
-  configuration: ConfigurationName
-): Position? {
+/**
+ * Finds the position of a specific Gradle project path and configuration in a list of strings.
+ *
+ * @param path The Gradle project path to find.
+ * @param configuration The [ConfigurationName] related to the dependency to find.
+ * @receiver The list of strings to search in, typically lines of a build.gradle file.
+ * @return The [Position] of the dependency in the list
+ *   if found, null otherwise. The position is 1-indexed.
+ */
+fun List<String>.positionOf(path: String, configuration: ConfigurationName): Position? {
   val reg = """.*"?${configuration.value}"?\(project[(]?(?:path =\s*)"$path".*""".toRegex()
 
   val row = indexOfFirst { it.trim().matches(reg) }

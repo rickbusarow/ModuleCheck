@@ -18,16 +18,15 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-project-generation-api"
+  published(
+    artifactId = "modulecheck-project-generation-api"
+  )
   anvil()
 }
 
 dependencies {
 
-  api(libs.bundles.hermit)
-
   api(project(path = ":modulecheck-config:api"))
-  api(project(path = ":modulecheck-internal-testing"))
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-model:dependency:impl"))
   api(project(path = ":modulecheck-model:sourceset:api"))
@@ -40,13 +39,13 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  implementation(libs.bundles.hermit)
   implementation(libs.bundles.junit)
   implementation(libs.bundles.kotest)
   implementation(libs.bundles.kotest)
   implementation(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-api"))
+  implementation(project(path = ":modulecheck-internal-testing"))
   implementation(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
   implementation(project(path = ":modulecheck-parsing:gradle:dsl:precompiled"))
   implementation(project(path = ":modulecheck-parsing:groovy-antlr"))

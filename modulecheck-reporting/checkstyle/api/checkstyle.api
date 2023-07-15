@@ -1,0 +1,13 @@
+public final class modulecheck/reporting/checkstyle/CheckstyleReporter {
+	public fun <init> ()V
+	public final fun createXml (Ljava/util/List;)Ljava/lang/String;
+}
+
+public final class modulecheck/reporting/checkstyle/CheckstyleReporter_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/reporting/checkstyle/CheckstyleReporter_Factory;
+	public static final fun create ()Lmodulecheck/reporting/checkstyle/CheckstyleReporter_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/reporting/checkstyle/CheckstyleReporter;
+	public static final fun newInstance ()Lmodulecheck/reporting/checkstyle/CheckstyleReporter;
+}
+

@@ -23,7 +23,6 @@ buildscript {
   }
 }
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   kotlin("jvm")
   alias(libs.plugins.google.ksp)
@@ -47,7 +46,6 @@ dependencies {
 
   api(libs.square.moshi)
 
-  api(project(path = ":artifacts-check"))
   api(project(path = ":conventions"))
   api(project(path = ":versions-matrix"))
 
@@ -61,7 +59,6 @@ dependencies {
   implementation(libs.dropbox.dependencyGuard)
   implementation(libs.google.dagger.api)
   implementation(libs.google.ksp)
-  implementation(libs.jmailen.kotlinter)
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.gradle.plugin)
   implementation(libs.kotlin.reflect)
@@ -69,10 +66,13 @@ dependencies {
   implementation(libs.kotlin.stdlib.jdk7)
   implementation(libs.kotlin.stdlib.jdk8)
   implementation(libs.kotlinx.knit)
+  implementation(libs.rickBusarow.ktlint)
   implementation(libs.scabbard)
   implementation(libs.square.anvil.gradle)
   implementation(libs.square.kotlinPoet)
   implementation(libs.vanniktech.publish)
+
+  implementation(project(path = ":artifacts-check"))
 
   ksp(libs.square.moshi.codegen)
 }

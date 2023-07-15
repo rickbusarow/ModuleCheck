@@ -1,0 +1,316 @@
+public final class anvil/hint/merge/modulecheck/rule/impl/RuleModuleKt {
+	public static final fun getModulecheck_rule_impl_RuleModule_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_rule_impl_RuleModule_scope0 ()Lkotlin/reflect/KClass;
+}
+
+public final class modulecheck/rule/impl/AnvilFactoryRule : modulecheck/rule/impl/DocumentedRule {
+	public fun <init> ()V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public final fun parse (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/AnvilFactoryRule_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/rule/impl/AnvilFactoryRule_Factory;
+	public static final fun create ()Lmodulecheck/rule/impl/AnvilFactoryRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/AnvilFactoryRule;
+	public static final fun newInstance ()Lmodulecheck/rule/impl/AnvilFactoryRule;
+}
+
+public final class modulecheck/rule/impl/DepthRule : modulecheck/rule/impl/DocumentedRule, modulecheck/rule/ReportOnlyRule {
+	public fun <init> ()V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/DepthRule_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/rule/impl/DepthRule_Factory;
+	public static final fun create ()Lmodulecheck/rule/impl/DepthRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/DepthRule;
+	public static final fun newInstance ()Lmodulecheck/rule/impl/DepthRule;
+}
+
+public final class modulecheck/rule/impl/DisableAndroidResourcesRule : modulecheck/rule/impl/DocumentedRule {
+	public fun <init> ()V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/DisableAndroidResourcesRule_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/rule/impl/DisableAndroidResourcesRule_Factory;
+	public static final fun create ()Lmodulecheck/rule/impl/DisableAndroidResourcesRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/DisableAndroidResourcesRule;
+	public static final fun newInstance ()Lmodulecheck/rule/impl/DisableAndroidResourcesRule;
+}
+
+public final class modulecheck/rule/impl/DisableViewBindingRule : modulecheck/rule/impl/DocumentedRule {
+	public fun <init> ()V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/DisableViewBindingRule_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/rule/impl/DisableViewBindingRule_Factory;
+	public static final fun create ()Lmodulecheck/rule/impl/DisableViewBindingRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/DisableViewBindingRule;
+	public static final fun newInstance ()Lmodulecheck/rule/impl/DisableViewBindingRule;
+}
+
+public abstract class modulecheck/rule/impl/DocumentedRule : modulecheck/rule/ModuleCheckRule {
+	public static final field Companion Lmodulecheck/rule/impl/DocumentedRule$Companion;
+	public static final field RULES_BASE_URL Ljava/lang/String;
+	public final fun getDocumentationUrl ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/rule/impl/DocumentedRule$Companion {
+}
+
+public final class modulecheck/rule/impl/InheritedDependencyRule : modulecheck/rule/impl/DocumentedRule {
+	public fun <init> ()V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/InheritedDependencyRule_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/rule/impl/InheritedDependencyRule_Factory;
+	public static final fun create ()Lmodulecheck/rule/impl/InheritedDependencyRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/InheritedDependencyRule;
+	public static final fun newInstance ()Lmodulecheck/rule/impl/InheritedDependencyRule;
+}
+
+public final class modulecheck/rule/impl/MustBeApiRule : modulecheck/rule/impl/DocumentedRule {
+	public fun <init> ()V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/MustBeApiRule_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/rule/impl/MustBeApiRule_Factory;
+	public static final fun create ()Lmodulecheck/rule/impl/MustBeApiRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/MustBeApiRule;
+	public static final fun newInstance ()Lmodulecheck/rule/impl/MustBeApiRule;
+}
+
+public final class modulecheck/rule/impl/OverShotDependencyRule : modulecheck/rule/impl/DocumentedRule {
+	public fun <init> (Lmodulecheck/config/ModuleCheckSettings;)V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public final fun getSettings ()Lmodulecheck/config/ModuleCheckSettings;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/OverShotDependencyRule_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/rule/impl/OverShotDependencyRule_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/rule/impl/OverShotDependencyRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/OverShotDependencyRule;
+	public static final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;)Lmodulecheck/rule/impl/OverShotDependencyRule;
+}
+
+public final class modulecheck/rule/impl/OverShotDependencyRule_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/rule/impl/OverShotDependencyRule_Factory;
+	public final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;)Lmodulecheck/rule/impl/OverShotDependencyRule;
+}
+
+public final class modulecheck/rule/impl/RedundantRule : modulecheck/rule/impl/DocumentedRule {
+	public fun <init> ()V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/RedundantRule_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/rule/impl/RedundantRule_Factory;
+	public static final fun create ()Lmodulecheck/rule/impl/RedundantRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/RedundantRule;
+	public static final fun newInstance ()Lmodulecheck/rule/impl/RedundantRule;
+}
+
+public abstract interface class modulecheck/rule/impl/RuleModule {
+	public static final field Companion Lmodulecheck/rule/impl/RuleModule$Companion;
+	public abstract fun bindAnvilFactoryRule (Lmodulecheck/rule/impl/AnvilFactoryRule;)Lmodulecheck/rule/ModuleCheckRule;
+	public abstract fun bindDepthRule (Lmodulecheck/rule/impl/DepthRule;)Lmodulecheck/rule/ModuleCheckRule;
+	public abstract fun bindDisableAndroidResourcesRule (Lmodulecheck/rule/impl/DisableAndroidResourcesRule;)Lmodulecheck/rule/ModuleCheckRule;
+	public abstract fun bindDisableViewBindingRule (Lmodulecheck/rule/impl/DisableViewBindingRule;)Lmodulecheck/rule/ModuleCheckRule;
+	public abstract fun bindInheritedDependencyRule (Lmodulecheck/rule/impl/InheritedDependencyRule;)Lmodulecheck/rule/ModuleCheckRule;
+	public abstract fun bindMustBeApiRule (Lmodulecheck/rule/impl/MustBeApiRule;)Lmodulecheck/rule/ModuleCheckRule;
+	public abstract fun bindOverShotDependencyRule (Lmodulecheck/rule/impl/OverShotDependencyRule;)Lmodulecheck/rule/ModuleCheckRule;
+	public abstract fun bindRedundantRule (Lmodulecheck/rule/impl/RedundantRule;)Lmodulecheck/rule/ModuleCheckRule;
+	public abstract fun bindSortDependenciesRule (Lmodulecheck/rule/impl/SortDependenciesRule;)Lmodulecheck/rule/ModuleCheckRule;
+	public abstract fun bindSortPluginsRule (Lmodulecheck/rule/impl/SortPluginsRule;)Lmodulecheck/rule/ModuleCheckRule;
+	public abstract fun bindUnusedDependencyRule (Lmodulecheck/rule/impl/UnusedDependencyRule;)Lmodulecheck/rule/ModuleCheckRule;
+	public abstract fun bindUnusedKaptPluginRule (Lmodulecheck/rule/impl/UnusedKaptPluginRule;)Lmodulecheck/rule/ModuleCheckRule;
+	public abstract fun bindUnusedKaptProcessorRule (Lmodulecheck/rule/impl/UnusedKaptProcessorRule;)Lmodulecheck/rule/ModuleCheckRule;
+	public abstract fun bindUnusedKotlinAndroidExtensionsRule (Lmodulecheck/rule/impl/UnusedKotlinAndroidExtensionsRule;)Lmodulecheck/rule/ModuleCheckRule;
+}
+
+public final class modulecheck/rule/impl/RuleModule$Companion {
+	public final fun provideFilteredRules (Ljava/util/Set;Lmodulecheck/rule/RuleFilter;Lmodulecheck/config/ModuleCheckSettings;)Ljava/util/List;
+}
+
+public final class modulecheck/rule/impl/RuleModule_Companion_ProvideFilteredRulesFactory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/rule/impl/RuleModule_Companion_ProvideFilteredRulesFactory$Companion;
+	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/rule/impl/RuleModule_Companion_ProvideFilteredRulesFactory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Ljava/util/List;
+	public static final fun provideFilteredRules (Ljava/util/Set;Lmodulecheck/rule/RuleFilter;Lmodulecheck/config/ModuleCheckSettings;)Ljava/util/List;
+}
+
+public final class modulecheck/rule/impl/RuleModule_Companion_ProvideFilteredRulesFactory$Companion {
+	public final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/rule/impl/RuleModule_Companion_ProvideFilteredRulesFactory;
+	public final fun provideFilteredRules (Ljava/util/Set;Lmodulecheck/rule/RuleFilter;Lmodulecheck/config/ModuleCheckSettings;)Ljava/util/List;
+}
+
+public final class modulecheck/rule/impl/SortDependenciesRule : modulecheck/rule/impl/DocumentedRule, modulecheck/rule/SortRule {
+	public fun <init> (Lmodulecheck/config/ModuleCheckSettings;)V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/SortDependenciesRule_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/rule/impl/SortDependenciesRule_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/rule/impl/SortDependenciesRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/SortDependenciesRule;
+	public static final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;)Lmodulecheck/rule/impl/SortDependenciesRule;
+}
+
+public final class modulecheck/rule/impl/SortDependenciesRule_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/rule/impl/SortDependenciesRule_Factory;
+	public final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;)Lmodulecheck/rule/impl/SortDependenciesRule;
+}
+
+public final class modulecheck/rule/impl/SortPluginsRule : modulecheck/rule/impl/DocumentedRule, modulecheck/rule/SortRule {
+	public fun <init> (Lmodulecheck/config/ModuleCheckSettings;)V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/SortPluginsRule_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/rule/impl/SortPluginsRule_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/rule/impl/SortPluginsRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/SortPluginsRule;
+	public static final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;)Lmodulecheck/rule/impl/SortPluginsRule;
+}
+
+public final class modulecheck/rule/impl/SortPluginsRule_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/rule/impl/SortPluginsRule_Factory;
+	public final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;)Lmodulecheck/rule/impl/SortPluginsRule;
+}
+
+public final class modulecheck/rule/impl/UnusedDependencyRule : modulecheck/rule/impl/DocumentedRule {
+	public fun <init> (Lmodulecheck/config/ModuleCheckSettings;)V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/UnusedDependencyRule_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/rule/impl/UnusedDependencyRule_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/rule/impl/UnusedDependencyRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/UnusedDependencyRule;
+	public static final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;)Lmodulecheck/rule/impl/UnusedDependencyRule;
+}
+
+public final class modulecheck/rule/impl/UnusedDependencyRule_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/rule/impl/UnusedDependencyRule_Factory;
+	public final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;)Lmodulecheck/rule/impl/UnusedDependencyRule;
+}
+
+public final class modulecheck/rule/impl/UnusedKaptPluginRule : modulecheck/rule/impl/DocumentedRule {
+	public fun <init> ()V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/UnusedKaptPluginRule_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/rule/impl/UnusedKaptPluginRule_Factory;
+	public static final fun create ()Lmodulecheck/rule/impl/UnusedKaptPluginRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/UnusedKaptPluginRule;
+	public static final fun newInstance ()Lmodulecheck/rule/impl/UnusedKaptPluginRule;
+}
+
+public final class modulecheck/rule/impl/UnusedKaptProcessorRule : modulecheck/rule/impl/DocumentedRule {
+	public fun <init> (Lmodulecheck/config/ModuleCheckSettings;)V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/UnusedKaptProcessorRuleKt {
+	public static final field KAPT_ALTERNATE_PLUGIN_ID Ljava/lang/String;
+	public static final field KAPT_PLUGIN_ID Ljava/lang/String;
+}
+
+public final class modulecheck/rule/impl/UnusedKaptProcessorRule_Factory : dagger/internal/Factory {
+	public static final field Companion Lmodulecheck/rule/impl/UnusedKaptProcessorRule_Factory$Companion;
+	public fun <init> (Ljavax/inject/Provider;)V
+	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/rule/impl/UnusedKaptProcessorRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/UnusedKaptProcessorRule;
+	public static final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;)Lmodulecheck/rule/impl/UnusedKaptProcessorRule;
+}
+
+public final class modulecheck/rule/impl/UnusedKaptProcessorRule_Factory$Companion {
+	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/rule/impl/UnusedKaptProcessorRule_Factory;
+	public final fun newInstance (Lmodulecheck/config/ModuleCheckSettings;)Lmodulecheck/rule/impl/UnusedKaptProcessorRule;
+}
+
+public final class modulecheck/rule/impl/UnusedKotlinAndroidExtensionsRule : modulecheck/rule/impl/DocumentedRule {
+	public fun <init> ()V
+	public fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getDescription ()Ljava/lang/String;
+	public fun getName ()Lmodulecheck/finding/FindingName;
+	public fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/impl/UnusedKotlinAndroidExtensionsRuleKt {
+	public static final field KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID Ljava/lang/String;
+}
+
+public final class modulecheck/rule/impl/UnusedKotlinAndroidExtensionsRule_Factory : dagger/internal/Factory {
+	public static final field INSTANCE Lmodulecheck/rule/impl/UnusedKotlinAndroidExtensionsRule_Factory;
+	public static final fun create ()Lmodulecheck/rule/impl/UnusedKotlinAndroidExtensionsRule_Factory;
+	public synthetic fun get ()Ljava/lang/Object;
+	public fun get ()Lmodulecheck/rule/impl/UnusedKotlinAndroidExtensionsRule;
+	public static final fun newInstance ()Lmodulecheck/rule/impl/UnusedKotlinAndroidExtensionsRule;
+}
+

@@ -44,13 +44,13 @@ internal class McMessageCollector(
 
     when (logLevel) {
       ERRORS -> if (severity.isError) {
-        logger.printFailureLine(messageRenderer.render(severity, message, location))
+        logger.failure(messageRenderer.render(severity, message, location))
       } else {
         ignoredMessages++
       }
 
       WARNINGS_AS_ERRORS -> if (severity.isWarning || severity.isError) {
-        logger.printFailureLine(messageRenderer.render(severity, message, location))
+        logger.failure(messageRenderer.render(severity, message, location))
       } else {
         ignoredMessages++
       }
@@ -67,7 +67,7 @@ internal class McMessageCollector(
 
       VERBOSE -> when {
         severity.isError -> {
-          logger.printFailureLine(messageRenderer.render(severity, message, location))
+          logger.failure(messageRenderer.render(severity, message, location))
         }
 
         severity.isWarning -> {
@@ -75,7 +75,7 @@ internal class McMessageCollector(
         }
 
         else -> {
-          logger.printInfo(messageRenderer.render(severity, message, location))
+          logger.info(messageRenderer.render(severity, message, location))
         }
       }
     }
@@ -90,7 +90,7 @@ internal class McMessageCollector(
 
   fun printIssuesCountIfAny() {
     if (ignoredMessages > 0) {
-      logger.printWarningLine("Analysis completed with $ignoredMessages ignored issues.")
+      logger.warning("Analysis completed with $ignoredMessages ignored issues.")
     }
   }
 

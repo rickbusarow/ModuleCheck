@@ -129,9 +129,7 @@ suspend fun <T> Flow<Iterable<T>>.flatMapSetConcat(
  *
  * @since 0.12.0
  */
-fun <T, R> Flow<T>.mapAsync(
-  transform: suspend (T) -> R
-): Flow<R> {
+fun <T, R> Flow<T>.mapAsync(transform: suspend (T) -> R): Flow<R> {
   return channelFlow {
     this@mapAsync.collect {
       launch { send(transform(it)) }
@@ -144,9 +142,7 @@ fun <T, R> Flow<T>.mapAsync(
  *
  * @since 0.12.0
  */
-suspend fun <T, R> Iterable<T>.flatMapSetMerge(
-  transform: suspend (T) -> Iterable<R>
-): Set<R> {
+suspend fun <T, R> Iterable<T>.flatMapSetMerge(transform: suspend (T) -> Iterable<R>): Set<R> {
   return mapAsync(transform).flatMapSetConcat { it.toSet() }
 }
 
@@ -155,9 +151,7 @@ suspend fun <T, R> Iterable<T>.flatMapSetMerge(
  *
  * @since 0.12.0
  */
-suspend fun <T, R> Iterable<T>.flatMapListMerge(
-  transform: suspend (T) -> Iterable<R>
-): List<R> {
+suspend fun <T, R> Iterable<T>.flatMapListMerge(transform: suspend (T) -> Iterable<R>): List<R> {
   return mapAsync(transform).toList().flatten()
 }
 
@@ -166,9 +160,7 @@ suspend fun <T, R> Iterable<T>.flatMapListMerge(
  *
  * @since 0.12.0
  */
-suspend fun <T, R> Flow<T>.flatMapListMerge(
-  transform: suspend (T) -> Iterable<R>
-): List<R> {
+suspend fun <T, R> Flow<T>.flatMapListMerge(transform: suspend (T) -> Iterable<R>): List<R> {
   return mapAsync(transform).toList().flatten()
 }
 
@@ -180,9 +172,7 @@ suspend fun <T, R> Flow<T>.flatMapListMerge(
  *
  * @since 0.12.0
  */
-fun <T, R> Iterable<T>.mapAsync(
-  transform: suspend (T) -> R
-): Flow<R> {
+fun <T, R> Iterable<T>.mapAsync(transform: suspend (T) -> R): Flow<R> {
 
   return channelFlow {
     forEach {
@@ -199,9 +189,7 @@ fun <T, R> Iterable<T>.mapAsync(
  *
  * @since 0.12.0
  */
-fun <T> Iterable<T>.onEachAsync(
-  action: suspend (T) -> Unit
-): Flow<T> {
+fun <T> Iterable<T>.onEachAsync(action: suspend (T) -> Unit): Flow<T> {
 
   return channelFlow {
     forEach {
@@ -220,9 +208,7 @@ fun <T> Iterable<T>.onEachAsync(
  *   upon each element *concurrently* before that element is emitted.
  * @since 0.12.0
  */
-fun <T, R> Sequence<T>.mapAsync(
-  transform: suspend (T) -> R
-): Flow<R> {
+fun <T, R> Sequence<T>.mapAsync(transform: suspend (T) -> R): Flow<R> {
   return channelFlow {
     forEach {
       launch { send(transform(it)) }

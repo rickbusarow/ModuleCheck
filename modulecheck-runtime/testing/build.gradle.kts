@@ -18,19 +18,20 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-runtime-testing"
+  published(
+    artifactId = "modulecheck-runtime-testing"
+  )
   anvil()
 }
 
 dependencies {
 
-  api(libs.bundles.hermit)
   api(libs.kotlinx.coroutines.core)
 
   api(project(path = ":modulecheck-config:api"))
-  api(project(path = ":modulecheck-config:impl"))
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-finding:api"))
+  api(project(path = ":modulecheck-internal-testing"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-project:testing"))
   api(project(path = ":modulecheck-reporting:checkstyle"))
@@ -42,7 +43,7 @@ dependencies {
   api(project(path = ":modulecheck-rule:impl-factory"))
 
   implementation(project(path = ":modulecheck-config:fake"))
-  implementation(project(path = ":modulecheck-internal-testing"))
+  implementation(project(path = ":modulecheck-config:impl"))
   implementation(project(path = ":modulecheck-reporting:sarif"))
   implementation(project(path = ":modulecheck-rule:testing"))
   implementation(project(path = ":modulecheck-runtime:api"))

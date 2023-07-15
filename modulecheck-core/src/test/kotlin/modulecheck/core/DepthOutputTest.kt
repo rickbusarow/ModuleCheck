@@ -16,23 +16,26 @@
 package modulecheck.core
 
 import io.kotest.matchers.file.shouldNotExist
-import io.kotest.property.Exhaustive
-import io.kotest.property.checkAll
-import io.kotest.property.exhaustive.boolean
-import kotlinx.coroutines.test.runTest
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.rule.impl.FindingFactoryImpl
 import modulecheck.runtime.test.RunnerTest
-import modulecheck.utils.child
+import modulecheck.runtime.test.RunnerTestEnvironment
+import modulecheck.testing.SkipInStackTrace
+import modulecheck.testing.asContainers
 import modulecheck.utils.remove
+import modulecheck.utils.resolve
+import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import java.io.File
+import java.util.stream.Stream
 
 internal class DepthOutputTest : RunnerTest() {
 
-  override val settings by resets {
+  override val settings: RunnerTestEnvironment.() -> ModuleCheckSettings = {
     TestSettings(
       checks = TestChecksSettings(
         redundantDependency = false,
@@ -50,15 +53,16 @@ internal class DepthOutputTest : RunnerTest() {
         depths = true
       )
     ).apply {
-
-      reports.depths.outputPath = File(testProjectDir, reports.depths.outputPath).path
+      reports.depths.outputPath = File(workingDir, reports.depths.outputPath).path
+      reports.graphs.outputDir = workingDir.resolve("graphs").absolutePath
     }
   }
 
-  val depthsOutput by resets { File(settings.reports.depths.outputPath) }
+  val RunnerTestEnvironment.depthsOutput
+    get() = File(settings.reports.depths.outputPath)
 
   @Test
-  fun `main source set depths should be reported`() {
+  fun `main source set depths should be reported`() = test {
 
     val lib1 = kotlinProject(":lib1")
 
@@ -90,7 +94,7 @@ internal class DepthOutputTest : RunnerTest() {
   }
 
   @Test
-  fun `reported depths should be from after fixes are applied`() {
+  fun `reported depths should be from after fixes are applied`() = test {
 
     settings.checks.unusedDependency = true
     settings.checks.depths = true
@@ -134,7 +138,7 @@ internal class DepthOutputTest : RunnerTest() {
   }
 
   @Test
-  fun `test source set depths should not be reported`() {
+  fun `test source set depths should not be reported`() = test {
 
     val lib1 = kotlinProject(":lib1")
 
@@ -168,7 +172,7 @@ internal class DepthOutputTest : RunnerTest() {
   }
 
   @Test
-  fun `debug source set depth should not be reported even if it's longer`() {
+  fun `debug source set depth should not be reported even if it's longer`() = test {
 
     val lib1 = kotlinProject(":lib1")
     val debug1 = kotlinProject(":debug1")
@@ -205,109 +209,115 @@ internal class DepthOutputTest : RunnerTest() {
     """
   }
 
-  @Test
+  @TestFactory
   fun `all outputs around depth findings should behave according to their own settings`() =
-    runTest {
+    flags { depthsConsole, depthsReport, graphsReport ->
 
-      checkAll(
-        Exhaustive.boolean(),
-        Exhaustive.boolean(),
-        Exhaustive.boolean()
-      ) { depthsConsole, depthsReport, graphsReport ->
+      settings.checks.depths = depthsConsole
+      settings.reports.depths.enabled = depthsReport
+      settings.reports.graphs.enabled = graphsReport
 
-        resetAll()
+      if (graphsReport) {
+        settings.reports.graphs.outputDir = workingDir.resolve("graphs").absolutePath
+      }
 
-        testProjectDir.deleteRecursively()
-        logger.clear()
+      val lib1 = kotlinProject(":lib1")
 
-        settings.checks.depths = depthsConsole
-        settings.reports.depths.enabled = depthsReport
-        settings.reports.graphs.enabled = graphsReport
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.implementation, lib1)
+      }
 
-        if (graphsReport) {
-          settings.reports.graphs.outputDir = testProjectDir.child("graphs").absolutePath
-        }
+      kotlinProject(":app") {
+        addDependency(ConfigurationName.implementation, lib1)
+        addDependency(ConfigurationName.implementation, lib2)
+      }
 
-        val lib1 = kotlinProject(":lib1")
+      run().isSuccess shouldBe true
 
-        val lib2 = kotlinProject(":lib2") {
-          addDependency(ConfigurationName.implementation, lib1)
-        }
+      val consoleOutput = logger.collectReport()
+        .joinToString()
+        .clean()
+        .remove("\u200B")
 
-        kotlinProject(":app") {
-          addDependency(ConfigurationName.implementation, lib1)
-          addDependency(ConfigurationName.implementation, lib2)
-        }
+      if (depthsConsole || depthsReport || graphsReport) {
+        consoleOutput shouldBe """
+            -- ModuleCheck main source set depth results --
+                depth    modules
+                0        [:lib1]
+                1        [:lib2]
+                2        [:app]
 
-        run().isSuccess shouldBe true
+            ModuleCheck found 0 issues
+            """
+      } else {
+        consoleOutput shouldBe """
+            ModuleCheck found 0 issues
+            """
+      }
 
-        val consoleOutput = logger.collectReport()
-          .joinToString()
-          .clean()
-          .remove("\u200B")
+      if (depthsReport) {
+        depthsOutput shouldHaveText """
+            -- ModuleCheck Depth results --
 
-        if (depthsConsole || depthsReport || graphsReport) {
-          consoleOutput shouldBe """
-          -- ModuleCheck main source set depth results --
-              depth    modules
-              0        [:lib1]
-              1        [:lib2]
-              2        [:app]
+            :app
+                source set      depth    most expensive dependencies
+                main            2        [:lib2]
 
-          ModuleCheck found 0 issues
-          """
-        } else {
-          consoleOutput shouldBe """
-          ModuleCheck found 0 issues
-          """
-        }
+            :lib2
+                source set      depth    most expensive dependencies
+                main            1        [:lib1]
 
-        if (depthsReport) {
-          depthsOutput shouldHaveText """
-          -- ModuleCheck Depth results --
+            """
+      } else {
+        depthsOutput.shouldNotExist()
+      }
 
-          :app
-              source set      depth    most expensive dependencies
-              main            2        [:lib2]
-
-          :lib2
-              source set      depth    most expensive dependencies
-              main            1        [:lib1]
-
-          """
-        } else {
-          depthsOutput.shouldNotExist()
-        }
-
-        if (graphsReport) {
-          testProjectDir.child("graphs", "app", "main.dot") shouldHaveText """
-          strict digraph {
-            edge ["dir"="forward"]
-            graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>:app -- main</b>>,"labelloc"="t"]
-            node ["style"="rounded,filled","shape"="box"]
-            {
-              edge ["dir"="none"]
-              graph ["rank"="same"]
-              ":lib1" ["fillcolor"="#F89820"]
+      if (graphsReport) {
+        workingDir.resolve("graphs", "app", "main.dot") shouldHaveText """
+            strict digraph {
+              edge ["dir"="forward"]
+              graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>:app -- main</b>>,"labelloc"="t"]
+              node ["style"="rounded,filled","shape"="box"]
+              {
+                edge ["dir"="none"]
+                graph ["rank"="same"]
+                ":lib1" ["fillcolor"="#F89820"]
+              }
+              {
+                edge ["dir"="none"]
+                graph ["rank"="same"]
+                ":lib2" ["fillcolor"="#F89820"]
+              }
+              {
+                edge ["dir"="none"]
+                graph ["rank"="same"]
+                ":app" ["fillcolor"="#F89820"]
+              }
+              ":app" -> ":lib2" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+              ":app" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+              ":lib2" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
             }
-            {
-              edge ["dir"="none"]
-              graph ["rank"="same"]
-              ":lib2" ["fillcolor"="#F89820"]
-            }
-            {
-              edge ["dir"="none"]
-              graph ["rank"="same"]
-              ":app" ["fillcolor"="#F89820"]
-            }
-            ":app" -> ":lib2" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
-            ":app" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
-            ":lib2" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
-          }
-          """
-        } else {
-          testProjectDir.child("graphs", "app", "main.dot").shouldNotExist()
-        }
+            """
+      } else {
+        workingDir.resolve("graphs", "app", "main.dot").shouldNotExist()
       }
     }
+
+  @SkipInStackTrace
+  fun flags(
+    block: suspend RunnerTestEnvironment.(Boolean, Boolean, Boolean) -> Unit
+  ): Stream<out DynamicNode> {
+
+    return listOf(true, false)
+      .asContainers({ "depthsConsole: $it" }) { depthsConsole ->
+
+        listOf(true, false)
+          .asContainers({ "depthsReport: $it" }) { depthsReport ->
+            listOf(true, false)
+              .asTests({ "graphsReport: $it" }) { graphsReport ->
+                block(depthsConsole, depthsReport, graphsReport)
+              }
+          }
+      }
+  }
 }

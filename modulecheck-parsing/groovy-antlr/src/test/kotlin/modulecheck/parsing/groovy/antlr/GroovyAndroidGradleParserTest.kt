@@ -15,22 +15,25 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBlock
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
 import modulecheck.parsing.gradle.dsl.Assignment
 import modulecheck.testing.BaseTest
-import modulecheck.utils.child
+import modulecheck.testing.SkipInStackTrace
+import modulecheck.testing.TestEnvironment
+import modulecheck.testing.asTests
 import modulecheck.utils.createSafely
-import org.junit.jupiter.api.DynamicTest
+import modulecheck.utils.resolve
+import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.TestFactory
+import java.io.File
+import java.util.stream.Stream
 
-internal class GroovyAndroidGradleParserTest : BaseTest() {
+internal class GroovyAndroidGradleParserTest : BaseTest<TestEnvironment>() {
 
-  val testFile by resets {
-    testProjectDir.child("build.gradle").createSafely()
-  }
+  val TestEnvironment.testFile: File
+    get() = workingDir.resolve("build.gradle").createSafely()
 
   @TestFactory
   fun `lots of blocks`() = runTest { enabled ->
@@ -65,7 +68,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
       propertyFullName = "viewBinding",
       value = "$enabled",
       declarationText = "viewBinding = $enabled",
-      suppressed = listOf()
+      suppressed = emptyList()
     )
     val buildConfigAssignment = Assignment(
       fullText = "android {\n" +
@@ -79,7 +82,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
       propertyFullName = "buildConfig",
       value = "$enabled",
       declarationText = "buildConfig = $enabled",
-      suppressed = listOf()
+      suppressed = emptyList()
     )
     val androidResourcesAssignment = Assignment(
       fullText = "android {\n" +
@@ -90,7 +93,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
       propertyFullName = "androidResources",
       value = "$enabled",
       declarationText = "androidResources = $enabled",
-      suppressed = listOf()
+      suppressed = emptyList()
     )
 
     GroovyAndroidGradleParser().parse(testFile) shouldBe AndroidGradleSettings(
@@ -119,7 +122,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
             viewBindingAssignment,
             buildConfigAssignment
           ),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         ),
         AndroidBlock(
           fullText = "android {\n" +
@@ -133,7 +136,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
           settings = listOf(
             androidResourcesAssignment
           ),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         )
       ),
       buildFeaturesBlocks = listOf(
@@ -148,7 +151,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
             "}",
           lambdaContent = "viewBinding = $enabled\n",
           settings = listOf(viewBindingAssignment),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         ),
         BuildFeaturesBlock(
           fullText = "android {\n" +
@@ -161,7 +164,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
             "}",
           lambdaContent = "buildConfig = $enabled\n",
           settings = listOf(buildConfigAssignment),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         ),
         BuildFeaturesBlock(
           fullText = "android {\n" +
@@ -171,7 +174,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
             "}",
           lambdaContent = "androidResources = $enabled\n",
           settings = listOf(androidResourcesAssignment),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         )
       )
     )
@@ -203,7 +206,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
           propertyFullName = "viewBinding",
           value = "$enabled",
           declarationText = "viewBinding = $enabled",
-          suppressed = listOf()
+          suppressed = emptyList()
         ),
         Assignment(
           fullText = "android {\n" +
@@ -215,7 +218,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
           propertyFullName = "androidResources",
           value = "${!enabled}",
           declarationText = "androidResources = ${!enabled}",
-          suppressed = listOf()
+          suppressed = emptyList()
         )
       ),
       androidBlocks = listOf(
@@ -241,7 +244,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
               propertyFullName = "viewBinding",
               value = "$enabled",
               declarationText = "viewBinding = $enabled",
-              suppressed = listOf()
+              suppressed = emptyList()
             ),
             Assignment(
               fullText = "android {\n" +
@@ -253,10 +256,10 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
               propertyFullName = "androidResources",
               value = "${!enabled}",
               declarationText = "androidResources = ${!enabled}",
-              suppressed = listOf()
+              suppressed = emptyList()
             )
           ),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         )
       ),
       buildFeaturesBlocks = listOf(
@@ -280,7 +283,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
               propertyFullName = "viewBinding",
               value = "$enabled",
               declarationText = "viewBinding = $enabled",
-              suppressed = listOf()
+              suppressed = emptyList()
             ),
             Assignment(
               fullText = "android {\n" +
@@ -292,10 +295,10 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
               propertyFullName = "androidResources",
               value = "${!enabled}",
               declarationText = "androidResources = ${!enabled}",
-              suppressed = listOf()
+              suppressed = emptyList()
             )
           ),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         )
       )
     )
@@ -324,8 +327,8 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
           suppressed = listOf("android-level")
         )
       ),
-      androidBlocks = listOf(),
-      buildFeaturesBlocks = listOf()
+      androidBlocks = emptyList(),
+      buildFeaturesBlocks = emptyList()
     )
   }
 
@@ -354,7 +357,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
           suppressed = listOf("assignment-level")
         )
       ),
-      androidBlocks = listOf(),
+      androidBlocks = emptyList(),
       buildFeaturesBlocks = listOf(
         BuildFeaturesBlock(
           fullText = "android.buildFeatures {\n" +
@@ -374,7 +377,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
               suppressed = listOf("assignment-level")
             )
           ),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         )
       )
     )
@@ -424,26 +427,15 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
               suppressed = listOf("buildFeatures-level")
             )
           ),
-          blockSuppressed = listOf()
+          blockSuppressed = emptyList()
         )
       ),
-      buildFeaturesBlocks = listOf()
+      buildFeaturesBlocks = emptyList()
     )
   }
 
-  fun runTest(block: suspend (enabled: Boolean) -> Unit): List<DynamicTest> {
-    return listOf(true, false).map { enabled ->
-
-      val paramsString = " -- enabled: $enabled"
-
-      val name = "${testDisplayName.replace("()", "")}$paramsString"
-
-      DynamicTest.dynamicTest(name) {
-        runBlocking { block(enabled) }
-        resetAll()
-
-        System.gc()
-      }
-    }
-  }
+  @SkipInStackTrace
+  fun runTest(block: suspend TestEnvironment.(enabled: Boolean) -> Unit): Stream<out DynamicNode> =
+    listOf(true, false)
+      .asTests({ "enabled: $it" }) { enabled -> block(enabled) }
 }

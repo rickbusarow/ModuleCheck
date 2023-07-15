@@ -589,10 +589,7 @@ internal class CaseMatcherTest {
     TrainCaseMatcher().matches(it) shouldBe false
   }
 
-  fun List<String>.dynamic(
-    extraName: String = "",
-    test: (String) -> Unit
-  ): List<DynamicTest> {
+  fun List<String>.dynamic(extraName: String = "", test: (String) -> Unit): List<DynamicTest> {
     return map { subject ->
 
       val displayName = if (extraName.isNotBlank()) {

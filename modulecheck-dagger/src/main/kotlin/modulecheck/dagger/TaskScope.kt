@@ -20,9 +20,7 @@ import javax.inject.Qualifier
 import javax.inject.Scope
 import kotlin.reflect.KClass
 
-/**
- * Tied to a single Gradle task. Currently, that's essentially the same as an `AppScope`.
- */
+/** Tied to a single Gradle task. Currently, that's essentially the same as an `AppScope`. */
 @Suppress("UnnecessaryAbstractClass")
 abstract class TaskScope private constructor()
 

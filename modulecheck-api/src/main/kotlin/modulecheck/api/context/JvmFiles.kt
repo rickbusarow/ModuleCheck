@@ -27,14 +27,28 @@ import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache
 import java.io.File
 
+/**
+ * Represents a collection of JVM files for a project.
+ *
+ * @property fileFactoryCache a cache for mapping source
+ *   set names to corresponding JVM file providers
+ * @property project the project for which the JVM files are needed
+ */
 data class JvmFiles(
   internal val fileFactoryCache: SafeCache<SourceSetName, JvmFileProvider>,
   private val project: McProject
 ) : ProjectContext.Element {
 
+  /** @return the unique key of the JVM files within the project context */
   override val key: ProjectContext.Key<JvmFiles>
     get() = Key
 
+  /**
+   * Retrieves a flow of JVM files corresponding to the provided source set name.
+   *
+   * @param sourceSetName the name of the source set for which JVM files are needed
+   * @return a flow of [JvmFile]s for the requested source set name
+   */
   suspend fun get(sourceSetName: SourceSetName): Flow<JvmFile> {
 
     return project
@@ -45,23 +59,33 @@ data class JvmFiles(
       .flatMapConcat { directory ->
         directory.walkTopDown()
           .filter { maybeFile -> maybeFile.isFile }
-          // Only use Sequence/Flow APIs here so that everything is lazy.
           .asFlow()
           .mapNotNull { file -> getFile(file, sourceSetName) }
       }
   }
 
-  private suspend fun getFile(
-    file: File,
-    sourceSetName: SourceSetName
-  ): JvmFile? {
+  /**
+   * Retrieves the JVM file corresponding to the given file and source set name.
+   *
+   * @param file the file to get the JVM file for
+   * @param sourceSetName the name of the source set to which the file belongs
+   * @return the [JvmFile] for the requested file, or `null` if not found
+   */
+  private suspend fun getFile(file: File, sourceSetName: SourceSetName): JvmFile? {
 
     return fileFactoryCache.getOrPut(sourceSetName) {
       project.jvmFileProviderFactory.create(project, sourceSetName)
     }.getOrNull(file)
   }
 
+  /** Companion object that acts as the key for [JvmFiles] within a [ProjectContext]. */
   companion object Key : ProjectContext.Key<JvmFiles> {
+    /**
+     * Generates a [JvmFiles] instance for the given project.
+     *
+     * @param project the project for which to generate the [JvmFiles] instance
+     * @return the generated [JvmFiles] instance
+     */
     override suspend operator fun invoke(project: McProject): JvmFiles {
 
       return JvmFiles(SafeCache(listOf(project.projectPath, JvmFiles::class)), project)
@@ -69,7 +93,18 @@ data class JvmFiles(
   }
 }
 
+/**
+ * Retrieves [JvmFiles] from the [ProjectContext].
+ * @return the [JvmFiles] instance from the context
+ */
 suspend fun ProjectContext.jvmFiles(): JvmFiles = get(JvmFiles)
-suspend fun ProjectContext.jvmFilesForSourceSetName(
-  sourceSetName: SourceSetName
-): Flow<JvmFile> = jvmFiles().get(sourceSetName)
+
+/**
+ * Retrieves a flow of JVM files corresponding to the
+ * provided source set name from the [ProjectContext].
+ *
+ * @param sourceSetName the name of the source set for which JVM files are needed
+ * @return a flow of [JvmFile]s for the requested source set name
+ */
+suspend fun ProjectContext.jvmFilesForSourceSetName(sourceSetName: SourceSetName): Flow<JvmFile> =
+  jvmFiles().get(sourceSetName)

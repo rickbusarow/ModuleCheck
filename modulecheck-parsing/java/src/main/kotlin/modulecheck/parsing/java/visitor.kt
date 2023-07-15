@@ -23,11 +23,11 @@ import com.github.javaparser.ast.body.VariableDeclarator
 import com.github.javaparser.ast.expr.SimpleName
 import com.github.javaparser.resolution.Resolvable
 import com.github.javaparser.resolution.declarations.ResolvedDeclaration
+import modulecheck.utils.getOrNull
+import modulecheck.utils.traversal.Traversals
 
-internal inline fun Node.visit(
-  crossinline predicate: (node: Node) -> Boolean
-): Sequence<Node> {
-  return childrenRecursive()
+internal inline fun Node.visit(crossinline predicate: (node: Node) -> Boolean): Sequence<Node> {
+  return childrenBreadthFirst()
     .takeWhile { predicate(it) }
 }
 
@@ -67,20 +67,62 @@ internal fun Node.getParentsRecursive(): Sequence<Node> {
   }
 }
 
-fun Node.childrenRecursive(): Sequence<Node> {
-  return generateSequence(childNodes.asSequence()) { children ->
-    children.toList()
-      .flatMap { it.childNodes }
-      .takeIf { it.isNotEmpty() }
-      ?.asSequence()
-  }
-    .flatten()
+/**
+ * @return a sequence of child nodes of this [Node] in depth-first
+ *   order. The sequence starts with the first child node of this [Node],
+ *   followed by the first child node of the first child node, and so on.
+ */
+internal fun Node.childrenDepthFirst(): Sequence<Node> {
+  return Traversals.depthFirstTraversal(this) { childNodes.toList() }
 }
 
-inline fun <reified T : Node> Node.getChildrenOfTypeRecursive(): Sequence<T> {
-  return childrenRecursive()
+/**
+ * @return a sequence of child nodes of type [T] of this [Node] in depth-first
+ *   order. The sequence starts with the first child node of this [Node],
+ *   followed by the first child node of the first child node, and so on.
+ */
+inline fun <reified T : Node> Node.childrenOfTypeDepthFirst(): Sequence<T> {
+  return Traversals.depthFirstTraversal(this) { childNodes.toList() }
     .filterIsInstance<T>()
 }
+
+/**
+ * @param predicate stops visiting child nodes of the given node once this predicate returns false
+ * @return a sequence of child nodes of this [Node] in depth-first order that satisfy
+ *   the given [predicate]. The sequence starts with the first child node of this
+ *   [Node], followed by the first child node of the first child node, and so on.
+ */
+inline fun Node.childrenDepthFirst(crossinline predicate: (Node) -> Boolean): Sequence<Node> =
+  Traversals.depthFirstTraversal(this) { childNodes.filter(predicate) }
+
+/**
+ * @return a sequence of child nodes of type [T] of this [Node] in breadth-first
+ *   order. The sequence starts with the first child node of this [Node],
+ *   followed by the first child node of the second child node, and so on.
+ */
+inline fun <reified T : Node> Node.childrenOfTypeBreadthFirst(): Sequence<T> {
+  return Traversals.breadthFirstTraversal(this) { childNodes.toList() }
+    .filterIsInstance<T>()
+}
+
+/**
+ * @return a sequence of child nodes of this [Node] in breadth-first
+ *   order. The sequence starts with all the child nodes of this [Node],
+ *   followed by all the child nodes of the first child node, and so on.
+ */
+fun Node.childrenBreadthFirst(): Sequence<Node> {
+  return Traversals.breadthFirstTraversal(this) { childNodes.toList() }
+}
+
+/**
+ * @param [predicate] stops visiting child nodes of the parent
+ *   of the given node once this predicate returns false
+ * @return a sequence of child nodes of this [Node] in breadth-first order that
+ *   satisfy the given [predicate]. The sequence starts with all the child nodes of
+ *   this [Node], followed by all the child nodes of the first child node, and so on.
+ */
+inline fun Node.childrenBreadthFirst(crossinline predicate: (Node) -> Boolean): Sequence<Node> =
+  Traversals.breadthFirstTraversal(this) { childNodes.filter(predicate) }
 
 fun <T, R : ResolvedDeclaration> T.fqNameOrNull(
   typeDeclarations: List<TypeDeclaration<*>>
@@ -109,7 +151,7 @@ fun <T : Node> T.simpleName(): String {
   return if (this is SimpleName) {
     asString()
   } else {
-    getChildrenOfTypeRecursive<SimpleName>()
+    childrenOfTypeBreadthFirst<SimpleName>()
       .first()
       .asString()
   }

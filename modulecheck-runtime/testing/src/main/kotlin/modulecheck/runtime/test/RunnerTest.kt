@@ -15,6 +15,7 @@
 
 package modulecheck.runtime.test
 
+import com.github.ajalt.mordant.terminal.Terminal
 import dispatch.core.DispatcherProvider
 import io.kotest.assertions.asClue
 import kotlinx.coroutines.runBlocking
@@ -26,14 +27,17 @@ import modulecheck.dagger.DaggerList
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingResultFactory
 import modulecheck.project.McProject
+import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
 import modulecheck.project.test.ProjectTest
 import modulecheck.project.toTypeSafeProjectPathResolver
 import modulecheck.reporting.checkstyle.CheckstyleReporter
+import modulecheck.reporting.console.DepthLogFactory
 import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
 import modulecheck.reporting.logging.McLogger
+import modulecheck.reporting.logging.TerminalModule
 import modulecheck.reporting.logging.test.ReportingLogger
 import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.rule.FindingFactory
@@ -43,34 +47,77 @@ import modulecheck.rule.impl.FindingFactoryImpl
 import modulecheck.rule.impl.RealFindingResultFactory
 import modulecheck.rule.test.AllRulesComponent
 import modulecheck.runtime.ModuleCheckRunner
-import modulecheck.testing.trimmedShouldBe
+import modulecheck.testing.TestEnvironmentParams
 import modulecheck.utils.mapToSet
+import java.lang.StackWalker.StackFrame
 
 @Suppress("UnnecessaryAbstractClass")
-abstract class RunnerTest : ProjectTest() {
+abstract class RunnerTest : ProjectTest<RunnerTestEnvironment>() {
 
-  open val settings: ModuleCheckSettings by resets { TestSettings() }
-  open val logger: ReportingLogger by resets { ReportingLogger() }
+  open val settings: RunnerTestEnvironment.() -> ModuleCheckSettings = { TestSettings() }
+  open val logger: () -> ReportingLogger = { ReportingLogger() }
 
-  open val ruleFilter: RuleFilter = RuleFilter.DEFAULT
+  open val ruleFilter: () -> RuleFilter = { RuleFilter.DEFAULT }
 
-  open val rules: List<ModuleCheckRule<*>> by resets {
-    AllRulesComponent.create(settings, ruleFilter).allRules
-  }
-  open val findingFactory: FindingFactory<out Finding> by resets {
+  open val rules: (ModuleCheckSettings, RuleFilter) -> List<ModuleCheckRule<*>> =
+    { settings, ruleFilter ->
+      AllRulesComponent.create(settings, ruleFilter).allRules
+    }
+  open val findingFactory: (List<ModuleCheckRule<*>>) -> FindingFactory<out Finding> = { rules ->
     FindingFactoryImpl(rules)
   }
-
-  override val codeGeneratorBindings: List<CodeGeneratorBinding>
-    get() = settings.additionalCodeGenerators
+  open val codeGeneratorBindings = { settings: ModuleCheckSettings ->
+    settings.additionalCodeGenerators
       .plus(defaultCodeGeneratorBindings())
       .plus(
         @Suppress("DEPRECATION")
         settings.additionalKaptMatchers.mapToSet { it.toCodeGeneratorBinding() }
       )
+  }
 
-  @Suppress("LongParameterList")
-  fun run(
+  open fun newRunnerTestEnvironment(
+    projectCache: ProjectCache,
+    codeGeneratorBindings: (ModuleCheckSettings) -> List<CodeGeneratorBinding>,
+    settings: RunnerTestEnvironment.() -> ModuleCheckSettings,
+    logger: ReportingLogger,
+    ruleFilter: RuleFilter,
+    rules: (ModuleCheckSettings, RuleFilter) -> List<ModuleCheckRule<*>> = this.rules,
+    findingFactory: (List<ModuleCheckRule<*>>) -> FindingFactory<out Finding> = this.findingFactory,
+    testStackFrame: StackFrame,
+    testVariantNames: List<String>
+  ): RunnerTestEnvironment = RunnerTestEnvironment(
+    projectCache = projectCache,
+    logger = logger,
+    ruleFilter = ruleFilter,
+    settings = settings,
+    codeGeneratorBindings = codeGeneratorBindings,
+    rules = rules,
+    findingFactory = findingFactory,
+    testStackFrame = testStackFrame,
+    testVariantNames = testVariantNames
+  )
+
+  override fun newTestEnvironment(params: TestEnvironmentParams): RunnerTestEnvironment {
+
+    return when (params) {
+      is RunnerTestEnvironmentParams -> RunnerTestEnvironment(params)
+      else -> RunnerTestEnvironment(
+        RunnerTestEnvironmentParams(
+          projectCache = ProjectCache(),
+          codeGeneratorBindings = codeGeneratorBindings,
+          settings = settings,
+          logger = logger(),
+          ruleFilter = ruleFilter(),
+          rules = rules,
+          findingFactory = findingFactory,
+          testStackFrame = params.testStackFrame,
+          testVariantNames = params.testVariantNames
+        )
+      )
+    }
+  }
+
+  fun RunnerTestEnvironment.run(
     autoCorrect: Boolean = true,
     strictResolution: Boolean = false,
     findingFactory: FindingFactory<out Finding> = this.findingFactory,
@@ -78,7 +125,8 @@ abstract class RunnerTest : ProjectTest() {
     logger: McLogger = this.logger,
     projectProvider: ProjectProvider = this.projectProvider,
     findingResultFactory: FindingResultFactory = RealFindingResultFactory(),
-    reportFactory: ReportFactory = ReportFactory(),
+    terminal: Terminal = TerminalModule.provideTerminal(),
+    reportFactory: ReportFactory = ReportFactory(terminal),
     checkstyleReporter: CheckstyleReporter = CheckstyleReporter(),
     graphvizFileWriter: GraphvizFileWriter = GraphvizFileWriter(
       settings = settings,
@@ -86,16 +134,15 @@ abstract class RunnerTest : ProjectTest() {
     ),
     dispatcherProvider: DispatcherProvider = DispatcherProvider(),
     rules: DaggerList<ModuleCheckRule<*>> = this.rules
-  ): Result<Unit> = runBlocking {
+  ): Result<Unit> {
 
     "Resolving all references BEFORE running ModuleCheck".asClue {
       if (strictResolution) {
-        resolveReferences()
+        runBlocking { resolveReferences() }
       }
     }
 
     val result = ModuleCheckRunner(
-      autoCorrect = autoCorrect,
       settings = settings,
       findingFactory = findingFactory,
       logger = logger,
@@ -104,13 +151,16 @@ abstract class RunnerTest : ProjectTest() {
       checkstyleReporter = checkstyleReporter,
       graphvizFileWriter = graphvizFileWriter,
       dispatcherProvider = dispatcherProvider,
-      projectProvider = projectProvider,
       sarifReportFactory = SarifReportFactory(
         websiteUrl = { "https://rbusarow.github.io/ModuleCheck" },
         moduleCheckVersion = { "0.12.1-SNAPSHOT" }
-      ) { testProjectDir },
-      rules = rules
-    ).run(allProjects())
+      ) { workingDir },
+      depthLogFactoryLazy = { DepthLogFactory(terminal) },
+      projectProvider = projectProvider,
+      rules = rules,
+      autoCorrect = autoCorrect
+    )
+      .run(allProjects())
 
     if (autoCorrect) {
 
@@ -119,12 +169,12 @@ abstract class RunnerTest : ProjectTest() {
 
       "Resolving all references after auto-correct\n".asClue {
         if (strictResolution) {
-          resolveReferences()
+          runBlocking { resolveReferences() }
         }
       }
     }
 
-    return@runBlocking result
+    return result
   }
 
   fun findingFactory(
@@ -136,12 +186,6 @@ abstract class RunnerTest : ProjectTest() {
     override suspend fun evaluateFixable(projects: List<McProject>): List<Finding> = fixable
     override suspend fun evaluateSorts(projects: List<McProject>): List<Finding> = sorts
     override suspend fun evaluateReports(projects: List<McProject>): List<Finding> = reports
-  }
-
-  fun ReportingLogger.parsedReport(): List<Pair<String, List<ProjectFindingReport>>> {
-    return collectReport().joinToString()
-      .clean()
-      .parseReportOutput()
   }
 
   private fun List<Pair<String, List<ProjectFindingReport>>>.sorted() = sortedBy { it.first }

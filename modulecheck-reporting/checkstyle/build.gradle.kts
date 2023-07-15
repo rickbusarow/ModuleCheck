@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-reporting-checkstyle"
+  published(
+    artifactId = "modulecheck-reporting-checkstyle"
+  )
   anvil()
 }
 
@@ -28,7 +30,8 @@ dependencies {
 
   implementation(libs.unbescape)
 
-  testImplementation(libs.bundles.hermit)
+  implementation(project(path = ":modulecheck-utils:stdlib"))
+
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 

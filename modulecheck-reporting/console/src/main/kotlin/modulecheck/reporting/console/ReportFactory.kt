@@ -15,52 +15,58 @@
 
 package modulecheck.reporting.console
 
+import com.github.ajalt.mordant.rendering.OverflowWrap
+import com.github.ajalt.mordant.rendering.TextAlign
+import com.github.ajalt.mordant.rendering.Whitespace
+import com.github.ajalt.mordant.table.grid
+import com.github.ajalt.mordant.terminal.Terminal
 import modulecheck.finding.Finding
-import modulecheck.reporting.logging.Report
 import java.util.Locale
 import javax.inject.Inject
 
-class ReportFactory @Inject constructor() {
+/**
+ * Creates the main report as it is printed in the console.
+ *
+ * ex:
+ * ```
+ * -- ModuleCheck results --
+ *     :lib2
+ *            configuration     dependency    name           source    build file
+ *         ✔  implementation    :lib1         must-be-api              [...]/lib2/build.gradle.kts: (6, 3):
+ * ```
+ */
+class ReportFactory @Inject constructor(private val terminal: Terminal) {
 
-  fun create(results: List<Finding.FindingResult>): Report = Report.build {
+  /** */
+  fun create(results: List<Finding.FindingResult>): String = buildString {
 
-    headerLine("-- ModuleCheck results --")
+    val theme = terminal.theme
 
-    results.groupBy { it.dependentPath.value.lowercase(Locale.getDefault()) }
+    appendLine("-- ModuleCheck results --")
+
+    val entries = results.groupBy { it.dependentPath.value.lowercase(Locale.getDefault()) }
       .entries
       .sortedBy { it.key }
-      .forEach { (_, values) ->
 
-        val path = values.first().dependentPath
+    for (entry in entries) {
 
-        headerLine("\n${tab(1)}${path.value}")
+      val values = entry.value
+      val path = values.first().dependentPath
 
-        val maxConfigurationName = maxOf(
-          values.maxOf { it.configurationName.length },
-          "configuration".length
-        )
-        val maxDependencyPath = maxOf(
-          values.maxOf { it.dependencyIdentifier.length },
-          "dependency".length
-        )
-        val maxProblemName = values.maxOf { it.findingName.id.length }
-        val maxSource = maxOf(values.maxOf { it.sourceOrNull.orEmpty().length }, "source".length)
+      appendLine("    ${path.value}")
+      val grid = grid {
 
-        val fixPrefix = "   ​"
+        whitespace = Whitespace.NORMAL
+        overflowWrap = OverflowWrap.NORMAL
+        align = TextAlign.NONE
+        padding { left = PADDING }
 
-        headerLine(
-          tab(2) +
-            fixPrefix +
-            "configuration".padEnd(maxConfigurationName) +
-            tab(1) +
-            "dependency".padEnd(maxDependencyPath) +
-            tab(1) +
-            "name".padEnd(maxProblemName) +
-            tab(1) +
-            "source".padEnd(maxSource) +
-            tab(1) +
-            "build file"
-        )
+        row("           ", "configuration", "dependency", "name", "source", "build file") {
+          align = TextAlign.LEFT
+        }
+        column(0) { align = TextAlign.RIGHT }
+        column(0) { padding { left = PADDING_START } }
+        column(1) { padding { left = 1 } }
 
         values.sortedWith(
           compareBy(
@@ -68,34 +74,46 @@ class ReportFactory @Inject constructor() {
             { it.dependencyIdentifier },
             { it.positionOrNull },
             { it.findingName.id },
-            { it.sourceOrNull }
+            { it.configurationName },
+            { it.sourceOrNull },
+            { it.toString() }
           )
         ).forEach { result ->
 
-          val message = result.configurationName.padEnd(maxConfigurationName) +
-            tab(1) +
-            result.dependencyIdentifier.padEnd(maxDependencyPath) +
-            tab(1) +
-            result.findingName.id.padEnd(maxProblemName) +
-            tab(1) +
-            result.sourceOrNull.orEmpty().padEnd(maxSource) +
-            tab(1) +
-            result.filePathString
+          val icon = if (result.fixed) theme.success(FIXED) else theme.danger(ERROR)
 
-          if (result.fixed) {
-            success(tab(2) + fixPrefix.replaceFirst(" ", "✔"))
-            warningLine(message)
-          } else {
-            failure(tab(2) + fixPrefix.replaceFirst(" ", "X"))
-            failureLine(message)
+          row(
+            icon,
+            result.configurationName,
+            result.dependencyIdentifier,
+            result.findingName.id,
+            result.sourceOrNull.orEmpty(),
+            result.filePathString
+          ) {
+            style(color = if (result.fixed) theme.warning.color else theme.danger.color)
           }
         }
       }
 
-    // bottom padding
-    headerLine("")
+      appendLine(terminal.render(grid))
+
+      if (entry != entries.last()) {
+        appendLine()
+      }
+    }
   }
 
-  // use `​` (\u200B) as an invisible token for parsing.
-  private fun tab(numTabs: Int) = "\u200B    ".repeat(numTabs)
+  companion object {
+    /** */
+    const val FIXED: String = "✔"
+
+    /** */
+    const val ERROR: String = "X"
+
+    /** */
+    const val PADDING: Int = 3
+
+    /** */
+    private const val PADDING_START = 8
+  }
 }

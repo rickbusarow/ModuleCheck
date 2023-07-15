@@ -209,81 +209,51 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
 
   companion object {
 
-    /**
-     * name of the 'androidTestImplementation' configuration
-     */
+    /** name of the 'androidTestImplementation' configuration */
     val androidTestImplementation: ConfigurationName =
       ConfigurationName("androidTestImplementation")
 
-    /**
-     * name of the 'annotationProcessor' configuration
-     */
+    /** name of the 'annotationProcessor' configuration */
     val annotationProcessor: ConfigurationName = ConfigurationName("annotationProcessor")
 
-    /**
-     * name of the 'anvil' configuration
-     */
+    /** name of the 'anvil' configuration */
     val anvil: ConfigurationName = ConfigurationName("anvil")
 
-    /**
-     * name of the 'api' configuration
-     */
+    /** name of the 'api' configuration */
     val api: ConfigurationName = ConfigurationName("api")
 
-    /**
-     * name of the 'compile' configuration
-     */
+    /** name of the 'compile' configuration */
     val compile: ConfigurationName = ConfigurationName("compile")
 
-    /**
-     * name of the 'compileOnly' configuration
-     */
+    /** name of the 'compileOnly' configuration */
     val compileOnly: ConfigurationName = ConfigurationName("compileOnly")
 
-    /**
-     * name of the 'compileOnlyApi' configuration
-     */
+    /** name of the 'compileOnlyApi' configuration */
     val compileOnlyApi: ConfigurationName = ConfigurationName("compileOnlyApi")
 
-    /**
-     * name of the 'implementation' configuration
-     */
+    /** name of the 'implementation' configuration */
     val implementation: ConfigurationName = ConfigurationName("implementation")
 
-    /**
-     * name of the 'kapt' configuration
-     */
+    /** name of the 'kapt' configuration */
     val kapt: ConfigurationName = ConfigurationName("kapt")
 
-    /**
-     * name of the 'kotlinCompilerPluginClasspathMain' configuration
-     */
+    /** name of the 'kotlinCompilerPluginClasspathMain' configuration */
     val kotlinCompileClasspath: ConfigurationName =
       ConfigurationName("kotlinCompilerPluginClasspathMain")
 
-    /**
-     * name of the 'ksp' configuration
-     */
+    /** name of the 'ksp' configuration */
     val ksp: ConfigurationName = ConfigurationName("ksp")
 
-    /**
-     * name of the 'runtime' configuration
-     */
+    /** name of the 'runtime' configuration */
     val runtime: ConfigurationName = ConfigurationName("runtime")
 
-    /**
-     * name of the 'runtimeOnly' configuration
-     */
+    /** name of the 'runtimeOnly' configuration */
     val runtimeOnly: ConfigurationName = ConfigurationName("runtimeOnly")
 
-    /**
-     * name of the 'testApi' configuration
-     */
+    /** name of the 'testApi' configuration */
     val testApi: ConfigurationName = ConfigurationName("testApi")
 
-    /**
-     * name of the 'testImplementation' configuration
-     */
+    /** name of the 'testImplementation' configuration */
     val testImplementation: ConfigurationName = ConfigurationName("testImplementation")
 
     /** */
@@ -313,9 +283,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
       .map { it.capitalize() }
       .toSet()
 
-    /**
-     * the names of all configurations consumed by the main source set
-     */
+    /** the names of all configurations consumed by the main source set */
     fun main(): List<ConfigurationName> = listOf(
       compileOnlyApi,
       api,
@@ -348,9 +316,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   }
 }
 
-/**
- * @return a ConfigurationName from this raw string
- */
+/** @return a ConfigurationName from this raw string */
 fun String.asConfigurationName(): ConfigurationName = ConfigurationName(this)
 
 fun <T : Any> Map<ConfigurationName, Collection<T>>.main(): List<T> {
@@ -362,16 +328,12 @@ fun <T : Any> Map<ConfigurationName, Collection<T>>.main(): List<T> {
   ).flatten()
 }
 
-/**
- * @return all source set names from this configuration names, without duplicates
- */
+/** @return all source set names from this configuration names, without duplicates */
 fun Iterable<ConfigurationName>.distinctSourceSetNames(): List<SourceSetName> =
   map { it.toSourceSetName() }
     .distinct()
 
-/**
- * @return all source set names from this configuration names, without duplicates
- */
+/** @return all source set names from this configuration names, without duplicates */
 fun Sequence<ConfigurationName>.distinctSourceSetNames(): Sequence<SourceSetName> =
   map { it.toSourceSetName() }
     .distinct()

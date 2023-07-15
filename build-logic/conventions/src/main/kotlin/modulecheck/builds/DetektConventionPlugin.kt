@@ -58,10 +58,10 @@ abstract class DetektConventionPlugin : Plugin<Project> {
 
       extension.autoCorrect = false
       extension.baseline = target.file("${target.rootDir}/detekt/detekt-baseline.xml")
-      extension.config = target.files("${target.rootDir}/detekt/detekt-config.yml")
+      extension.config.from("${target.rootDir}/detekt/detekt-config.yml")
       extension.buildUponDefaultConfig = true
 
-      extension.source = target.files(
+      extension.source.from(
         "src/main/java",
         "src/test/java",
         "src/main/kotlin",
@@ -91,6 +91,9 @@ abstract class DetektConventionPlugin : Plugin<Project> {
         task.exclude("**/${sub.projectDir.relativeTo(target.rootDir)}/**")
       }
 
+      // https://github.com/detekt/detekt/issues/4127
+      task.exclude { "/build/generated/" in it.file.absolutePath }
+
       task.dependsOn(target.tasks.withType(ModuleCheckBuildCodeGeneratorTask::class.java))
     }
 
@@ -109,7 +112,7 @@ abstract class DetektConventionPlugin : Plugin<Project> {
     }
 
     // By default, `check` only handles the PSI Detekt task.  This adds the type resolution tasks.
-    target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME).configure {
+    target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME) {
       it.dependsOn(target.otherDetektTasks(it, withAutoCorrect = false))
     }
 

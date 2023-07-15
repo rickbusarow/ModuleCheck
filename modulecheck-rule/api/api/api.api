@@ -1,0 +1,41 @@
+public final class anvil/hint/merge/modulecheck/rule/RulesComponentKt {
+	public static final fun getModulecheck_rule_RulesComponent_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_rule_RulesComponent_scope0 ()Lkotlin/reflect/KClass;
+}
+
+public abstract interface annotation class modulecheck/rule/AllRules : java/lang/annotation/Annotation {
+}
+
+public abstract interface class modulecheck/rule/FindingFactory {
+	public abstract fun evaluateFixable (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun evaluateReports (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun evaluateSorts (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/rule/ModuleCheckRule {
+	public abstract fun check (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getDescription ()Ljava/lang/String;
+	public abstract fun getDocumentationUrl ()Ljava/lang/String;
+	public abstract fun getName ()Lmodulecheck/finding/FindingName;
+	public abstract fun shouldApply (Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public abstract interface class modulecheck/rule/ReportOnlyRule : modulecheck/rule/ModuleCheckRule {
+}
+
+public abstract interface class modulecheck/rule/RuleFilter {
+	public static final field Companion Lmodulecheck/rule/RuleFilter$Companion;
+	public abstract fun shouldEvaluate (Lmodulecheck/rule/ModuleCheckRule;Lmodulecheck/config/ModuleCheckSettings;)Z
+}
+
+public final class modulecheck/rule/RuleFilter$Companion {
+	public final fun getDEFAULT ()Lmodulecheck/rule/RuleFilter;
+}
+
+public abstract interface class modulecheck/rule/RulesComponent {
+	public abstract fun getAllRules ()Ljava/util/List;
+}
+
+public abstract interface class modulecheck/rule/SortRule : modulecheck/rule/ModuleCheckRule {
+}
+

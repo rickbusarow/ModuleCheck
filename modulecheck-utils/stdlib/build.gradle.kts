@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-utils-stdlib"
+  published(
+    artifactId = "modulecheck-utils-stdlib"
+  )
 }
 
 dependencies {
@@ -26,9 +28,9 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
+  testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.square.turbine)
 
   testImplementation(project(path = ":modulecheck-utils:coroutines:api"))

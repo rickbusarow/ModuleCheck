@@ -52,14 +52,12 @@ sealed interface DeclaredName : McName, HasSimpleNames {
      * @see McName.CompatibleLanguage.KOTLIN
      * @since 0.12.0
      */
-    fun kotlin(
-      packageName: PackageName,
-      simpleNames: Iterable<SimpleName>
-    ): QualifiedDeclaredName = QualifiedDeclaredNameImpl(
-      packageName = packageName,
-      simpleNames = simpleNames.toList(),
-      languages = setOf(KOTLIN)
-    )
+    fun kotlin(packageName: PackageName, simpleNames: Iterable<SimpleName>): QualifiedDeclaredName =
+      QualifiedDeclaredNameImpl(
+        packageName = packageName,
+        simpleNames = simpleNames.toList(),
+        languages = setOf(KOTLIN)
+      )
 
     /**
      * Shorthand for creating a [QualifiedDeclaredName]
@@ -69,14 +67,12 @@ sealed interface DeclaredName : McName, HasSimpleNames {
      * @see McName.CompatibleLanguage.XML
      * @since 0.12.0
      */
-    fun java(
-      packageName: PackageName,
-      simpleNames: Iterable<SimpleName>
-    ): QualifiedDeclaredName = QualifiedDeclaredNameImpl(
-      packageName = packageName,
-      simpleNames = simpleNames.toList(),
-      languages = setOf(JAVA, XML)
-    )
+    fun java(packageName: PackageName, simpleNames: Iterable<SimpleName>): QualifiedDeclaredName =
+      QualifiedDeclaredNameImpl(
+        packageName = packageName,
+        simpleNames = simpleNames.toList(),
+        languages = setOf(JAVA, XML)
+      )
 
     /**
      * Shorthand for creating a [QualifiedDeclaredName]

@@ -20,10 +20,11 @@ import modulecheck.finding.Finding.Position
 import modulecheck.finding.FindingName
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.testing.BaseTest
+import modulecheck.testing.TestEnvironment
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class CheckstyleReporterTest : BaseTest() {
+internal class CheckstyleReporterTest : BaseTest<TestEnvironment>() {
 
   @Test
   fun `empty result list should create checkstyle xml with no child attributes`() {
@@ -63,9 +64,9 @@ internal class CheckstyleReporterTest : BaseTest() {
     result shouldBe """
       <?xml version="1.0" encoding="UTF-8"?>
       <checkstyle version="4.3">
-      	<file name="buildFile">
-      		<error line="1" column="2" severity="error" dependency="dependencyIdentifier" message="message" source="modulecheck.some-rule" />
-      	</file>
+        <file name="buildFile">
+          <error line="1" column="2" severity="error" dependency="dependencyIdentifier" message="message" source="modulecheck.some-rule" />
+        </file>
       </checkstyle>
     """
   }
@@ -94,9 +95,9 @@ internal class CheckstyleReporterTest : BaseTest() {
     result shouldBe """
       <?xml version="1.0" encoding="UTF-8"?>
       <checkstyle version="4.3">
-      	<file name="buildFile">
-      		<error line="1" column="2" severity="info" dependency="dependencyIdentifier" message="message" source="modulecheck.some-rule" />
-      	</file>
+        <file name="buildFile">
+          <error line="1" column="2" severity="info" dependency="dependencyIdentifier" message="message" source="modulecheck.some-rule" />
+        </file>
       </checkstyle>
     """
   }
@@ -147,13 +148,13 @@ internal class CheckstyleReporterTest : BaseTest() {
     result shouldBe """
       <?xml version="1.0" encoding="UTF-8"?>
       <checkstyle version="4.3">
-      	<file name="lib1/build.gradle.kts">
-      		<error line="1" column="2" severity="info" dependency=":path1" message="message" source="modulecheck.some-rule" />
-      		<error line="2" column="2" severity="info" dependency=":path2" message="message" source="modulecheck.some-rule" />
-      	</file>
-      	<file name="lib2/build.gradle.kts">
-      		<error line="1" column="2" severity="info" dependency=":path1" message="message" source="modulecheck.some-rule" />
-      	</file>
+        <file name="lib1/build.gradle.kts">
+          <error line="1" column="2" severity="info" dependency=":path1" message="message" source="modulecheck.some-rule" />
+          <error line="2" column="2" severity="info" dependency=":path2" message="message" source="modulecheck.some-rule" />
+        </file>
+        <file name="lib2/build.gradle.kts">
+          <error line="1" column="2" severity="info" dependency=":path1" message="message" source="modulecheck.some-rule" />
+        </file>
       </checkstyle>
     """
   }

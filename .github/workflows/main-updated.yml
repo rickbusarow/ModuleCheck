@@ -1,0 +1,110 @@
+name: main-updated
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+
+  build-logic:
+    runs-on: macos-latest
+    steps:
+      - name: check out
+        uses: actions/checkout@v3
+
+      - name: build build-logic
+        uses: ./.github/actions/gradle-task
+        with:
+          task: :build-logic:compileKotlin :build-logic:jar
+          write-cache-key: build-logic-jar
+
+  build-all:
+    runs-on: macos-latest
+    steps:
+      - name: check out
+        uses: actions/checkout@v3
+
+      - name: main build
+        uses: ./.github/actions/gradle-task
+        with:
+          task: jar compileKotlin
+          restore-cache-key: build-logic-jar
+          write-cache-key: main-build-artifacts
+
+  publish-snapshot:
+    needs:
+      - build-all
+    if: github.repository == 'RBusarow/ModuleCheck'
+    runs-on: macos-latest
+
+    steps:
+      - name: check out
+        uses: actions/checkout@v3
+
+      - name: Dokka & JavadocJar
+        uses: ./.github/actions/gradle-task
+        with:
+          task: dokkaJavadocJar
+          restore-cache-key: main-build-artifacts
+
+      - name: Publish Snapshots
+        uses: ./.github/actions/gradle-task
+        with:
+          task: publish
+          write-cache-key: local-m2
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
+
+  publish-website:
+    needs:
+      - build-all
+    runs-on: macos-latest
+    steps:
+      - name: check out
+        uses: actions/checkout@v3
+
+      - name: dokkaHtmlMultiModule
+        uses: ./.github/actions/gradle-task
+        with:
+          task: dokkaHtmlMultiModule
+          restore-cache-key: main-build-artifacts
+          write-cache-key: dokka-build-artifacts
+
+      - name: website build cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            website/.docusaurus
+            website/build
+            website/node_modules
+          key: website-build
+          enableCrossOsArchive: true
+
+      # Node is required for npm
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: yarn
+          cache-dependency-path: website/yarn.lock
+
+      - name: Install Yarn
+        working-directory: website
+        run: yarn install --frozen-lockfile
+
+      - name: build website
+        uses: ./.github/actions/gradle-task
+        with:
+          task: buildSite
+          write-cache-key: website-build
+
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          target_branch: gh-pages
+          build_dir: website/build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

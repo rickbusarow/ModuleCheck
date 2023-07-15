@@ -15,56 +15,40 @@
 
 package modulecheck.project.test
 
-import modulecheck.config.CodeGeneratorBinding
-import modulecheck.config.internal.defaultCodeGeneratorBindings
-import modulecheck.model.dependency.ConfigurationName
-import modulecheck.model.dependency.ProjectDependency
-import modulecheck.model.dependency.TypeSafeProjectPathResolver
-import modulecheck.model.dependency.impl.RealConfiguredProjectDependencyFactory
-import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
-import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
-import modulecheck.project.generation.ProjectCollector
 import modulecheck.testing.BaseTest
+import modulecheck.testing.TestEnvironmentParams
 import java.io.File
 import java.nio.charset.Charset
 
+/**
+ * Base test class for tests related to projects. Provides
+ * useful utility functions for setting up project-related tests.
+ */
 @Suppress("UnnecessaryAbstractClass")
-abstract class ProjectTest : BaseTest(), ProjectCollector {
+abstract class ProjectTest<T : ProjectTestEnvironment> : BaseTest<T>() {
 
-  override val projectCache: ProjectCache by resets { ProjectCache() }
-  override val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess by resets {
-    DependencyModuleDescriptorAccess(projectCache)
+  override fun newTestEnvironment(params: TestEnvironmentParams): T {
+
+    val environment = when (params) {
+      is ProjectTestEnvironmentParams -> ProjectTestEnvironment(params)
+      else -> ProjectTestEnvironment(
+        ProjectTestEnvironmentParams(
+          projectCache = ProjectCache(),
+          testStackFrame = params.testStackFrame,
+          testVariantNames = params.testVariantNames
+        )
+      )
+    }
+    @Suppress("UNCHECKED_CAST")
+    return environment as T
   }
 
-  override val root: File
-    get() = testProjectDir
-
-  override val codeGeneratorBindings: List<CodeGeneratorBinding>
-    get() = defaultCodeGeneratorBindings()
-
-  val projectDependencyFactory: ProjectDependency.Factory
-    get() = RealConfiguredProjectDependencyFactory(
-      pathResolver = TypeSafeProjectPathResolver(projectProvider),
-      generatorBindings = codeGeneratorBindings
-    )
-
-  fun McProject.addDependency(
-    configurationName: ConfigurationName,
-    project: McProject,
-    asTestFixture: Boolean = false
-  ) {
-    val old = projectDependencies[configurationName].orEmpty()
-
-    val cpd = projectDependencyFactory.create(
-      configurationName,
-      project.projectPath,
-      asTestFixture
-    )
-
-    projectDependencies[configurationName] = old + cpd
-  }
-
+  /**
+   * Writes the specified content to the receiver [File] with the default charset.
+   *
+   * @param content the content to be written to the file
+   */
   fun File.writeText(content: String) {
     writeText(content.trimIndent(), Charset.defaultCharset())
   }

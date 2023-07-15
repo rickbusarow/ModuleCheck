@@ -55,7 +55,6 @@ object VersionNeutralTopDownAnalyzerFacadeForJVM {
    * [bindingContext][modulecheck.parsing.kotlin.compiler.KotlinEnvironment.bindingContextDeferred]
    * is accessed.
    */
-  @Suppress("LongParameterList")
   fun analyzeFilesWithJavaIntegration(
     project: Project,
     files: Collection<KtFile>,

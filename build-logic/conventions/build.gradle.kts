@@ -13,17 +13,6 @@
  * limitations under the License.
  */
 
-buildscript {
-  dependencies {
-    // Gradle 7.6 has a dependency resolution bug which tries to use Kotlin 1.7.10
-    // for transitive dependencies like `sam-with-receiver`.
-    // https://github.com/gradle/gradle/issues/22510
-    classpath(libs.kotlin.serialization)
-    classpath(libs.kotlin.sam.with.receiver)
-  }
-}
-
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   base
   kotlin("jvm")
@@ -57,9 +46,9 @@ gradlePlugin {
       id = "mcbuild.dokka"
       implementationClass = "modulecheck.builds.DokkaConventionPlugin"
     }
-    create("mcbuild.java-library") {
-      id = "mcbuild.java-library"
-      implementationClass = "modulecheck.builds.JavaLibraryConventionPlugin"
+    create("mcbuild.dokka-version-archive") {
+      id = "mcbuild.dokka-version-archive"
+      implementationClass = "modulecheck.builds.DokkaVersionArchivePlugin"
     }
     create("mcbuild.kotlin") {
       id = "mcbuild.kotlin"
@@ -102,10 +91,11 @@ dependencies {
   implementation(libs.buildconfig)
   implementation(libs.detekt.gradle)
   implementation(libs.dokka.gradle)
+  implementation(libs.dokka.versioning)
   implementation(libs.dropbox.dependencyGuard)
   implementation(libs.google.dagger.api)
   implementation(libs.google.ksp)
-  implementation(libs.jmailen.kotlinter)
+  implementation(libs.gradle.plugin.publish)
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.gradle.plugin)
   implementation(libs.kotlin.reflect)
@@ -113,9 +103,11 @@ dependencies {
   implementation(libs.kotlin.stdlib.common)
   implementation(libs.kotlin.stdlib.jdk7)
   implementation(libs.kotlin.stdlib.jdk8)
+  implementation(libs.kotlinx.binaryCompatibility)
   implementation(libs.kotlinx.knit)
   implementation(libs.kotlinx.serialization.core)
   implementation(libs.kotlinx.serialization.protobuf)
+  implementation(libs.rickBusarow.ktlint)
   implementation(libs.rickBusarow.ktrules)
   implementation(libs.scabbard)
   implementation(libs.square.anvil.gradle)

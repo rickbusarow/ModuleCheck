@@ -24,15 +24,12 @@ import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
 
-/**
- * Base class for an [McPsiFileFactory] implementation
- */
+/** Base class for an [McPsiFileFactory] implementation */
 abstract class AbstractMcPsiFileFactory : McPsiFileFactory {
 
   /**
    * wrapper around "core" settings like Kotlin version,
    * source files, and classpath files (external dependencies)
-   *
    */
   abstract val coreEnvironment: LazyDeferred<KotlinCoreEnvironment>
 

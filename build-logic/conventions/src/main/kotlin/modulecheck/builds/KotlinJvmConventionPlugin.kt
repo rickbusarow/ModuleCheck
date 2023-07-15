@@ -15,10 +15,10 @@
 
 package modulecheck.builds
 
-import com.vanniktech.maven.publish.MavenPublishBasePlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.jvm.toolchain.JavaLanguageVersion
@@ -36,8 +36,15 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
         toolChain.languageVersion.set(JavaLanguageVersion.of(target.JDK))
       }
     }
+    target.tasks.withType(JavaCompile::class.java).configureEach { task ->
+      task.options.release.set(target.JVM_TARGET_INT)
+      task.targetCompatibility = target.JVM_TARGET
+    }
+    target.extensions.configure(JavaPluginExtension::class.java) { extension ->
+      extension.sourceCompatibility = JavaVersion.toVersion(target.JVM_TARGET)
+    }
 
-    target.tasks.withType(KotlinCompile::class.java) { task ->
+    target.tasks.withType(KotlinCompile::class.java).configureEach { task ->
       task.kotlinOptions {
         allWarningsAsErrors = false
 
@@ -54,36 +61,35 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
           add("-opt-in=kotlin.ExperimentalStdlibApi")
           add("-opt-in=kotlin.RequiresOptIn")
           add("-opt-in=kotlin.contracts.ExperimentalContracts")
-          add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
-          add("-opt-in=kotlinx.coroutines.FlowPreview")
 
-          // Workaround for Kotest's shading of the `@Language` annotation
-          // https://github.com/kotest/kotest/issues/3387
-          // It's fixed by https://github.com/kotest/kotest/pull/3397 but that's unreleased, so check
-          // back after the next update.
-          if (task.name == "compileTestKotlin" ||
-            target.path == ":modulecheck-internal-testing" ||
-            target.path == ":modulecheck-project-generation:api"
-          ) {
-            val kotestVersion = target.libsCatalog.version("kotest")
-            check(kotestVersion == "5.5.5") {
-              "The Kotest `@Language` workaround should be fixed in version $kotestVersion.  " +
-                "Check to see if the opt-in compiler argument can be removed."
-            }
-            add("-opt-in=io.kotest.common.KotestInternal")
+          if (task.hasCoroutines(target)) {
+            add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+            add("-opt-in=kotlinx.coroutines.FlowPreview")
+          }
+
+          if (task.name.endsWith("TestKotlin") || target.path.endsWith("testing")) {
+            add("-Xcontext-receivers")
           }
         }
       }
     }
 
-    target.plugins.withType(MavenPublishBasePlugin::class.java) {
-      target.extensions.configure(JavaPluginExtension::class.java) { extension ->
-        extension.sourceCompatibility = JavaVersion.toVersion(target.JVM_TARGET)
+    target.tasks.register("lintMain") { task ->
+      task.doFirst {
+        target.tasks.withType(KotlinCompile::class.java).configureEach { compileTask ->
+          compileTask.kotlinOptions {
+            allWarningsAsErrors = true
+          }
+        }
       }
-      target.tasks.withType(JavaCompile::class.java) { task ->
-        task.options.release.set(target.JVM_TARGET_INT)
-      }
+      task.finalizedBy(target.tasks.withType(KotlinCompile::class.java))
     }
+
+    target.tasks.register("testJvm").dependsOn("test")
+    target.tasks.register("buildTests").dependsOn("testClasses")
+    target.tasks.register("buildAll").dependsOn(
+      target.provider { target.javaExtension.sourceSets.map { it.classesTaskName } }
+    )
 
     target.tasks.register("moveJavaSrcToKotlin") { task ->
 
@@ -115,5 +121,35 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
           .forEach { file -> file.deleteRecursively() }
       }
     }
+  }
+
+  /**
+   * There's `sourceSetName` property for the task, but it isn't
+   * necessarily set for custom compile tasks like for `integrationTest`.
+   */
+  private fun KotlinCompile.sourceSetName(): String {
+    return name.substringAfter("compile")
+      .substringBefore("Kotlin")
+      .decapitalize()
+      .ifEmpty { "main" }
+  }
+
+  private fun KotlinCompile.hasCoroutines(target: Project): Boolean {
+
+    val configNames = when (val sourceSetName = sourceSetName()) {
+      "main" -> setOf("api", "implementation", "compileOnly")
+      else -> setOf(
+        "${sourceSetName}CompileOnly",
+        "${sourceSetName}Api",
+        "${sourceSetName}Implementation"
+      )
+    }
+
+    return target.configurations
+      .asSequence()
+      .filter { it.name in configNames }
+      .flatMap { it.dependencies.asSequence() }
+      .filterIsInstance<ExternalModuleDependency>()
+      .any { it.group == "org.jetbrains.kotlinx" && it.name.startsWith("kotlinx-coroutines-") }
   }
 }

@@ -34,7 +34,7 @@ abstract class KnitConventionPlugin : Plugin<Project> {
       extension.siteRoot = "https://rbusarow.github.io/ModuleCheck/api/"
     }
 
-    target.tasks.withType(KnitTask::class.java) { task ->
+    target.tasks.withType(KnitTask::class.java).configureEach { task ->
       task.notCompatibleWithConfigurationCache("knit does not support configuration cache")
 
       task.dependsOn("dokkaHtmlMultiModule")

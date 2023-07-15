@@ -37,7 +37,7 @@ abstract class ArtifactsPlugin : Plugin<Project> {
       }
 
     target.allprojects {
-      target.tasks.withType(AbstractPublishToMaven::class.java) {
+      target.tasks.withType(AbstractPublishToMaven::class.java).configureEach {
         it.dependsOn(artifactsCheck)
       }
     }

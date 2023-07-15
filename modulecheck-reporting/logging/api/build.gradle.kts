@@ -18,9 +18,17 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-reporting-logging-api"
+  published(
+    artifactId = "modulecheck-reporting-logging-api"
+  )
   anvil()
 }
 
 dependencies {
+
+  api(libs.ajalt.mordant)
+
+  compileOnly(libs.google.dagger.api)
+
+  implementation(project(path = ":modulecheck-dagger"))
 }

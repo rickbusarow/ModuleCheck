@@ -129,7 +129,8 @@ data class AndroidApplicationPluginBuilder(
   override val namespaces: MutableMap<SourceSetName, PackageName> = mutableMapOf(),
   override val sourceSets: MutableMap<SourceSetName, SourceSetBuilder> = mutableMapOf(),
   override val configurations: MutableMap<ConfigurationName, ConfigBuilder> = mutableMapOf(),
-  override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
+  override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> =
+    mutableMapOf()
 ) : AndroidPlatformPluginBuilder<AndroidApplicationPlugin> {
   override fun toPlugin(
     dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
@@ -174,7 +175,8 @@ data class AndroidLibraryPluginBuilder(
   override val namespaces: MutableMap<SourceSetName, PackageName> = mutableMapOf(),
   override val sourceSets: MutableMap<SourceSetName, SourceSetBuilder> = mutableMapOf(),
   override val configurations: MutableMap<ConfigurationName, ConfigBuilder> = mutableMapOf(),
-  override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
+  override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> =
+    mutableMapOf()
 ) : AndroidPlatformPluginBuilder<AndroidLibraryPlugin> {
   override fun toPlugin(
     dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
@@ -220,7 +222,8 @@ data class AndroidDynamicFeaturePluginBuilder(
   override val namespaces: MutableMap<SourceSetName, PackageName> = mutableMapOf(),
   override val sourceSets: MutableMap<SourceSetName, SourceSetBuilder> = mutableMapOf(),
   override val configurations: MutableMap<ConfigurationName, ConfigBuilder> = mutableMapOf(),
-  override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
+  override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> =
+    mutableMapOf()
 ) : AndroidPlatformPluginBuilder<AndroidDynamicFeaturePlugin> {
   override fun toPlugin(
     dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
@@ -265,7 +268,8 @@ data class AndroidTestPluginBuilder(
   override val namespaces: MutableMap<SourceSetName, PackageName> = mutableMapOf(),
   override val sourceSets: MutableMap<SourceSetName, SourceSetBuilder> = mutableMapOf(),
   override val configurations: MutableMap<ConfigurationName, ConfigBuilder> = mutableMapOf(),
-  override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
+  override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> =
+    mutableMapOf()
 ) : AndroidPlatformPluginBuilder<AndroidTestPlugin> {
   override fun toPlugin(
     dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,

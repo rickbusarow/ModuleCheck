@@ -13,13 +13,14 @@
  * limitations under the License.
  */
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   kotlin("jvm")
   alias(libs.plugins.google.ksp)
 }
 
 dependencies {
+
+  api(libs.java.diff.utils)
 
   compileOnly(gradleApi())
 
@@ -28,13 +29,11 @@ dependencies {
   implementation(libs.google.auto.common)
   implementation(libs.google.auto.service.annotations)
   implementation(libs.google.ksp)
-  implementation(libs.jmailen.kotlinter)
-  implementation(libs.ktlint.core)
   implementation(libs.ktlint.ruleset.standard)
+  implementation(libs.rickBusarow.ktlint)
 
   ksp(libs.zacSweers.auto.service.ksp)
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.ktlint.test)

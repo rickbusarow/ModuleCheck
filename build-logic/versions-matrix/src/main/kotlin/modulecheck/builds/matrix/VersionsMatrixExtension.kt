@@ -25,10 +25,7 @@ import java.io.File
 
 interface VersionsMatrixExtension {
 
-  fun Project.versionsMatrix(
-    sourceSetName: String,
-    packageName: String
-  ) {
+  fun Project.versionsMatrix(sourceSetName: String, packageName: String) {
     setUpGeneration(
       sourceSetName = sourceSetName,
       packageName = packageName
@@ -36,10 +33,7 @@ interface VersionsMatrixExtension {
   }
 }
 
-private fun Project.setUpGeneration(
-  sourceSetName: String,
-  packageName: String
-) {
+private fun Project.setUpGeneration(sourceSetName: String, packageName: String) {
 
   val generatedDirPath = buildDir.resolve(
     "generated/sources/versionsMatrix/kotlin/main"
@@ -67,7 +61,7 @@ private fun Project.setUpGeneration(
     task.outDir.set(generatedDirPath)
 
     // auto-update the ci.yml file whenever re-generating the class
-    task.dependsOn(rootProject.tasks.named("versionsMatrixGenerateYaml"))
+    task.dependsOn(rootProject.tasks.named("versionsMatrixYamlUpdate"))
   }
 
   registerSimpleGenerationTaskAsDependency(sourceSetName, versionsMatrixGenerateFactory)

@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
+
 buildscript {
   dependencies {
     // Gradle 7.6 has a dependency resolution bug which tries to use Kotlin 1.7.10
@@ -23,12 +26,11 @@ buildscript {
   }
 }
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   alias(libs.plugins.kotlin.jvm)
-  alias(libs.plugins.kotlinter)
   alias(libs.plugins.dependencyAnalysis)
   alias(libs.plugins.moduleCheck)
+  alias(libs.plugins.ktlint) apply false
 }
 
 moduleCheck {
@@ -39,22 +41,46 @@ moduleCheck {
 }
 
 val kotlinVersion = libs.versions.kotlin.get()
-allprojects {
+val ktlintPluginId = libs.plugins.ktlint.get().pluginId
 
-  plugins.withType(JavaPlugin::class.java) {
-    configure<JavaPluginExtension> {
-      @Suppress("MagicNumber")
-      toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+allprojects ap@{
+
+  val innerProject = this@ap
+
+  apply(plugin = ktlintPluginId)
+  dependencies {
+    "ktlint"(rootProject.libs.rickBusarow.ktrules)
+  }
+
+  if (innerProject != rootProject) {
+    rootProject.tasks.named("ktlintCheck") {
+      dependsOn(innerProject.tasks.named("ktlintCheck"))
+    }
+    rootProject.tasks.named("ktlintFormat") {
+      dependsOn(innerProject.tasks.named("ktlintFormat"))
     }
   }
 
-  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+  plugins.withType(KotlinBasePlugin::class.java).configureEach {
+    extensions.configure(KotlinJvmProjectExtension::class.java) {
+      jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.jdk.get()))
+      }
+    }
+  }
+  plugins.withType(JavaPlugin::class.java).configureEach {
+    extensions.configure(JavaPluginExtension::class.java) {
+      sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
+    }
+  }
+
+  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
 
       languageVersion = "1.6"
       apiVersion = "1.6"
 
-      jvmTarget = "11"
+      jvmTarget = libs.versions.jvmTarget.get()
 
       freeCompilerArgs = freeCompilerArgs + listOf(
         "-opt-in=kotlin.RequiresOptIn"
@@ -63,11 +89,11 @@ allprojects {
   }
 }
 
-tasks.withType<Delete> rootTask@{
+tasks.withType<Delete>().configureEach rootTask@{
 
   subprojects {
-    tasks.withType<Delete> subTask@{
-      this@rootTask.dependsOn(this@subTask)
+    tasks.withType<Delete>().forEach { subTask ->
+      this@rootTask.dependsOn(subTask)
     }
   }
 }
@@ -75,9 +101,9 @@ tasks.withType<Delete> rootTask@{
 tasks.named("test") rootTask@{
 
   subprojects {
-    tasks.withType<Test> subTask@{
-      useJUnitPlatform()
-      this@rootTask.dependsOn(this@subTask)
+    tasks.withType<Test>().forEach { subTask ->
+      subTask.useJUnitPlatform()
+      this@rootTask.dependsOn(subTask)
     }
   }
 }

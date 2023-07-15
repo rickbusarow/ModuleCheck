@@ -73,7 +73,6 @@ import javax.inject.Inject
  * @property logger logs Kotlin compiler messages during analysis
  * @property resetManager used to reset caching
  */
-@Suppress("LongParameterList")
 data class RealKotlinEnvironment(
   override val projectPath: StringProjectPath,
   override val sourceSetName: SourceSetName,
@@ -270,9 +269,7 @@ data class RealKotlinEnvironment(
     )
   }
 
-  /**
-   * Dagger implementation for [KotlinEnvironmentFactory]
-   */
+  /** Dagger implementation for [KotlinEnvironmentFactory] */
   @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor(
     private val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,

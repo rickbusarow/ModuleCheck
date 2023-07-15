@@ -51,30 +51,31 @@ class ExternalDependencyDeclarationVisitor(
 
   private fun String?.orWildcard() = this ?: "*"
 
-  @Suppress("ReturnCount", "MaxLineLength")
+  /** @return true if the declaration is contained within this call expression */
+  @Suppress("MaxLineLength")
   fun find(expression: KtCallExpression): Boolean {
     var found = false
 
     val configCallExpressionVisitor = callExpressionVisitor { innerExpression ->
-      innerExpression
+
+      val innerReference = innerExpression
         .referenceExpression()
         .takeIf { it?.text == configuration }
-        ?.let {
-          /* ktlint-disable no-multi-spaces */
-          innerExpression                                     // implementation(dependencyNotation = "com.google.dagger:dagger:2.32")
-            .valueArguments                                   // [dependencyNotation = "com.google.dagger:dagger:2.32"]
-            .firstOrNull()                                    // dependencyNotation = "com.google.dagger:dagger:2.32"
-            ?.getChildOfType<KtStringTemplateExpression>()    // "com.google.dagger:dagger:2.32"
-            ?.getChildOfType<KtLiteralStringTemplateEntry>()  // com.google.dagger:dagger:2.32
-            ?.text                                            // com.google.dagger:dagger:2.32
-            ?.let { groupName ->
 
-              if (groupName.matches(projectMatcher)) {
-                found = true
-              }
+      if (innerReference != null) {
+        innerExpression // implementation(dependencyNotation = "com.google.dagger:dagger:2.32")
+          .valueArguments // [dependencyNotation = "com.google.dagger:dagger:2.32"]
+          .firstOrNull() // dependencyNotation = "com.google.dagger:dagger:2.32"
+          ?.getChildOfType<KtStringTemplateExpression>() // "com.google.dagger:dagger:2.32"
+          ?.getChildOfType<KtLiteralStringTemplateEntry>() // com.google.dagger:dagger:2.32
+          ?.text // com.google.dagger:dagger:2.32
+          ?.let { groupName ->
+
+            if (groupName.matches(projectMatcher)) {
+              found = true
             }
-          /* ktlint-enable no-multi-spaces */
-        }
+          }
+      }
     }
 
     configCallExpressionVisitor.visitCallExpression(expression)

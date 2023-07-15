@@ -21,20 +21,20 @@ import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.runtime.test.RunnerTest
-import modulecheck.utils.remove
+import modulecheck.runtime.test.RunnerTestEnvironment
 import org.junit.jupiter.api.Test
 import java.io.File
 
 internal class TextReportingTest : RunnerTest() {
 
-  override val settings by resets {
+  override val settings: RunnerTestEnvironment.() -> TestSettings = {
     TestSettings().apply {
-      reports.text.outputPath = File(testProjectDir, reports.text.outputPath).path
+      reports.text.outputPath = File(workingDir, reports.text.outputPath).path
     }
   }
 
   @Test
-  fun `text report should not be created if disabled in settings`() {
+  fun `text report should not be created if disabled in settings`() = test {
 
     settings.reports.text.enabled = false
 
@@ -47,7 +47,7 @@ internal class TextReportingTest : RunnerTest() {
           CouldUseAnvilFinding(
             findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
-            buildFile = testProjectDir
+            buildFile = workingDir
           )
         )
       ),
@@ -72,7 +72,7 @@ internal class TextReportingTest : RunnerTest() {
   }
 
   @Test
-  fun `text report should be created if enabled in settings`() {
+  fun `text report should be created if enabled in settings`() = test {
 
     settings.reports.text.enabled = true
 
@@ -85,7 +85,7 @@ internal class TextReportingTest : RunnerTest() {
           CouldUseAnvilFinding(
             findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
-            buildFile = testProjectDir
+            buildFile = workingDir
           )
         )
       ),
@@ -107,11 +107,10 @@ internal class TextReportingTest : RunnerTest() {
     ).isSuccess shouldBe true
 
     outputFile.readText()
-      .clean()
-      .remove("\u200B") shouldBe """
-      :dependentPath
-             configuration        dependency              name                            source          build file
-          ✔  configurationName    dependencyIdentifier    use-anvil-factory-generation    sourceOrNull    buildFile: (1, 2):
-    """
+      .clean() shouldBeNoTrimIndent """
+        |    :dependentPath
+        |           configuration        dependency              name                            source          build file
+        |        ✔  configurationName    dependencyIdentifier    use-anvil-factory-generation    sourceOrNull    buildFile: (1, 2):
+    """.trimMargin()
   }
 }

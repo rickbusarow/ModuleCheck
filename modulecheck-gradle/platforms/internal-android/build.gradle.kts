@@ -20,11 +20,13 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-gradle-platform-internal-android"
+  published(
+    artifactId = "modulecheck-gradle-platform-internal-android"
+  )
   anvil()
 }
 
-tasks.withType<KotlinCompile> {
+tasks.withType<KotlinCompile>().configureEach {
   kotlinOptions {
     freeCompilerArgs += "-opt-in=modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference"
   }
@@ -34,7 +36,6 @@ dependencies {
 
   api(libs.javax.inject)
 
-  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-gradle:platforms:api"))
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-model:sourceset:api"))
@@ -52,9 +53,9 @@ dependencies {
 
   implementation(libs.kotlin.compiler)
 
+  implementation(project(path = ":modulecheck-dagger"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

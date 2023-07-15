@@ -1,0 +1,11 @@
+public abstract interface class modulecheck/parsing/gradle/model/HasPlatformPlugin : modulecheck/parsing/gradle/model/PluginAware {
+	public abstract fun getPlatformPlugin ()Lmodulecheck/model/dependency/PlatformPlugin;
+}
+
+public abstract interface class modulecheck/parsing/gradle/model/PluginAware {
+	public abstract fun getHasAGP ()Z
+	public abstract fun getHasAnvil ()Z
+	public abstract fun getHasKapt ()Z
+	public abstract fun getHasTestFixturesPlugin ()Z
+}
+

@@ -33,7 +33,6 @@ fun interface KotlinEnvironmentFactory {
    * @return a kotlin environment for these many arguments
    * @since 0.12.0
    */
-  @Suppress("LongParameterList")
   fun create(
     projectPath: StringProjectPath,
     sourceSetName: SourceSetName,

@@ -33,3 +33,9 @@ data class TestVersions(
     return "[gradle $gradle, agp $agp, anvil $anvil, kotlin $kotlin]"
   }
 }
+
+/** Trait interface for [TestVersions]*/
+interface HasTestVersions {
+  /** immutable */
+  val testVersions: TestVersions
+}

@@ -21,64 +21,60 @@ import kotlin.reflect.KProperty
 
 internal inline fun <reified T : Any> ObjectFactory.setProperty(
   initialValue: Set<T> = emptySet()
-): ReadWriteProperty<Any, Set<T>> =
-  object : ReadWriteProperty<Any, Set<T>> {
+): ReadWriteProperty<Any, Set<T>> = object : ReadWriteProperty<Any, Set<T>> {
 
-    val delegate = setProperty(T::class.java).convention(initialValue)
+  val delegate = setProperty(T::class.java).convention(initialValue)
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): Set<T> {
-      return delegate.get()
-    }
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: Set<T>) {
-      delegate.set(value)
-    }
+  override fun getValue(thisRef: Any, property: KProperty<*>): Set<T> {
+    return delegate.get()
   }
+
+  override fun setValue(thisRef: Any, property: KProperty<*>, value: Set<T>) {
+    delegate.set(value)
+  }
+}
 
 internal inline fun <reified T : Any> ObjectFactory.listProperty(
   initialValue: List<T> = emptyList<T>()
-): ReadWriteProperty<Any, List<T>> =
-  object : ReadWriteProperty<Any, List<T>> {
+): ReadWriteProperty<Any, List<T>> = object : ReadWriteProperty<Any, List<T>> {
 
-    val delegate = listProperty(T::class.java).convention(initialValue)
+  val delegate = listProperty(T::class.java).convention(initialValue)
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): List<T> {
-      return delegate.get()
-    }
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: List<T>) {
-      delegate.set(value)
-    }
+  override fun getValue(thisRef: Any, property: KProperty<*>): List<T> {
+    return delegate.get()
   }
+
+  override fun setValue(thisRef: Any, property: KProperty<*>, value: List<T>) {
+    delegate.set(value)
+  }
+}
 
 internal inline fun <reified T : Any> ObjectFactory.property(
   initialValue: T
-): ReadWriteProperty<Any, T> =
-  object : ReadWriteProperty<Any, T> {
+): ReadWriteProperty<Any, T> = object : ReadWriteProperty<Any, T> {
 
-    val delegate = property(T::class.java).convention(initialValue)
+  val delegate = property(T::class.java).convention(initialValue)
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): T {
-      return delegate.get()
-    }
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-      delegate.set(value)
-    }
+  override fun getValue(thisRef: Any, property: KProperty<*>): T {
+    return delegate.get()
   }
+
+  override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
+    delegate.set(value)
+  }
+}
 
 internal inline fun <reified T> ObjectFactory.nullableProperty(
   initialValue: T?
-): ReadWriteProperty<Any, T?> =
-  object : ReadWriteProperty<Any, T?> {
+): ReadWriteProperty<Any, T?> = object : ReadWriteProperty<Any, T?> {
 
-    val delegate = property(T::class.java).convention(initialValue)
+  val delegate = property(T::class.java).convention(initialValue)
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): T? {
-      return delegate.orNull
-    }
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
-      delegate.set(value)
-    }
+  override fun getValue(thisRef: Any, property: KProperty<*>): T? {
+    return delegate.orNull
   }
+
+  override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
+    delegate.set(value)
+  }
+}

@@ -27,6 +27,7 @@ import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
+import modulecheck.utils.getOrNull
 import modulecheck.utils.mapToSet
 import org.jetbrains.kotlin.name.FqName
 
@@ -52,7 +53,7 @@ internal data class ParsedFile(
         val memberDeclarations = mutableSetOf<QualifiedDeclaredName>()
         val enumDeclarations = mutableSetOf<QualifiedDeclaredName>()
 
-        compilationUnit.childrenRecursive()
+        compilationUnit.childrenBreadthFirst()
           .forEach { node ->
 
             when (node) {

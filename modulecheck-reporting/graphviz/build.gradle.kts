@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-reporting-graphviz"
+  published(
+    artifactId = "modulecheck-reporting-graphviz"
+  )
   anvil()
 }
 
@@ -28,15 +30,16 @@ dependencies {
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
 
   implementation(libs.graphviz.java.min)
   implementation(libs.rickBusarow.dispatch.core)
 
   implementation(project(path = ":modulecheck-model:dependency:api"))
+  implementation(project(path = ":modulecheck-model:dependency:api"))
   implementation(project(path = ":modulecheck-project:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlin.compiler)
@@ -46,6 +49,7 @@ dependencies {
   testImplementation(project(path = ":modulecheck-model:sourceset:api"))
   testImplementation(project(path = ":modulecheck-project-generation:api"))
   testImplementation(project(path = ":modulecheck-project:api"))
+  testImplementation(project(path = ":modulecheck-rule:api"))
   testImplementation(project(path = ":modulecheck-rule:impl"))
   testImplementation(project(path = ":modulecheck-runtime:testing"))
 }

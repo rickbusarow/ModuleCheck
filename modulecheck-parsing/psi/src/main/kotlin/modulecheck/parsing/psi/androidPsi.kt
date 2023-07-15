@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
+import modulecheck.parsing.psi.internal.childrenOfTypeBreadthFirst
 import modulecheck.parsing.psi.internal.nameSafe
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtCallExpression
@@ -27,19 +27,20 @@ fun PsiElement.inBuildscript(): Boolean {
 }
 
 fun PsiElement.androidBlocks(): List<KtCallExpression> {
-  return getChildrenOfTypeRecursive<KtCallExpression>()
+  return childrenOfTypeBreadthFirst<KtCallExpression>()
     .filter { it.nameSafe() == "android" }
+    .toList()
 }
 
 fun PsiElement.buildFeaturesBlocks(): List<KtCallExpression> {
 
-  val nested = getChildrenOfTypeRecursive<KtCallExpression>()
+  val nested = childrenOfTypeBreadthFirst<KtCallExpression>()
     .filter { it.nameSafe() == "buildFeatures" }
+    .toList()
 
-  val qualified = getChildrenOfTypeRecursive<KtCallExpression>()
-    .filter {
-      it.nameSafe()?.matches("android\\s*\\.\\s*buildFeatures".toRegex()) == true
-    }
+  val qualified = childrenOfTypeBreadthFirst<KtCallExpression>()
+    .filter { it.nameSafe()?.matches("""android\s*\.\s*buildFeatures""".toRegex()) == true }
+    .toList()
 
   return nested + qualified
 }

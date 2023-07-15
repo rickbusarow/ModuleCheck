@@ -28,7 +28,7 @@ abstract class BenManesVersionsPlugin : Plugin<Project> {
 
     target.tasks.withType(
       DependencyUpdatesTask::class.java
-    ) { task ->
+    ).configureEach { task ->
       task.rejectVersionIf {
         isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
       }

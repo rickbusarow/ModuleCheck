@@ -18,7 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-config-impl"
+  published(
+    artifactId = "modulecheck-config-impl"
+  )
   anvil()
 }
 dependencies {
@@ -31,7 +33,6 @@ dependencies {
   implementation(project(path = ":modulecheck-model:dependency:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }
