@@ -49,11 +49,6 @@ class Declarations private constructor(
   private val project: McProject
 ) : ProjectContext.Element {
 
-  /**
-   * Fetches all declarations in the project.
-   *
-   * @return A `LazySet` of all declarations in the project.
-   */
   override val key: ProjectContext.Key<Declarations>
     get() = Key
 
@@ -66,6 +61,11 @@ class Declarations private constructor(
     data class WithoutUpstream(val sourceSetName: SourceSetName) : DeclarationsKey
   }
 
+  /**
+   * Fetches all declarations in the project.
+   *
+   * @return A `LazySet` of all declarations in the project.
+   */
   suspend fun all(): LazySet<DeclaredName> {
     return delegate.getOrPut(ALL) {
       project.sourceSets

@@ -23,7 +23,6 @@ import kotlinx.serialization.serializer
 import modulecheck.dagger.SingleIn
 import modulecheck.dagger.TaskScope
 import modulecheck.model.dependency.ProjectPath
-import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
 import modulecheck.utils.requireNotNull
 import modulecheck.utils.trace.HasTraceTags
@@ -42,17 +41,25 @@ class ProjectCache @Inject constructor() : HasTraceTags {
   val values: MutableCollection<McProject> get() = delegate.values
 
   /**
-   * N.B. This [path] argument can be the base [ProjectPath] instead of one of the concrete
-   * types ([StringProjectPath], [TypeSafeProjectPath]), because all project paths are compared
-   * using the derived type-safe variant. So, there are no cache misses when a project is already
-   * stored using the String variant, but then we attempt to look it up via the type-safe one.
+   * Retrieves a project from the cache or puts a new one if it doesn't exist.
+   * All project path pugs and gets are done using the derived type-safe variant.
    *
+   * @param path The path of the project.
+   * @param defaultValue The function that generates a default project if it doesn't exist in the cache.
+   * @return The existing or newly added project.
    * @since 0.12.0
    */
   fun getOrPut(path: ProjectPath, defaultValue: () -> McProject): McProject {
     return delegate.getOrPut(path.toTypeSafe(), defaultValue)
   }
 
+  /**
+   * Retrieves a project from the cache.
+   *
+   * @param path The path of the project.
+   * @return The project associated with the given path.
+   * @throws NullPointerException if no project exists for the given path.
+   */
   fun getValue(path: ProjectPath): McProject {
     return delegate[path].requireNotNull {
       "Expected to find a project with a path of '${path.value}`, but no such project exists.\n\n" +
@@ -60,6 +67,13 @@ class ProjectCache @Inject constructor() : HasTraceTags {
     }
   }
 
+  /**
+   * Adds or updates a project in the cache.
+   *
+   * @param path The path of the project.
+   * @param project The project to be added or updated.
+   * @return The previous project associated with the path, or null if there was no mapping for the path.
+   */
   operator fun set(path: ProjectPath, project: McProject): McProject? {
     return delegate.put(path.toTypeSafe(), project)
   }
@@ -69,6 +83,7 @@ class ProjectCache @Inject constructor() : HasTraceTags {
   }
 }
 
+/** */
 internal object ConcurrentHashMapSerializer :
   KSerializer<ConcurrentHashMap<ProjectPath, McProject>> {
 

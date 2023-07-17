@@ -143,16 +143,16 @@ data class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFil
       return Classpath(coordinatesWithFiles)
     }
   }
-
-  /**
-   * Represents a Maven coordinate with its corresponding file.
-   *
-   * @property identifier The Maven coordinate.
-   * @property file The file.
-   */
-  @Serializable
-  data class MavenCoordinatesWithFile(
-    val identifier: Identifier,
-    val file: File
-  )
 }
+
+/**
+ * Represents a Maven coordinate with its corresponding file.
+ *
+ * @property identifier The Maven coordinate.
+ * @property file The file.
+ */
+@Serializable
+data class MavenCoordinatesWithFile(
+  val identifier: Identifier,
+  val file: File
+)

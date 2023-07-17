@@ -35,6 +35,7 @@ import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
+import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles.JVM_CONFIG_FILES
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
@@ -94,6 +95,7 @@ data class RealKotlinEnvironment(
 
   override val compilerConfiguration: LazyDeferred<CompilerConfiguration> = lazyDeferred {
     createCompilerConfiguration(
+      classpathFiles = classpathFiles.await(),
       sourceFiles = sourceFiles.toList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
@@ -167,15 +169,15 @@ data class RealKotlinEnvironment(
   private val messageCollector by lazy {
 
     // if (projectPath.value == ":core:core") {
-    // if (projectPath.value == ":core:jvm") {
-    // McMessageCollector(
-    //   messageRenderer = MessageRenderer.GRADLE_STYLE,
-    //   logger = logger,
-    //   logLevel = McMessageCollector.LogLevel.WARNINGS_AS_WARNINGS
-    // )
-    // } else {
-    MessageCollector.NONE
-    // }
+    if (projectPath.value == ":core:jvm") {
+      McMessageCollector(
+        messageRenderer = MessageRenderer.GRADLE_STYLE,
+        logger = logger,
+        logLevel = McMessageCollector.LogLevel.WARNINGS_AS_WARNINGS
+      )
+    } else {
+      MessageCollector.NONE
+    }
   }
 
   private suspend fun createAnalysisResult(
@@ -221,7 +223,8 @@ data class RealKotlinEnvironment(
     analyzer.analysisResult
   }
 
-  private suspend fun createCompilerConfiguration(
+  private fun createCompilerConfiguration(
+    classpathFiles: List<File>,
     sourceFiles: List<File>,
     kotlinLanguageVersion: LanguageVersion?,
     jvmTarget: JvmTarget
@@ -253,7 +256,7 @@ data class RealKotlinEnvironment(
 
       addJavaSourceRoots(javaFiles)
       addKotlinSourceRoots(kotlinFiles)
-      addJvmClasspathRoots(classpathFiles.await())
+      addJvmClasspathRoots(classpathFiles)
       configureJdkClasspathRoots()
     }
   }

@@ -99,9 +99,7 @@ dependencies {
 
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-dagger"))
-  api(project(path = ":modulecheck-finding:name"))
   api(project(path = ":modulecheck-gradle:platforms:api"))
-  api(project(path = ":modulecheck-gradle:platforms:internal-jvm"))
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
@@ -126,8 +124,10 @@ dependencies {
   implementation(libs.semVer)
 
   implementation(project(path = ":modulecheck-config:impl"))
+  implementation(project(path = ":modulecheck-finding:name"))
   implementation(project(path = ":modulecheck-gradle:platforms:impl"))
   implementation(project(path = ":modulecheck-gradle:platforms:internal-android"))
+  implementation(project(path = ":modulecheck-gradle:platforms:internal-jvm"))
   implementation(project(path = ":modulecheck-model:dependency:impl"))
   implementation(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
   implementation(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
@@ -163,7 +163,6 @@ dependencies {
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-project-generation:api"))
-  testImplementation(project(path = ":modulecheck-utils:stdlib"))
 }
 
 val integrationTestTask = tasks.register("integrationTest", Test::class) {
