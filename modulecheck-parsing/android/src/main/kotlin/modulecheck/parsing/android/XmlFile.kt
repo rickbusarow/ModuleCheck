@@ -17,7 +17,6 @@
 
 package modulecheck.parsing.android
 
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 import modulecheck.parsing.source.HasReferences
 import modulecheck.parsing.source.McName.CompatibleLanguage.XML
@@ -39,7 +38,6 @@ interface XmlFile : HasReferences {
 
   val resourceReferencesAsRReferences: Set<String>
 
-  @Serializable
   data class LayoutFile(
     override val file: File
   ) : XmlFile {
@@ -99,7 +97,6 @@ interface XmlFile : HasReferences {
     ).toLazySet()
   }
 
-  @Serializable
   data class ManifestFile(
     override val file: File
   ) : XmlFile {

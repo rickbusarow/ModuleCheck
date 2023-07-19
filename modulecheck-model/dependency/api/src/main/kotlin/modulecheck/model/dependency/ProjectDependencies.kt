@@ -16,7 +16,6 @@
 package modulecheck.model.dependency
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.serializer
@@ -24,7 +23,6 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.utils.filterToSet
 import modulecheck.utils.flatMapToSet
 
-@Serializable(ProjectDependenciesSerializer::class)
 class ProjectDependencies(
   map: Map<ConfigurationName, Set<ProjectDependency>>
 ) : MutableMap<ConfigurationName, Set<ProjectDependency>> by map.toMutableMap() {

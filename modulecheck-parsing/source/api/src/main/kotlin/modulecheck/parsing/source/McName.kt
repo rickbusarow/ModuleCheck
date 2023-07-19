@@ -17,7 +17,6 @@ package modulecheck.parsing.source
 
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.serialization.Serializable
 import modulecheck.utils.lazy.LazySet
 
 /**
@@ -29,7 +28,6 @@ import modulecheck.utils.lazy.LazySet
  * @see ReferenceName
  * @since 0.12.0
  */
-@Serializable
 sealed interface McName : Comparable<McName> {
   /**
    * The raw String value of this name, such as `com.example.lib1.Lib1Class`.
@@ -105,14 +103,12 @@ sealed interface McName : Comparable<McName> {
    *
    * @since 0.12.0
    */
-  @Serializable
   sealed interface CompatibleLanguage {
     /**
      * Java
      *
      * @since 0.12.0
      */
-    @Serializable
     object JAVA : CompatibleLanguage {
       override fun toString(): String = this::class.java.simpleName
     }
@@ -122,7 +118,6 @@ sealed interface McName : Comparable<McName> {
      *
      * @since 0.12.0
      */
-    @Serializable
     object KOTLIN : CompatibleLanguage {
       override fun toString(): String = this::class.java.simpleName
     }
@@ -132,7 +127,6 @@ sealed interface McName : Comparable<McName> {
      *
      * @since 0.12.0
      */
-    @Serializable
     object XML : CompatibleLanguage {
       override fun toString(): String = this::class.java.simpleName
     }

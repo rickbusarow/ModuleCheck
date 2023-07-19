@@ -250,7 +250,7 @@ class GradleTestEnvironment(
   }
 
   companion object {
-    protected val durationSuffixRegex: Regex =
+    private val durationSuffixRegex: Regex =
       """(ModuleCheck found \d+ issues?) in [\d.]+ seconds\.[\s\S]*""".toRegex()
   }
 }

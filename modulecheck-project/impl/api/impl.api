@@ -21,7 +21,7 @@ public final class modulecheck/project/impl/RealMcProject : modulecheck/project/
 	public fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
 	public synthetic fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath;
 	public fun hashCode ()I
-	public fun resolvedNameOrNull-5sj7XBw (Lmodulecheck/parsing/source/ResolvableMcName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun resolveFqNameOrNull-5sj7XBw (Lmodulecheck/parsing/source/QualifiedDeclaredName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun toString ()Ljava/lang/String;
 }
 

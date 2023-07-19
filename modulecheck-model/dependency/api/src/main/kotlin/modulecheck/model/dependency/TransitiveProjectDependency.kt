@@ -15,9 +15,6 @@
 
 package modulecheck.model.dependency
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class TransitiveProjectDependency(
   val source: ProjectDependency,
   val contributed: ProjectDependency

@@ -15,7 +15,6 @@
 
 package modulecheck.model.dependency
 
-import kotlinx.serialization.Serializable
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.utils.capitalize
@@ -27,7 +26,6 @@ import modulecheck.utils.decapitalize
  *
  * @property value the name
  */
-@Serializable
 @JvmInline
 value class ConfigurationName(val value: String) : Comparable<ConfigurationName> {
 

@@ -15,7 +15,7 @@ public final class anvil/hint/binding/modulecheck/parsing/kotlin/compiler/impl/S
 
 public final class modulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess {
 	public fun <init> (Lmodulecheck/project/ProjectCache;)V
-	public final fun dependencyModuleDescriptors-5sj7XBw (Lmodulecheck/model/dependency/ProjectPath;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun projectDependencies-5sj7XBw (Lmodulecheck/model/dependency/ProjectPath;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class modulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess_Factory : dagger/internal/Factory {
@@ -32,9 +32,19 @@ public final class modulecheck/parsing/kotlin/compiler/impl/DependencyModuleDesc
 	public final fun newInstance (Lmodulecheck/project/ProjectCache;)Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;
 }
 
-public final class modulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment : modulecheck/parsing/kotlin/compiler/KotlinEnvironment {
+public final class modulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment : modulecheck/model/dependency/HasProjectPath, modulecheck/model/sourceset/HasSourceSetName, modulecheck/parsing/kotlin/compiler/KotlinEnvironment {
 	public synthetic fun <init> (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/lang/String;Lmodulecheck/utils/lazy/LazyDeferred;Ljava/util/Collection;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/utils/lazy/ResetManager;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun bestAvailablePsiFactory (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun component1 ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public final fun component2-qrJCKeA ()Ljava/lang/String;
+	public final fun component3 ()Lmodulecheck/utils/lazy/LazyDeferred;
+	public final fun component5 ()Lorg/jetbrains/kotlin/config/LanguageVersion;
+	public final fun component6 ()Lorg/jetbrains/kotlin/config/JvmTarget;
+	public final fun component7 ()Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;
+	public final fun component8 ()Lmodulecheck/reporting/logging/McLogger;
+	public final fun copy-O-Uy7hw (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/lang/String;Lmodulecheck/utils/lazy/LazyDeferred;Ljava/util/Collection;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/utils/lazy/ResetManager;)Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment;
+	public static synthetic fun copy-O-Uy7hw$default (Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/lang/String;Lmodulecheck/utils/lazy/LazyDeferred;Ljava/util/Collection;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/utils/lazy/ResetManager;ILjava/lang/Object;)Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment;
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getAnalysisResultDeferred ()Lmodulecheck/utils/lazy/LazyDeferred;
 	public fun getBindingContextDeferred ()Lmodulecheck/utils/lazy/LazyDeferred;
 	public final fun getClasspathFiles ()Lmodulecheck/utils/lazy/LazyDeferred;
@@ -47,13 +57,16 @@ public final class modulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironmen
 	public fun getLightPsiFactory ()Lmodulecheck/utils/lazy/LazyDeferred;
 	public final fun getLogger ()Lmodulecheck/reporting/logging/McLogger;
 	public fun getModuleDescriptorDeferred ()Lmodulecheck/utils/lazy/LazyDeferred;
-	public final fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
-	public final fun getSourceSetName-qrJCKeA ()Ljava/lang/String;
+	public fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public synthetic fun getProjectPath ()Lmodulecheck/model/dependency/ProjectPath;
+	public fun getSourceSetName-qrJCKeA ()Ljava/lang/String;
+	public fun hashCode ()I
 	public fun javaPsiFile (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun ktFile (Ljava/io/File;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
 }
 
-public final class modulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment$Factory : modulecheck/gradle/platforms/KotlinEnvironmentFactory {
+public final class modulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment$Factory : modulecheck/gradle/platforms/kotlin/KotlinEnvironmentFactory {
 	public fun <init> (Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;Lmodulecheck/reporting/logging/McLogger;)V
 	public synthetic fun create-Flv3FUE (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/lang/String;Lmodulecheck/utils/lazy/LazyDeferred;Ljava/util/Collection;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;)Lmodulecheck/parsing/kotlin/compiler/KotlinEnvironment;
 	public fun create-Flv3FUE (Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Ljava/lang/String;Lmodulecheck/utils/lazy/LazyDeferred;Ljava/util/Collection;Lorg/jetbrains/kotlin/config/LanguageVersion;Lorg/jetbrains/kotlin/config/JvmTarget;)Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment;

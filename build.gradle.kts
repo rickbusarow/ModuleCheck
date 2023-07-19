@@ -128,6 +128,15 @@ moduleCheck {
   }
 }
 
+allprojects {
+  configurations.configureEach {
+    resolutionStrategy {
+      force(libs.jna)
+      force(libs.jna.platform)
+    }
+  }
+}
+
 afterEvaluate {
 
   // Hack for ensuring that when 'publishToMavenLocal' is invoked from the root project,

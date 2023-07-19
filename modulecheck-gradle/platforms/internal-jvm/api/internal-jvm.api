@@ -3,27 +3,8 @@ public final class anvil/hint/binding/modulecheck/gradle/platforms/sourcesets/Re
 	public static final fun getModulecheck_gradle_platforms_sourcesets_RealJvmSourceSetsParser_scope0 ()Lkotlin/reflect/KClass;
 }
 
-public final class modulecheck/gradle/platforms/JvmPlatformPluginFactory {
-	public fun <init> (Lmodulecheck/gradle/platforms/ConfigurationsFactory;Lmodulecheck/gradle/platforms/SourceSetsFactory;)V
-	public final fun create (Lorg/gradle/api/Project;Z)Lmodulecheck/model/dependency/JvmPlatformPlugin;
-}
-
-public final class modulecheck/gradle/platforms/JvmPlatformPluginFactory_Factory : dagger/internal/Factory {
-	public static final field Companion Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory_Factory$Companion;
-	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;)V
-	public static final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory_Factory;
-	public synthetic fun get ()Ljava/lang/Object;
-	public fun get ()Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory;
-	public static final fun newInstance (Lmodulecheck/gradle/platforms/ConfigurationsFactory;Lmodulecheck/gradle/platforms/SourceSetsFactory;)Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory;
-}
-
-public final class modulecheck/gradle/platforms/JvmPlatformPluginFactory_Factory$Companion {
-	public final fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory_Factory;
-	public final fun newInstance (Lmodulecheck/gradle/platforms/ConfigurationsFactory;Lmodulecheck/gradle/platforms/SourceSetsFactory;)Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory;
-}
-
-public final class modulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser : modulecheck/gradle/platforms/sourcesets/JvmSourceSetsParser {
-	public fun <init> (Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;)V
+public final class modulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser : modulecheck/gradle/platforms/jvm/JvmSourceSetsParser {
+	public fun <init> (Lmodulecheck/gradle/platforms/kotlin/KotlinEnvironmentFactory;)V
 	public fun parse (Lmodulecheck/model/dependency/Configurations;Lorg/gradle/api/Project;)Lmodulecheck/model/dependency/SourceSets;
 }
 
@@ -33,11 +14,11 @@ public final class modulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsPars
 	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser;
-	public static final fun newInstance (Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;)Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser;
+	public static final fun newInstance (Lmodulecheck/gradle/platforms/kotlin/KotlinEnvironmentFactory;)Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser;
 }
 
 public final class modulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser_Factory$Companion {
 	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser_Factory;
-	public final fun newInstance (Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;)Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser;
+	public final fun newInstance (Lmodulecheck/gradle/platforms/kotlin/KotlinEnvironmentFactory;)Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser;
 }
 

@@ -454,13 +454,5 @@
     "description": "Fast dependency graph linting for Gradle projects",
     "packaging": "jar",
     "javaVersion": "11"
-  },
-  {
-    "gradlePath": ":modulecheck-parsing:gradle:model:impl-typesafe",
-    "group": "com.rickbusarow.modulecheck",
-    "artifactId": "modulecheck-parsing-gradle-model-impl-typesafe",
-    "description": "Fast dependency graph linting for Gradle projects",
-    "packaging": "jar",
-    "javaVersion": "11"
   }
 ]

@@ -15,15 +15,12 @@
 
 package modulecheck.parsing.source
 
-import kotlinx.serialization.Serializable
-
 /**
  * A name which is not fully qualified, like `Foo` in `com.example.Foo`
  *
  * @property name the string value of this name
  * @since 0.12.0
  */
-@Serializable
 @JvmInline
 value class SimpleName(val name: String) : Comparable<SimpleName>, java.io.Serializable {
 

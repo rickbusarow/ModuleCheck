@@ -13,12 +13,8 @@
  * limitations under the License.
  */
 
-@file:UseSerializers(FileAsStringSerializer::class)
-
 package modulecheck.gradle.platforms
 
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.UseSerializers
 import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.model.dependency.AndroidSdk.Companion.parseAndroidSdkJarFromPath
 import modulecheck.model.dependency.Identifier
@@ -26,7 +22,6 @@ import modulecheck.model.dependency.MavenCoordinates.Companion.parseMavenCoordin
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.utils.requireExists
-import modulecheck.utils.serialization.FileAsStringSerializer
 import java.io.File
 
 /**
@@ -34,7 +29,6 @@ import java.io.File
  *
  * @property mavenCoordinatesWithFiles The list of Maven coordinates and their corresponding files.
  */
-@Serializable
 data class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFile>) {
 
   /** Returns the list of Maven coordinates. */
@@ -151,7 +145,6 @@ data class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFil
  * @property identifier The Maven coordinate.
  * @property file The file.
  */
-@Serializable
 data class MavenCoordinatesWithFile(
   val identifier: Identifier,
   val file: File

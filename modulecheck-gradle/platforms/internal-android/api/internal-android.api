@@ -91,16 +91,18 @@ public final class modulecheck/gradle/platforms/android/internal/ProjectKt {
 	public static final fun generatesBuildConfig (Lorg/gradle/api/Project;Lmodulecheck/gradle/platforms/android/AgpApiAccess;)Z
 	public static final fun isMissingManifestFile (Lorg/gradle/api/Project;Lmodulecheck/gradle/platforms/android/AgpApiAccess;)Z
 	public static final fun mainAndroidManifest (Lorg/gradle/api/Project;Lmodulecheck/gradle/platforms/android/AgpApiAccess;)Ljava/io/File;
+	public static final fun onAndroidCompileConfigurationsOrNull (Lorg/gradle/api/Project;Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lkotlin/jvm/functions/Function2;)Lkotlin/Unit;
+	public static final fun onAndroidPlugin (Lorg/gradle/api/Project;Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lkotlin/jvm/functions/Function1;)V
 	public static final fun orPropertyDefault (Ljava/lang/Boolean;Lorg/gradle/api/Project;Ljava/lang/String;Z)Z
 }
 
-public final class modulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser : modulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser {
-	public synthetic fun <init> (Lmodulecheck/model/dependency/Configurations;Lcom/android/build/gradle/BaseExtension;ZLorg/gradle/api/Project;Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+public final class modulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser : modulecheck/gradle/platforms/android/SafeAgpApiReferenceScope, modulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser {
+	public synthetic fun <init> (Lmodulecheck/model/dependency/Configurations;Lcom/android/build/gradle/BaseExtension;ZLorg/gradle/api/Project;Lmodulecheck/gradle/platforms/kotlin/KotlinEnvironmentFactory;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun parse ()Lmodulecheck/model/dependency/SourceSets;
 }
 
 public final class modulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser$Factory : modulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser$Factory {
-	public fun <init> (Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;)V
+	public fun <init> (Lmodulecheck/gradle/platforms/kotlin/KotlinEnvironmentFactory;)V
 	public fun create (Lmodulecheck/model/dependency/Configurations;Lcom/android/build/gradle/BaseExtension;ZLorg/gradle/api/Project;)Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser;
 	public synthetic fun create (Lmodulecheck/model/dependency/Configurations;Lcom/android/build/gradle/BaseExtension;ZLorg/gradle/api/Project;)Lmodulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser;
 }
@@ -111,11 +113,11 @@ public final class modulecheck/gradle/platforms/android/sourcesets/RealAndroidSo
 	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser_Factory_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser$Factory;
-	public static final fun newInstance (Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;)Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser$Factory;
+	public static final fun newInstance (Lmodulecheck/gradle/platforms/kotlin/KotlinEnvironmentFactory;)Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser$Factory;
 }
 
 public final class modulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser_Factory_Factory$Companion {
 	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser_Factory_Factory;
-	public final fun newInstance (Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;)Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser$Factory;
+	public final fun newInstance (Lmodulecheck/gradle/platforms/kotlin/KotlinEnvironmentFactory;)Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser$Factory;
 }
 

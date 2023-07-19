@@ -4,11 +4,6 @@ public final class modulecheck/parsing/psi/AndroidPsiKt {
 	public static final fun inBuildscript (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Z
 }
 
-public final class modulecheck/parsing/psi/ConcatenatingParsingInterceptor : modulecheck/parsing/source/internal/ParsingInterceptor {
-	public synthetic fun <init> (Lmodulecheck/parsing/psi/internal/DeclarationsProvider;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun intercept (Lmodulecheck/parsing/source/internal/ParsingInterceptor$Chain;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
 public final class modulecheck/parsing/psi/ExternalDependencyDeclarationVisitor {
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -53,11 +48,6 @@ public final class modulecheck/parsing/psi/KotlinPluginsBlockParser {
 	public final fun parse (Lorg/jetbrains/kotlin/psi/KtFile;)Lmodulecheck/parsing/psi/KotlinPluginsBlock;
 }
 
-public final class modulecheck/parsing/psi/KotlinStdLibNamesKt {
-	public static final fun kotlinStdLibNameOrNull (Ljava/lang/String;)Lmodulecheck/parsing/source/QualifiedDeclaredName;
-	public static final fun kotlinStdLibNameOrNull (Lmodulecheck/parsing/source/ReferenceName;)Lmodulecheck/parsing/source/QualifiedDeclaredName;
-}
-
 public final class modulecheck/parsing/psi/PsiElementWithSurroundingText {
 	public fun <init> (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)V
 	public final fun component1 ()Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;
@@ -100,12 +90,6 @@ public final class modulecheck/parsing/psi/ReferenceVisitor : org/jetbrains/kotl
 	public fun visitTypeReference (Lorg/jetbrains/kotlin/psi/KtTypeReference;)V
 }
 
-public abstract interface class modulecheck/parsing/psi/internal/DeclarationsProvider {
-	public abstract fun get-WsCknJc (Ljava/lang/String;Lmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun getWithUpstream-WsCknJc (Ljava/lang/String;Lmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun getWithUpstream-WsCknJc$default (Lmodulecheck/parsing/psi/internal/DeclarationsProvider;Ljava/lang/String;Lmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
-}
-
 public final class modulecheck/parsing/psi/internal/KtCallableDeclarationKt {
 	public static final fun isJvmField (Lorg/jetbrains/kotlin/psi/KtProperty;)Z
 	public static final fun isJvmStatic (Lorg/jetbrains/kotlin/psi/KtCallableDeclaration;)Z
@@ -117,7 +101,6 @@ public final class modulecheck/parsing/psi/internal/PsiElementKt {
 	public static final fun asReferenceName (Lorg/jetbrains/kotlin/types/KotlinType;)Lmodulecheck/parsing/source/ReferenceName;
 	public static final fun callSiteName (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Ljava/lang/String;
 	public static final fun canResolveDeclaredName-Hc0XbgE (Lmodulecheck/project/McProject;Lmodulecheck/parsing/source/QualifiedDeclaredName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static final fun canResolveReferenceName-Hc0XbgE (Lmodulecheck/project/McProject;Lmodulecheck/parsing/source/ReferenceName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun childrenBreadthFirst (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Lkotlin/sequences/Sequence;
 	public static final fun childrenBreadthFirst (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;Lkotlin/jvm/functions/Function1;)Lkotlin/sequences/Sequence;
 	public static final fun childrenDepthFirst (Lorg/jetbrains/kotlin/com/intellij/psi/PsiElement;)Lkotlin/sequences/Sequence;
@@ -146,6 +129,5 @@ public final class modulecheck/parsing/psi/internal/PsiElementResolver {
 
 public final class modulecheck/parsing/psi/internal/UtilKt {
 	public static final fun getByNameOrIndex (Lorg/jetbrains/kotlin/psi/KtValueArgumentList;ILjava/lang/String;)Lorg/jetbrains/kotlin/psi/KtValueArgument;
-	public static final fun requireSimpleName (Lorg/jetbrains/kotlin/psi/KtElement;)Ljava/lang/String;
 }
 

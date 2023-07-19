@@ -34,26 +34,24 @@ public final class modulecheck/finding/CouldUseAnvilFinding : modulecheck/findin
 }
 
 public final class modulecheck/finding/InheritedDependencyFinding : modulecheck/finding/AbstractProjectDependencyFinding, java/lang/Comparable, modulecheck/finding/AddsDependency {
-	public fun <init> (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/model/dependency/ProjectDependency;)V
+	public fun <init> (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/model/dependency/ProjectDependency;)V
 	public synthetic fun compareTo (Ljava/lang/Object;)I
 	public fun compareTo (Lmodulecheck/finding/InheritedDependencyFinding;)I
 	public final fun component1 ()Lmodulecheck/finding/FindingName;
 	public final fun component2 ()Lmodulecheck/project/McProject;
-	public final fun component3 ()Lmodulecheck/model/dependency/ProjectDependency;
+	public final fun component3 ()Lmodulecheck/model/dependency/ConfiguredDependency;
 	public final fun component4 ()Lmodulecheck/model/dependency/ProjectDependency;
-	public final fun copy (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/model/dependency/ProjectDependency;)Lmodulecheck/finding/InheritedDependencyFinding;
-	public static synthetic fun copy$default (Lmodulecheck/finding/InheritedDependencyFinding;Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/model/dependency/ProjectDependency;ILjava/lang/Object;)Lmodulecheck/finding/InheritedDependencyFinding;
+	public final fun copy (Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/model/dependency/ProjectDependency;)Lmodulecheck/finding/InheritedDependencyFinding;
+	public static synthetic fun copy$default (Lmodulecheck/finding/InheritedDependencyFinding;Lmodulecheck/finding/FindingName;Lmodulecheck/project/McProject;Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/model/dependency/ProjectDependency;ILjava/lang/Object;)Lmodulecheck/finding/InheritedDependencyFinding;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun fromStringOrEmpty ()Ljava/lang/String;
 	public fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
-	public synthetic fun getDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
-	public fun getDependency ()Lmodulecheck/model/dependency/ProjectDependency;
+	public fun getDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
 	public fun getDependencyIdentifier ()Ljava/lang/String;
 	public fun getDependentProject ()Lmodulecheck/project/McProject;
 	public fun getFindingName ()Lmodulecheck/finding/FindingName;
 	public fun getMessage ()Ljava/lang/String;
-	public synthetic fun getNewDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
-	public fun getNewDependency ()Lmodulecheck/model/dependency/ProjectDependency;
+	public fun getNewDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
 	public fun getPositionOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;
 	public final fun getSource ()Lmodulecheck/model/dependency/ProjectDependency;
 	public fun getStatementOrNull ()Lmodulecheck/utils/lazy/LazyDeferred;

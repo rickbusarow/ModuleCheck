@@ -48,7 +48,6 @@ dependencies {
   implementation(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-dagger"))
-  implementation(project(path = ":modulecheck-utils:serialization"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.junit)

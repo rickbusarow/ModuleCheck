@@ -30,7 +30,7 @@ public final class anvil/hint/merge/anvil/module/modulecheck/gradle/task/TaskCom
 
 public abstract class anvil/module/modulecheck/gradle/task/TaskComponentAnvilModule {
 	public fun <init> ()V
-	public abstract fun bindAllProjectPathsProvider (Lmodulecheck/parsing/gradle/model/impl/RealAllProjectPathsProvider;)Lmodulecheck/model/dependency/AllProjectPathsProvider;
+	public abstract fun bindAllProjectPathsProvider (Lmodulecheck/gradle/platforms/RealAllProjectPathsProvider;)Lmodulecheck/model/dependency/AllProjectPathsProvider;
 	public abstract fun bindAndroidPlatformPluginFactory (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory;)Lmodulecheck/gradle/platforms/android/AndroidPlatformPluginFactory;
 	public abstract fun bindConfigurationsFactory (Lmodulecheck/gradle/platforms/RealConfigurationsFactory;)Lmodulecheck/gradle/platforms/ConfigurationsFactory;
 	public abstract fun bindDispatcherProvider (Lmodulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider;)Ldispatch/core/DispatcherProvider;
@@ -45,8 +45,8 @@ public abstract class anvil/module/modulecheck/gradle/task/TaskComponentAnvilMod
 	public abstract fun bindFactory7 (Lmodulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory$Factory;)Lmodulecheck/parsing/kotlin/compiler/McPsiFileFactory$Factory;
 	public abstract fun bindFactory8 (Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser$Factory;)Lmodulecheck/parsing/gradle/dsl/BuildFileParser$Factory;
 	public abstract fun bindFindingResultFactory (Lmodulecheck/rule/impl/RealFindingResultFactory;)Lmodulecheck/finding/FindingResultFactory;
-	public abstract fun bindJvmSourceSetsParser (Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser;)Lmodulecheck/gradle/platforms/sourcesets/JvmSourceSetsParser;
-	public abstract fun bindKotlinEnvironmentFactory (Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment$Factory;)Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;
+	public abstract fun bindJvmSourceSetsParser (Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser;)Lmodulecheck/gradle/platforms/jvm/JvmSourceSetsParser;
+	public abstract fun bindKotlinEnvironmentFactory (Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment$Factory;)Lmodulecheck/gradle/platforms/kotlin/KotlinEnvironmentFactory;
 	public abstract fun bindMcLogger (Lmodulecheck/gradle/GradleMcLogger;)Lmodulecheck/reporting/logging/McLogger;
 	public abstract fun bindModuleCheckVersionProvider (Lmodulecheck/gradle/internal/RealModuleCheckVersionProvider;)Lmodulecheck/dagger/ModuleCheckVersionProvider;
 	public abstract fun bindProjectProvider (Lmodulecheck/gradle/internal/GradleProjectProvider;)Lmodulecheck/project/ProjectProvider;
@@ -190,6 +190,11 @@ public final class modulecheck/gradle/ReportsExtension_Factory : dagger/internal
 	public static fun newInstance (Lorg/gradle/api/model/ObjectFactory;Lorg/gradle/api/file/ProjectLayout;)Lmodulecheck/gradle/ReportsExtension;
 }
 
+public final class modulecheck/gradle/ResolutionConfigFactory {
+	public fun <init> ()V
+	public final fun create (Lorg/gradle/api/Project;Lorg/gradle/api/artifacts/Configuration;)Lorg/gradle/api/artifacts/Configuration;
+}
+
 public class modulecheck/gradle/SortExtension : modulecheck/config/SortSettings {
 	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
 	public fun getDependencyComparators ()Ljava/util/List;
@@ -206,9 +211,14 @@ public final class modulecheck/gradle/SortExtension_Factory : dagger/internal/Fa
 	public static fun newInstance (Lorg/gradle/api/model/ObjectFactory;)Lmodulecheck/gradle/SortExtension;
 }
 
+public final class modulecheck/gradle/TaskFactoryKt {
+	public static final fun asDependency (Lorg/gradle/api/file/FileCollection;)Lorg/gradle/api/artifacts/FileCollectionDependency;
+	public static final fun hasSource (Ljava/io/File;)Z
+}
+
 public final class modulecheck/gradle/internal/GradleProjectProvider : modulecheck/model/dependency/AllProjectPathsProvider, modulecheck/project/ProjectProvider {
 	public static final field Companion Lmodulecheck/gradle/internal/GradleProjectProvider$Companion;
-	public fun <init> (Lorg/gradle/api/Project;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/project/ProjectCache;Lmodulecheck/gradle/GradleMcLogger;Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lmodulecheck/parsing/gradle/dsl/BuildFileParser$Factory;Lmodulecheck/parsing/wiring/RealJvmFileProvider$Factory;Lmodulecheck/gradle/platforms/android/AndroidPlatformPluginFactory;Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory;Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;Lmodulecheck/model/dependency/AllProjectPathsProvider;)V
+	public fun <init> (Lorg/gradle/api/Project;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/project/ProjectCache;Lmodulecheck/gradle/GradleMcLogger;Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lmodulecheck/parsing/gradle/dsl/BuildFileParser$Factory;Lmodulecheck/parsing/wiring/RealJvmFileProvider$Factory;Lmodulecheck/gradle/platforms/android/AndroidPlatformPluginFactory;Lmodulecheck/gradle/platforms/jvm/JvmPlatformPluginFactory;Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;Lmodulecheck/model/dependency/AllProjectPathsProvider;)V
 	public fun clearCaches ()V
 	public fun get (Lmodulecheck/model/dependency/ProjectPath;)Lmodulecheck/project/McProject;
 	public fun getAll ()Ljava/util/List;
@@ -224,7 +234,7 @@ public final class modulecheck/gradle/internal/GradleProjectProvider_Factory : d
 	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/internal/GradleProjectProvider_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/internal/GradleProjectProvider;
-	public static fun newInstance (Lorg/gradle/api/Project;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/project/ProjectCache;Lmodulecheck/gradle/GradleMcLogger;Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lmodulecheck/parsing/gradle/dsl/BuildFileParser$Factory;Lmodulecheck/parsing/wiring/RealJvmFileProvider$Factory;Lmodulecheck/gradle/platforms/android/AndroidPlatformPluginFactory;Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory;Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;Lmodulecheck/model/dependency/AllProjectPathsProvider;)Lmodulecheck/gradle/internal/GradleProjectProvider;
+	public static fun newInstance (Lorg/gradle/api/Project;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/project/ProjectCache;Lmodulecheck/gradle/GradleMcLogger;Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lmodulecheck/parsing/gradle/dsl/BuildFileParser$Factory;Lmodulecheck/parsing/wiring/RealJvmFileProvider$Factory;Lmodulecheck/gradle/platforms/android/AndroidPlatformPluginFactory;Lmodulecheck/gradle/platforms/jvm/JvmPlatformPluginFactory;Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;Lmodulecheck/model/dependency/AllProjectPathsProvider;)Lmodulecheck/gradle/internal/GradleProjectProvider;
 }
 
 public final class modulecheck/gradle/internal/RealDocsWebsiteUrlProvider : modulecheck/dagger/DocsWebsiteUrlProvider {
@@ -269,20 +279,52 @@ public final class modulecheck/gradle/internal/RealSourceWebsiteUrlProvider_Fact
 	public static fun newInstance ()Lmodulecheck/gradle/internal/RealSourceWebsiteUrlProvider;
 }
 
-public abstract class modulecheck/gradle/task/AbstractModuleCheckTask : org/gradle/api/DefaultTask {
-	public fun <init> (ZZ)V
+public final class modulecheck/gradle/internal/TaskKt {
+	public static final fun configuring (Lorg/gradle/api/tasks/TaskProvider;Lkotlin/jvm/functions/Function1;)Lorg/gradle/api/tasks/TaskProvider;
+	public static final fun dependsOn (Lorg/gradle/api/tasks/TaskProvider;Ljava/util/Collection;)Lorg/gradle/api/tasks/TaskProvider;
+	public static final fun dependsOn (Lorg/gradle/api/tasks/TaskProvider;[Lorg/gradle/api/tasks/TaskProvider;)Lorg/gradle/api/tasks/TaskProvider;
+	public static final fun registerOnce (Lorg/gradle/api/tasks/TaskContainer;Ljava/lang/String;Ljava/lang/Class;Lorg/gradle/api/Action;)Lorg/gradle/api/tasks/TaskProvider;
+}
+
+public abstract class modulecheck/gradle/task/AbstractModuleCheckRuleTask : modulecheck/gradle/task/AbstractModuleCheckTask {
+	public fun <init> (Lorg/gradle/workers/WorkerExecutor;Lorg/gradle/api/model/ObjectFactory;)V
+	public final fun getAutoCorrect ()Lorg/gradle/api/provider/Property;
 	protected final fun getComponent ()Lmodulecheck/gradle/task/TaskComponent;
 	public final fun getSettings ()Lmodulecheck/gradle/ModuleCheckExtension;
+	public final fun getWorkerExecutor ()Lorg/gradle/workers/WorkerExecutor;
+	protected final fun maybeDisableConfigurationCaching (Z)V
 	protected abstract fun ruleFilter ()Lmodulecheck/rule/RuleFilter;
 	public final fun run ()V
+}
+
+public abstract class modulecheck/gradle/task/AbstractModuleCheckTask : org/gradle/api/DefaultTask {
+	public fun <init> ()V
 }
 
 public final class modulecheck/gradle/task/DaggerTaskComponent {
 	public static fun factory ()Lmodulecheck/gradle/task/TaskComponent$Factory;
 }
 
-public class modulecheck/gradle/task/MultiRuleModuleCheckTask : modulecheck/gradle/task/AbstractModuleCheckTask {
-	public fun <init> (ZZ)V
+public abstract class modulecheck/gradle/task/ModuleCheckDependencyResolutionTask : modulecheck/gradle/task/ModuleCheckSourceSetTask {
+	public static final field Companion Lmodulecheck/gradle/task/ModuleCheckDependencyResolutionTask$Companion;
+	public fun <init> ()V
+	public final fun execute ()V
+	public abstract fun getClasspathReportFile ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getClasspathToResolve ()Lorg/gradle/api/file/ConfigurableFileCollection;
+	public fun getSourceSetName-qrJCKeA ()Ljava/lang/String;
+	public abstract fun getSourceSetNameProp ()Lorg/gradle/api/provider/Property;
+}
+
+public final class modulecheck/gradle/task/ModuleCheckDependencyResolutionTask$Companion {
+	public final fun register-wYXeOjA (Lorg/gradle/api/Project;Ljava/lang/String;)Lorg/gradle/api/tasks/TaskProvider;
+}
+
+public abstract class modulecheck/gradle/task/ModuleCheckSourceSetTask : modulecheck/gradle/task/AbstractModuleCheckTask, modulecheck/model/sourceset/HasSourceSetName {
+	public fun <init> ()V
+}
+
+public class modulecheck/gradle/task/MultiRuleModuleCheckTask : modulecheck/gradle/task/AbstractModuleCheckRuleTask {
+	public fun <init> (Lorg/gradle/workers/WorkerExecutor;Lorg/gradle/api/model/ObjectFactory;)V
 	protected fun ruleFilter ()Lmodulecheck/rule/RuleFilter;
 }
 
@@ -291,20 +333,21 @@ public final class modulecheck/gradle/task/MultiRuleModuleCheckTask_Factory : da
 	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/task/MultiRuleModuleCheckTask_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/task/MultiRuleModuleCheckTask;
-	public static fun newInstance (ZZ)Lmodulecheck/gradle/task/MultiRuleModuleCheckTask;
+	public static fun newInstance (Lorg/gradle/workers/WorkerExecutor;Lorg/gradle/api/model/ObjectFactory;)Lmodulecheck/gradle/task/MultiRuleModuleCheckTask;
 }
 
-public class modulecheck/gradle/task/SingleRuleModuleCheckTask : modulecheck/gradle/task/AbstractModuleCheckTask {
-	public fun <init> (Lmodulecheck/finding/FindingName;ZZ)V
+public class modulecheck/gradle/task/SingleRuleModuleCheckTask : modulecheck/gradle/task/AbstractModuleCheckRuleTask {
+	public fun <init> (Lorg/gradle/workers/WorkerExecutor;Lorg/gradle/api/model/ObjectFactory;)V
+	public final fun getFindingName ()Lorg/gradle/api/provider/Property;
 	protected fun ruleFilter ()Lmodulecheck/rule/RuleFilter;
 }
 
 public final class modulecheck/gradle/task/SingleRuleModuleCheckTask_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)V
-	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/task/SingleRuleModuleCheckTask_Factory;
+	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/task/SingleRuleModuleCheckTask_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/task/SingleRuleModuleCheckTask;
-	public static fun newInstance (Lmodulecheck/finding/FindingName;ZZ)Lmodulecheck/gradle/task/SingleRuleModuleCheckTask;
+	public static fun newInstance (Lorg/gradle/workers/WorkerExecutor;Lorg/gradle/api/model/ObjectFactory;)Lmodulecheck/gradle/task/SingleRuleModuleCheckTask;
 }
 
 public abstract interface class modulecheck/gradle/task/TaskComponent : modulecheck/rule/RulesComponent, modulecheck/runtime/RunnerComponent, modulecheck/utils/coroutines/impl/DispatcherProviderComponent {
@@ -312,7 +355,7 @@ public abstract interface class modulecheck/gradle/task/TaskComponent : modulech
 }
 
 public abstract interface class modulecheck/gradle/task/TaskComponent$Factory {
-	public abstract fun create (Lorg/gradle/api/Project;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/rule/RuleFilter;Lmodulecheck/project/ProjectRoot;)Lmodulecheck/gradle/task/TaskComponent;
+	public abstract fun create (Lorg/gradle/api/Project;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/rule/RuleFilter;Lmodulecheck/project/ProjectRoot;Lorg/gradle/workers/WorkerExecutor;)Lmodulecheck/gradle/task/TaskComponent;
 }
 
 public final class modulecheck/parsing/groovy/antlr/GroovyAndroidGradleParser_Factory : dagger/internal/Factory {

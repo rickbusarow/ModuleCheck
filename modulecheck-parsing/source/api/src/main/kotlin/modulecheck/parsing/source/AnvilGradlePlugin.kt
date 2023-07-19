@@ -15,18 +15,11 @@
 
 package modulecheck.parsing.source
 
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 import net.swiftzer.semver.SemVer
 import org.jetbrains.kotlin.name.FqName
 
 /** */
-@Serializable
 data class AnvilGradlePlugin(
-  @Serializable(SemVerSerializer::class)
   val version: SemVer,
   val generateDaggerFactories: Boolean
 )
@@ -46,39 +39,3 @@ data class AnvilScopeName(val fqName: FqName) {
 }
 
 data class AnvilScopeNameEntry(val name: ReferenceName)
-
-@Serializable
-internal data class SemVerSurrogate(
-  val major: Int = 0,
-  val minor: Int = 0,
-  val patch: Int = 0,
-  val preRelease: String? = null,
-  val buildMetadata: String? = null
-)
-
-/** */
-object SemVerSerializer : KSerializer<SemVer> {
-  override val descriptor: SerialDescriptor = SemVerSurrogate.serializer().descriptor
-
-  override fun serialize(encoder: Encoder, value: SemVer) {
-    val surrogate = SemVerSurrogate(
-      value.major,
-      value.minor,
-      value.patch,
-      value.preRelease,
-      value.buildMetadata
-    )
-    encoder.encodeSerializableValue(SemVerSurrogate.serializer(), surrogate)
-  }
-
-  override fun deserialize(decoder: Decoder): SemVer {
-    val surrogate = decoder.decodeSerializableValue(SemVerSurrogate.serializer())
-    return SemVer(
-      surrogate.major,
-      surrogate.minor,
-      surrogate.patch,
-      surrogate.preRelease,
-      surrogate.buildMetadata
-    )
-  }
-}

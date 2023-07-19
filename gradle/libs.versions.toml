@@ -46,6 +46,7 @@ jackson = "2.13.0"
 java-diff-utils = "4.12"
 javaParser = "3.25.4"
 jetbrains-markdown = "0.4.1"
+jna = "5.13.0"
 johnrengelman-shadow = "8.1.1"
 kaml = "0.54.0"
 kct = "1.5.0"
@@ -177,6 +178,9 @@ javaParser-symbols = { module = "com.github.javaparser:javaparser-symbol-solver-
 javax-inject = "javax.inject:javax.inject:1"
 
 jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "jetbrains-markdown" }
+
+jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
+jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
 
 johnrengelman-shadow = { module = "gradle.plugin.com.github.johnrengelman:shadow", version.ref = "johnrengelman-shadow" }
 

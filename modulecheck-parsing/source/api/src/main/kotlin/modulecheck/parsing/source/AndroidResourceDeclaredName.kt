@@ -15,7 +15,6 @@
 
 package modulecheck.parsing.source
 
-import kotlinx.serialization.Serializable
 import modulecheck.parsing.source.HasSimpleNames.Companion.checkSimpleNames
 import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
@@ -85,7 +84,6 @@ sealed interface AndroidResourceDeclaredName : DeclaredName, HasSimpleNames {
  *
  * @since 0.12.0
  */
-@Serializable
 class AndroidRDeclaredName(
   override val packageName: PackageName
 ) : QualifiedDeclaredName(), AndroidResourceDeclaredName {
@@ -101,7 +99,6 @@ class AndroidRDeclaredName(
  *   `_.string.app_name`, used when AGP generates this fully qualified resource
  * @since 0.12.0
  */
-@Serializable
 class QualifiedAndroidResourceDeclaredName(
   val sourceR: AndroidRReferenceName,
   val sourceResource: UnqualifiedAndroidResourceReferenceName
@@ -129,7 +126,6 @@ class QualifiedAndroidResourceDeclaredName(
  * @property packageName the base package for this android module
  * @since 0.12.0
  */
-@Serializable
 class AndroidDataBindingDeclaredName(
   val sourceLayout: UnqualifiedAndroidResourceReferenceName,
   override val packageName: PackageName

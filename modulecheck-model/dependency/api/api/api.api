@@ -71,6 +71,40 @@ public abstract interface class modulecheck/model/dependency/AndroidPlatformPlug
 	public abstract fun getAndroidResourcesEnabled ()Z
 }
 
+public abstract class modulecheck/model/dependency/AndroidSdk : modulecheck/model/dependency/Identifier {
+	public static final field Companion Lmodulecheck/model/dependency/AndroidSdk$Companion;
+	public abstract fun getVersion ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/model/dependency/AndroidSdk$Companion {
+	public final fun parseAndroidSdkJarFromPath (Ljava/io/File;)Lmodulecheck/model/dependency/AndroidSdk;
+}
+
+public final class modulecheck/model/dependency/AndroidSdk$CoreForSystemModules : modulecheck/model/dependency/AndroidSdk {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lmodulecheck/model/dependency/AndroidSdk$CoreForSystemModules;
+	public static synthetic fun copy$default (Lmodulecheck/model/dependency/AndroidSdk$CoreForSystemModules;IILjava/lang/Object;)Lmodulecheck/model/dependency/AndroidSdk$CoreForSystemModules;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getName ()Ljava/lang/String;
+	public fun getVersion ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class modulecheck/model/dependency/AndroidSdk$Full : modulecheck/model/dependency/AndroidSdk {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lmodulecheck/model/dependency/AndroidSdk$Full;
+	public static synthetic fun copy$default (Lmodulecheck/model/dependency/AndroidSdk$Full;IILjava/lang/Object;)Lmodulecheck/model/dependency/AndroidSdk$Full;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getName ()Ljava/lang/String;
+	public fun getVersion ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public abstract interface class modulecheck/model/dependency/CodeGenerator {
 	public abstract fun getAnnotationNames ()Ljava/util/List;
 	public abstract fun getBaseConfigNames ()Ljava/util/List;
@@ -189,6 +223,7 @@ public final class modulecheck/model/dependency/Configurations : java/util/Map, 
 
 public abstract interface class modulecheck/model/dependency/ConfiguredDependency : modulecheck/model/dependency/Dependency {
 	public static final field Companion Lmodulecheck/model/dependency/ConfiguredDependency$Companion;
+	public fun declaringSourceSetName-FjqR9C0 (Lmodulecheck/model/dependency/SourceSets;)Ljava/lang/String;
 	public abstract fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
 	public abstract fun getIdentifier ()Lmodulecheck/model/dependency/Identifier;
 	public abstract fun isTestFixture ()Z
@@ -247,37 +282,36 @@ public final class modulecheck/model/dependency/ExternalDependencies : java/util
 }
 
 public abstract class modulecheck/model/dependency/ExternalDependency : modulecheck/model/dependency/ConfiguredDependency, modulecheck/model/dependency/HasMavenCoordinates {
+	public final fun copy-9A_UJks (Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;Z)Lmodulecheck/model/dependency/ExternalDependency;
+	public static synthetic fun copy-9A_UJks$default (Lmodulecheck/model/dependency/ExternalDependency;Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;ZILjava/lang/Object;)Lmodulecheck/model/dependency/ExternalDependency;
 	public final fun copy-FdhTdL0 (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Lmodulecheck/model/dependency/ExternalDependency;
 	public static synthetic fun copy-FdhTdL0$default (Lmodulecheck/model/dependency/ExternalDependency;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)Lmodulecheck/model/dependency/ExternalDependency;
 	public fun equals (Ljava/lang/Object;)Z
-	public abstract fun getGroup ()Ljava/lang/String;
+	public final fun getGroup ()Ljava/lang/String;
 	public synthetic fun getIdentifier ()Lmodulecheck/model/dependency/Identifier;
 	public fun getIdentifier ()Lmodulecheck/model/dependency/MavenCoordinates;
-	public fun getMavenCoordinates ()Lmodulecheck/model/dependency/MavenCoordinates;
-	public abstract fun getModuleName ()Ljava/lang/String;
+	public final fun getModuleName ()Ljava/lang/String;
 	public final fun getNameWithVersion ()Ljava/lang/String;
 	public final fun getNameWithoutVersion ()Ljava/lang/String;
-	public abstract fun getVersion ()Ljava/lang/String;
+	public final fun getVersion ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class modulecheck/model/dependency/ExternalDependency$ExternalCodeGeneratorDependency : modulecheck/model/dependency/ExternalDependency, modulecheck/model/dependency/MightHaveCodeGeneratorBinding {
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLmodulecheck/model/dependency/CodeGenerator;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;ZLmodulecheck/model/dependency/CodeGenerator;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getCodeGeneratorBindingOrNull ()Lmodulecheck/model/dependency/CodeGenerator;
 	public fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
-	public fun getGroup ()Ljava/lang/String;
-	public fun getModuleName ()Ljava/lang/String;
-	public fun getVersion ()Ljava/lang/String;
+	public fun getMavenCoordinates ()Lmodulecheck/model/dependency/MavenCoordinates;
 	public fun isTestFixture ()Z
 }
 
 public final class modulecheck/model/dependency/ExternalDependency$ExternalRuntimeDependency : modulecheck/model/dependency/ExternalDependency {
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getConfigurationName-9LqIWVA ()Ljava/lang/String;
-	public fun getGroup ()Ljava/lang/String;
-	public fun getModuleName ()Ljava/lang/String;
-	public fun getVersion ()Ljava/lang/String;
+	public fun getMavenCoordinates ()Lmodulecheck/model/dependency/MavenCoordinates;
 	public fun isTestFixture ()Z
 }
 
@@ -294,6 +328,10 @@ public abstract interface class modulecheck/model/dependency/HasDependencies {
 	public abstract fun getProjectDependencies ()Lmodulecheck/model/dependency/ProjectDependencies;
 }
 
+public abstract interface class modulecheck/model/dependency/HasGroup {
+	public abstract fun getGroup ()Ljava/lang/String;
+}
+
 public abstract interface class modulecheck/model/dependency/HasIdentifier {
 	public abstract fun getIdentifier ()Lmodulecheck/model/dependency/Identifier;
 }
@@ -301,6 +339,13 @@ public abstract interface class modulecheck/model/dependency/HasIdentifier {
 public abstract interface class modulecheck/model/dependency/HasMavenCoordinates : modulecheck/model/dependency/HasIdentifier {
 	public fun getIdentifier ()Lmodulecheck/model/dependency/Identifier;
 	public abstract fun getMavenCoordinates ()Lmodulecheck/model/dependency/MavenCoordinates;
+}
+
+public abstract interface class modulecheck/model/dependency/HasMavenCoordinatesElements : modulecheck/model/dependency/HasGroup, modulecheck/model/dependency/HasModuleName, modulecheck/model/dependency/HasVersion {
+}
+
+public abstract interface class modulecheck/model/dependency/HasModuleName {
+	public abstract fun getModuleName ()Ljava/lang/String;
 }
 
 public abstract interface class modulecheck/model/dependency/HasProjectPath : modulecheck/model/dependency/HasIdentifier {
@@ -312,7 +357,13 @@ public abstract interface class modulecheck/model/dependency/HasSourceSets {
 	public abstract fun getSourceSets ()Lmodulecheck/model/dependency/SourceSets;
 }
 
-public abstract interface class modulecheck/model/dependency/Identifier {
+public abstract interface class modulecheck/model/dependency/HasVersion {
+	public abstract fun getVersion ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/model/dependency/Identifier : java/lang/Comparable {
+	public synthetic fun compareTo (Ljava/lang/Object;)I
+	public fun compareTo (Lmodulecheck/model/dependency/Identifier;)I
 	public abstract fun getName ()Ljava/lang/String;
 }
 
@@ -345,26 +396,25 @@ public final class modulecheck/model/dependency/JvmPlatformPlugin$KotlinJvmPlugi
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class modulecheck/model/dependency/MavenCoordinates : java/lang/Comparable, modulecheck/model/dependency/Identifier {
+public final class modulecheck/model/dependency/MavenCoordinates : modulecheck/model/dependency/HasMavenCoordinatesElements, modulecheck/model/dependency/Identifier {
 	public static final field Companion Lmodulecheck/model/dependency/MavenCoordinates$Companion;
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-	public synthetic fun compareTo (Ljava/lang/Object;)I
-	public fun compareTo (Lmodulecheck/model/dependency/MavenCoordinates;)I
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/lang/String;
 	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/model/dependency/MavenCoordinates;
 	public static synthetic fun copy$default (Lmodulecheck/model/dependency/MavenCoordinates;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/model/dependency/MavenCoordinates;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getGroup ()Ljava/lang/String;
-	public final fun getModuleName ()Ljava/lang/String;
+	public fun getGroup ()Ljava/lang/String;
+	public fun getModuleName ()Ljava/lang/String;
 	public fun getName ()Ljava/lang/String;
-	public final fun getVersion ()Ljava/lang/String;
+	public fun getVersion ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class modulecheck/model/dependency/MavenCoordinates$Companion {
+	public final fun parseMavenCoordinatesFromGradleCache (Ljava/io/File;)Lmodulecheck/model/dependency/MavenCoordinates;
 	public final fun parseOrNull (Ljava/lang/String;)Lmodulecheck/model/dependency/MavenCoordinates;
 }
 
@@ -392,7 +442,7 @@ public final class modulecheck/model/dependency/McConfigurationKt {
 	public static final fun names (Lkotlin/sequences/Sequence;)Lkotlin/sequences/Sequence;
 }
 
-public final class modulecheck/model/dependency/McSourceSet : java/lang/Comparable {
+public final class modulecheck/model/dependency/McSourceSet : java/lang/Comparable, modulecheck/model/sourceset/HasSourceSetName {
 	public synthetic fun <init> (Ljava/lang/String;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Lmodulecheck/model/dependency/McConfiguration;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Lorg/jetbrains/kotlin/config/JvmTarget;Lmodulecheck/utils/lazy/LazyDeferred;Lkotlin/Lazy;Lkotlin/Lazy;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun compareTo (Ljava/lang/Object;)I
 	public fun compareTo (Lmodulecheck/model/dependency/McSourceSet;)I
@@ -412,6 +462,7 @@ public final class modulecheck/model/dependency/McSourceSet : java/lang/Comparab
 	public final fun getProjectDependencies ()Lmodulecheck/model/dependency/ProjectDependencies;
 	public final fun getResourceFiles ()Ljava/util/Set;
 	public final fun getRuntimeOnlyConfiguration ()Lmodulecheck/model/dependency/McConfiguration;
+	public fun getSourceSetName-qrJCKeA ()Ljava/lang/String;
 	public final fun getUpstream ()Ljava/util/List;
 	public fun toString ()Ljava/lang/String;
 	public final fun withDownstream ()Ljava/util/List;
@@ -523,13 +574,21 @@ public final class modulecheck/model/dependency/ProjectDependencies : java/util/
 	public final fun values ()Ljava/util/Collection;
 }
 
+public final class modulecheck/model/dependency/ProjectDependenciesSerializer : kotlinx/serialization/KSerializer {
+	public static final field INSTANCE Lmodulecheck/model/dependency/ProjectDependenciesSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lmodulecheck/model/dependency/ProjectDependencies;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lmodulecheck/model/dependency/ProjectDependencies;)V
+}
+
 public abstract class modulecheck/model/dependency/ProjectDependency : modulecheck/model/dependency/ConfiguredDependency, modulecheck/model/dependency/HasProjectPath {
 	public final fun component1-9LqIWVA ()Ljava/lang/String;
 	public final fun component2 ()Lmodulecheck/model/dependency/ProjectPath;
 	public final fun component3 ()Z
 	public final fun copy-9A_UJks (Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath;Z)Lmodulecheck/model/dependency/ProjectDependency;
 	public static synthetic fun copy-9A_UJks$default (Lmodulecheck/model/dependency/ProjectDependency;Ljava/lang/String;Lmodulecheck/model/dependency/ProjectPath;ZILjava/lang/Object;)Lmodulecheck/model/dependency/ProjectDependency;
-	public final fun declaringSourceSetName-FjqR9C0 (Lmodulecheck/model/dependency/SourceSets;)Ljava/lang/String;
 	public fun equals (Ljava/lang/Object;)Z
 	public synthetic fun getIdentifier ()Lmodulecheck/model/dependency/Identifier;
 	public fun getIdentifier ()Lmodulecheck/model/dependency/ProjectPath;
@@ -556,10 +615,8 @@ public final class modulecheck/model/dependency/ProjectDependency$RuntimeProject
 	public fun isTestFixture ()Z
 }
 
-public abstract class modulecheck/model/dependency/ProjectPath : java/lang/Comparable, modulecheck/model/dependency/Identifier {
+public abstract class modulecheck/model/dependency/ProjectPath : modulecheck/model/dependency/Identifier {
 	public static final field Companion Lmodulecheck/model/dependency/ProjectPath$Companion;
-	public synthetic fun compareTo (Ljava/lang/Object;)I
-	public fun compareTo (Lmodulecheck/model/dependency/ProjectPath;)I
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getName ()Ljava/lang/String;
 	public final fun getTypeSafeValue ()Ljava/lang/String;
@@ -682,6 +739,15 @@ public final class modulecheck/model/dependency/SourceSets : java/util/Map, kotl
 	public fun replaceAll (Ljava/util/function/BiFunction;)V
 	public final fun size ()I
 	public final fun values ()Ljava/util/Collection;
+}
+
+public final class modulecheck/model/dependency/SourceSetsSerializer : kotlinx/serialization/KSerializer {
+	public static final field INSTANCE Lmodulecheck/model/dependency/SourceSetsSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lmodulecheck/model/dependency/SourceSets;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lmodulecheck/model/dependency/SourceSets;)V
 }
 
 public final class modulecheck/model/dependency/TransitiveProjectDependency {

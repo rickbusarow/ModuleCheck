@@ -15,7 +15,6 @@
 
 package modulecheck.model.sourceset
 
-import kotlinx.serialization.Serializable
 import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
 import java.io.Serializable as JavaSerializable
@@ -28,7 +27,6 @@ interface HasSourceSetName : JavaSerializable {
 }
 
 /** ex: `main`, `test`, `debug` */
-@Serializable
 @JvmInline
 value class SourceSetName(val value: String) : JavaSerializable {
 

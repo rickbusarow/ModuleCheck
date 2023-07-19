@@ -16,7 +16,6 @@
 package modulecheck.project
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.serializer
@@ -30,10 +29,8 @@ import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
-@Serializable
 @SingleIn(TaskScope::class)
 class ProjectCache @Inject constructor() : HasTraceTags {
-  @Serializable(with = ConcurrentHashMapSerializer::class)
   private val delegate = ConcurrentHashMap<TypeSafeProjectPath, McProject>()
 
   override val tags: List<KClass<out ProjectCache>> = listOf(this::class)
@@ -45,7 +42,8 @@ class ProjectCache @Inject constructor() : HasTraceTags {
    * All project path pugs and gets are done using the derived type-safe variant.
    *
    * @param path The path of the project.
-   * @param defaultValue The function that generates a default project if it doesn't exist in the cache.
+   * @param defaultValue The function that generates a
+   *   default project if it doesn't exist in the cache.
    * @return The existing or newly added project.
    * @since 0.12.0
    */
@@ -72,7 +70,8 @@ class ProjectCache @Inject constructor() : HasTraceTags {
    *
    * @param path The path of the project.
    * @param project The project to be added or updated.
-   * @return The previous project associated with the path, or null if there was no mapping for the path.
+   * @return The previous project associated with the
+   *   path, or null if there was no mapping for the path.
    */
   operator fun set(path: ProjectPath, project: McProject): McProject? {
     return delegate.put(path.toTypeSafe(), project)

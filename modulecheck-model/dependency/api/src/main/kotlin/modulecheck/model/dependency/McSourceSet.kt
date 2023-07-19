@@ -17,7 +17,6 @@
 package modulecheck.model.dependency
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -36,7 +35,6 @@ interface HasSourceSets {
 }
 
 /** Cache of [sourceSets][McSourceSet], probably at the project level. */
-@Serializable(with = SourceSetsSerializer::class)
 class SourceSets(
   delegate: Map<SourceSetName, McSourceSet>
 ) : Map<SourceSetName, McSourceSet> by delegate
@@ -87,7 +85,6 @@ object SourceSetsSerializer : KSerializer<SourceSets> {
  *   this one, like `test` if this source set is `main`
  * @since 0.12.0
  */
-@Serializable
 class McSourceSet(
   val name: SourceSetName,
   val compileOnlyConfiguration: McConfiguration,

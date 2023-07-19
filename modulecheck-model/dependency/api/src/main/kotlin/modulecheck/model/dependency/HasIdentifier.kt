@@ -29,3 +29,34 @@ interface HasMavenCoordinates : HasIdentifier {
   val mavenCoordinates: MavenCoordinates
   override val identifier: Identifier get() = mavenCoordinates
 }
+
+/**
+ * common trait interface for maven coordinates
+ *
+ * ```
+ * org.junit.jupiter:junit-jupiter-engine:5.0.0
+ * └───────┬───────┘ └────────┬─────────┘ └─┬─┘
+ *         │                  │             └ version
+ *         │                  └ moduleName
+ *         └ group
+ * ```
+ * */
+interface HasMavenCoordinatesElements : HasGroup, HasModuleName, HasVersion
+
+/** Convenience trait interface for [group] */
+interface HasGroup {
+  /** In `org.junit.jupiter:junit-jupiter-engine:5.0.0`, this is `org.junit.jupiter:__:__`. */
+  val group: String?
+}
+
+/** Convenience trait interface for [moduleName] */
+interface HasModuleName {
+  /** In `org.junit.jupiter:junit-jupiter-engine:5.0.0`, this is `__:junit-jupiter-engine:__`. */
+  val moduleName: String
+}
+
+/** Convenience trait interface for [version] */
+interface HasVersion {
+  /** In `org.junit.jupiter:junit-jupiter-engine:5.0.0`, this is `__:__:5.0.0`. */
+  val version: String?
+}

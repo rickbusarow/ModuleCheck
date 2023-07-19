@@ -4,7 +4,6 @@ public abstract interface class modulecheck/parsing/test/McNameTest : modulechec
 	public fun androidDataBinding (Ljava/lang/String;)Lmodulecheck/parsing/source/AndroidDataBindingReferenceName;
 	public fun androidR (Lmodulecheck/parsing/source/PackageName;)Lmodulecheck/parsing/source/AndroidRReferenceName;
 	public static synthetic fun androidR$default (Lmodulecheck/parsing/test/McNameTest;Lmodulecheck/parsing/source/PackageName;ILjava/lang/Object;)Lmodulecheck/parsing/source/AndroidRReferenceName;
-	public fun asReferenceName (Ljava/lang/String;)Lmodulecheck/parsing/source/ReferenceName;
 	public abstract fun getDefaultLanguage ()Lmodulecheck/parsing/source/McName$CompatibleLanguage;
 	public fun java (Ljava/lang/String;Lmodulecheck/parsing/source/PackageName;)Lmodulecheck/parsing/source/QualifiedDeclaredName;
 	public static synthetic fun java$default (Lmodulecheck/parsing/test/McNameTest;Ljava/lang/String;Lmodulecheck/parsing/source/PackageName;ILjava/lang/Object;)Lmodulecheck/parsing/source/QualifiedDeclaredName;
@@ -59,6 +58,7 @@ public class modulecheck/parsing/test/McNameTest$JvmFileBuilder$ReferenceBuilder
 }
 
 public final class modulecheck/parsing/test/McNameTestKt {
+	public static final fun prettyPring (Lmodulecheck/parsing/source/JvmFile;)Ljava/lang/String;
 	public static final fun prettyPrint (Ljava/util/Collection;)Ljava/lang/String;
 }
 

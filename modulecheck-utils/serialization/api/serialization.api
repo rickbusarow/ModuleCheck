@@ -1,0 +1,9 @@
+public final class modulecheck/utils/serialization/FileAsStringSerializer : kotlinx/serialization/KSerializer {
+	public static final field INSTANCE Lmodulecheck/utils/serialization/FileAsStringSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/io/File;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/io/File;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+

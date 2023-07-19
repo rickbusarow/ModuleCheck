@@ -27,6 +27,7 @@ mcbuild {
 dependencies {
 
   api(libs.ajalt.mordant)
+  api(libs.jna)
 
   compileOnly(libs.google.dagger.api)
 

@@ -15,7 +15,6 @@
 
 package modulecheck.model.dependency
 
-import kotlinx.serialization.Serializable
 import modulecheck.utils.mapToSet
 
 /**
@@ -31,7 +30,6 @@ import modulecheck.utils.mapToSet
  *   for official libraries in Kotlin DSL files, like `kotlin("kapt")`.
  * @since 0.12.0
  */
-@Serializable
 data class PluginDefinition(
   val name: String,
   val qualifiedId: String,
@@ -90,6 +88,5 @@ data class PluginDefinition(
  * @property text the raw text used to create the declaration, without surrounding whitespace.
  * @since 0.12.0
  */
-@Serializable
 @JvmInline
 value class PluginAccessor(val text: String)

@@ -105,7 +105,8 @@ class AgpApiAccess @Inject constructor() {
     if (!androidIsInClasspath) return
 
     @OptIn(UnsafeDirectAgpApiReference::class)
-    project.plugins.withType(AndroidBasePlugin::class.java).configureEach {
+    @Suppress("ktlint:kt-rules:no-gradle-with-type-with-lambda")
+    project.plugins.withType(AndroidBasePlugin::class.java) {
       SafeAgpApiReferenceScope(this, project).action()
     }
   }

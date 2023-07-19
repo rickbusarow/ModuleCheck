@@ -15,7 +15,6 @@
 
 package modulecheck.parsing.source
 
-import kotlinx.serialization.Serializable
 import modulecheck.parsing.source.HasSimpleNames.Companion.checkSimpleNames
 import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
@@ -32,7 +31,6 @@ import org.jetbrains.kotlin.name.FqName
  *
  * @since 0.12.0
  */
-@Serializable
 sealed interface DeclaredName : McName, HasSimpleNames {
 
   /**
@@ -99,7 +97,6 @@ sealed interface DeclaredName : McName, HasSimpleNames {
  *
  * @since 0.12.0
  */
-@Serializable
 sealed class QualifiedDeclaredName : DeclaredName, McName, HasPackageName, HasSimpleNames {
 
   override val name: String
@@ -135,7 +132,6 @@ sealed class QualifiedDeclaredName : DeclaredName, McName, HasPackageName, HasSi
 }
 
 /** */
-@Serializable
 class QualifiedDeclaredNameImpl(
   override val packageName: PackageName,
   override val simpleNames: List<SimpleName>,

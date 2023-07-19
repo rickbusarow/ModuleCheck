@@ -25,6 +25,8 @@ mcbuild {
 }
 dependencies {
 
+  api(libs.jna)
+
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-dagger"))
 

@@ -31,7 +31,6 @@ object TerminalModule {
   @Provides
   fun provideTerminal(): Terminal = Terminal(
     ansiLevel = TRUECOLOR,
-    width = 2560,
     theme = Theme(from = Theme.Default) {
       styles.putAll(
         mapOf(
@@ -42,7 +41,8 @@ object TerminalModule {
           "muted" to TextStyle(dim = true)
         )
       )
-    }
+    },
+    interactive = true
   ).also {
     it.info.updateTerminalSize()
   }

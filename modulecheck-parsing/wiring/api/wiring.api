@@ -28,6 +28,11 @@ public final class modulecheck/parsing/wiring/AndroidResourceReferenceParsingInt
 	public fun intercept (Lmodulecheck/parsing/source/internal/ParsingInterceptor$Chain;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public final class modulecheck/parsing/wiring/ConcatenatingParsingInterceptor : modulecheck/parsing/source/internal/ParsingInterceptor {
+	public fun <init> ()V
+	public fun intercept (Lmodulecheck/parsing/source/internal/ParsingInterceptor$Chain;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class modulecheck/parsing/wiring/JvmFileCache {
 	public fun <init> ()V
 	public final fun getOrPut (Ljava/io/File;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -75,12 +80,6 @@ public final class modulecheck/parsing/wiring/RealAndroidRNameProvider : modulec
 	public synthetic fun <init> (Lmodulecheck/project/McProject;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getLocalOrNull (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
-public final class modulecheck/parsing/wiring/RealDeclarationsProvider : modulecheck/parsing/psi/internal/DeclarationsProvider {
-	public fun <init> (Lmodulecheck/project/McProject;)V
-	public fun get-WsCknJc (Ljava/lang/String;Lmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun getWithUpstream-WsCknJc (Ljava/lang/String;Lmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class modulecheck/parsing/wiring/RealDependenciesBlocksProvider : modulecheck/parsing/gradle/dsl/DependenciesBlocksProvider {

@@ -53,6 +53,7 @@ dependencies {
   implementation(libs.dropbox.dependencyGuard)
   implementation(libs.google.dagger.api)
   implementation(libs.google.ksp)
+  implementation(libs.jna)
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.reflect)
   implementation(libs.kotlin.stdlib.common)

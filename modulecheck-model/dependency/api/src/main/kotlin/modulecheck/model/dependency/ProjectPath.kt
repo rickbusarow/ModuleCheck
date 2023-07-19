@@ -15,7 +15,6 @@
 
 package modulecheck.model.dependency
 
-import kotlinx.serialization.Serializable
 import modulecheck.utils.capitalize
 import modulecheck.utils.lazy.unsafeLazy
 import java.util.Locale
@@ -26,7 +25,6 @@ import java.util.Locale
  * - **StringProjectPath**: ":some-module-group:api"
  * - **TypeSafeProjectPath**: "someModuleGroup.api"
  */
-@Serializable
 sealed class ProjectPath : Identifier {
 
   /**
@@ -70,7 +68,6 @@ sealed class ProjectPath : Identifier {
 
   abstract fun pathValue(typeSafeProjectPathResolver: TypeSafeProjectPathResolver): String
 
-  @Serializable
   class StringProjectPath(override val value: String) : ProjectPath() {
     init {
       require(value.startsWith(':')) {
@@ -87,7 +84,6 @@ sealed class ProjectPath : Identifier {
     override fun pathValue(typeSafeProjectPathResolver: TypeSafeProjectPathResolver): String = value
   }
 
-  @Serializable
   class TypeSafeProjectPath(override val value: String) : ProjectPath() {
 
     override fun toTypeSafe(): TypeSafeProjectPath = this

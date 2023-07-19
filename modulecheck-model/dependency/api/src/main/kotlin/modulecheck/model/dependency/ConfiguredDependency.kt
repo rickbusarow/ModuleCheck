@@ -15,10 +15,8 @@
 
 package modulecheck.model.dependency
 
-import kotlinx.serialization.Serializable
 import modulecheck.model.sourceset.SourceSetName
 
-@Serializable
 sealed interface ConfiguredDependency : Dependency {
 
   val configurationName: ConfigurationName
@@ -87,7 +85,6 @@ sealed interface ConfiguredDependency : Dependency {
   }
 }
 
-@Serializable
 sealed interface Dependency
 
 /**
@@ -106,7 +103,6 @@ sealed interface Dependency
  *     - `alias(libs.plugins.anvil)`
  * @since 0.12.0
  */
-@Serializable
 data class PluginDependency(
   val accessor: PluginAccessor
 ) : Dependency {

@@ -307,8 +307,7 @@ public final class modulecheck/api/context/Declarations : modulecheck/project/Pr
 	public static final field Key Lmodulecheck/api/context/Declarations$Key;
 	public synthetic fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun all (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun get-PbJP7P4 (Ljava/lang/String;ZLmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun get-PbJP7P4$default (Lmodulecheck/api/context/Declarations;Ljava/lang/String;ZLmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun get-WsCknJc (Ljava/lang/String;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
 }
 
@@ -317,9 +316,8 @@ public final class modulecheck/api/context/Declarations$Key : modulecheck/projec
 }
 
 public final class modulecheck/api/context/DeclarationsKt {
-	public static final fun declarations (Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/project/ProjectCache;Lmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun declarations (Lmodulecheck/model/dependency/ConfiguredDependency;Lmodulecheck/project/ProjectCache;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun declarations (Lmodulecheck/project/ProjectContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun declarations$default (Lmodulecheck/model/dependency/ProjectDependency;Lmodulecheck/project/ProjectCache;Lmodulecheck/parsing/source/PackageName;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 
 public final class modulecheck/api/context/DependencySources : modulecheck/project/ProjectContext$Element {
@@ -733,9 +731,13 @@ public final class modulecheck/api/context/ResSourceFilesKt {
 
 public final class modulecheck/api/context/ResolvedDeclaredNames : modulecheck/project/ProjectContext$Element {
 	public static final field Key Lmodulecheck/api/context/ResolvedDeclaredNames$Key;
-	public synthetic fun <init> (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun copy (Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;)Lmodulecheck/api/context/ResolvedDeclaredNames;
+	public static synthetic fun copy$default (Lmodulecheck/api/context/ResolvedDeclaredNames;Lmodulecheck/utils/cache/SafeCache;Lmodulecheck/project/McProject;ILjava/lang/Object;)Lmodulecheck/api/context/ResolvedDeclaredNames;
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getKey ()Lmodulecheck/project/ProjectContext$Key;
-	public final fun getSource-5sj7XBw (Lmodulecheck/parsing/source/ResolvableMcName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getSource-5sj7XBw (Lmodulecheck/parsing/source/QualifiedDeclaredName;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class modulecheck/api/context/ResolvedDeclaredNames$Key : modulecheck/project/ProjectContext$Key {
@@ -743,14 +745,12 @@ public final class modulecheck/api/context/ResolvedDeclaredNames$Key : moduleche
 }
 
 public final class modulecheck/api/context/ResolvedDeclaredNames$McProjectWithSourceSetName {
-	public synthetic fun <init> (Lmodulecheck/project/McProject;Ljava/lang/String;Lmodulecheck/parsing/source/QualifiedDeclaredName;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lmodulecheck/project/McProject;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lmodulecheck/project/McProject;
 	public final fun component2-qrJCKeA ()Ljava/lang/String;
-	public final fun component3 ()Lmodulecheck/parsing/source/QualifiedDeclaredName;
-	public final fun copy-5sj7XBw (Lmodulecheck/project/McProject;Ljava/lang/String;Lmodulecheck/parsing/source/QualifiedDeclaredName;)Lmodulecheck/api/context/ResolvedDeclaredNames$McProjectWithSourceSetName;
-	public static synthetic fun copy-5sj7XBw$default (Lmodulecheck/api/context/ResolvedDeclaredNames$McProjectWithSourceSetName;Lmodulecheck/project/McProject;Ljava/lang/String;Lmodulecheck/parsing/source/QualifiedDeclaredName;ILjava/lang/Object;)Lmodulecheck/api/context/ResolvedDeclaredNames$McProjectWithSourceSetName;
+	public final fun copy-wYXeOjA (Lmodulecheck/project/McProject;Ljava/lang/String;)Lmodulecheck/api/context/ResolvedDeclaredNames$McProjectWithSourceSetName;
+	public static synthetic fun copy-wYXeOjA$default (Lmodulecheck/api/context/ResolvedDeclaredNames$McProjectWithSourceSetName;Lmodulecheck/project/McProject;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/api/context/ResolvedDeclaredNames$McProjectWithSourceSetName;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getDeclaration ()Lmodulecheck/parsing/source/QualifiedDeclaredName;
 	public final fun getProject ()Lmodulecheck/project/McProject;
 	public final fun getSourceSetName-qrJCKeA ()Ljava/lang/String;
 	public fun hashCode ()I
