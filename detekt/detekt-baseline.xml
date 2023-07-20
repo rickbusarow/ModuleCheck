@@ -14,10 +14,9 @@
   ~ limitations under the License.
   -->
 
+<!--@formatter:off   this file (or Detekt's parsing?) is broken if this gets auto-formatted-->
+<!--@formatter:off   this file (or Detekt's parsing?) is broken if this gets auto-formatted-->
 <SmellBaseline>
-  <ManuallySuppressedIssues>
-    <ID>UnusedParameter:RealKotlinEnvironment.kt$RealKotlinEnvironment$sourceFiles: List&lt;File></ID>
-  </ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>MagicNumber:ArtifactsTask.kt$ArtifactsTask$4</ID>
     <ID>MatchingDeclarationName:publishing.kt$PublishingExtension</ID>
@@ -121,7 +120,6 @@
     <ID>UndocumentedPublicClass:DownstreamProjects.kt$DownstreamProjects : SetElement</ID>
     <ID>UndocumentedPublicClass:DownstreamProjects.kt$DownstreamProjects$Key : Key</ID>
     <ID>UndocumentedPublicClass:ExternalDependencies.kt$ExternalDependencies : MutableMap</ID>
-    <ID>UndocumentedPublicClass:ExternalDependency.kt$ExternalDependency : ConfiguredDependencyHasMavenCoordinates</ID>
     <ID>UndocumentedPublicClass:ExternalDependency.kt$ExternalDependency$ExternalCodeGeneratorDependency : ExternalDependencyMightHaveCodeGeneratorBinding</ID>
     <ID>UndocumentedPublicClass:ExternalDependency.kt$ExternalDependency$ExternalRuntimeDependency : ExternalDependency</ID>
     <ID>UndocumentedPublicClass:ExternalDependencyDeclarationVisitor.kt$ExternalDependencyDeclarationVisitor</ID>
@@ -273,8 +271,6 @@
     <ID>UndocumentedPublicClass:RealAndroidDataBindingNameProvider.kt$RealAndroidDataBindingNameProvider : AndroidDataBindingNameProvider</ID>
     <ID>UndocumentedPublicClass:RealAndroidGradleSettingsProvider.kt$RealAndroidGradleSettingsProvider : AndroidGradleSettingsProvider</ID>
     <ID>UndocumentedPublicClass:RealAndroidGradleSettingsProvider.kt$RealAndroidGradleSettingsProvider$Factory : Factory</ID>
-    <ID>UndocumentedPublicClass:RealAndroidPlatformPluginFactory.kt$RealAndroidPlatformPluginFactory : AndroidPlatformPluginFactory</ID>
-    <ID>UndocumentedPublicClass:RealAndroidPlatformPluginFactory.kt$RealAndroidPlatformPluginFactory$Type&lt;T : AndroidCommonExtension></ID>
     <ID>UndocumentedPublicClass:RealAndroidPlatformPluginFactory.kt$RealAndroidPlatformPluginFactory.Type$Application : Type</ID>
     <ID>UndocumentedPublicClass:RealAndroidPlatformPluginFactory.kt$RealAndroidPlatformPluginFactory.Type$DynamicFeature : Type</ID>
     <ID>UndocumentedPublicClass:RealAndroidPlatformPluginFactory.kt$RealAndroidPlatformPluginFactory.Type$Library : Type</ID>
@@ -410,7 +406,6 @@
     <ID>UndocumentedPublicFunction:ConfigurationName.kt$fun &lt;T : Any> Map&lt;ConfigurationName, Collection&lt;T>>.main(): List&lt;T></ID>
     <ID>UndocumentedPublicFunction:ConfigurationsFactory.kt$ConfigurationsFactory$fun create(gradleProject: GradleProject): Configurations</ID>
     <ID>UndocumentedPublicFunction:ConfiguredDependency.kt$ConfiguredDependency.Companion$inline fun &lt;reified T : ConfiguredDependency> T.copy( configurationName: ConfigurationName = this.configurationName, isTestFixture: Boolean = this.isTestFixture ): ConfiguredDependency</ID>
-    <ID>UndocumentedPublicFunction:Declarations.kt$Declarations$suspend fun all(): LazySet&lt;DeclaredName></ID>
     <ID>UndocumentedPublicFunction:Deletable.kt$Deletable$suspend fun delete(): Boolean</ID>
     <ID>UndocumentedPublicFunction:DependenciesBlock.kt$DependenciesBlock$fun getOrEmpty( mavenCoordinates: MavenCoordinates, configName: ConfigurationName ): List&lt;ExternalDependencyDeclaration></ID>
     <ID>UndocumentedPublicFunction:DependenciesBlock.kt$DependenciesBlock$fun getOrEmpty( moduleRef: ProjectPath, configName: ConfigurationName, testFixtures: Boolean ): List&lt;ModuleDependencyDeclaration></ID>
@@ -537,8 +532,6 @@
     <ID>UndocumentedPublicFunction:PluginsBlock.kt$PluginsBlockProvider.Factory$fun create(buildFile: File): PluginsBlockProvider</ID>
     <ID>UndocumentedPublicFunction:ProjectAccessor.kt$ProjectAccessor.Companion$fun from(rawString: String, projectPath: ProjectPath): ProjectAccessor</ID>
     <ID>UndocumentedPublicFunction:ProjectCache.kt$ProjectCache$fun clearContexts()</ID>
-    <ID>UndocumentedPublicFunction:ProjectCache.kt$ProjectCache$fun getValue(path: ProjectPath): McProject</ID>
-    <ID>UndocumentedPublicFunction:ProjectCache.kt$ProjectCache$operator fun set(path: ProjectPath, project: McProject): McProject?</ID>
     <ID>UndocumentedPublicFunction:ProjectContext.kt$ProjectContext$fun clearContext()</ID>
     <ID>UndocumentedPublicFunction:ProjectContext.kt$ProjectContext$suspend fun &lt;E : Element> get(key: Key&lt;E>): E</ID>
     <ID>UndocumentedPublicFunction:ProjectContext.kt$ProjectContext.Companion$operator fun invoke(project: McProject): ProjectContext</ID>
@@ -559,7 +552,6 @@
     <ID>UndocumentedPublicFunction:ProjectProvider.kt$fun ProjectProvider.toTypeSafeProjectPathResolver(): TypeSafeProjectPathResolver</ID>
     <ID>UndocumentedPublicFunction:PsiElementResolver.kt$PsiElementResolver$suspend fun declaredNameOrNull(token: PsiElement): QualifiedDeclaredName?</ID>
     <ID>UndocumentedPublicFunction:PublicDependencies.kt$suspend fun ProjectContext.publicDependencies(): PublicDependencies</ID>
-    <ID>UndocumentedPublicFunction:RealAndroidPlatformPluginFactory.kt$RealAndroidPlatformPluginFactory.Type.Companion$fun from(extension: AndroidCommonExtension): Type&lt;*></ID>
     <ID>UndocumentedPublicFunction:RealJavaFile.kt$fun &lt;T> T.canBeImported(): Boolean</ID>
     <ID>UndocumentedPublicFunction:RealJavaFile.kt$fun &lt;T> T.canBeResolved(): Boolean</ID>
     <ID>UndocumentedPublicFunction:RealJavaFile.kt$fun FieldDeclaration.apiReferences(): List&lt;String></ID>
@@ -661,8 +653,6 @@
     <ID>UndocumentedPublicProperty:AndroidStylesFile.kt$AndroidStylesFile$val name: String = file.nameWithoutExtension</ID>
     <ID>UndocumentedPublicProperty:AnvilGradlePlugin.kt$AnvilAnnotatedType$val contributedScope: AnvilScopeName</ID>
     <ID>UndocumentedPublicProperty:AnvilGradlePlugin.kt$AnvilAnnotatedType$val contributedTypeDeclaration: QualifiedDeclaredName</ID>
-    <ID>UndocumentedPublicProperty:AnvilGradlePlugin.kt$AnvilGradlePlugin$@Serializable(SemVerSerializer::class) val version: SemVer</ID>
-    <ID>UndocumentedPublicProperty:AnvilGradlePlugin.kt$AnvilGradlePlugin$val generateDaggerFactories: Boolean</ID>
     <ID>UndocumentedPublicProperty:AnvilGradlePlugin.kt$AnvilScopeName$val fqName: FqName</ID>
     <ID>UndocumentedPublicProperty:AnvilGradlePlugin.kt$AnvilScopeNameEntry$val name: ReferenceName</ID>
     <ID>UndocumentedPublicProperty:AnvilGradlePlugin.kt$RawAnvilAnnotatedType$val anvilScopeNameEntry: AnvilScopeNameEntry</ID>
@@ -709,9 +699,6 @@
     <ID>UndocumentedPublicProperty:DocumentedRule.kt$DocumentedRule.Companion$const val RULES_BASE_URL: String = "https://rbusarow.github.io/ModuleCheck/docs/rules/"</ID>
     <ID>UndocumentedPublicProperty:DownstreamDependency.kt$DownstreamDependency$val dependentProjectPath: ProjectPath.StringProjectPath</ID>
     <ID>UndocumentedPublicProperty:DownstreamDependency.kt$DownstreamDependency$val projectDependency: ProjectDependency</ID>
-    <ID>UndocumentedPublicProperty:ExternalDependency.kt$ExternalDependency$abstract val group: String?</ID>
-    <ID>UndocumentedPublicProperty:ExternalDependency.kt$ExternalDependency$abstract val moduleName: String</ID>
-    <ID>UndocumentedPublicProperty:ExternalDependency.kt$ExternalDependency$abstract val version: String?</ID>
     <ID>UndocumentedPublicProperty:ExternalDependency.kt$ExternalDependency$val nameWithVersion: String by unsafeLazy { "${group.orEmpty()}:$moduleName:${version.orEmpty()}" }</ID>
     <ID>UndocumentedPublicProperty:ExternalDependency.kt$ExternalDependency$val nameWithoutVersion: String by unsafeLazy { "${group.orEmpty()}:$moduleName" }</ID>
     <ID>UndocumentedPublicProperty:Finding.kt$ConfigurationFinding$val configurationName: ConfigurationName</ID>
