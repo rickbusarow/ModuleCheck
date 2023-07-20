@@ -203,10 +203,6 @@ interface McNameTest : TrimmedAsserts {
     UnqualifiedAndroidResourceReferenceName(name, defaultLanguage)
 }
 
-fun JvmFile.prettyPring(): String = buildString {
-  this@prettyPring
-}
-
 fun Collection<McName>.prettyPrint(): String = asSequence()
   .map { mcName ->
     val typeName = when (mcName) {
