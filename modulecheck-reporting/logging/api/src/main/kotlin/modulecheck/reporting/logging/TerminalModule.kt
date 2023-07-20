@@ -31,6 +31,7 @@ object TerminalModule {
   @Provides
   fun provideTerminal(): Terminal = Terminal(
     ansiLevel = TRUECOLOR,
+    width = 2560,
     theme = Theme(from = Theme.Default) {
       styles.putAll(
         mapOf(

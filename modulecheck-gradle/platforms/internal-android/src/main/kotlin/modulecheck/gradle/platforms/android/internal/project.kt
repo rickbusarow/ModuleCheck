@@ -18,8 +18,8 @@
 package modulecheck.gradle.platforms.android.internal
 
 import modulecheck.gradle.platforms.android.AgpApiAccess
-import modulecheck.gradle.platforms.android.AndroidBasePlugin
-import modulecheck.gradle.platforms.android.AndroidTestedExtension
+import modulecheck.gradle.platforms.android.AgpTestedExtension
+import modulecheck.gradle.platforms.android.SafeAgpApiReferenceScope
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
 import modulecheck.gradle.platforms.internal.GradleConfiguration
 import modulecheck.gradle.platforms.internal.GradleProject
@@ -65,7 +65,7 @@ fun GradleProject.androidNamespaces(
 
   val namespace = baseExtension.namespace?.asPackageName()
   val testNameSpaceOrNull =
-    (baseExtension as? AndroidTestedExtension)?.testNamespace?.asPackageName()
+    (baseExtension as? AgpTestedExtension)?.testNamespace?.asPackageName()
 
   baseExtension.sourceSets
     .mapNotNull { androidSourceSet ->
@@ -112,18 +112,11 @@ fun GradleProject.mainAndroidManifest(agpApiAccess: AgpApiAccess): File? {
  *   has been changed in the Android extension, the new path will be used.
  * @since 0.12.0
  */
-@OptIn(UnsafeDirectAgpApiReference::class)
 inline fun GradleProject.onAndroidPlugin(
   agpApiAccess: AgpApiAccess,
-  crossinline action: AndroidBasePlugin.() -> Unit
+  crossinline action: SafeAgpApiReferenceScope.() -> Unit
 ) {
-
-  agpApiAccess.whenSafe(this) {
-
-    plugins.withType(AndroidBasePlugin::class.java).configureEach { plugin ->
-      action(plugin)
-    }
-  }
+  agpApiAccess.whenSafe(project = this@onAndroidPlugin, action = action)
 }
 
 /**

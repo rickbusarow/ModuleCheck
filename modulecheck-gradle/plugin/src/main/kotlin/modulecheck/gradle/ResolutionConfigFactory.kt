@@ -23,10 +23,14 @@ import modulecheck.model.dependency.asConfigurationName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.utils.filterToSet
 import modulecheck.utils.flatMapToSet
+import modulecheck.utils.singletonSet
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.SelfResolvingDependency
 import org.gradle.api.attributes.Attribute
 import org.gradle.api.attributes.HasConfigurableAttributes
+import org.gradle.api.internal.artifacts.DefaultDependencySet
+import org.gradle.api.internal.artifacts.configurations.ConfigurationInternal.InternalState
+import org.gradle.api.internal.artifacts.configurations.DefaultConfiguration
 
 /** A factory class for creating resolution configurations. */
 class ResolutionConfigFactory {
@@ -85,84 +89,61 @@ class ResolutionConfigFactory {
   ): GradleConfiguration {
 
     val maybeExisting = project.configurations
-      .findByName("${sourceConfiguration.name}ExternalDependencies")
+      .findByName("${sourceConfiguration.name}Copy")
 
     if (maybeExisting != null) {
       return maybeExisting
     }
 
-    val new = project.configurations
-      .create("${sourceConfiguration.name}ExternalDependencies")
+    val copy = sourceConfiguration.copyRecursive().setTransitive(true)
 
-    new.extendsFrom(sourceConfiguration)
+    copy as DefaultConfiguration
 
-    sourceConfiguration.allDependencies
-      // .filterIsInstance<GradleProjectDependency>()
-      .filterIsInstance<SelfResolvingDependency>()
-      .forEach { new.exclude(mapOf("group" to it.group, "module" to it.name)) }
+    project.configurations.add(copy)
 
-    return new
+    if (copy.resolvedState == InternalState.UNRESOLVED) {
+      copy.isCanBeResolved = true
+    }
 
-    // return project.configurations
-    //   .create("${sourceConfiguration.name}ExternalDependencies") { new ->
-    //
-    //     new.extendsFrom(sourceConfiguration)
-    //
-    //     sourceConfiguration.allDependencies
-    //       .filterIsInstance<GradleProjectDependency>()
-    //       .forEach { new.exclude(mapOf("group" to it.group, "module" to it.name)) }
-    //   }
+    copy.dependencies.clear()
 
-    // val copy = sourceConfiguration.copyRecursive().setTransitive(true)
-    //
-    // copy as DefaultConfiguration
-    //
-    // project.configurations.add(copy)
-    //
-    //
-    // if (copy.resolvedState == UNRESOLVED) {
-    //   copy.isCanBeResolved = true
-    // }
-    //
-    // copy.dependencies.clear()
-    //
-    // val destinationDependencies = copy.dependencies as DefaultDependencySet
-    //
-    // sourceConfiguration.excludeRules.forEach { er ->
-    //   copy.exclude(mapOf("group" to er.group, "module" to er.module))
-    // }
-    //
-    // if (copy.resolvedState == UNRESOLVED) {
-    //
-    //   val deps = sourceConfiguration.allDependencies
-    //     .flatMapToSet { dependency ->
-    //
-    //       when (dependency) {
-    //         is GradleProjectDependency -> dependency.externalDependencies(
-    //           sourceConfiguration,
-    //           setOf(sourceConfiguration.name)
-    //         )
-    //
-    //         else -> dependency.singletonSet()
-    //       }
-    //         .filterToSet { it !is GradleProjectDependency && it !is SelfResolvingDependency }
-    //     }
-    //
-    //   destinationDependencies.addAll(deps)
-    // }
-    //
-    // val metadata = project.configurations.findByName("commonMainMetadataElements")
-    // if (metadata == null) {
-    //   val compile = project.configurations.findByName("compile")
-    //   if (compile != null) {
-    //     copy.addAttributes(compile) { key -> key.contains("kotlin") }
-    //   }
-    // } else {
-    //   copy.addAttributes(metadata)
-    // }
-    //
-    // copy.addAttributes(sourceConfiguration)
-    // return copy
+    val destinationDependencies = copy.dependencies as DefaultDependencySet
+
+    sourceConfiguration.excludeRules.forEach { er ->
+      copy.exclude(mapOf("group" to er.group, "module" to er.module))
+    }
+
+    if (copy.resolvedState == InternalState.UNRESOLVED) {
+
+      val deps = sourceConfiguration.allDependencies
+        .flatMapToSet { dependency ->
+
+          when (dependency) {
+            is GradleProjectDependency -> dependency.externalDependencies(
+              sourceConfiguration,
+              setOf(sourceConfiguration.name)
+            )
+
+            else -> dependency.singletonSet()
+          }
+            .filterToSet { it !is GradleProjectDependency && it !is SelfResolvingDependency }
+        }
+
+      destinationDependencies.addAll(deps)
+    }
+
+    val metadata = project.configurations.findByName("commonMainMetadataElements")
+    if (metadata == null) {
+      val compile = project.configurations.findByName("compile")
+      if (compile != null) {
+        copy.addAttributes(compile) { key -> key.contains("kotlin") }
+      }
+    } else {
+      copy.addAttributes(metadata)
+    }
+
+    copy.addAttributes(sourceConfiguration)
+    return copy
   }
 
   /**

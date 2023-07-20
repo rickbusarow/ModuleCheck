@@ -23,14 +23,14 @@ import modulecheck.gradle.internal.dependsOn
 import modulecheck.gradle.internal.whenElementRegistered
 import modulecheck.gradle.platforms.Classpath
 import modulecheck.gradle.platforms.android.AgpApiAccess
-import modulecheck.gradle.platforms.android.AndroidBaseExtension
-import modulecheck.gradle.platforms.android.AndroidBaseVariant
-import modulecheck.gradle.platforms.android.AndroidDefaultAndroidSourceDirectorySet
-import modulecheck.gradle.platforms.android.AndroidGenerateBuildConfig
-import modulecheck.gradle.platforms.android.AndroidGenerateLibraryRFileTask
-import modulecheck.gradle.platforms.android.AndroidLinkApplicationAndroidResourcesTask
-import modulecheck.gradle.platforms.android.AndroidManifestProcessorTask
-import modulecheck.gradle.platforms.android.AndroidVariantAwareTask
+import modulecheck.gradle.platforms.android.AgpBaseExtension
+import modulecheck.gradle.platforms.android.AgpBaseVariant
+import modulecheck.gradle.platforms.android.AgpDefaultAndroidSourceDirectorySet
+import modulecheck.gradle.platforms.android.AgpGenerateBuildConfig
+import modulecheck.gradle.platforms.android.AgpGenerateLibraryRFileTask
+import modulecheck.gradle.platforms.android.AgpLinkApplicationAndroidResourcesTask
+import modulecheck.gradle.platforms.android.AgpManifestProcessorTask
+import modulecheck.gradle.platforms.android.AgpVariantAwareTask
 import modulecheck.gradle.platforms.android.SafeAgpApiReferenceScope
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
 import modulecheck.gradle.platforms.android.internal.onAndroidPlugin
@@ -45,6 +45,7 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.utils.capitalize
+import modulecheck.utils.lazy.unsafeLazy
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.FileCollectionDependency
 import org.gradle.api.file.FileCollection
@@ -239,7 +240,7 @@ internal class TaskFactory(
 
       val baseExtension = requireBaseExtension()
 
-      fun register(variant: AndroidBaseVariant, isTestingSourceSet: Boolean) {
+      fun register(variant: AgpBaseVariant, isTestingSourceSet: Boolean) {
         val sourceSetName = variant.sourceSets.last().name.asSourceSetName()
         if (registered.add(sourceSetName)) {
           afterAndroidVariants(
@@ -268,7 +269,7 @@ internal class TaskFactory(
         }
       }
 
-      baseExtension.baseVariants().configureEach { variant: AndroidBaseVariant ->
+      baseExtension.baseVariants().configureEach { variant: AgpBaseVariant ->
 
         register(variant, isTestingSourceSet = false)
 
@@ -293,7 +294,7 @@ internal class TaskFactory(
     variantName: String?,
     isTestingSourceSet: Boolean,
     resolutionConfigFactory: ResolutionConfigFactory,
-    baseExtension: AndroidBaseExtension,
+    baseExtension: AgpBaseExtension,
     rootTasks: List<TaskProvider<*>>
   ) {
 
@@ -323,54 +324,68 @@ internal class TaskFactory(
       .configuring { task ->
 
         task.classpathReportFile.set(Classpath.reportFile(project, sourceSetName))
+        task.classpathToResolve.from(androidResourceArtifactsConfig, jarDependencyConfigs)
+        task.dependsOn(androidResourceArtifactsConfig, jarDependencyConfigs)
 
-        task.dependsOn(jarDependencyConfigs)
-        task.inputs.files(jarDependencyConfigs)
+        val hasKotlinSources = (sourceSet.kotlin as AgpDefaultAndroidSourceDirectorySet)
+          .srcDirs.any { dir -> dir.hasSource() }
 
-        task.dependsOn(androidResourceArtifactsConfig)
-        task.inputs.files(androidResourceArtifactsConfig)
+        val hasJavaSources by unsafeLazy {
+          (sourceSet.kotlin as AgpDefaultAndroidSourceDirectorySet)
+            .srcDirs.any { dir -> dir.hasSource() }
+        }
 
-        val hasSourceFiles = (sourceSet.kotlin as AndroidDefaultAndroidSourceDirectorySet)
-          .srcDirs.any { dir -> dir.hasSource() } ||
-          (sourceSet.java as AndroidDefaultAndroidSourceDirectorySet)
-            .srcDirs.any { dir -> dir.hasSource() } ||
-          sourceSet.res.srcDirs.any { it.hasSource() }
+        val hasResSources by unsafeLazy { sourceSet.res.srcDirs.any { it.hasSource() } }
+
+        val hasSourceFiles = hasKotlinSources || hasJavaSources || hasResSources
 
         val isApplication = baseExtension.isAndroidAppExtension()
 
-        sequenceOf(
-          project.tasks.variantTask(
-            tClass = AndroidManifestProcessorTask::class,
+        val manifestProcessorTasks = project.tasks
+          .variantTask(
+            tClass = AgpManifestProcessorTask::class,
             variantName = variantName
-          ) { sourceSet.manifest.srcFile.exists() },
-          project.tasks.variantTask(AndroidGenerateBuildConfig::class, variantName = variantName),
-          project.tasks.variantTask(
-            tClass = AndroidLinkApplicationAndroidResourcesTask::class,
+          ) { sourceSet.manifest.srcFile.exists() }
+
+        val generateBuildConfigTasks = project.tasks
+          .variantTask(
+            tClass = AgpGenerateBuildConfig::class,
             variantName = variantName
-          ) {
+          )
+
+        val linkResourcesTasks = project.tasks
+          .variantTask(
+            tClass = AgpLinkApplicationAndroidResourcesTask::class,
+            variantName = variantName
+          ) { variantTask ->
 
             when {
-              it.name != "process${variantName?.capitalize()}Resources" -> false
+              variantTask.name != "process${variantName?.capitalize()}Resources" -> false
               isApplication -> true
-              else -> !isTestingSourceSet || hasSourceFiles
+              !hasSourceFiles -> false
+              else -> !isTestingSourceSet
             }
-          },
-          project.tasks.variantTask(
-            tClass = AndroidGenerateLibraryRFileTask::class,
-            variantName = variantName
-          ) {
-
-            hasSourceFiles // && it.name == "generate${variantName?.capitalize()}Resources"
           }
+
+        val generateRFileTasks = project.tasks
+          .variantTask(
+            tClass = AgpGenerateLibraryRFileTask::class,
+            variantName = variantName
+          )
+
+        sequenceOf(
+          manifestProcessorTasks,
+          generateBuildConfigTasks,
+          linkResourcesTasks,
+          generateRFileTasks
         )
           .forEach { variantTaskCollection ->
-            variantTaskCollection.forEach { variantTask ->
-              androidResourceArtifactsConfig.configure {
-                it.dependencies.add(variantTask.outputs.files.asDependency())
-              }
-              task.inputs.files(variantTask.outputs.files)
-              task.dependsOn(variantTask)
+            androidResourceArtifactsConfig.configure { artifactsConfig ->
+              val resFiles = variantTaskCollection.flatMap { it.outputs.files }
+              artifactsConfig.dependencies.add(project.files(resFiles).asDependency())
+              task.inputs.files(resFiles)
             }
+            task.dependsOn(variantTaskCollection)
           }
       }
 
@@ -393,7 +408,7 @@ internal class TaskFactory(
     variantName: String?,
     predicate: (T) -> Boolean = { true }
   ): TaskCollection<T>
-    where T : AndroidVariantAwareTask,
+    where T : AgpVariantAwareTask,
           T : DefaultTask {
     return withType(tClass.java)
       .matching { it.variantName == variantName && predicate(it) }

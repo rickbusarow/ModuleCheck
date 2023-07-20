@@ -34,15 +34,17 @@ import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
-import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles.JVM_CONFIG_FILES
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
 import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM
+import org.jetbrains.kotlin.cli.jvm.compiler.report
 import org.jetbrains.kotlin.cli.jvm.config.addJavaSourceRoots
 import org.jetbrains.kotlin.cli.jvm.config.addJvmClasspathRoots
-import org.jetbrains.kotlin.cli.jvm.config.configureJdkClasspathRoots
+import org.jetbrains.kotlin.cli.jvm.config.addJvmSdkRoots
+import org.jetbrains.kotlin.cli.jvm.modules.CoreJrtFileSystem
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.config.ApiVersion
 import org.jetbrains.kotlin.config.CommonConfigurationKeys
@@ -57,6 +59,7 @@ import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory
+import org.jetbrains.kotlin.utils.PathUtil
 import java.io.File
 import javax.inject.Inject
 
@@ -84,7 +87,9 @@ data class RealKotlinEnvironment(
   val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
   val logger: McLogger,
   private val resetManager: ResetManager
-) : KotlinEnvironment, HasProjectPath, HasSourceSetName {
+) : KotlinEnvironment,
+  HasProjectPath,
+  HasSourceSetName {
 
   private val sourceFiles by lazy {
     sourceDirs.asSequence()
@@ -94,8 +99,8 @@ data class RealKotlinEnvironment(
   }
 
   override val compilerConfiguration: LazyDeferred<CompilerConfiguration> = lazyDeferred {
+
     createCompilerConfiguration(
-      classpathFiles = classpathFiles.await(),
       sourceFiles = sourceFiles.toList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
@@ -115,27 +120,8 @@ data class RealKotlinEnvironment(
     RealMcPsiFileFactory(this)
   }
 
-  override suspend fun bestAvailablePsiFactory(): RealMcPsiFileFactory {
-    return when {
-      heavyPsiFactory.isCompleted -> heavyPsiFactory.getCompleted()
-      analysisResultDeferred.isCompleted -> heavyPsiFactory.await()
-      else -> lightPsiFactory.await()
-    }
-  }
-
+  private val javaSourceFiles by lazy { sourceFiles.filter { it.isJavaFile() } }
   private val kotlinSourceFiles by lazy { sourceFiles.filter { it.isKotlinFile() } }
-
-  override suspend fun javaPsiFile(file: File): PsiJavaFile {
-    // Type resolution for Java Psi files assumes that analysis has already been run.
-    // Otherwise, we get:
-    // `UninitializedPropertyAccessException: lateinit property module has not been initialized`
-    analysisResultDeferred.await()
-    return heavyPsiFactory.await().createJava(file)
-  }
-
-  override suspend fun ktFile(file: File): KtFile {
-    return bestAvailablePsiFactory().createKotlin(file)
-  }
 
   override val analysisResultDeferred: LazyDeferred<AnalysisResult> = lazyDeferred {
 
@@ -168,16 +154,33 @@ data class RealKotlinEnvironment(
 
   private val messageCollector by lazy {
 
-    // if (projectPath.value == ":core:core") {
-    if (projectPath.value == ":core:jvm") {
-      McMessageCollector(
-        messageRenderer = MessageRenderer.GRADLE_STYLE,
-        logger = logger,
-        logLevel = McMessageCollector.LogLevel.WARNINGS_AS_WARNINGS
-      )
-    } else {
-      MessageCollector.NONE
+    // McMessageCollector(
+    //   messageRenderer = MessageRenderer.GRADLE_STYLE,
+    //   logger = logger,
+    //   logLevel = McMessageCollector.LogLevel.WARNINGS_AS_WARNINGS
+    // )
+
+    MessageCollector.NONE
+  }
+
+  override suspend fun bestAvailablePsiFactory(): RealMcPsiFileFactory {
+    return when {
+      heavyPsiFactory.isCompleted -> heavyPsiFactory.getCompleted()
+      analysisResultDeferred.isCompleted -> heavyPsiFactory.await()
+      else -> heavyPsiFactory.await()
     }
+  }
+
+  override suspend fun javaPsiFile(file: File): PsiJavaFile {
+    // Type resolution for Java Psi files assumes that analysis has already been run.
+    // Otherwise, we get:
+    // `UninitializedPropertyAccessException: lateinit property module has not been initialized`
+    analysisResultDeferred.await()
+    return heavyPsiFactory.await().createJava(file)
+  }
+
+  override suspend fun ktFile(file: File): KtFile {
+    return bestAvailablePsiFactory().createKotlin(file)
   }
 
   private suspend fun createAnalysisResult(
@@ -190,11 +193,8 @@ data class RealKotlinEnvironment(
     val analyzer = AnalyzerWithCompilerReport(
       messageCollector = messageCollector,
       languageVersionSettings = coreEnvironment.configuration.languageVersionSettings,
-      renderDiagnosticName = false
+      renderDiagnosticName = true
     )
-
-    @Suppress("MagicNumber")
-    println("start analysis ${projectPath.value.padStart(36)} -- ${sourceSetName.value}")
 
     analyzer.analyzeAndReport(ktFiles) {
       TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
@@ -209,22 +209,15 @@ data class RealKotlinEnvironment(
       )
     }
 
-    val mc = messageCollector
-    if (mc is McMessageCollector) {
-      mc.printIssuesCountIfAny()
-    }
-
-    @Suppress("MagicNumber")
-    println(
-      "                                                                      " +
-        "finish analysis ${projectPath.value.padStart(36)} -- ${sourceSetName.value}"
-    )
+    // if (messageCollector is McMessageCollector) {
+    //   messageCollector.printIssuesCountIfAny()
+    // }
 
     analyzer.analysisResult
+      .also { it.throwIfError() }
   }
 
-  private fun createCompilerConfiguration(
-    classpathFiles: List<File>,
+  private suspend fun createCompilerConfiguration(
     sourceFiles: List<File>,
     kotlinLanguageVersion: LanguageVersion?,
     jvmTarget: JvmTarget
@@ -252,12 +245,32 @@ data class RealKotlinEnvironment(
         put(CommonConfigurationKeys.LANGUAGE_VERSION_SETTINGS, languageVersionSettings)
       }
 
-      put(JVMConfigurationKeys.JVM_TARGET, jvmTarget)
-
       addJavaSourceRoots(javaFiles)
       addKotlinSourceRoots(kotlinFiles)
-      addJvmClasspathRoots(classpathFiles)
+      addJvmClasspathRoots(classpathFiles.await())
       configureJdkClasspathRoots()
+    }
+  }
+
+  private fun CompilerConfiguration.configureJdkClasspathRoots() {
+    if (getBoolean(JVMConfigurationKeys.NO_JDK)) return
+
+    val jdkHome = get(JVMConfigurationKeys.JDK_HOME)
+    val (javaRoot, classesRoots) = if (jdkHome == null) {
+      val javaHome = File(System.getProperty("java.home"))
+      put(JVMConfigurationKeys.JDK_HOME, javaHome)
+
+      javaHome to PathUtil.getJdkClassesRootsFromCurrentJre()
+    } else {
+      jdkHome to PathUtil.getJdkClassesRoots(jdkHome)
+    }
+
+    if (!CoreJrtFileSystem.isModularJdk(javaRoot)) {
+      if (classesRoots.isEmpty()) {
+        report(CompilerMessageSeverity.ERROR, "No class roots are found in the JDK path: $javaRoot")
+      } else {
+        addJvmSdkRoots(classesRoots)
+      }
     }
   }
 

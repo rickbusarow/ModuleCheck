@@ -46,28 +46,28 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
    *
    * @since 0.12.0
    */
-  fun AndroidBaseExtension?.isAndroidAppExtension(): Boolean = this is AndroidAppExtension
+  fun AgpBaseExtension?.isAndroidAppExtension(): Boolean = this is AgpAppExtension
 
   /**
    * Helper function for `this is AndroidCommonExtension` which bypasses the opt-in requirement.
    *
    * @since 0.12.0
    */
-  fun Any?.isAndroidCommonExtension(): Boolean = this is AndroidCommonExtension
+  fun Any?.isAndroidCommonExtension(): Boolean = this is AgpCommonExtension
 
   /**
    * Helper function for `this is AndroidLibraryExtension` which bypasses the opt-in requirement.
    *
    * @since 0.12.0
    */
-  fun Any?.isAndroidLibraryExtension(): Boolean = this is AndroidLibraryExtension
+  fun Any?.isAndroidLibraryExtension(): Boolean = this is AgpLibraryExtension
 
   /**
    * Helper function for `this is AndroidTestedExtension` which bypasses the opt-in requirement.
    *
    * @since 0.12.0
    */
-  fun Any?.isAndroidTestedExtension(): Boolean = this is AndroidTestedExtension
+  fun Any?.isAndroidTestedExtension(): Boolean = this is AgpTestedExtension
 
   /**
    * Direct access to the AGP [com.android.build.api.dsl.CommonExtension] type,
@@ -75,17 +75,17 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
    *
    * @since 0.12.0
    */
-  fun requireCommonExtension(): AndroidCommonExtension = gradleProject.extensions
+  fun requireCommonExtension(): AgpCommonExtension = gradleProject.extensions
     .getByType(com.android.build.api.dsl.CommonExtension::class.java)
 
   /**
-   * Direct access to the AGP [AndroidBaseExtension] type, only accessible
+   * Direct access to the AGP [AgpBaseExtension] type, only accessible
    * after it's been established that the type is in the classpath.
    *
    * @since 0.12.0
    */
-  fun requireBaseExtension(): AndroidBaseExtension = gradleProject.extensions
-    .getByType(AndroidBaseExtension::class.java)
+  fun requireBaseExtension(): AgpBaseExtension = gradleProject.extensions
+    .getByType(AgpBaseExtension::class.java)
 
   /**
    * @return if this [BaseVariant][com.android.build.gradle.api.BaseVariant] is a
@@ -94,9 +94,9 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
    *   Otherwise, returns null.
    * @since 0.13.0
    */
-  fun AndroidBaseVariant.androidTestVariantOrNull(): AndroidTestVariant? {
+  fun AgpBaseVariant.androidTestVariantOrNull(): AgpTestVariant? {
     return when (this) {
-      is AndroidTestedVariant -> testVariant
+      is AgpTestedVariant -> testVariant
       else -> null
     }
   }
@@ -108,9 +108,9 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
    *   Otherwise, returns null.
    * @since 0.13.0
    */
-  fun AndroidBaseVariant.unitTestVariantOrNull(): AndroidUnitTestVariant? {
+  fun AgpBaseVariant.unitTestVariantOrNull(): AgpUnitTestVariant? {
     return when (this) {
-      is AndroidTestedVariant -> unitTestVariant
+      is AgpTestedVariant -> unitTestVariant
       else -> null
     }
   }
@@ -120,23 +120,23 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
    * variants, since they don't have a common function in AGP
    */
   @UnsafeDirectAgpApiReference
-  fun AndroidBaseExtension.baseVariants(): DomainObjectSet<out AndroidBaseVariant> = when (this) {
-    is AndroidAppExtension -> applicationVariants
-    is AndroidLibraryExtension -> libraryVariants
-    is AndroidTestExtension -> applicationVariants
+  fun AgpBaseExtension.baseVariants(): DomainObjectSet<out AgpBaseVariant> = when (this) {
+    is AgpAppExtension -> applicationVariants
+    is AgpLibraryExtension -> libraryVariants
+    is AgpTestExtension -> applicationVariants
     else -> TODO()
     // else -> DefaultDomainObjectSet(BaseVariant::class.java, CollectionCallbackActionDecorator.NOOP)
   }
 
   /** */
   @UnsafeDirectAgpApiReference
-  fun AndroidBaseExtension.testingVariants(): Set<AndroidBaseVariant> = when (this) {
-    is AndroidTestedExtension -> testVariants + unitTestVariants
+  fun AgpBaseExtension.testingVariants(): Set<AgpBaseVariant> = when (this) {
+    is AgpTestedExtension -> testVariants + unitTestVariants
     else -> emptySet()
   }
 
   private fun hasAgpTestFixtures(): Boolean = gradleProject.extensions
-    .findByType(AndroidTestedExtension::class.java)
+    .findByType(AgpTestedExtension::class.java)
     ?.takeIf {
       val agpVersion = agpApiAccess.agpVersionOrNull ?: return@takeIf false
       // minimum API version which actually contains the testFixtures property is 7.1.0
@@ -148,7 +148,7 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
     } ?: false
 
   /** Inspired by [org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet.relatedConfigurationNames]. */
-  val AndroidSourceSet.relatedConfigurationNames: List<String>
+  val AgpSourceSet.relatedConfigurationNames: List<String>
     get() = listOf(
       apiConfigurationName,
       implementationConfigurationName,
@@ -165,7 +165,7 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
   fun AndroidPlatformPluginFactory.create(hasTestFixturesPlugin: Boolean): AndroidPlatformPlugin {
     return create(
       gradleProject = gradleProject,
-      androidCommonExtension = requireCommonExtension(),
+      agpCommonExtension = requireCommonExtension(),
       hasTestFixturesPlugin = hasTestFixturesPlugin || hasAgpTestFixtures()
     )
   }

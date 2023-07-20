@@ -137,6 +137,7 @@ dependencies {
   implementation(project(path = ":modulecheck-rule:impl"))
   implementation(project(path = ":modulecheck-rule:impl-factory"))
   implementation(project(path = ":modulecheck-utils:coroutines:impl"))
+  implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   "integrationTestImplementation"(project(path = ":modulecheck-config:impl"))

@@ -209,6 +209,18 @@ class TestNodeBuilder @PublishedApi internal constructor(
     }
   }
 
+  inline fun <K, V> Map<K, Sequence<V>>.asTests(
+    crossinline containerName: (K) -> String = { it.toString() },
+    crossinline testName: (V) -> String = { it.toString() },
+    crossinline action: (V) -> Unit
+  ): TestNodeBuilder = this@TestNodeBuilder.apply {
+    for ((key, sequence) in entries) {
+      container(containerName(key)) {
+        sequence.asTests(testName, action)
+      }
+    }
+  }
+
   /**
    * Adds containers to the invoking [TestNodeBuilder] for each element of the
    * iterable. The names of the containers are determined by the [testName] function,
@@ -336,6 +348,20 @@ inline fun <E> Sequence<E>.asTests(
   crossinline action: (E) -> Unit
 ): Stream<out DynamicNode> = testFactory { asTests(testName, action) }
 
+@SkipInStackTrace
+inline fun <K, V> Map<K, Sequence<V>>.asTests(
+  crossinline containerName: (K) -> String = { it.toString() },
+  crossinline testName: (V) -> String = { it.toString() },
+  crossinline action: (V) -> Unit
+): Stream<out DynamicNode> = testFactory {
+
+  entries
+    .asContainers({ containerName(it.key) }) { (_, sequence) ->
+
+      sequence.asTests(testName, action)
+    }
+}
+
 /** shorthand for `take(count = count, rs = rs).asTests(testName, action)` */
 @SkipInStackTrace
 inline fun <E> Arb<E>.asTests(
@@ -378,3 +404,17 @@ inline fun <T : TestEnvironment, E> Sequence<E>.asTests(
   crossinline testName: (E) -> String = { it.toString() },
   crossinline action: suspend T.(E) -> Unit
 ): Stream<out DynamicNode> = testFactory { asTests(testName, action) }
+
+context(HasTestEnvironment<T>)
+@SkipInStackTrace
+inline fun <T : TestEnvironment, K, V> Map<K, Sequence<V>>.asTests(
+  crossinline containerName: (K) -> String = { it.toString() },
+  crossinline testName: (V) -> String = { it.toString() },
+  crossinline action: suspend T.(V) -> Unit
+): Stream<out DynamicNode> = testFactory {
+
+  entries
+    .asContainers({ containerName(it.key) }) { (_, sequence) ->
+      sequence.asTests(testName, action)
+    }
+}

@@ -64,11 +64,11 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
   @UnsafeDirectAgpApiReference
   override fun create(
     gradleProject: GradleProject,
-    androidCommonExtension: AndroidCommonExtension,
+    agpCommonExtension: AgpCommonExtension,
     hasTestFixturesPlugin: Boolean
   ): AndroidPlatformPlugin {
 
-    val type = Type.from(androidCommonExtension)
+    val type = Type.from(agpCommonExtension)
 
     val configurations = configurationsFactory.create(gradleProject)
 
@@ -180,7 +180,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
   private fun parseResValues(
     type: Type<*>
   ): MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> {
-    fun AndroidCommonExtension.mergedFlavors(): List<MergedFlavor> {
+    fun AgpCommonExtension.mergedFlavors(): List<MergedFlavor> {
       return when (this) {
         is AppExtension -> applicationVariants.map {
           it.cast<ApplicationVariantImpl>().mergedFlavor
@@ -190,7 +190,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
       }
     }
 
-    fun AndroidCommonExtension.buildTypes(): List<com.android.builder.model.BuildType> {
+    fun AgpCommonExtension.buildTypes(): List<com.android.builder.model.BuildType> {
       return when (this) {
         is AppExtension -> applicationVariants.mapNotNull { it.buildType }
         is LibraryExtension -> libraryVariants.mapNotNull { it.buildType }
@@ -221,7 +221,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
     return map
   }
 
-  sealed interface Type<T : AndroidCommonExtension> {
+  sealed interface Type<T : AgpCommonExtension> {
     val extension: T
 
     data class Library(override val extension: LibraryExtension) : Type<LibraryExtension>
@@ -235,7 +235,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
     ) : Type<DynamicFeatureExtension>
 
     companion object {
-      fun from(extension: AndroidCommonExtension): Type<*> {
+      fun from(extension: AgpCommonExtension): Type<*> {
         return when (extension) {
           is LibraryExtension -> Library(extension)
           is ApplicationExtension -> Application(extension)

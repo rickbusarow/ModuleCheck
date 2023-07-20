@@ -105,8 +105,7 @@ class AgpApiAccess @Inject constructor() {
     if (!androidIsInClasspath) return
 
     @OptIn(UnsafeDirectAgpApiReference::class)
-    @Suppress("ktlint:kt-rules:no-gradle-with-type-with-lambda")
-    project.plugins.withType(AndroidBasePlugin::class.java) {
+    project.plugins.withType(AgpBasePlugin::class.java).configureEach {
       SafeAgpApiReferenceScope(this, project).action()
     }
   }
@@ -123,5 +122,5 @@ fun GradleProject.isAndroid(agpApiAccess: AgpApiAccess): Boolean {
 
   val extension = extensions.findByName("android") ?: return false
 
-  return extension is AndroidCommonExtension
+  return extension is AgpCommonExtension
 }
