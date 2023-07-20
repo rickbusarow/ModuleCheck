@@ -42,6 +42,7 @@ import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidApplicationPlug
 import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
 import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidTestPlugin
+import modulecheck.model.dependency.McConfiguration
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
@@ -51,6 +52,14 @@ import net.swiftzer.semver.SemVer
 import javax.inject.Inject
 import kotlin.LazyThreadSafetyMode.NONE
 
+/**
+ * Factory for creating [AndroidPlatformPlugin] instances.
+ *
+ * @property agpApiAccess safe access to the AGP APIs.
+ * @property configurationsFactory creates [McConfiguration] models.
+ * @property sourceSetsFactory creates
+ *   [McSourceSet][modulecheck.model.dependency.McSourceSet] models.
+ */
 @ContributesBinding(TaskScope::class)
 class RealAndroidPlatformPluginFactory @Inject constructor(
   private val agpApiAccess: AgpApiAccess,
@@ -60,7 +69,6 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
 
   private val agp8 by lazy(NONE) { SemVer(major = 8, minor = 0, patch = 0) }
 
-  @Suppress("SpellCheckingInspection")
   @UnsafeDirectAgpApiReference
   override fun create(
     gradleProject: GradleProject,
@@ -185,6 +193,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
         is AppExtension -> applicationVariants.map {
           it.cast<ApplicationVariantImpl>().mergedFlavor
         }
+
         is LibraryExtension -> libraryVariants.map { it.cast<LibraryVariantImpl>().mergedFlavor }
         else -> emptyList()
       }
@@ -221,6 +230,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
     return map
   }
 
+  /** Represents the extension type (library, application, dynamic feature, test). */
   sealed interface Type<T : AgpCommonExtension> {
     val extension: T
 
@@ -235,6 +245,13 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
     ) : Type<DynamicFeatureExtension>
 
     companion object {
+      /**
+       * Constructs a [Type] instance from the given Android Gradle Plugin common extension.
+       *
+       * @param extension The Android Gradle Plugin common extension.
+       * @return A [Type] instance.
+       * @throws IllegalArgumentException If the extension type is unrecognized.
+       */
       fun from(extension: AgpCommonExtension): Type<*> {
         return when (extension) {
           is LibraryExtension -> Library(extension)

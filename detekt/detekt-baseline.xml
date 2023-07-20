@@ -14,10 +14,10 @@
   ~ limitations under the License.
   -->
 
-<!--@formatter:off   this file (or Detekt's parsing?) is broken if this gets auto-formatted-->
-<!--@formatter:off   this file (or Detekt's parsing?) is broken if this gets auto-formatted-->
 <SmellBaseline>
-  <ManuallySuppressedIssues/>
+  <ManuallySuppressedIssues>
+    <ID>UnusedParameter:RealKotlinEnvironment.kt$RealKotlinEnvironment$sourceFiles: List&lt;File></ID>
+  </ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>MagicNumber:ArtifactsTask.kt$ArtifactsTask$4</ID>
     <ID>MatchingDeclarationName:publishing.kt$PublishingExtension</ID>

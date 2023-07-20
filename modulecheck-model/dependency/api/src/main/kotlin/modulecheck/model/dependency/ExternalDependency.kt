@@ -20,21 +20,17 @@ import modulecheck.utils.lazy.unsafeLazy
 /**
  * Represents an external dependency, such as a JAR file or a Maven artifact.
  *
- * @param configurationName The configuration name of the dependency.
- * @param group .
- * @param moduleName The module name of the dependency.
- * @param version The version of the dependency.
- * @param isTestFixture Whether the dependency is a test fixture.
  * @since 0.12.0
  */
 sealed class ExternalDependency :
   ConfiguredDependency,
-  HasMavenCoordinates {
+  HasMavenCoordinates,
+  HasMavenCoordinatesElements {
 
   /** The group ID of the dependency, like `org.jetbrains.kotlin` */
-  val group: String? get() = mavenCoordinates.group
-  val moduleName: String get() = mavenCoordinates.moduleName
-  val version: String? get() = mavenCoordinates.version
+  override val group: String? get() = mavenCoordinates.group
+  override val moduleName: String get() = mavenCoordinates.moduleName
+  override val version: String? get() = mavenCoordinates.version
 
   override val identifier: MavenCoordinates by unsafeLazy { mavenCoordinates }
   val nameWithVersion: String by unsafeLazy {

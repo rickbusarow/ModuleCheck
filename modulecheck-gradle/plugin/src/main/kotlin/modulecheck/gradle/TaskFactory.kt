@@ -165,7 +165,6 @@ internal class TaskFactory(
 
     val resolveTasks = rootProject.allprojects.map { anyProject ->
 
-      @OptIn(UnsafeDirectAgpApiReference::class)
       anyProject.onAndroidPlugin(agpApiAccess) {
         handleAndroidPlugin(anyProject, configFactory, rootTasks)
       }

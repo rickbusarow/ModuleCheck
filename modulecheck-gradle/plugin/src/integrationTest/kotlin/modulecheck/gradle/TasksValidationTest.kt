@@ -27,10 +27,11 @@ class TasksValidationTest : BaseGradleTest() {
 
     rootBuild.appendText(
       """
+
       val mcTasks by tasks.registering {
         doLast {
           val message = tasks
-            .matching { it.group == "moduleCheck" }
+            .matching { it.group == "ModuleCheck" }
             .sortedBy { it.name }
             .joinToString("\n") { it.name + " - " + it.description }
 

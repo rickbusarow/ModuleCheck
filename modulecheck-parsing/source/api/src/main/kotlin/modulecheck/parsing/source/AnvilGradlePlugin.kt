@@ -18,7 +18,12 @@ package modulecheck.parsing.source
 import net.swiftzer.semver.SemVer
 import org.jetbrains.kotlin.name.FqName
 
-/** */
+/**
+ * @property version the Anvil version. It is always a semantic
+ *   version, but it may be suffixed with a Kotlin version.
+ * @property generateDaggerFactories if true, Anvil will
+ *   generate Dagger's factories in addition to the binding code.
+ */
 data class AnvilGradlePlugin(
   val version: SemVer,
   val generateDaggerFactories: Boolean

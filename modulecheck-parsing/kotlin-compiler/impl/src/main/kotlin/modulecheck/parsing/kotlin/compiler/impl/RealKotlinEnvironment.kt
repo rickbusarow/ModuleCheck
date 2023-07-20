@@ -101,7 +101,6 @@ data class RealKotlinEnvironment(
   override val compilerConfiguration: LazyDeferred<CompilerConfiguration> = lazyDeferred {
 
     createCompilerConfiguration(
-      sourceFiles = sourceFiles.toList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
     )
@@ -175,7 +174,6 @@ data class RealKotlinEnvironment(
     // Type resolution for Java Psi files assumes that analysis has already been run.
     // Otherwise, we get:
     // `UninitializedPropertyAccessException: lateinit property module has not been initialized`
-    analysisResultDeferred.await()
     return heavyPsiFactory.await().createJava(file)
   }
 
@@ -218,19 +216,9 @@ data class RealKotlinEnvironment(
   }
 
   private suspend fun createCompilerConfiguration(
-    sourceFiles: List<File>,
     kotlinLanguageVersion: LanguageVersion?,
     jvmTarget: JvmTarget
   ): CompilerConfiguration {
-    val javaFiles = mutableListOf<File>()
-    val kotlinFiles = mutableListOf<String>()
-
-    sourceFiles.forEach { file ->
-      when {
-        file.isKotlinFile() -> kotlinFiles.add(file.absolutePath)
-        file.isJavaFile() -> javaFiles.add(file)
-      }
-    }
 
     return CompilerConfiguration().apply {
       put(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, messageCollector)
@@ -245,8 +233,8 @@ data class RealKotlinEnvironment(
         put(CommonConfigurationKeys.LANGUAGE_VERSION_SETTINGS, languageVersionSettings)
       }
 
-      addJavaSourceRoots(javaFiles)
-      addKotlinSourceRoots(kotlinFiles)
+      addJavaSourceRoots(javaSourceFiles)
+      addKotlinSourceRoots(kotlinSourceFiles.map { it.absolutePath })
       addJvmClasspathRoots(classpathFiles.await())
       configureJdkClasspathRoots()
     }

@@ -60,6 +60,18 @@ class ClasspathResolutionTest : BaseGradleTest() {
     lib.classpathFileText(SourceSetName.MAIN) shouldBe """
       com.google.auto/auto-common/1.0.1/auto-common-1.0.1.jar
       org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
+      com.google.code.findbugs/jsr305/3.0.2/jsr305-3.0.2.jar
+      com.google.errorprone/error_prone_annotations/2.5.1/error_prone_annotations-2.5.1.jar
+      com.google.guava/failureaccess/1.0.1/failureaccess-1.0.1.jar
+      com.google.guava/guava/30.1.1-jre/guava-30.1.1-jre.jar
+      com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar
+      com.google.j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar
+      org.checkerframework/checker-qual/3.8.0/checker-qual-3.8.0.jar
+      org.jetbrains.kotlin/kotlin-stdlib-common/$kotlinVersion/kotlin-stdlib-common-$kotlinVersion.jar
+      org.jetbrains.kotlin/kotlin-stdlib-jdk7/$kotlinVersion/kotlin-stdlib-jdk7-$kotlinVersion.jar
+      org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
+      org.jetbrains.kotlin/kotlin-stdlib/$kotlinVersion/kotlin-stdlib-$kotlinVersion.jar
+      org.jetbrains/annotations/13.0/annotations-13.0.jar
       """
 
     lib.classpathFileText(SourceSetName.TEST) shouldBe """
