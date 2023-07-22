@@ -40,7 +40,7 @@ interface HasMavenCoordinates : HasIdentifier {
  *         │                  └ moduleName
  *         └ group
  * ```
- * */
+ */
 interface HasMavenCoordinatesElements : HasGroup, HasModuleName, HasVersion
 
 /** Convenience trait interface for [group] */
