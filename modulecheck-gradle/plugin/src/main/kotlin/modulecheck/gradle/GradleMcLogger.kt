@@ -18,6 +18,7 @@ package modulecheck.gradle
 import com.github.ajalt.mordant.rendering.Theme
 import com.github.ajalt.mordant.terminal.Terminal
 import com.squareup.anvil.annotations.ContributesBinding
+import modulecheck.dagger.DaggerLazy
 import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.internal.GradleLogging
 import modulecheck.reporting.logging.McLogger
@@ -31,12 +32,12 @@ import javax.inject.Inject
 
 @ContributesBinding(TaskScope::class)
 class GradleMcLogger @Inject constructor(
-  private val terminal: Terminal
+  private val terminalLazy: DaggerLazy<Terminal>
 ) : McLogger {
 
   private val logger: Logger by lazy { GradleLogging.getLogger("ktlint logger Gradle") }
 
-  private val theme: Theme by lazy { terminal.theme }
+  private val theme: Theme by lazy { terminalLazy.get().theme }
 
   override fun printReport(report: Report) {
     report.entries

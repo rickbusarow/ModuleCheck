@@ -281,19 +281,19 @@ public final class modulecheck/model/dependency/ExternalDependencies : java/util
 	public final fun values ()Ljava/util/Collection;
 }
 
-public abstract class modulecheck/model/dependency/ExternalDependency : modulecheck/model/dependency/ConfiguredDependency, modulecheck/model/dependency/HasMavenCoordinates {
+public abstract class modulecheck/model/dependency/ExternalDependency : modulecheck/model/dependency/ConfiguredDependency, modulecheck/model/dependency/HasMavenCoordinates, modulecheck/model/dependency/HasMavenCoordinatesElements {
 	public final fun copy-9A_UJks (Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;Z)Lmodulecheck/model/dependency/ExternalDependency;
 	public static synthetic fun copy-9A_UJks$default (Lmodulecheck/model/dependency/ExternalDependency;Ljava/lang/String;Lmodulecheck/model/dependency/MavenCoordinates;ZILjava/lang/Object;)Lmodulecheck/model/dependency/ExternalDependency;
 	public final fun copy-FdhTdL0 (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Lmodulecheck/model/dependency/ExternalDependency;
 	public static synthetic fun copy-FdhTdL0$default (Lmodulecheck/model/dependency/ExternalDependency;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)Lmodulecheck/model/dependency/ExternalDependency;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getGroup ()Ljava/lang/String;
+	public fun getGroup ()Ljava/lang/String;
 	public synthetic fun getIdentifier ()Lmodulecheck/model/dependency/Identifier;
 	public fun getIdentifier ()Lmodulecheck/model/dependency/MavenCoordinates;
-	public final fun getModuleName ()Ljava/lang/String;
+	public fun getModuleName ()Ljava/lang/String;
 	public final fun getNameWithVersion ()Ljava/lang/String;
 	public final fun getNameWithoutVersion ()Ljava/lang/String;
-	public final fun getVersion ()Ljava/lang/String;
+	public fun getVersion ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -617,6 +617,8 @@ public final class modulecheck/model/dependency/ProjectDependency$RuntimeProject
 
 public abstract class modulecheck/model/dependency/ProjectPath : modulecheck/model/dependency/Identifier {
 	public static final field Companion Lmodulecheck/model/dependency/ProjectPath$Companion;
+	public abstract fun asStringProjectPath (Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;)Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public abstract fun asTypeSafeProjectPath ()Lmodulecheck/model/dependency/ProjectPath$TypeSafeProjectPath;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getName ()Ljava/lang/String;
 	public final fun getTypeSafeValue ()Ljava/lang/String;
@@ -624,7 +626,6 @@ public abstract class modulecheck/model/dependency/ProjectPath : modulecheck/mod
 	public fun hashCode ()I
 	public abstract fun pathValue (Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;)Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public abstract fun toTypeSafe ()Lmodulecheck/model/dependency/ProjectPath$TypeSafeProjectPath;
 }
 
 public final class modulecheck/model/dependency/ProjectPath$Companion {
@@ -633,16 +634,18 @@ public final class modulecheck/model/dependency/ProjectPath$Companion {
 
 public final class modulecheck/model/dependency/ProjectPath$StringProjectPath : modulecheck/model/dependency/ProjectPath {
 	public fun <init> (Ljava/lang/String;)V
+	public fun asStringProjectPath (Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;)Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public fun asTypeSafeProjectPath ()Lmodulecheck/model/dependency/ProjectPath$TypeSafeProjectPath;
 	public fun getValue ()Ljava/lang/String;
 	public fun pathValue (Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;)Ljava/lang/String;
-	public fun toTypeSafe ()Lmodulecheck/model/dependency/ProjectPath$TypeSafeProjectPath;
 }
 
 public final class modulecheck/model/dependency/ProjectPath$TypeSafeProjectPath : modulecheck/model/dependency/ProjectPath {
 	public fun <init> (Ljava/lang/String;)V
+	public fun asStringProjectPath (Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;)Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;
+	public fun asTypeSafeProjectPath ()Lmodulecheck/model/dependency/ProjectPath$TypeSafeProjectPath;
 	public fun getValue ()Ljava/lang/String;
 	public fun pathValue (Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;)Ljava/lang/String;
-	public fun toTypeSafe ()Lmodulecheck/model/dependency/ProjectPath$TypeSafeProjectPath;
 }
 
 public abstract interface class modulecheck/model/dependency/SourceSetDependency : modulecheck/model/dependency/HasIdentifier {

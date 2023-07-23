@@ -42,7 +42,7 @@ class TypeSafeProjectPathResolver @Inject constructor(
 
   private val allPaths: Map<TypeSafeProjectPath, StringProjectPath> by lazy {
     allProjectPathsProvider.getAllPaths()
-      .associateBy { it.toTypeSafe() }
+      .associateBy { it.asTypeSafeProjectPath() }
   }
 
   fun resolveStringProjectPath(typeSafe: TypeSafeProjectPath): StringProjectPath {

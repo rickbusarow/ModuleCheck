@@ -21,7 +21,7 @@ import dagger.Component
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.dagger.SingleIn
 import modulecheck.dagger.TaskScope
-import modulecheck.gradle.internal.GradleProjectProvider
+import modulecheck.gradle.internal.ProjectCacheFactory
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectRoot
 import modulecheck.rule.RuleFilter
@@ -31,9 +31,9 @@ import org.gradle.workers.WorkerExecutor
 
 @SingleIn(TaskScope::class)
 @MergeComponent(TaskScope::class)
-interface TaskComponent : RunnerComponent, RulesComponent {
+interface TaskConfigurationComponent : RunnerComponent, RulesComponent {
 
-  val projectProvider: GradleProjectProvider
+  val projectCacheFactory: ProjectCacheFactory
 
   @Component.Factory
   interface Factory {
@@ -56,6 +56,6 @@ interface TaskComponent : RunnerComponent, RulesComponent {
       projectRoot: ProjectRoot,
       @BindsInstance
       workerExecutor: WorkerExecutor
-    ): TaskComponent
+    ): TaskConfigurationComponent
   }
 }

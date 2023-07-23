@@ -287,7 +287,7 @@ internal class TaskFactory(
   }
 
   @OptIn(UnsafeDirectAgpApiReference::class)
-  fun SafeAgpApiReferenceScope.afterAndroidVariants(
+  private fun SafeAgpApiReferenceScope.afterAndroidVariants(
     project: GradleProject,
     sourceSetName: SourceSetName,
     variantName: String?,

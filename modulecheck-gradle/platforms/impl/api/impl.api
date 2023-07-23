@@ -1,30 +1,15 @@
-public final class anvil/hint/binding/modulecheck/gradle/platforms/RealAllProjectPathsProviderKt {
-	public static final fun getModulecheck_gradle_platforms_RealAllProjectPathsProvider_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_gradle_platforms_RealAllProjectPathsProvider_scope0 ()Lkotlin/reflect/KClass;
-}
-
 public final class anvil/hint/binding/modulecheck/gradle/platforms/RealConfigurationsFactoryKt {
 	public static final fun getModulecheck_gradle_platforms_RealConfigurationsFactory_reference ()Lkotlin/reflect/KClass;
 	public static final fun getModulecheck_gradle_platforms_RealConfigurationsFactory_scope0 ()Lkotlin/reflect/KClass;
 }
 
 public final class modulecheck/gradle/platforms/RealAllProjectPathsProvider : modulecheck/model/dependency/AllProjectPathsProvider {
+	public fun <init> (Ljava/util/List;)V
 	public fun <init> (Lorg/gradle/api/Project;)V
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getAllPaths ()Ljava/util/List;
-}
-
-public final class modulecheck/gradle/platforms/RealAllProjectPathsProvider_Factory : dagger/internal/Factory {
-	public static final field Companion Lmodulecheck/gradle/platforms/RealAllProjectPathsProvider_Factory$Companion;
-	public fun <init> (Ljavax/inject/Provider;)V
-	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/RealAllProjectPathsProvider_Factory;
-	public synthetic fun get ()Ljava/lang/Object;
-	public fun get ()Lmodulecheck/gradle/platforms/RealAllProjectPathsProvider;
-	public static final fun newInstance (Lorg/gradle/api/Project;)Lmodulecheck/gradle/platforms/RealAllProjectPathsProvider;
-}
-
-public final class modulecheck/gradle/platforms/RealAllProjectPathsProvider_Factory$Companion {
-	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/RealAllProjectPathsProvider_Factory;
-	public final fun newInstance (Lorg/gradle/api/Project;)Lmodulecheck/gradle/platforms/RealAllProjectPathsProvider;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class modulecheck/gradle/platforms/RealConfigurationsFactory : modulecheck/gradle/platforms/ConfigurationsFactory {

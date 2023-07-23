@@ -19,6 +19,7 @@ import kotlinx.coroutines.cancel
 import modulecheck.finding.FindingName
 import modulecheck.gradle.ModuleCheckExtension
 import modulecheck.model.sourceset.HasSourceSetName
+import modulecheck.project.ProjectCache
 import modulecheck.rule.RuleFilter
 import modulecheck.utils.cast
 import modulecheck.utils.coroutines.impl.DispatcherProviderComponent
@@ -61,10 +62,22 @@ abstract class AbstractModuleCheckRuleTask(
     .getByType(ModuleCheckExtension::class.java)
 
   @get:Internal
+  protected val projectProvider = DaggerTaskConfigurationComponent.factory()
+    .create(
+      projectCache = ProjectCache(),
+      moduleCheckSettings = settings,
+      ruleFilter = RuleFilter { _, _ -> true },
+      projectRoot = { project.rootDir },
+      workerExecutor = workerExecutor
+    )
+    .projectCacheFactory
+    .create(project.rootProject)
+
+  @get:Internal
   protected val component by lazy {
     DaggerTaskComponent.factory()
       .create(
-        rootProject = project,
+        projectCache = projectProvider.projectCache,
         moduleCheckSettings = settings,
         ruleFilter = ruleFilter(),
         projectRoot = { project.rootDir },
@@ -143,7 +156,7 @@ open class SingleRuleModuleCheckTask @Inject constructor(
   workerExecutor: WorkerExecutor,
   objectFactory: ObjectFactory
 ) : AbstractModuleCheckRuleTask(workerExecutor, objectFactory) {
-/** */
+  /** */
   @get:Input
   val findingName: Property<FindingName> = objectFactory.property(FindingName::class.java)
 

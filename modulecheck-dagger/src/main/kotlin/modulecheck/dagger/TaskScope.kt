@@ -16,17 +16,12 @@
 package modulecheck.dagger
 
 import javax.inject.Provider
-import javax.inject.Qualifier
 import javax.inject.Scope
 import kotlin.reflect.KClass
 
 /** Tied to a single Gradle task. Currently, that's essentially the same as an `AppScope`. */
 @Suppress("UnnecessaryAbstractClass")
 abstract class TaskScope private constructor()
-
-/** path of ":" */
-@Qualifier
-annotation class RootGradleProject
 
 /**
  * Indicates that the annotated dependency will be a singleton within this scope.

@@ -29,6 +29,7 @@ import modulecheck.finding.Finding
 import modulecheck.finding.Finding.FindingResult
 import modulecheck.finding.FindingResultFactory
 import modulecheck.finding.Problem
+import modulecheck.model.dependency.TypeSafeProjectPathResolver
 import modulecheck.project.McProject
 import modulecheck.project.ProjectProvider
 import modulecheck.reporting.checkstyle.CheckstyleReporter
@@ -68,6 +69,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
   val sarifReportFactory: SarifReportFactory,
   val depthLogFactoryLazy: DaggerLazy<DepthLogFactory>,
   val projectProvider: ProjectProvider,
+  val typeSafeProjectPathResolver: TypeSafeProjectPathResolver,
   val rules: DaggerList<ModuleCheckRule<*>>,
   @Assisted
   val autoCorrect: Boolean
@@ -98,7 +100,14 @@ data class ModuleCheckRunner @AssistedInject constructor(
 
       projectProvider.clearCaches()
 
-      val sortFindings = findingFactory.evaluateSorts(projectProvider.getAll())
+      val sortFindings = findingFactory.evaluateSorts(
+        projectProvider.getAll()
+          .filter {
+            settings.doNotCheck.contains(
+              it.projectPath.pathValue(typeSafeProjectPathResolver)
+            )
+          }
+      )
         .distinct()
 
       val sortsResults = sortFindings.filterIsInstance<Problem>()

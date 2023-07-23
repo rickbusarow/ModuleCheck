@@ -15,26 +15,33 @@
 
 package modulecheck.gradle.platforms
 
-import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.RootGradleProject
-import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.internal.GradleProject
 import modulecheck.model.dependency.AllProjectPathsProvider
 import modulecheck.model.dependency.ProjectPath
-import javax.inject.Inject
 
-@ContributesBinding(TaskScope::class)
-class RealAllProjectPathsProvider @Inject constructor(
-  @RootGradleProject
-  private val rootGradleProject: GradleProject
+class RealAllProjectPathsProvider(
+  private val allPaths: List<ProjectPath.StringProjectPath>
 ) : AllProjectPathsProvider {
 
-  private val _allPaths by lazy {
-    rootGradleProject.allprojects
+  constructor(gradleProject: GradleProject) : this(
+    gradleProject.allprojects
       .map { ProjectPath.StringProjectPath(it.path) }
+  )
+
+  override fun getAllPaths(): List<ProjectPath.StringProjectPath> = allPaths
+
+  override fun toString(): String {
+    return "RealAllProjectPathsProvider(allPaths=$allPaths)"
   }
 
-  override fun getAllPaths(): List<ProjectPath.StringProjectPath> {
-    return _allPaths
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other !is RealAllProjectPathsProvider) return false
+
+    return allPaths == other.allPaths
+  }
+
+  override fun hashCode(): Int {
+    return allPaths.hashCode()
   }
 }

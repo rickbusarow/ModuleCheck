@@ -19,18 +19,14 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.serializer
-import modulecheck.dagger.SingleIn
-import modulecheck.dagger.TaskScope
 import modulecheck.model.dependency.ProjectPath
 import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
 import modulecheck.utils.requireNotNull
 import modulecheck.utils.trace.HasTraceTags
 import java.util.concurrent.ConcurrentHashMap
-import javax.inject.Inject
 import kotlin.reflect.KClass
 
-@SingleIn(TaskScope::class)
-class ProjectCache @Inject constructor() : HasTraceTags {
+class ProjectCache : HasTraceTags {
   private val delegate = ConcurrentHashMap<TypeSafeProjectPath, McProject>()
 
   override val tags: List<KClass<out ProjectCache>> = listOf(this::class)
@@ -48,7 +44,7 @@ class ProjectCache @Inject constructor() : HasTraceTags {
    * @since 0.12.0
    */
   fun getOrPut(path: ProjectPath, defaultValue: () -> McProject): McProject {
-    return delegate.getOrPut(path.toTypeSafe(), defaultValue)
+    return delegate.getOrPut(path.asTypeSafeProjectPath(), defaultValue)
   }
 
   /**
@@ -59,7 +55,7 @@ class ProjectCache @Inject constructor() : HasTraceTags {
    * @throws NullPointerException if no project exists for the given path.
    */
   fun getValue(path: ProjectPath): McProject {
-    return delegate[path].requireNotNull {
+    return delegate[path.asTypeSafeProjectPath()].requireNotNull {
       "Expected to find a project with a path of '${path.value}`, but no such project exists.\n\n" +
         "The existing paths are: ${delegate.keys.map { it.value }}"
     }
@@ -74,7 +70,7 @@ class ProjectCache @Inject constructor() : HasTraceTags {
    *   path, or null if there was no mapping for the path.
    */
   operator fun set(path: ProjectPath, project: McProject): McProject? {
-    return delegate.put(path.toTypeSafe(), project)
+    return delegate.put(path.asTypeSafeProjectPath(), project)
   }
 
   fun clearContexts() {

@@ -26,6 +26,7 @@ import modulecheck.config.internal.defaultCodeGeneratorBindings
 import modulecheck.dagger.DaggerList
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingResultFactory
+import modulecheck.model.dependency.TypeSafeProjectPathResolver
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
@@ -158,7 +159,8 @@ abstract class RunnerTest : ProjectTest<RunnerTestEnvironment>() {
       depthLogFactoryLazy = { DepthLogFactory(terminal) },
       projectProvider = projectProvider,
       rules = rules,
-      autoCorrect = autoCorrect
+      autoCorrect = autoCorrect,
+      typeSafeProjectPathResolver = TypeSafeProjectPathResolver(projectProvider)
     )
       .run(allProjects())
 

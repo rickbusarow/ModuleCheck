@@ -68,6 +68,19 @@ sealed class ProjectPath : Identifier {
 
   abstract fun pathValue(typeSafeProjectPathResolver: TypeSafeProjectPathResolver): String
 
+  /**
+   * @return a [StringProjectPath] representation of this path.
+   *   Returns this instance if it is already a string path.
+   */
+  abstract fun asStringProjectPath(
+    typeSafeProjectPathResolver: TypeSafeProjectPathResolver
+  ): StringProjectPath
+
+  /**
+   * @return a [TypeSafeProjectPath] representation of this path.
+   *   Returns this instance if it is already a type-safe path.
+   */
+  abstract fun asTypeSafeProjectPath(): TypeSafeProjectPath
   class StringProjectPath(override val value: String) : ProjectPath() {
     init {
       require(value.startsWith(':')) {
@@ -77,22 +90,29 @@ sealed class ProjectPath : Identifier {
       }
     }
 
-    override fun toTypeSafe(): TypeSafeProjectPath {
-      return TypeSafeProjectPath(value.typeSafeName())
-    }
+    override fun asStringProjectPath(
+      typeSafeProjectPathResolver: TypeSafeProjectPathResolver
+    ): StringProjectPath = this
 
     override fun pathValue(typeSafeProjectPathResolver: TypeSafeProjectPathResolver): String = value
+
+    override fun asTypeSafeProjectPath(): TypeSafeProjectPath =
+      TypeSafeProjectPath(value.typeSafeName())
   }
 
   class TypeSafeProjectPath(override val value: String) : ProjectPath() {
 
-    override fun toTypeSafe(): TypeSafeProjectPath = this
+    override fun asStringProjectPath(
+      typeSafeProjectPathResolver: TypeSafeProjectPathResolver
+    ): StringProjectPath = StringProjectPath(pathValue(typeSafeProjectPathResolver))
 
     override fun pathValue(typeSafeProjectPathResolver: TypeSafeProjectPathResolver): String {
       return typeSafeProjectPathResolver
         .resolveStringProjectPath(this)
         .pathValue(typeSafeProjectPathResolver)
     }
+
+    override fun asTypeSafeProjectPath(): TypeSafeProjectPath = this
   }
 
   companion object {
@@ -102,8 +122,6 @@ sealed class ProjectPath : Identifier {
       TypeSafeProjectPath(rawString)
     }
   }
-
-  abstract fun toTypeSafe(): TypeSafeProjectPath
 }
 
 internal val projectSplitRegex = "[.\\-_]".toRegex()

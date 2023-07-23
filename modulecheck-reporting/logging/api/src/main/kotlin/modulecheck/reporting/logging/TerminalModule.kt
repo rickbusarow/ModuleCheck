@@ -44,7 +44,6 @@ object TerminalModule {
       )
     },
     interactive = true
-  ).also {
-    it.info.updateTerminalSize()
-  }
+  )
+  // .also { it.info.updateTerminalSize() }
 }

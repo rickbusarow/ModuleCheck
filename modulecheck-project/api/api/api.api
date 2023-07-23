@@ -39,7 +39,7 @@ public final class modulecheck/project/McProjectKt {
 }
 
 public final class modulecheck/project/ProjectCache : modulecheck/utils/trace/HasTraceTags {
-	public fun <init> ()V
+	public fun <init> (Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;)V
 	public final fun clearContexts ()V
 	public final fun getOrPut (Lmodulecheck/model/dependency/ProjectPath;Lkotlin/jvm/functions/Function0;)Lmodulecheck/project/McProject;
 	public synthetic fun getTags ()Ljava/lang/Iterable;
@@ -47,14 +47,6 @@ public final class modulecheck/project/ProjectCache : modulecheck/utils/trace/Ha
 	public final fun getValue (Lmodulecheck/model/dependency/ProjectPath;)Lmodulecheck/project/McProject;
 	public final fun getValues ()Ljava/util/Collection;
 	public final fun set (Lmodulecheck/model/dependency/ProjectPath;Lmodulecheck/project/McProject;)Lmodulecheck/project/McProject;
-}
-
-public final class modulecheck/project/ProjectCache_Factory : dagger/internal/Factory {
-	public static final field INSTANCE Lmodulecheck/project/ProjectCache_Factory;
-	public static final fun create ()Lmodulecheck/project/ProjectCache_Factory;
-	public synthetic fun get ()Ljava/lang/Object;
-	public fun get ()Lmodulecheck/project/ProjectCache;
-	public static final fun newInstance ()Lmodulecheck/project/ProjectCache;
 }
 
 public abstract interface class modulecheck/project/ProjectContext {
