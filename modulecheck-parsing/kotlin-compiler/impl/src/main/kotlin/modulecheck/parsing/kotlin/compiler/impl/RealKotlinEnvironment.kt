@@ -35,7 +35,7 @@ import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
-import org.jetbrains.kotlin.cli.common.messages.MessageCollector
+import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles.JVM_CONFIG_FILES
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
@@ -151,15 +151,13 @@ data class RealKotlinEnvironment(
     analysisResultDeferred.await().moduleDescriptor as ModuleDescriptorImpl
   }
 
-  private val messageCollector by lazy {
+  private val messageCollector: McMessageCollector by lazy {
 
-    // McMessageCollector(
-    //   messageRenderer = MessageRenderer.GRADLE_STYLE,
-    //   logger = logger,
-    //   logLevel = McMessageCollector.LogLevel.WARNINGS_AS_WARNINGS
-    // )
-
-    MessageCollector.NONE
+    McMessageCollector(
+      messageRenderer = MessageRenderer.GRADLE_STYLE,
+      logger = logger,
+      logLevel = McMessageCollector.LogLevel.WARNINGS_AS_WARNINGS
+    )
   }
 
   override suspend fun bestAvailablePsiFactory(): RealMcPsiFileFactory {
@@ -207,9 +205,9 @@ data class RealKotlinEnvironment(
       )
     }
 
-    // if (messageCollector is McMessageCollector) {
-    //   messageCollector.printIssuesCountIfAny()
-    // }
+    if (messageCollector is McMessageCollector) {
+      messageCollector.printIssuesCountIfAny()
+    }
 
     analyzer.analysisResult
       .also { it.throwIfError() }
