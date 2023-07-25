@@ -12,7 +12,7 @@ square-anvil = "2.4.6"
 ajalt-clikt = "4.1.0"
 ajalt-mordant = "2.0.1"
 
-androidTools = "8.0.2"
+androidTools = "8.1.0"
 
 antlr = "4.13.0"
 autoManifest = "2.0"
