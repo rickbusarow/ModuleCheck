@@ -237,11 +237,11 @@ private suspend fun McProject.mustBeApiIn(
  * @since 0.12.0
  */
 suspend inline fun <reified T : ConfiguredDependency> T.maybeAsApi(dependentProject: McProject): T {
-  val mustBeApi = when (this as ConfiguredDependency) {
+  val mustBeApi = when (val dep: ConfiguredDependency = this@maybeAsApi) {
     is ExternalDependency -> false
     is ProjectDependency -> when {
       configurationName.isKapt() -> false
-      else -> (this as ProjectDependency).project(dependentProject.projectCache)
+      else -> dep.project(dependentProject.projectCache)
         .mustBeApiIn(
           dependentProject = dependentProject,
           sourceSetName = configurationName.toSourceSetName(),
