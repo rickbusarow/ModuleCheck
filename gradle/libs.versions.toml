@@ -10,7 +10,7 @@ google-ksp = "1.8.22-1.0.11"
 square-anvil = "2.4.6"
 
 ajalt-clikt = "4.1.0"
-ajalt-mordant = "2.0.1"
+ajalt-mordant = "2.1.0"
 
 androidTools = "8.0.2"
 
