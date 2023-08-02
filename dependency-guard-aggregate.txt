@@ -1,7 +1,7 @@
 :modulecheck-api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -29,8 +29,8 @@
 
 :modulecheck-core -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-core -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-core -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-core -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-core -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-core -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-core -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-core -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-core -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -149,8 +149,8 @@
 
 :modulecheck-finding:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-finding:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-finding:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-finding:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-finding:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-finding:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-finding:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-finding:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-finding:api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -176,8 +176,8 @@
 
 :modulecheck-finding:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-finding:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-finding:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-finding:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-finding:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-finding:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-finding:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-finding:impl -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-finding:impl -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -203,8 +203,8 @@
 
 :modulecheck-finding:impl-android -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-finding:impl-android -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-finding:impl-android -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-finding:impl-android -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-finding:impl-android -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-finding:impl-android -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-finding:impl-android -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-finding:impl-android -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-finding:impl-android -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -230,8 +230,8 @@
 
 :modulecheck-finding:impl-sort -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-finding:impl-sort -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-finding:impl-sort -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-finding:impl-sort -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-finding:impl-sort -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-finding:impl-sort -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-finding:impl-sort -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-finding:impl-sort -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-finding:impl-sort -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -257,8 +257,8 @@
 
 :modulecheck-finding:name -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-finding:name -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-finding:name -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-finding:name -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-finding:name -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-finding:name -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-finding:name -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22
@@ -273,8 +273,8 @@
 
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.4
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.4
@@ -345,8 +345,8 @@
 
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
@@ -375,8 +375,8 @@
 
 :modulecheck-parsing:java -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-parsing:java -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-parsing:java -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-parsing:java -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-parsing:java -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-parsing:java -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-parsing:java -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-parsing:java -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.4
 :modulecheck-parsing:java -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.4
@@ -409,8 +409,8 @@
 
 :modulecheck-parsing:psi -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-parsing:psi -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-parsing:psi -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-parsing:psi -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-parsing:psi -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-parsing:psi -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-parsing:psi -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-parsing:psi -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-parsing:psi -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -437,8 +437,8 @@
 
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.4
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.4
@@ -480,8 +480,8 @@
 
 :modulecheck-project:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-project:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-project:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-project:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-project:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-project:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-project:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-project:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-project:api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -507,8 +507,8 @@
 
 :modulecheck-project:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-project:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-project:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-project:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-project:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-project:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-project:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-project:impl -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-project:impl -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -536,8 +536,8 @@
 
 :modulecheck-project:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-project:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-project:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-project:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-project:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-project:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-project:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-project:testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
 :modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.4
@@ -597,8 +597,8 @@
 
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-project-generation:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-project-generation:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-project-generation:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-project-generation:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.4
@@ -658,8 +658,8 @@
 
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-reporting:checkstyle -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-reporting:checkstyle -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-reporting:checkstyle -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-reporting:checkstyle -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-reporting:checkstyle -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -686,8 +686,8 @@
 
 :modulecheck-reporting:console -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-reporting:console -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-reporting:console -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-reporting:console -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-reporting:console -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-reporting:console -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-reporting:console -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-reporting:console -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-reporting:console -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -715,8 +715,8 @@
 
 :modulecheck-reporting:graphviz -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-reporting:graphviz -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-reporting:graphviz -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-reporting:graphviz -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-reporting:graphviz -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-reporting:graphviz -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-reporting:graphviz -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-reporting:graphviz -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-reporting:graphviz -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
@@ -750,8 +750,8 @@
 
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -779,8 +779,8 @@
 
 :modulecheck-rule:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-rule:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-rule:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-rule:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-rule:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-rule:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-rule:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-rule:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-rule:api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -806,8 +806,8 @@
 
 :modulecheck-rule:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-rule:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-rule:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-rule:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-rule:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-rule:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-rule:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-rule:impl -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-rule:impl -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -835,8 +835,8 @@
 
 :modulecheck-rule:impl-factory -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-rule:impl-factory -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-rule:impl-factory -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-rule:impl-factory -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-rule:impl-factory -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-rule:impl-factory -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-rule:impl-factory -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-rule:impl-factory -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
 :modulecheck-rule:impl-factory -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
@@ -864,8 +864,8 @@
 
 :modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-rule:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-rule:testing -- runtimeClasspath -- com.google.dagger:dagger:2.47
 :modulecheck-rule:testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
@@ -896,8 +896,8 @@
 
 :modulecheck-runtime:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-runtime:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-runtime:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-runtime:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-runtime:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-runtime:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-runtime:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-runtime:api -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-runtime:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
@@ -934,8 +934,8 @@
 
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-runtime:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-runtime:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-runtime:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-runtime:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.4
@@ -1210,8 +1210,8 @@
 
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.7
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.google.dagger:dagger:2.47
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.20.0
@@ -1291,8 +1291,8 @@
 
 :modulecheck-reporting:logging:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-reporting:logging:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-reporting:logging:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-reporting:logging:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-reporting:logging:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-reporting:logging:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-reporting:logging:api -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-reporting:logging:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22
 :modulecheck-reporting:logging:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22
@@ -1304,8 +1304,8 @@
 
 :modulecheck-reporting:logging:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-reporting:logging:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-reporting:logging:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-reporting:logging:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-reporting:logging:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-reporting:logging:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-reporting:logging:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-reporting:logging:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22
 :modulecheck-reporting:logging:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22
@@ -1338,8 +1338,8 @@
 
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:gradle:dsl:api -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -1361,8 +1361,8 @@
 
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:gradle:dsl:internal -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -1384,8 +1384,8 @@
 
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:gradle:dsl:precompiled -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
@@ -1407,8 +1407,8 @@
 
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath-jvm:3.3.1
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- com.github.ajalt.colormath:colormath:3.3.1
-:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.0.1
-:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.0.1
+:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
+:modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
 :modulecheck-parsing:gradle:dsl:testing -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
