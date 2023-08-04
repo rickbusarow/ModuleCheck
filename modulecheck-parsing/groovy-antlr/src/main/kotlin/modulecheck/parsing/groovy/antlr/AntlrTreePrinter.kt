@@ -24,7 +24,9 @@ internal class AntlrTreePrinter(
 ) : AbstractTreePrinter<Tree>(whitespaceChar) {
 
   override fun Tree.children(): Sequence<Tree> = sequence {
-    (0 until childCount).forEach { yield(getChild(it)) }
+    for (it in 0 until childCount) {
+      yield(getChild(it))
+    }
   }
 
   override fun Tree.text(): String = (this as ParseTree).text

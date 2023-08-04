@@ -107,7 +107,9 @@ fun Tree.childrenBreadthFirst(predicate: (Tree) -> Boolean): Sequence<Tree> =
 
 /** @return a sequence of the children [Tree] nodes. */
 fun Tree.children(): Sequence<Tree> = sequence {
-  (0 until childCount).forEach { yield(getChild(it)) }
+  for (it in 0 until childCount) {
+    yield(getChild(it))
+  }
 }
 
 internal inline fun <reified T> ParserRuleContext.childrenOfType(): List<T> {

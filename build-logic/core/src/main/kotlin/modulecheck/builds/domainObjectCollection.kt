@@ -16,6 +16,9 @@
 package modulecheck.builds
 
 import org.gradle.api.DomainObjectCollection
+import org.gradle.api.Named
+import org.gradle.api.NamedDomainObjectCollection
+import org.gradle.api.internal.DefaultNamedDomainObjectCollection
 
 /**
  * Returns a collection containing the objects in this collection of the
@@ -43,3 +46,25 @@ inline fun <reified S : Any> DomainObjectCollection<in S>.withType(
  */
 inline fun <reified S : Any> DomainObjectCollection<in S>.withType(): DomainObjectCollection<S> =
   withType(S::class.java)
+
+/**
+ * Executes the specified action when an element is registered in the [NamedDomainObjectCollection].
+ * This function does not cause the registered element to be initialized or configured.
+ *
+ * @param action The action to execute when an element is registered.
+ *   It takes the name of the registered element as a parameter.
+ * @receiver The receiver [NamedDomainObjectCollection] to observe for element registration.
+ * @throws IllegalArgumentException if the receiver collection
+ *   does not extend [DefaultNamedDomainObjectCollection].
+ */
+inline fun <reified T : Named> NamedDomainObjectCollection<T>.whenElementRegistered(
+  crossinline action: (name: String) -> Unit
+) {
+  require(this is DefaultNamedDomainObjectCollection<*>) {
+    "The receiver collection must extend " +
+      "${DefaultNamedDomainObjectCollection::class.qualifiedName}, " +
+      "but this type is ${this::class.java.canonicalName}."
+  }
+
+  whenElementKnown { action(it.name) }
+}

@@ -43,20 +43,22 @@ sealed interface ConfiguredDependency : Dependency {
     inline fun <reified T : ConfiguredDependency> T.copy(
       configurationName: ConfigurationName = this.configurationName,
       isTestFixture: Boolean = this.isTestFixture
-    ): ConfiguredDependency = when (this as ConfiguredDependency) {
-      is ExternalDependency -> (this as ExternalDependency).copy(
-        configurationName = configurationName,
-        group = group,
-        moduleName = moduleName,
-        version = version,
-        isTestFixture = isTestFixture
-      )
+    ): ConfiguredDependency {
+      return when (val dep: ConfiguredDependency = this@copy) {
+        is ExternalDependency -> dep.copy(
+          configurationName = configurationName,
+          group = dep.group,
+          moduleName = dep.moduleName,
+          version = dep.version,
+          isTestFixture = isTestFixture
+        )
 
-      is ProjectDependency -> (this as ProjectDependency).copy(
-        configurationName = configurationName,
-        path = projectPath,
-        isTestFixture = isTestFixture
-      )
+        is ProjectDependency -> dep.copy(
+          configurationName = configurationName,
+          path = dep.projectPath,
+          isTestFixture = isTestFixture
+        )
+      }
     }
   }
 }
