@@ -13,26 +13,16 @@
  * limitations under the License.
  */
 
-@file:Suppress("ForbiddenImport")
-
 package modulecheck.gradle.platforms.android
 
-import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.api.dsl.DynamicFeatureExtension
-import com.android.build.api.dsl.TestExtension
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.internal.api.ApplicationVariantImpl
-import com.android.build.gradle.internal.api.LibraryVariantImpl
-import com.android.build.gradle.internal.core.InternalBaseVariant.MergedFlavor
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.ConfigurationsFactory
 import modulecheck.gradle.platforms.SourceSetsFactory
-import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Type.Application
-import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Type.DynamicFeature
-import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Type.Library
-import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Type.Test
+import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.AgpExtensionType.Application
+import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.AgpExtensionType.DynamicFeature
+import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.AgpExtensionType.Library
+import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.AgpExtensionType.Test
 import modulecheck.gradle.platforms.android.internal.androidManifests
 import modulecheck.gradle.platforms.android.internal.androidNamespaces
 import modulecheck.gradle.platforms.android.internal.orPropertyDefault
@@ -51,6 +41,14 @@ import net.swiftzer.semver.SemVer
 import javax.inject.Inject
 import kotlin.LazyThreadSafetyMode.NONE
 
+/**
+ * Factory for creating [AndroidPlatformPlugin] instances
+ * based on the type of Android Gradle Plugin (AGP) extension.
+ *
+ * @property agpApiAccess Provides access to AGP APIs.
+ * @property configurationsFactory Factory for creating [Configurations] instances.
+ * @property sourceSetsFactory Factory for creating [SourceSets] instances.
+ */
 @ContributesBinding(TaskScope::class)
 class RealAndroidPlatformPluginFactory @Inject constructor(
   private val agpApiAccess: AgpApiAccess,
@@ -60,15 +58,23 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
 
   private val agp8 by lazy(NONE) { SemVer(major = 8, minor = 0, patch = 0) }
 
-  @Suppress("SpellCheckingInspection")
+  /**
+   * Creates an [AndroidPlatformPlugin] based on the provided parameters. It
+   * handles different AGP extension types and applies the necessary configurations.
+   *
+   * @param gradleProject The Gradle project information.
+   * @param agpCommonExtension Common AGP extension interface.
+   * @param hasTestFixturesPlugin Flag indicating if the test fixtures plugin is present.
+   * @return The created [AndroidPlatformPlugin] instance.
+   */
   @UnsafeDirectAgpApiReference
   override fun create(
     gradleProject: GradleProject,
-    androidCommonExtension: AndroidCommonExtension,
+    agpCommonExtension: AgpCommonExtension,
     hasTestFixturesPlugin: Boolean
   ): AndroidPlatformPlugin {
 
-    val type = Type.from(androidCommonExtension)
+    val type = AgpExtensionType.from(agpCommonExtension)
 
     val configurations = configurationsFactory.create(gradleProject)
 
@@ -116,7 +122,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
       )
 
     @Suppress("UnstableApiUsage")
-    val androidResourcesEnabled = (type.extension as? LibraryExtension)
+    val androidResourcesEnabled = (type.extension as? AgpLibraryExtension)
       ?.buildFeatures
       ?.androidResources
       .orPropertyDefault(
@@ -178,20 +184,20 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
 
   @UnsafeDirectAgpApiReference
   private fun parseResValues(
-    type: Type<*>
+    type: AgpExtensionType<*>
   ): MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> {
-    fun AndroidCommonExtension.mergedFlavors(): List<MergedFlavor> {
+    fun Any.mergedFlavors(): List<AgpMergedFlavor> {
       return when (this) {
-        is AppExtension -> applicationVariants.map { it.cast<ApplicationVariantImpl>().mergedFlavor }
-        is LibraryExtension -> libraryVariants.map { it.cast<LibraryVariantImpl>().mergedFlavor }
+        is AgpAppExtension -> applicationVariants.map { it.cast<AgpApplicationVariantImpl>().mergedFlavor }
+        is AgpLibraryExtension -> libraryVariants.map { it.cast<AgpLibraryVariantImpl>().mergedFlavor }
         else -> emptyList()
       }
     }
 
-    fun AndroidCommonExtension.buildTypes(): List<com.android.builder.model.BuildType> {
+    fun Any.buildTypes(): List<com.android.builder.model.BuildType> {
       return when (this) {
-        is AppExtension -> applicationVariants.mapNotNull { it.buildType }
-        is LibraryExtension -> libraryVariants.mapNotNull { it.buildType }
+        is AgpAppExtension -> applicationVariants.mapNotNull { it.buildType }
+        is AgpLibraryExtension -> libraryVariants.mapNotNull { it.buildType }
         else -> emptyList()
       }
     }
@@ -219,26 +225,43 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
     return map
   }
 
-  sealed interface Type<T : AndroidCommonExtension> {
+  /** Makes the base AGP extension types exhaustive. */
+  sealed interface AgpExtensionType<T : AgpCommonExtension> {
+    /** */
     val extension: T
 
-    data class Library(override val extension: LibraryExtension) : Type<LibraryExtension>
-    data class Application(
-      override val extension: ApplicationExtension
-    ) : Type<ApplicationExtension>
+    /** [com.android.build.gradle.LibraryExtension] */
+    data class Library(
+      override val extension: AgpLibraryExtension
+    ) : AgpExtensionType<AgpLibraryExtension>
 
-    data class Test(override val extension: TestExtension) : Type<TestExtension>
+    /** [com.android.build.api.dsl.ApplicationExtension] */
+    data class Application(
+      override val extension: AgpApplicationExtension
+    ) : AgpExtensionType<AgpApplicationExtension>
+
+    /** [com.android.build.gradle.TestExtension] */
+    data class Test(override val extension: AgpTestExtension) : AgpExtensionType<AgpTestExtension>
+
+    /** [com.android.build.api.dsl.DynamicFeatureExtension] */
     data class DynamicFeature(
-      override val extension: DynamicFeatureExtension
-    ) : Type<DynamicFeatureExtension>
+      override val extension: AgpDynamicFeatureExtension
+    ) : AgpExtensionType<AgpDynamicFeatureExtension>
 
     companion object {
-      fun from(extension: AndroidCommonExtension): Type<*> {
+      /**
+       * Factory method to create an [AgpExtensionType] from the given extension object.
+       *
+       * @param extension The extension object.
+       * @return The corresponding [AgpExtensionType].
+       * @throws IllegalArgumentException If the extension type is unrecognized.
+       */
+      fun from(extension: Any): AgpExtensionType<*> {
         return when (extension) {
-          is LibraryExtension -> Library(extension)
-          is ApplicationExtension -> Application(extension)
-          is TestExtension -> Test(extension)
-          is DynamicFeatureExtension -> DynamicFeature(extension)
+          is AgpLibraryExtension -> Library(extension)
+          is AgpApplicationExtension -> Application(extension)
+          is AgpTestExtension -> Test(extension)
+          is AgpDynamicFeatureExtension -> DynamicFeature(extension)
           else -> error("unrecognized Android extension ${extension::class.java.canonicalName}")
         }
       }

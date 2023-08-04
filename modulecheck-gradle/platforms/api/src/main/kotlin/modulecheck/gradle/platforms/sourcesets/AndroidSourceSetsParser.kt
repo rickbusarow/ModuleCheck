@@ -15,7 +15,7 @@
 
 package modulecheck.gradle.platforms.sourcesets
 
-import modulecheck.gradle.platforms.android.AndroidBaseExtension
+import modulecheck.gradle.platforms.android.AgpBaseExtension
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.SourceSets
@@ -37,7 +37,7 @@ fun interface AndroidSourceSetsParser {
     @UnsafeDirectAgpApiReference
     fun create(
       parsedConfigurations: Configurations,
-      extension: AndroidBaseExtension,
+      extension: AgpBaseExtension,
       hasTestFixturesPlugin: Boolean,
       gradleProject: GradleProject
     ): AndroidSourceSetsParser

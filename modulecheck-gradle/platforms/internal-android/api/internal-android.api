@@ -13,16 +13,16 @@ public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPlugi
 	public fun create (Lorg/gradle/api/Project;Lcom/android/build/api/dsl/CommonExtension;Z)Lmodulecheck/model/dependency/AndroidPlatformPlugin;
 }
 
-public abstract interface class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type {
-	public static final field Companion Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Companion;
+public abstract interface class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType {
+	public static final field Companion Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Companion;
 	public abstract fun getExtension ()Lcom/android/build/api/dsl/CommonExtension;
 }
 
-public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Application : modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type {
+public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Application : modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType {
 	public fun <init> (Lcom/android/build/api/dsl/ApplicationExtension;)V
 	public final fun component1 ()Lcom/android/build/api/dsl/ApplicationExtension;
-	public final fun copy (Lcom/android/build/api/dsl/ApplicationExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Application;
-	public static synthetic fun copy$default (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Application;Lcom/android/build/api/dsl/ApplicationExtension;ILjava/lang/Object;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Application;
+	public final fun copy (Lcom/android/build/api/dsl/ApplicationExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Application;
+	public static synthetic fun copy$default (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Application;Lcom/android/build/api/dsl/ApplicationExtension;ILjava/lang/Object;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Application;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getExtension ()Lcom/android/build/api/dsl/ApplicationExtension;
 	public synthetic fun getExtension ()Lcom/android/build/api/dsl/CommonExtension;
@@ -30,15 +30,15 @@ public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPlugi
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Companion {
-	public final fun from (Lcom/android/build/api/dsl/CommonExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type;
+public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Companion {
+	public final fun from (Ljava/lang/Object;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType;
 }
 
-public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$DynamicFeature : modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type {
+public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$DynamicFeature : modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType {
 	public fun <init> (Lcom/android/build/api/dsl/DynamicFeatureExtension;)V
 	public final fun component1 ()Lcom/android/build/api/dsl/DynamicFeatureExtension;
-	public final fun copy (Lcom/android/build/api/dsl/DynamicFeatureExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$DynamicFeature;
-	public static synthetic fun copy$default (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$DynamicFeature;Lcom/android/build/api/dsl/DynamicFeatureExtension;ILjava/lang/Object;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$DynamicFeature;
+	public final fun copy (Lcom/android/build/api/dsl/DynamicFeatureExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$DynamicFeature;
+	public static synthetic fun copy$default (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$DynamicFeature;Lcom/android/build/api/dsl/DynamicFeatureExtension;ILjava/lang/Object;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$DynamicFeature;
 	public fun equals (Ljava/lang/Object;)Z
 	public synthetic fun getExtension ()Lcom/android/build/api/dsl/CommonExtension;
 	public fun getExtension ()Lcom/android/build/api/dsl/DynamicFeatureExtension;
@@ -46,11 +46,11 @@ public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPlugi
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Library : modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type {
+public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Library : modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType {
 	public fun <init> (Lcom/android/build/gradle/LibraryExtension;)V
 	public final fun component1 ()Lcom/android/build/gradle/LibraryExtension;
-	public final fun copy (Lcom/android/build/gradle/LibraryExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Library;
-	public static synthetic fun copy$default (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Library;Lcom/android/build/gradle/LibraryExtension;ILjava/lang/Object;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Library;
+	public final fun copy (Lcom/android/build/gradle/LibraryExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Library;
+	public static synthetic fun copy$default (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Library;Lcom/android/build/gradle/LibraryExtension;ILjava/lang/Object;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Library;
 	public fun equals (Ljava/lang/Object;)Z
 	public synthetic fun getExtension ()Lcom/android/build/api/dsl/CommonExtension;
 	public fun getExtension ()Lcom/android/build/gradle/LibraryExtension;
@@ -58,14 +58,14 @@ public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPlugi
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Test : modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type {
-	public fun <init> (Lcom/android/build/api/dsl/TestExtension;)V
-	public final fun component1 ()Lcom/android/build/api/dsl/TestExtension;
-	public final fun copy (Lcom/android/build/api/dsl/TestExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Test;
-	public static synthetic fun copy$default (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Test;Lcom/android/build/api/dsl/TestExtension;ILjava/lang/Object;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$Type$Test;
+public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Test : modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType {
+	public fun <init> (Lcom/android/build/gradle/TestExtension;)V
+	public final fun component1 ()Lcom/android/build/gradle/TestExtension;
+	public final fun copy (Lcom/android/build/gradle/TestExtension;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Test;
+	public static synthetic fun copy$default (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Test;Lcom/android/build/gradle/TestExtension;ILjava/lang/Object;)Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory$AgpExtensionType$Test;
 	public fun equals (Ljava/lang/Object;)Z
 	public synthetic fun getExtension ()Lcom/android/build/api/dsl/CommonExtension;
-	public fun getExtension ()Lcom/android/build/api/dsl/TestExtension;
+	public fun getExtension ()Lcom/android/build/gradle/TestExtension;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }

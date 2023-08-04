@@ -26,9 +26,9 @@ import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
-import modulecheck.gradle.platforms.android.AndroidAppExtension
-import modulecheck.gradle.platforms.android.AndroidLibraryExtension
-import modulecheck.gradle.platforms.android.AndroidTestExtension
+import modulecheck.gradle.platforms.android.AgpAppExtension
+import modulecheck.gradle.platforms.android.AgpLibraryExtension
+import modulecheck.gradle.platforms.android.AgpTestExtension
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.BuildTypeName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.ConcatenatedFlavorsName
@@ -476,9 +476,9 @@ class RealAndroidSourceSetsParser private constructor(
   }
 
   private fun BaseExtension.publishedVariants(): DomainObjectSet<out BaseVariant> = when (this) {
-    is AndroidAppExtension -> applicationVariants
-    is AndroidLibraryExtension -> libraryVariants
-    is AndroidTestExtension -> applicationVariants
+    is AgpAppExtension -> applicationVariants
+    is AgpLibraryExtension -> libraryVariants
+    is AgpTestExtension -> applicationVariants
     else -> error(
       "Expected the extension to be `AppExtension`, `LibraryExtension`, or `TestExtension`, " +
         "but it was `${this::class.qualifiedName}`."

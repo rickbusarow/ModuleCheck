@@ -18,7 +18,7 @@
 package modulecheck.gradle.platforms.android.internal
 
 import modulecheck.gradle.platforms.android.AgpApiAccess
-import modulecheck.gradle.platforms.android.AndroidTestedExtension
+import modulecheck.gradle.platforms.android.AgpTestedExtension
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
 import modulecheck.model.dependency.SourceSets
 import modulecheck.model.dependency.isTestingOnly
@@ -62,7 +62,7 @@ fun GradleProject.androidNamespaces(
 
   val namespace = baseExtension.namespace?.asPackageName()
   val testNameSpaceOrNull =
-    (baseExtension as? AndroidTestedExtension)?.testNamespace?.asPackageName()
+    (baseExtension as? AgpTestedExtension)?.testNamespace?.asPackageName()
 
   baseExtension.sourceSets
     .mapNotNull { androidSourceSet ->
@@ -122,8 +122,6 @@ fun GradleProject.isMissingManifestFile(agpApiAccess: AgpApiAccess): Boolean {
 fun GradleProject.generatesBuildConfig(agpApiAccess: AgpApiAccess): Boolean {
 
   return agpApiAccess.ifSafeOrNull(this) {
-
-    @Suppress("UnstableApiUsage")
     requireCommonExtension().buildFeatures.buildConfig != false
   }
     ?.orPropertyDefault(
