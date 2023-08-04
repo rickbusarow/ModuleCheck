@@ -39,20 +39,108 @@ package modulecheck.gradle.platforms.android
 )
 annotation class UnsafeDirectAgpApiReference
 
+/** [com.android.build.gradle.AppExtension] */
 @UnsafeDirectAgpApiReference
-typealias AndroidAppExtension = com.android.build.gradle.AppExtension
+typealias AgpAppExtension = com.android.build.gradle.AppExtension
 
+/** [com.android.build.api.dsl.ApplicationExtension] */
 @UnsafeDirectAgpApiReference
-typealias AndroidBaseExtension = com.android.build.gradle.BaseExtension
+typealias AgpApplicationExtension = com.android.build.api.dsl.ApplicationExtension
 
+/** [com.android.build.api.dsl.DynamicFeatureExtension] */
 @UnsafeDirectAgpApiReference
-typealias AndroidCommonExtension = com.android.build.api.dsl.CommonExtension<*, *, *, *>
+typealias AgpDynamicFeatureExtension = com.android.build.api.dsl.DynamicFeatureExtension
 
+/** [com.android.build.gradle.BaseExtension] */
 @UnsafeDirectAgpApiReference
-typealias AndroidLibraryExtension = com.android.build.gradle.LibraryExtension
+typealias AgpBaseExtension = com.android.build.gradle.BaseExtension
 
+/** [com.android.build.gradle.BasePlugin] */
 @UnsafeDirectAgpApiReference
-typealias AndroidTestExtension = com.android.build.gradle.TestExtension
+typealias AgpBasePlugin = com.android.build.gradle.BasePlugin
 
+/** [com.android.build.gradle.api.AndroidBasePlugin] */
 @UnsafeDirectAgpApiReference
-typealias AndroidTestedExtension = com.android.build.gradle.TestedExtension
+typealias AgpApiBasePlugin = com.android.build.gradle.api.AndroidBasePlugin
+
+/** [com.android.build.api.dsl.CommonExtension] */
+@UnsafeDirectAgpApiReference
+typealias AgpCommonExtension = com.android.build.api.dsl.CommonExtension<*, *, *, *, *>
+
+/** [com.android.build.gradle.LibraryExtension] */
+@UnsafeDirectAgpApiReference
+typealias AgpLibraryExtension = com.android.build.gradle.LibraryExtension
+
+/** [com.android.build.api.variant.AndroidComponentsExtension] */
+@UnsafeDirectAgpApiReference
+typealias AgpComponentsExtension = com.android.build.api.variant.AndroidComponentsExtension<*, *, *>
+
+/** [com.android.build.gradle.TestExtension] */
+@UnsafeDirectAgpApiReference
+typealias AgpTestExtension = com.android.build.gradle.TestExtension
+
+/** [com.android.build.gradle.TestedExtension] */
+@UnsafeDirectAgpApiReference
+typealias AgpTestedExtension = com.android.build.gradle.TestedExtension
+
+/** [com.android.build.api.dsl.AndroidSourceSet] */
+@UnsafeDirectAgpApiReference
+typealias AgpSourceSet = com.android.build.api.dsl.AndroidSourceSet
+
+/** [com.android.build.gradle.api.BaseVariant] */
+@Suppress("DEPRECATION")
+@UnsafeDirectAgpApiReference
+typealias AgpBaseVariant = com.android.build.gradle.api.BaseVariant
+
+/** [com.android.build.gradle.internal.api.TestedVariant] */
+@Suppress("DEPRECATION")
+@UnsafeDirectAgpApiReference
+typealias AgpTestedVariant = com.android.build.gradle.internal.api.TestedVariant
+
+/** [com.android.build.gradle.api.TestVariant] */
+@Suppress("DEPRECATION")
+@UnsafeDirectAgpApiReference
+typealias AgpTestVariant = com.android.build.gradle.api.TestVariant
+
+/** [com.android.build.gradle.api.UnitTestVariant] */
+@Suppress("DEPRECATION")
+@UnsafeDirectAgpApiReference
+typealias AgpUnitTestVariant = com.android.build.gradle.api.UnitTestVariant
+
+/** [com.android.build.gradle.internal.core.InternalBaseVariant.MergedFlavor] */
+@UnsafeDirectAgpApiReference
+typealias AgpMergedFlavor = com.android.build.gradle.internal.core.InternalBaseVariant.MergedFlavor
+
+/** [com.android.build.gradle.internal.api.ApplicationVariantImpl] */
+@UnsafeDirectAgpApiReference
+typealias AgpApplicationVariantImpl = com.android.build.gradle.internal.api.ApplicationVariantImpl
+
+/** [com.android.build.gradle.internal.api.LibraryVariantImpl] */
+@UnsafeDirectAgpApiReference
+typealias AgpLibraryVariantImpl = com.android.build.gradle.internal.api.LibraryVariantImpl
+
+/** [com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet] */
+@UnsafeDirectAgpApiReference
+typealias AgpDefaultAndroidSourceDirectorySet =
+  com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet
+
+/** [com.android.build.gradle.internal.res.GenerateLibraryRFileTask] */
+@UnsafeDirectAgpApiReference
+typealias AgpGenerateLibraryRFileTask = com.android.build.gradle.internal.res.GenerateLibraryRFileTask
+
+/** [com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask] */
+@UnsafeDirectAgpApiReference
+typealias AgpLinkApplicationAndroidResourcesTask =
+  com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
+
+/** [com.android.build.gradle.internal.tasks.VariantAwareTask] */
+@UnsafeDirectAgpApiReference
+typealias AgpVariantAwareTask = com.android.build.gradle.internal.tasks.VariantAwareTask
+
+/** [com.android.build.gradle.tasks.GenerateBuildConfig] */
+@UnsafeDirectAgpApiReference
+typealias AgpGenerateBuildConfig = com.android.build.gradle.tasks.GenerateBuildConfig
+
+/** [com.android.build.gradle.tasks.ManifestProcessorTask] */
+@UnsafeDirectAgpApiReference
+typealias AgpManifestProcessorTask = com.android.build.gradle.tasks.ManifestProcessorTask
