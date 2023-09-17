@@ -35,7 +35,7 @@ runs:
         fi
 
     - name: check out with PAT
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       if: steps.can-push.outputs.can_push == 'true'
       with:
         token: ${{ inputs.personal-access-token }}

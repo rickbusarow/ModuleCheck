@@ -11,7 +11,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: build build-logic
         uses: ./.github/actions/gradle-task
@@ -23,7 +23,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: main build
         uses: ./.github/actions/gradle-task
@@ -40,7 +40,7 @@ jobs:
 
     steps:
       - name: check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Dokka & JavadocJar
         uses: ./.github/actions/gradle-task
@@ -63,7 +63,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: dokkaHtmlMultiModule
         uses: ./.github/actions/gradle-task
@@ -102,7 +102,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v3
+        uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: gh-pages
           build_dir: website/build
