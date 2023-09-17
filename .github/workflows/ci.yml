@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: gradle/wrapper-validation-action@v1
 
   build-logic:
@@ -30,7 +30,7 @@ jobs:
     runs-on: ${{ matrix.runner }}-latest
     steps:
       - name: check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: build build-logic
         uses: ./.github/actions/gradle-task
@@ -47,7 +47,7 @@ jobs:
     runs-on: ${{ matrix.runner }}-latest
     steps:
       - name: check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: main build
         uses: ./.github/actions/gradle-task
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-logic
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: ktlint
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-logic
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: ci-matrices
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -84,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-logic
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: dependency-guard
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -96,7 +96,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-logic
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: moduleCheck
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -108,7 +108,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-logic
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: doks
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -120,7 +120,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-logic
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: website versioning
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -132,7 +132,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-logic
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: artifacts-check
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -144,7 +144,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-logic
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: check version is snapshot
         uses: ./.github/actions/gradle-task
         with:
@@ -154,7 +154,7 @@ jobs:
     runs-on: macos-latest
     needs: build-all
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: detektAll
         uses: ./.github/actions/gradle-task
         with:
@@ -175,7 +175,7 @@ jobs:
     needs: build-all
     steps:
       - name: check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: dokkaHtmlMultiModule
         uses: ./.github/actions/gradle-task
@@ -227,7 +227,7 @@ jobs:
     runs-on: ${{ matrix.runner }}-latest
     steps:
       - name: check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: unit tests
         uses: ./.github/actions/gradle-task
@@ -270,7 +270,7 @@ jobs:
       ### <end-versions-matrix>
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: integration-tests
         uses: ./.github/actions/gradle-task
         with:
@@ -301,7 +301,7 @@ jobs:
         ### <end-integration-test-shards>
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: integration-tests-windows
         uses: ./.github/actions/gradle-task
         with:
