@@ -16,6 +16,8 @@
 package modulecheck.builds
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import com.rickbusarow.kgx.applyOnce
+import com.rickbusarow.kgx.checkProjectIsRoot
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

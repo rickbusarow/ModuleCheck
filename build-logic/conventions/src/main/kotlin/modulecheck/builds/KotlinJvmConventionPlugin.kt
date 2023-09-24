@@ -15,6 +15,9 @@
 
 package modulecheck.builds
 
+import com.rickbusarow.kgx.applyOnce
+import com.rickbusarow.kgx.dependsOn
+import com.rickbusarow.kgx.java
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -88,7 +91,7 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
     target.tasks.register("testJvm").dependsOn("test")
     target.tasks.register("buildTests").dependsOn("testClasses")
     target.tasks.register("buildAll").dependsOn(
-      target.provider { target.javaExtension.sourceSets.map { it.classesTaskName } }
+      target.provider { target.java.sourceSets.map { it.classesTaskName } }
     )
 
     target.tasks.register("moveJavaSrcToKotlin") { task ->

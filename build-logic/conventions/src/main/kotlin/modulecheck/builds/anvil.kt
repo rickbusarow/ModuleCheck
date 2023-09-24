@@ -15,6 +15,9 @@
 
 package modulecheck.builds
 
+import com.rickbusarow.kgx.applyOnce
+import com.rickbusarow.kgx.dependency
+import com.rickbusarow.kgx.libsCatalog
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ExternalDependency

@@ -15,8 +15,8 @@
 
 package modulecheck.builds.shards
 
+import com.rickbusarow.kgx.dependsOn
 import modulecheck.builds.BaseYamlMatrixTask
-import modulecheck.builds.dependsOn
 import modulecheck.builds.diffString
 import modulecheck.builds.getFinal
 import org.gradle.api.Project

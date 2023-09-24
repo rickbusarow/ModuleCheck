@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
+import com.rickbusarow.kgx.dependsOn
 import modulecheck.builds.ShardTestTask
-import modulecheck.builds.dependsOn
 import modulecheck.builds.shards.registerYamlShardsTasks
 
 plugins {

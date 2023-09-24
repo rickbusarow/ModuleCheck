@@ -15,6 +15,8 @@
 
 package modulecheck.builds
 
+import com.rickbusarow.kgx.isRootProject
+import com.rickbusarow.kgx.withType
 import modulecheck.builds.shards.registerYamlShardsTasks
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -139,7 +141,10 @@ abstract class TestConventionPlugin : Plugin<Project> {
         target.tasks.register("testShard$shardIndex", Test::class.java) { task ->
 
           val assignedTests = shardAssignments.getValue(shardIndex)
-            .map { project -> project.tasks.matchingName("test") }
+            .map { project ->
+              project.tasks.withType<Test>()
+                .matching { it.name == "test" }
+            }
 
           task.dependsOn(assignedTests)
         }

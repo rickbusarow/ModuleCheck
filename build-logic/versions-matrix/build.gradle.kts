@@ -40,6 +40,7 @@ gradlePlugin {
 
 dependencies {
 
+  api(libs.rickBusarow.kgx)
   api(libs.square.moshi)
 
   api(project(path = ":core"))

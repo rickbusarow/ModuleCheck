@@ -15,9 +15,9 @@
 
 package modulecheck.builds.matrix
 
-import modulecheck.builds.applyOnce
-import modulecheck.builds.checkProjectIsRoot
-import modulecheck.builds.dependsOn
+import com.rickbusarow.kgx.applyOnce
+import com.rickbusarow.kgx.checkProjectIsRoot
+import com.rickbusarow.kgx.dependsOn
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.language.base.plugins.LifecycleBasePlugin

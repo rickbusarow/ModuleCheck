@@ -17,6 +17,8 @@ package modulecheck.builds
 
 import com.github.gmazzo.gradle.plugins.BuildConfigExtension
 import com.github.gmazzo.gradle.plugins.BuildConfigPlugin
+import com.rickbusarow.kgx.isDirectoryWithFiles
+import com.rickbusarow.kgx.registerOnce
 import org.gradle.api.Project
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
@@ -87,7 +89,7 @@ class BuildConfigBuilderScope(
     project.extensions
       .getByType(BuildConfigExtension::class.java)
       .sourceSets
-      .maybeRegister(sourceSetName) { buildConfigSourceSet ->
+      .registerOnce(sourceSetName) { buildConfigSourceSet ->
 
         buildConfigSourceSet.className.convention("BuildProperties")
         buildConfigSourceSet.packageName.convention(packageName)

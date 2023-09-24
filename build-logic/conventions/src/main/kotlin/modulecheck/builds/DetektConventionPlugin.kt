@@ -15,6 +15,9 @@
 
 package modulecheck.builds
 
+import com.rickbusarow.kgx.applyOnce
+import com.rickbusarow.kgx.dependency
+import com.rickbusarow.kgx.libsCatalog
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import io.gitlab.arturbosch.detekt.DetektGenerateConfigTask

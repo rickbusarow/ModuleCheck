@@ -14,6 +14,11 @@
  */
 package modulecheck.builds
 
+import com.rickbusarow.kgx.EagerGradleApi
+import com.rickbusarow.kgx.dependency
+import com.rickbusarow.kgx.isRealRootProject
+import com.rickbusarow.kgx.libsCatalog
+import com.rickbusarow.kgx.matchingName
 import com.rickbusarow.ktlint.KtLintPlugin
 import com.rickbusarow.ktlint.KtLintTask
 import kotlinx.validation.KotlinApiBuildTask
@@ -30,6 +35,7 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
     target.dependencies
       .add("ktlint", target.libsCatalog.dependency("rickBusarow-ktrules"))
 
+    @OptIn(EagerGradleApi::class)
     target.tasks.withType(KtLintTask::class.java).configureEach { task ->
       task.dependsOn(":updateEditorConfigVersion")
       task.mustRunAfter(

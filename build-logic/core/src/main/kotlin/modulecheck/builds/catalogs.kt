@@ -15,11 +15,11 @@
 
 package modulecheck.builds
 
+import com.rickbusarow.kgx.extras
+import com.rickbusarow.kgx.getOrNullAs
+import com.rickbusarow.kgx.libsCatalog
+import com.rickbusarow.kgx.version
 import org.gradle.api.Project
-import org.gradle.api.artifacts.MinimalExternalModuleDependency
-import org.gradle.api.artifacts.VersionCatalog
-import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.api.provider.Provider
 
 val Project.VERSION_NAME_STABLE: String
   get() = libsCatalog.version("rickBusarow-moduleCheck")
@@ -59,57 +59,3 @@ val Project.JDK: String
 /** `6`, `8`, `11`, etc. */
 val Project.JVM_TARGET_INT: Int
   get() = JVM_TARGET.substringAfterLast('.').toInt()
-
-private val Project.catalogs: VersionCatalogsExtension
-  get() = extensions.getByType(VersionCatalogsExtension::class.java)
-
-/**
- * non-dsl version of `libs`
- *
- * ex:
- *
- * ```
- * val myCatalog = project.libsCatalog
- * ```
- */
-val Project.libsCatalog: VersionCatalog
-  get() = catalogs.named("libs")
-
-/**
- * non-dsl version of `libs._____`
- *
- * ex:
- *
- * ```
- * "api"(project.libsCatalog.dependency("square-anvil-annotations"))
- * ```
- */
-fun VersionCatalog.dependency(alias: String): Provider<MinimalExternalModuleDependency> {
-  return findLibrary(alias).get()
-}
-
-/**
- * non-dsl version of `libs.versions._____.get()`
- *
- * ex:
- *
- * ```
- * val anvilVersion = project.libsCatalog.version("square-anvil")
- * ```
- */
-fun VersionCatalog.version(alias: String): String {
-  return findVersion(alias).get().requiredVersion
-}
-
-/**
- * non-dsl version of `libs.findPlugin(_____).get().get().pluginId`
- *
- * ex:
- *
- * ```
- * val anvilPluginId = project.libsCatalog.pluginId("anvil")
- * ```
- */
-fun VersionCatalog.pluginId(alias: String): String {
-  return findPlugin(alias).get().get().pluginId
-}
