@@ -15,6 +15,10 @@
 
 package modulecheck.builds
 
+import com.rickbusarow.kgx.applyOnce
+import com.rickbusarow.kgx.dependency
+import com.rickbusarow.kgx.dependsOn
+import com.rickbusarow.kgx.libsCatalog
 import com.rickbusarow.ktlint.KtLintTask
 import com.vanniktech.maven.publish.tasks.JavadocJar
 import org.gradle.api.GradleException
@@ -133,7 +137,6 @@ abstract class DokkaConventionPlugin : Plugin<Project> {
     // Dokka uses their outputs but doesn't explicitly depend upon them.
     mustRunAfter(target.tasks.withType(KotlinCompile::class.java))
     mustRunAfter(target.tasks.withType(KtLintTask::class.java))
-    mustRunAfter(target.tasks.matchingName("generateProtos"))
   }
 
   private fun AbstractDokkaLeafTask.configureSourceSets(target: Project) {

@@ -65,6 +65,7 @@ prettier-plugin-sh = "0.12.8"
 rickBusarow-dependencySync = "0.11.2"
 rickBusarow-dispatch = "1.0.0-beta10"
 rickBusarow-doks = "0.1.4"
+rickBusarow-kgx = "0.1.4"
 rickBusarow-ktlint = "0.1.8"
 rickBusarow-ktrules = "1.1.4"
 rickBusarow-moduleCheck = "0.12.5"
@@ -247,6 +248,8 @@ rickBusarow-dispatch-test-core = { module = "com.rickbusarow.dispatch:dispatch-t
 rickBusarow-dispatch-test-jUnit4 = { module = "com.rickbusarow.dispatch:dispatch-test-junit4", version.ref = "rickBusarow-dispatch" }
 rickBusarow-dispatch-test-jUnit5 = { module = "com.rickbusarow.dispatch:dispatch-test-junit5", version.ref = "rickBusarow-dispatch" }
 rickBusarow-dispatch-viewModel = { module = "com.rickbusarow.dispatch:dispatch-android-viewmodel", version.ref = "rickBusarow-dispatch" }
+
+rickBusarow-kgx = { module = "com.rickbusarow.kgx:kotlin-gradle-extensions", version.ref = "rickBusarow-kgx" }
 
 rickBusarow-ktlint = { module = "com.rickbusarow.ktlint:ktlint-gradle-plugin", version.ref = "rickBusarow-ktlint" }
 

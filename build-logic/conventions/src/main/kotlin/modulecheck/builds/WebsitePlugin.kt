@@ -15,6 +15,7 @@
 
 package modulecheck.builds
 
+import com.rickbusarow.kgx.checkProjectIsRoot
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Copy

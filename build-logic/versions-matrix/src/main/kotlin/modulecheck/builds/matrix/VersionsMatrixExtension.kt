@@ -15,10 +15,10 @@
 
 package modulecheck.builds.matrix
 
+import com.rickbusarow.kgx.libsCatalog
+import com.rickbusarow.kgx.version
 import modulecheck.builds.gradlePropertyAsProvider
-import modulecheck.builds.libsCatalog
 import modulecheck.builds.registerSimpleGenerationTaskAsDependency
-import modulecheck.builds.version
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import java.io.File

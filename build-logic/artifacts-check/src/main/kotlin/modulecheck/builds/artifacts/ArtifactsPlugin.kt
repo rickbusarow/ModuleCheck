@@ -15,8 +15,8 @@
 
 package modulecheck.builds.artifacts
 
-import modulecheck.builds.checkProjectIsRoot
-import modulecheck.builds.matchingName
+import com.rickbusarow.kgx.checkProjectIsRoot
+import com.rickbusarow.kgx.dependsOn
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
@@ -31,10 +31,7 @@ abstract class ArtifactsPlugin : Plugin<Project> {
     target.tasks.register("artifactsDump", ArtifactsDumpTask::class.java)
     val artifactsCheck = target.tasks.register("artifactsCheck", ArtifactsCheckTask::class.java)
 
-    target.tasks.matchingName(LifecycleBasePlugin.CHECK_TASK_NAME)
-      .configureEach { task ->
-        task.dependsOn(artifactsCheck)
-      }
+    target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME).dependsOn(artifactsCheck)
 
     target.allprojects {
       target.tasks.withType(AbstractPublishToMaven::class.java).configureEach {

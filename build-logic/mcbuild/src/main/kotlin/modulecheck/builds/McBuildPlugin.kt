@@ -15,6 +15,7 @@
 
 package modulecheck.builds
 
+import com.rickbusarow.kgx.checkProjectIsRoot
 import modulecheck.builds.artifacts.ArtifactsPlugin
 import modulecheck.builds.matrix.VersionsMatrixYamlPlugin
 import org.gradle.api.Plugin

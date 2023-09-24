@@ -287,6 +287,7 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.rickbusarow.kgx:kotlin-gradle-extensions:0.1.4
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.anvil:annotations:2.4.6
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.okio:okio:2.10.0
@@ -1101,6 +1102,7 @@
 :modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.3
 :modulecheck-gradle:platforms:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
+:modulecheck-gradle:platforms:impl -- runtimeClasspath -- com.rickbusarow.kgx:kotlin-gradle-extensions:0.1.4
 :modulecheck-gradle:platforms:impl -- runtimeClasspath -- javax.inject:javax.inject:1
 :modulecheck-gradle:platforms:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-gradle:platforms:impl -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
@@ -1119,6 +1121,7 @@
 :modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.3
 :modulecheck-gradle:platforms:impl -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
+:modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- com.rickbusarow.kgx:kotlin-gradle-extensions:0.1.4
 :modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- javax.inject:javax.inject:1
 :modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0
@@ -1137,6 +1140,7 @@
 :modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.7.3
 :modulecheck-gradle:platforms:internal-android -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
+:modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- com.rickbusarow.kgx:kotlin-gradle-extensions:0.1.4
 :modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- javax.inject:javax.inject:1
 :modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-gradle:platforms:internal-jvm -- runtimeClasspath -- net.swiftzer.semver:semver:1.3.0

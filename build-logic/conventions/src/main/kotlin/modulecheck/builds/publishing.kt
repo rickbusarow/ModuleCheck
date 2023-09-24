@@ -15,6 +15,8 @@
 
 package modulecheck.builds
 
+import com.rickbusarow.kgx.mustRunAfter
+import com.rickbusarow.kgx.registerOnce
 import com.vanniktech.maven.publish.GradlePlugin
 import com.vanniktech.maven.publish.JavadocJar.Dokka
 import com.vanniktech.maven.publish.KotlinJvm
@@ -109,9 +111,7 @@ fun Project.applyBinaryCompatibility() {
     extension.ignoredProjects = mutableSetOf()
   }
 
-  tasks.matchingName("apiCheck").configureEach { task ->
-    task.mustRunAfter("apiDump")
-  }
+  tasks.named("apiCheck").mustRunAfter("apiDump")
 }
 
 private fun Project.configurePublish(artifactId: String, pomDescription: String, groupId: String) {

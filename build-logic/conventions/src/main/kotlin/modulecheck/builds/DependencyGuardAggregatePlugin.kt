@@ -15,6 +15,11 @@
 
 package modulecheck.builds
 
+import com.rickbusarow.kgx.EagerGradleApi
+import com.rickbusarow.kgx.allProjectsTasksMatchingName
+import com.rickbusarow.kgx.checkProjectIsRoot
+import com.rickbusarow.kgx.dependsOn
+import com.rickbusarow.kgx.matchingName
 import modulecheck.builds.DependencyGuardConventionPlugin.Companion.DEPENDENCY_GUARD_BASELINE_TASK_NAME
 import modulecheck.builds.DependencyGuardConventionPlugin.Companion.DEPENDENCY_GUARD_CHECK_TASK_NAME
 import modulecheck.builds.dependencyGuardAggregate.DependencyGuardAggregateTask
@@ -36,6 +41,7 @@ abstract class DependencyGuardAggregatePlugin : Plugin<Project> {
 
     val aggregateFile = target.file("dependency-guard-aggregate.txt")
 
+    @OptIn(EagerGradleApi::class)
     target.tasks.register(AGGREGATE_TASK_NAME, DependencyGuardAggregateTask::class.java) { task ->
       task.rootDir.set(target.rootDir)
 
@@ -57,6 +63,7 @@ abstract class DependencyGuardAggregatePlugin : Plugin<Project> {
       task.rootDir.set(target.rootDir)
     }
 
+    @OptIn(EagerGradleApi::class)
     target.tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME) { task ->
       task.dependsOn(target.tasks.matchingName(EXPLODE_TASK_NAME))
     }

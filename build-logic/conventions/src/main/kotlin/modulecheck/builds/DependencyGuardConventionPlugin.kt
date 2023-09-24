@@ -16,6 +16,10 @@
 package modulecheck.builds
 
 import com.dropbox.gradle.plugins.dependencyguard.DependencyGuardPluginExtension
+import com.rickbusarow.kgx.EagerGradleApi
+import com.rickbusarow.kgx.applyOnce
+import com.rickbusarow.kgx.dependsOn
+import com.rickbusarow.kgx.matchingName
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Delete
@@ -47,12 +51,14 @@ abstract class DependencyGuardConventionPlugin : Plugin<Project> {
         it.mustRunAfter(DEPENDENCY_GUARD_BASELINE_TASK_NAME)
       }
 
+    @OptIn(EagerGradleApi::class)
     target.tasks.named(DEPENDENCY_GUARD_BASELINE_TASK_NAME) {
 
       it.finalizedBy(
         target.rootProject.tasks.matchingName(DependencyGuardAggregatePlugin.AGGREGATE_TASK_NAME)
       )
     }
+    @OptIn(EagerGradleApi::class)
     target.tasks.named(DEPENDENCY_GUARD_CHECK_TASK_NAME) {
       it.dependsOn(
         target.rootProject.tasks.matchingName(DependencyGuardAggregatePlugin.EXPLODE_TASK_NAME)

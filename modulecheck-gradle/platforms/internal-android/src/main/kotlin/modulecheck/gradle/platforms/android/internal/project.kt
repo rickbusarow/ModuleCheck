@@ -90,7 +90,7 @@ fun GradleProject.androidNamespaces(
 fun GradleProject.mainAndroidManifest(agpApiAccess: AgpApiAccess): File? {
 
   return agpApiAccess.ifSafeOrNull(this) {
-    @Suppress("UnstableApiUsage")
+
     requireCommonExtension().sourceSets
       .findByName("main")
       ?.manifest

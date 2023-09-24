@@ -21,6 +21,7 @@ plugins {
 dependencies {
 
   api(libs.java.diff.utils)
+  api(libs.rickBusarow.kgx)
 
   compileOnly(gradleApi())
 

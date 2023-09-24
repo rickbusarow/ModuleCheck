@@ -37,6 +37,8 @@ dependencies {
   compileOnly(libs.kotlin.gradle.plugin)
   compileOnly(libs.kotlin.gradle.plugin.api)
 
+  implementation(libs.rickBusarow.kgx)
+
   implementation(project(path = ":modulecheck-dagger"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
