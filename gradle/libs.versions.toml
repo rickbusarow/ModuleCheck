@@ -9,7 +9,7 @@ kotlin = "1.8.22"
 google-ksp = "1.8.22-1.0.11"
 square-anvil = "2.4.6"
 
-ajalt-clikt = "4.2.0"
+ajalt-clikt = "4.2.1"
 ajalt-mordant = "2.1.0"
 
 androidTools = "8.1.0"
