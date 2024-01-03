@@ -58,7 +58,7 @@ dependencyResolutionManagement {
 }
 
 plugins {
-  id("com.gradle.enterprise") version "3.15"
+  id("com.gradle.enterprise") version "3.16.1"
 }
 
 val isCI = System.getenv("CI")?.toBoolean() == true
