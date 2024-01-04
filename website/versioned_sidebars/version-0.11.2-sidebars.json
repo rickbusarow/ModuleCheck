@@ -1,16 +1,16 @@
 {
-  "version-0.11.2/Docs": [
+  "Docs": [
     {
       "type": "doc",
-      "id": "version-0.11.2/quickstart"
+      "id": "quickstart"
     },
     {
       "type": "doc",
-      "id": "version-0.11.2/configuration"
+      "id": "configuration"
     },
     {
       "type": "doc",
-      "id": "version-0.11.2/ci-workflow"
+      "id": "ci-workflow"
     },
     {
       "type": "category",
@@ -19,15 +19,15 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-0.11.2/rules/unused"
+          "id": "rules/unused"
         },
         {
           "type": "doc",
-          "id": "version-0.11.2/rules/must_be_api"
+          "id": "rules/must_be_api"
         },
         {
           "type": "doc",
-          "id": "version-0.11.2/rules/inherited_dependency"
+          "id": "rules/inherited_dependency"
         },
         {
           "type": "category",
@@ -36,7 +36,7 @@
           "items": [
             {
               "type": "doc",
-              "id": "version-0.11.2/rules/compiler/could_use_anvil_factory"
+              "id": "rules/compiler/could_use_anvil_factory"
             }
           ],
           "collapsible": true
@@ -48,15 +48,15 @@
           "items": [
             {
               "type": "doc",
-              "id": "version-0.11.2/rules/kapt/unused_kapt_processor"
+              "id": "rules/kapt/unused_kapt_processor"
             },
             {
               "type": "doc",
-              "id": "version-0.11.2/rules/kapt/unused_kapt_plugin"
+              "id": "rules/kapt/unused_kapt_plugin"
             },
             {
               "type": "doc",
-              "id": "version-0.11.2/rules/kapt/custom_kapt_matchers"
+              "id": "rules/kapt/custom_kapt_matchers"
             }
           ],
           "collapsible": true
@@ -68,11 +68,11 @@
           "items": [
             {
               "type": "doc",
-              "id": "version-0.11.2/rules/sorting/sort_dependencies"
+              "id": "rules/sorting/sort_dependencies"
             },
             {
               "type": "doc",
-              "id": "version-0.11.2/rules/sorting/sort_plugins"
+              "id": "rules/sorting/sort_plugins"
             }
           ],
           "collapsible": true
@@ -84,11 +84,11 @@
           "items": [
             {
               "type": "doc",
-              "id": "version-0.11.2/rules/android/disable_resources"
+              "id": "rules/android/disable_resources"
             },
             {
               "type": "doc",
-              "id": "version-0.11.2/rules/android/disable_viewbinding"
+              "id": "rules/android/disable_viewbinding"
             }
           ],
           "collapsible": true
