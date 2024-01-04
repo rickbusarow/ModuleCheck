@@ -1,12 +1,12 @@
 {
-  "version-0.11.0/Docs": [
+  "Docs": [
     {
       "type": "doc",
-      "id": "version-0.11.0/quickstart"
+      "id": "quickstart"
     },
     {
       "type": "doc",
-      "id": "version-0.11.0/configuration"
+      "id": "configuration"
     },
     {
       "collapsed": false,
@@ -15,15 +15,15 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-0.11.0/rules/unused"
+          "id": "rules/unused"
         },
         {
           "type": "doc",
-          "id": "version-0.11.0/rules/must_be_api"
+          "id": "rules/must_be_api"
         },
         {
           "type": "doc",
-          "id": "version-0.11.0/rules/inherited_dependency"
+          "id": "rules/inherited_dependency"
         },
         {
           "collapsed": false,
@@ -32,7 +32,7 @@
           "items": [
             {
               "type": "doc",
-              "id": "version-0.11.0/rules/compiler/could_use_anvil_factory"
+              "id": "rules/compiler/could_use_anvil_factory"
             }
           ]
         },
@@ -43,15 +43,15 @@
           "items": [
             {
               "type": "doc",
-              "id": "version-0.11.0/rules/kapt/unused_kapt_processor"
+              "id": "rules/kapt/unused_kapt_processor"
             },
             {
               "type": "doc",
-              "id": "version-0.11.0/rules/kapt/unused_kapt_plugin"
+              "id": "rules/kapt/unused_kapt_plugin"
             },
             {
               "type": "doc",
-              "id": "version-0.11.0/rules/kapt/custom_kapt_matchers"
+              "id": "rules/kapt/custom_kapt_matchers"
             }
           ]
         },
@@ -62,11 +62,11 @@
           "items": [
             {
               "type": "doc",
-              "id": "version-0.11.0/rules/sorting/sort_dependencies"
+              "id": "rules/sorting/sort_dependencies"
             },
             {
               "type": "doc",
-              "id": "version-0.11.0/rules/sorting/sort_plugins"
+              "id": "rules/sorting/sort_plugins"
             }
           ]
         },
@@ -77,11 +77,11 @@
           "items": [
             {
               "type": "doc",
-              "id": "version-0.11.0/rules/android/disable_resources"
+              "id": "rules/android/disable_resources"
             },
             {
               "type": "doc",
-              "id": "version-0.11.0/rules/android/disable_viewbinding"
+              "id": "rules/android/disable_viewbinding"
             }
           ]
         }

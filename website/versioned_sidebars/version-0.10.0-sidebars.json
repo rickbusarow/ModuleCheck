@@ -1,26 +1,26 @@
 {
-  "version-0.10.0/Basics": [
+  "Basics": [
     {
       "type": "doc",
-      "id": "version-0.10.0/quickstart"
+      "id": "quickstart"
     },
     {
       "type": "doc",
-      "id": "version-0.10.0/configuration"
+      "id": "configuration"
     }
   ],
-  "version-0.10.0/Rules": [
+  "Rules": [
     {
       "type": "doc",
-      "id": "version-0.10.0/rules/unused"
+      "id": "rules/unused"
     },
     {
       "type": "doc",
-      "id": "version-0.10.0/rules/redundant"
+      "id": "rules/redundant"
     },
     {
       "type": "doc",
-      "id": "version-0.10.0/rules/overshot"
+      "id": "rules/overshot"
     },
     {
       "collapsed": false,
@@ -29,15 +29,15 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-0.10.0/rules/kapt/unused_kapt_processor"
+          "id": "rules/kapt/unused_kapt_processor"
         },
         {
           "type": "doc",
-          "id": "version-0.10.0/rules/kapt/unused_kapt_plugin"
+          "id": "rules/kapt/unused_kapt_plugin"
         },
         {
           "type": "doc",
-          "id": "version-0.10.0/rules/kapt/custom_kapt_matchers"
+          "id": "rules/kapt/custom_kapt_matchers"
         }
       ]
     },
@@ -48,11 +48,11 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-0.10.0/rules/sorting/sort_dependencies"
+          "id": "rules/sorting/sort_dependencies"
         },
         {
           "type": "doc",
-          "id": "version-0.10.0/rules/sorting/sort_plugins"
+          "id": "rules/sorting/sort_plugins"
         }
       ]
     },
@@ -63,11 +63,11 @@
       "items": [
         {
           "type": "doc",
-          "id": "version-0.10.0/rules/android/disable_resources"
+          "id": "rules/android/disable_resources"
         },
         {
           "type": "doc",
-          "id": "version-0.10.0/rules/android/disable_viewbinding"
+          "id": "rules/android/disable_viewbinding"
         }
       ]
     }
