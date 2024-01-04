@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -180,13 +180,13 @@ abstract class WebsitePlugin : Plugin<Project> {
       }
     }
 
-    target.tasks.register("yarnInstall", Exec::class.java) { task ->
+    target.tasks.register("pnpmInstall", Exec::class.java) { task ->
 
-      task.description = "runs `yarn install` for the website"
+      task.description = "runs `pnpm install` for the website"
       task.group = "website"
 
       task.workingDir("./website")
-      task.commandLine("yarn", "install")
+      task.commandLine("pnpm", "install")
     }
 
     target.tasks.register("updateWebsiteApiDocs", Copy::class.java) { task ->
@@ -268,7 +268,7 @@ abstract class WebsitePlugin : Plugin<Project> {
       task.enabled = version !in existingVersions && !version.matches(devVersions)
 
       task.workingDir("${target.rootDir}/website")
-      task.commandLine("yarn", "run", "docusaurus", "docs:version", version)
+      task.commandLine("pnpm", "docusaurus", "docs:version", version)
     }
 
     target.tasks.register("startSite", Exec::class.java) { task ->
@@ -277,7 +277,7 @@ abstract class WebsitePlugin : Plugin<Project> {
       task.group = "website"
 
       task.dependsOn(
-        "yarnInstall",
+        "pnpmInstall",
         versionDocs,
         "updateWebsiteApiDocs",
         updateWebsiteChangelog,
@@ -286,7 +286,7 @@ abstract class WebsitePlugin : Plugin<Project> {
       )
 
       task.workingDir("${target.rootDir}/website")
-      task.commandLine("yarn", "run", "start")
+      task.commandLine("pnpm", "start")
     }
 
     target.tasks.register("buildSite", Exec::class.java) { task ->
@@ -295,7 +295,7 @@ abstract class WebsitePlugin : Plugin<Project> {
       task.group = "website"
 
       task.dependsOn(
-        "yarnInstall",
+        "pnpmInstall",
         versionDocs,
         "updateWebsiteApiDocs",
         updateWebsiteChangelog,
@@ -304,7 +304,7 @@ abstract class WebsitePlugin : Plugin<Project> {
       )
 
       task.workingDir("${target.rootDir}/website")
-      task.commandLine("yarn", "run", "build")
+      task.commandLine("pnpm", "build")
     }
   }
 
