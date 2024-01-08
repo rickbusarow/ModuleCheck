@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,10 +16,12 @@
 package modulecheck.runtime.test
 
 import com.github.ajalt.mordant.terminal.Terminal
+import com.rickbusarow.kase.HasTestEnvironmentFactory
+import com.rickbusarow.kase.asClueCatching
+import com.rickbusarow.kase.files.TestLocation
 import dispatch.core.DispatcherProvider
 import io.kotest.assertions.asClue
 import kotlinx.coroutines.runBlocking
-import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.fake.TestSettings
 import modulecheck.config.internal.defaultCodeGeneratorBindings
@@ -29,7 +31,6 @@ import modulecheck.finding.FindingResultFactory
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
-import modulecheck.project.test.ProjectTest
 import modulecheck.project.toTypeSafeProjectPathResolver
 import modulecheck.reporting.checkstyle.CheckstyleReporter
 import modulecheck.reporting.console.DepthLogFactory
@@ -47,12 +48,15 @@ import modulecheck.rule.impl.FindingFactoryImpl
 import modulecheck.rule.impl.RealFindingResultFactory
 import modulecheck.rule.test.AllRulesComponent
 import modulecheck.runtime.ModuleCheckRunner
-import modulecheck.testing.TestEnvironmentParams
+import modulecheck.testing.assert.TrimmedAsserts
 import modulecheck.utils.mapToSet
-import java.lang.StackWalker.StackFrame
 
 @Suppress("UnnecessaryAbstractClass")
-abstract class RunnerTest : ProjectTest<RunnerTestEnvironment>() {
+abstract class RunnerTest :
+  HasTestEnvironmentFactory<RunnerTestEnvironmentFactory>,
+  TrimmedAsserts {
+
+  override val testEnvironmentFactory = RunnerTestEnvironmentFactory()
 
   open val settings: RunnerTestEnvironment.() -> ModuleCheckSettings = { TestSettings() }
   open val logger: () -> ReportingLogger = { ReportingLogger() }
@@ -75,45 +79,30 @@ abstract class RunnerTest : ProjectTest<RunnerTestEnvironment>() {
       )
   }
 
-  open fun newRunnerTestEnvironment(
-    projectCache: ProjectCache,
-    codeGeneratorBindings: (ModuleCheckSettings) -> List<CodeGeneratorBinding>,
-    settings: RunnerTestEnvironment.() -> ModuleCheckSettings,
-    logger: ReportingLogger,
-    ruleFilter: RuleFilter,
-    rules: (ModuleCheckSettings, RuleFilter) -> List<ModuleCheckRule<*>> = this.rules,
-    findingFactory: (List<ModuleCheckRule<*>>) -> FindingFactory<out Finding> = this.findingFactory,
-    testStackFrame: StackFrame,
-    testVariantNames: List<String>
-  ): RunnerTestEnvironment = RunnerTestEnvironment(
-    projectCache = projectCache,
-    logger = logger,
-    ruleFilter = ruleFilter,
-    settings = settings,
-    codeGeneratorBindings = codeGeneratorBindings,
-    rules = rules,
-    findingFactory = findingFactory,
-    testStackFrame = testStackFrame,
-    testVariantNames = testVariantNames
-  )
+  /** shorthand for executing a test in a hermetic TestEnvironment but without any kase parameters */
+  fun test(
+    testLocation: TestLocation = TestLocation.get(),
+    testAction: suspend RunnerTestEnvironment.() -> Unit
+  ) {
+    val testEnvironment = testEnvironmentFactory.createEnvironment(
+      params = RunnerTestEnvironmentParams(
+        projectCache = ProjectCache(),
+        logger = logger(),
+        ruleFilter = ruleFilter(),
+        settings = settings,
+        codeGeneratorBindings = codeGeneratorBindings,
+        rules = rules,
+        findingFactory = findingFactory
+      ),
+      names = emptyList(),
+      location = testLocation
+    )
 
-  override fun newTestEnvironment(params: TestEnvironmentParams): RunnerTestEnvironment {
-
-    return when (params) {
-      is RunnerTestEnvironmentParams -> RunnerTestEnvironment(params)
-      else -> RunnerTestEnvironment(
-        RunnerTestEnvironmentParams(
-          projectCache = ProjectCache(),
-          codeGeneratorBindings = codeGeneratorBindings,
-          settings = settings,
-          logger = logger(),
-          ruleFilter = ruleFilter(),
-          rules = rules,
-          findingFactory = findingFactory,
-          testStackFrame = params.testStackFrame,
-          testVariantNames = params.testVariantNames
-        )
-      )
+    runBlocking {
+      testEnvironment.asClueCatching {
+        testEnvironment.testAction()
+        println(testEnvironment)
+      }
     }
   }
 

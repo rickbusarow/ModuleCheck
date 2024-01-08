@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,7 @@
 
 package modulecheck.reporting.sarif
 
+import com.rickbusarow.kase.files.relativePath
 import io.kotest.assertions.asClue
 import io.kotest.matchers.string.shouldContain
 import modulecheck.config.fake.TestChecksSettings

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,7 +30,7 @@ import modulecheck.project.test.ProjectTestEnvironment
 import modulecheck.reporting.logging.PrintLogger
 import org.junit.jupiter.api.Test
 
-internal class KotlinDependenciesBlockParserTest : ProjectTest<ProjectTestEnvironment>() {
+internal class KotlinDependenciesBlockParserTest : ProjectTest() {
 
   val parser: KotlinDependenciesBlockParser
     get() = KotlinDependenciesBlockParser(

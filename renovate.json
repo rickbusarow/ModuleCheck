@@ -23,7 +23,15 @@
         "^com\\.rickbusarow\\.ktlint:(?:[\\w-]+)$",
         "^com\\.rickbusarow\\.ktrules:(?:[\\w-]+)$"
       ],
-      "groupName": "KtLint things"
+      "groupName": "KtLint libs"
+    },
+    {
+      "matchPackagePatterns": [
+        "^org\\.junit\\.jupiter:(?:[\\w-]+)$",
+        "^org\\.junit\\.platform:(?:[\\w-]+)$",
+        "^org\\.junit\\.vintage:(?:[\\w-]+)$"
+      ],
+      "groupName": "JUnit5 libs"
     }
   ],
   "rebaseWhen": "conflicted",

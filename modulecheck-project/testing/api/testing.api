@@ -1,13 +1,15 @@
-public abstract class modulecheck/project/test/ProjectTest : modulecheck/testing/BaseTest {
+public abstract class modulecheck/project/test/ProjectTest : com/rickbusarow/kase/HasTestEnvironmentFactory {
 	public fun <init> ()V
-	public fun newTestEnvironment (Lmodulecheck/testing/TestEnvironmentParams;)Lmodulecheck/project/test/ProjectTestEnvironment;
-	public synthetic fun newTestEnvironment (Lmodulecheck/testing/TestEnvironmentParams;)Lmodulecheck/testing/TestEnvironment;
+	public synthetic fun getTestEnvironmentFactory ()Lcom/rickbusarow/kase/TestEnvironmentFactory;
+	public fun getTestEnvironmentFactory ()Lmodulecheck/project/test/ProjectTestEnvironmentFactory;
+	public final fun test (Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;)V
+	public static synthetic fun test$default (Lmodulecheck/project/test/ProjectTest;Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
 	public final fun writeText (Ljava/io/File;Ljava/lang/String;)V
 }
 
 public class modulecheck/project/test/ProjectTestEnvironment : modulecheck/testing/TestEnvironment, modulecheck/project/generation/ProjectCollector {
-	public fun <init> (Lmodulecheck/project/ProjectCache;Ljava/lang/StackWalker$StackFrame;Ljava/util/List;)V
-	public fun <init> (Lmodulecheck/project/test/ProjectTestEnvironmentParams;)V
+	public fun <init> (Lmodulecheck/project/ProjectCache;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;)V
+	public synthetic fun <init> (Lmodulecheck/project/ProjectCache;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun addDependency-fCcoXlo (Lmodulecheck/project/McProject;Ljava/lang/String;Lmodulecheck/project/McProject;Z)V
 	public static synthetic fun addDependency-fCcoXlo$default (Lmodulecheck/project/test/ProjectTestEnvironment;Lmodulecheck/project/McProject;Ljava/lang/String;Lmodulecheck/project/McProject;ZILjava/lang/Object;)V
 	public final fun createJavaFile-8Qc_ZYM (Lmodulecheck/project/test/ProjectTestEnvironment;Ljava/lang/String;Lmodulecheck/project/McProject;Ljava/lang/String;Lorg/jetbrains/kotlin/config/JvmTarget;)Lmodulecheck/parsing/source/JavaFile;
@@ -25,17 +27,19 @@ public class modulecheck/project/test/ProjectTestEnvironment : modulecheck/testi
 	public fun getRoot ()Ljava/io/File;
 }
 
+public final class modulecheck/project/test/ProjectTestEnvironmentFactory : com/rickbusarow/kase/TestEnvironmentFactory {
+	public fun <init> ()V
+	public synthetic fun createEnvironment (Ljava/lang/Object;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;)Lcom/rickbusarow/kase/TestEnvironment;
+	public fun createEnvironment (Lmodulecheck/project/test/ProjectTestEnvironmentParams;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;)Lmodulecheck/project/test/ProjectTestEnvironment;
+}
+
 public final class modulecheck/project/test/ProjectTestEnvironmentParams : modulecheck/testing/TestEnvironmentParams {
-	public fun <init> (Lmodulecheck/project/ProjectCache;Ljava/lang/StackWalker$StackFrame;Ljava/util/List;)V
+	public fun <init> (Lmodulecheck/project/ProjectCache;)V
 	public final fun component1 ()Lmodulecheck/project/ProjectCache;
-	public final fun component2 ()Ljava/lang/StackWalker$StackFrame;
-	public final fun component3 ()Ljava/util/List;
-	public final fun copy (Lmodulecheck/project/ProjectCache;Ljava/lang/StackWalker$StackFrame;Ljava/util/List;)Lmodulecheck/project/test/ProjectTestEnvironmentParams;
-	public static synthetic fun copy$default (Lmodulecheck/project/test/ProjectTestEnvironmentParams;Lmodulecheck/project/ProjectCache;Ljava/lang/StackWalker$StackFrame;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/project/test/ProjectTestEnvironmentParams;
+	public final fun copy (Lmodulecheck/project/ProjectCache;)Lmodulecheck/project/test/ProjectTestEnvironmentParams;
+	public static synthetic fun copy$default (Lmodulecheck/project/test/ProjectTestEnvironmentParams;Lmodulecheck/project/ProjectCache;ILjava/lang/Object;)Lmodulecheck/project/test/ProjectTestEnvironmentParams;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getProjectCache ()Lmodulecheck/project/ProjectCache;
-	public fun getTestStackFrame ()Ljava/lang/StackWalker$StackFrame;
-	public fun getTestVariantNames ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@
 package modulecheck.builds
 
 import com.rickbusarow.kgx.applyOnce
-import com.rickbusarow.kgx.dependency
+import com.rickbusarow.kgx.library
 import com.rickbusarow.kgx.libsCatalog
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
@@ -45,7 +45,11 @@ abstract class DetektConventionPlugin : Plugin<Project> {
     target.tasks
       .register("detektReportMerge", ReportMergeTask::class.java) { reportMergeTask ->
         reportMergeTask.output
-          .set(target.rootProject.buildDir.resolve("reports/detekt/merged.sarif"))
+          .set(
+            target.rootProject.layout.buildDirectory.file(
+              "reports/detekt/merged.sarif"
+            )
+          )
 
         reportMergeTask.input.from(
           target.tasks.withType(Detekt::class.java).map { it.sarifReportFile }
@@ -54,7 +58,7 @@ abstract class DetektConventionPlugin : Plugin<Project> {
 
     target.dependencies.add(
       "detektPlugins",
-      target.libsCatalog.dependency("detekt-rules-libraries")
+      target.libsCatalog.library("detekt-rules-libraries")
     )
 
     target.extensions.configure(DetektExtension::class.java) { extension ->

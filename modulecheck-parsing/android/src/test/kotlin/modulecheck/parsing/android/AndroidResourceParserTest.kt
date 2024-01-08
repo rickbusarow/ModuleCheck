@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,12 +19,11 @@ import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.parsing.source.UnqualifiedAndroidResource.Companion.string
 import modulecheck.parsing.source.UnqualifiedAndroidResource.Companion.style
 import modulecheck.testing.BaseTest
-import modulecheck.testing.TestEnvironment
 import modulecheck.utils.createSafely
 import modulecheck.utils.resolve
 import org.junit.jupiter.api.Test
 
-internal class AndroidResourceParserTest : BaseTest<TestEnvironment>() {
+internal class AndroidResourceParserTest : BaseTest {
 
   @Test
   fun `a node without attributes should not be parsed`() = test {

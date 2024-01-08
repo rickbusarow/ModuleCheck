@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,8 @@
 
 package modulecheck.project.test
 
+import com.rickbusarow.kase.TestEnvironmentFactory
+import com.rickbusarow.kase.files.TestLocation
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -38,13 +40,18 @@ import modulecheck.utils.trace.Trace
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
-import java.lang.StackWalker.StackFrame
 
 data class ProjectTestEnvironmentParams(
-  val projectCache: ProjectCache,
-  override val testStackFrame: StackFrame,
-  override val testVariantNames: List<String>
+  val projectCache: ProjectCache
 ) : TestEnvironmentParams
+
+class ProjectTestEnvironmentFactory : TestEnvironmentFactory<ProjectTestEnvironmentParams, ProjectTestEnvironment> {
+  override fun createEnvironment(
+    params: ProjectTestEnvironmentParams,
+    names: List<String>,
+    location: TestLocation
+  ): ProjectTestEnvironment = ProjectTestEnvironment(params.projectCache, names, location)
+}
 
 /**
  * A specialized [TestEnvironment] for project-related tests.
@@ -52,15 +59,10 @@ data class ProjectTestEnvironmentParams(
  */
 open class ProjectTestEnvironment(
   override val projectCache: ProjectCache,
-  testStackFrame: StackWalker.StackFrame,
-  testVariantNames: List<String>
-) : TestEnvironment(testStackFrame, testVariantNames), ProjectCollector {
-
-  constructor(params: ProjectTestEnvironmentParams) : this(
-    projectCache = params.projectCache,
-    testStackFrame = params.testStackFrame,
-    testVariantNames = params.testVariantNames
-  )
+  names: List<String>,
+  testLocation: TestLocation = TestLocation.get()
+) : TestEnvironment(names = names, testLocation = testLocation),
+  ProjectCollector {
 
   override val codeGeneratorBindings: List<CodeGeneratorBinding> by lazy {
     defaultCodeGeneratorBindings()

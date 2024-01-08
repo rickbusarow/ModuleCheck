@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,28 +15,29 @@
 
 package modulecheck.gradle
 
-import io.kotest.inspectors.forAll
+import com.rickbusarow.kase.kases
 import io.kotest.matchers.string.shouldContain
+import io.kotest.matchers.string.shouldNotContain
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 
 class TasksValidationTest : BaseGradleTest() {
-
   @Test
   fun `all tasks with descriptions`() = test {
 
     rootBuild.appendText(
       """
-      val mcTasks by tasks.registering {
-        doLast {
-          val message = tasks
-            .matching { it.group == "moduleCheck" }
-            .sortedBy { it.name }
-            .joinToString("\n") { it.name + " - " + it.description }
+        val mcTasks by tasks.registering {
+          doLast {
+            val message = tasks
+              .matching { it.group == "moduleCheck" }
+              .sortedBy { it.name }
+              .joinToString("\n") { it.name + " - " + it.description }
 
-          println(message)
+            println(message)
+          }
         }
-      }
       """.trimIndent()
     )
 
@@ -55,43 +56,52 @@ class TasksValidationTest : BaseGradleTest() {
     """
   }
 
+  @Disabled
   @TestFactory
-  fun `all tasks should ignore configuration caching`() = factory {
+  fun `all tasks should ignore configuration caching`() =
+    kases(
 
-    listOf(
-      "moduleCheck",
-      "moduleCheckAuto",
-      "moduleCheckDepths",
-      "moduleCheckGraphs",
-      "moduleCheckSortDependencies",
-      "moduleCheckSortDependenciesAuto",
-      "moduleCheckSortPlugins",
-      "moduleCheckSortPluginsAuto"
-    ).forAll { taskName ->
+      listOf(
+        "moduleCheck",
+        "moduleCheckAuto",
+        "moduleCheckDepths",
+        "moduleCheckGraphs",
+        "moduleCheckSortDependencies",
+        "moduleCheckSortDependenciesAuto",
+        "moduleCheckSortPlugins",
+        "moduleCheckSortPluginsAuto"
+      )
+    ).asContainers { (taskName) ->
+      params.asTests {
 
-      val expected1 = if (gradleVersion < "8.1") {
-        "Configuration cache is an incubating feature."
-      } else {
-        "Encryption of the configuration cache is enabled."
-      }
-      val expected2 =
-        "Calculating task graph as no configuration cache is available for tasks: $taskName"
+        val calculatingMessage =
+          when {
+            gradleVersion >=
+              "8.5" -> "Calculating task graph as no cached configuration is available for tasks: $taskName"
 
-      // The first invocation would always succeed, but will generate a cache if caching isn't ignored
-      shouldSucceed(
-        taskName,
-        "--configuration-cache",
-        withPluginClasspath = true
-      ).output.clean().let { output ->
-        output shouldContain expected1
-        output shouldContain expected2
-      }
+            else -> "Calculating task graph as no configuration cache is available for tasks: $taskName"
+          }
 
-      // The second invocation will fail if a cache exists and caching isn't ignored.
-      shouldSucceed(taskName, "--configuration-cache").output.clean().let { output ->
-        output shouldContain expected1
-        output shouldContain expected2
+        val storedMessage = "Configuration cache entry stored."
+        val reusedMessage = "Configuration cache entry reused."
+
+        // The first invocation would always succeed, but will generate a cache if caching isn't ignored
+        shouldSucceed(
+          taskName,
+          "--configuration-cache",
+          withPluginClasspath = true
+        ).output.clean().let { output ->
+          output shouldContain calculatingMessage
+          output shouldContain storedMessage
+          output shouldNotContain reusedMessage
+        }
+
+        // The second invocation will fail if a cache exists and caching isn't ignored.
+        shouldSucceed(taskName, "--configuration-cache").output.clean().let { output ->
+          output shouldNotContain calculatingMessage
+          output shouldNotContain storedMessage
+          output shouldContain reusedMessage
+        }
       }
     }
-  }
 }

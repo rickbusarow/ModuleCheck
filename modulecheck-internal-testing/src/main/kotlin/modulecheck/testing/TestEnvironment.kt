@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,25 +15,18 @@
 
 package modulecheck.testing
 
+import com.rickbusarow.kase.DefaultTestEnvironment
+import com.rickbusarow.kase.TestEnvironment
+import com.rickbusarow.kase.files.TestLocation
 import modulecheck.testing.assert.TrimmedAsserts
 import java.io.File
 
-/**
- * Represents a hermetic testing environment with an
- * associated working directory and certain assertions.
- *
- * @param testStackFrame The [StackWalker.StackFrame] from which the test is being run.
- * @param testVariantNames The variant names related to the test.
- */
+/** */
 open class TestEnvironment(
-  testStackFrame: StackWalker.StackFrame,
-  testVariantNames: List<String>
-) : HasWorkingDir(createWorkingDir(testStackFrame, testVariantNames)), TrimmedAsserts {
-
-  constructor(params: TestEnvironmentParams) : this(
-    testStackFrame = params.testStackFrame,
-    testVariantNames = params.testVariantNames
-  )
+  names: List<String>,
+  testLocation: TestLocation = TestLocation.get()
+) : TestEnvironment by DefaultTestEnvironment(names = names, testLocation = testLocation),
+  TrimmedAsserts {
 
   /**
    * Asserts that the provided [File] has the expected
@@ -64,27 +57,5 @@ open class TestEnvironment(
   fun String.clean(): String = clean(workingDir)
 }
 
-/**
- * @property testStackFrame The [StackWalker.StackFrame] from which the test is being run.
- * @property testVariantNames The variant names related to the test.
- */
-data class DefaultTestEnvironmentParams(
-  override val testStackFrame: StackWalker.StackFrame,
-  override val testVariantNames: List<String>
-) : TestEnvironmentParams
-
 /** */
-interface TestEnvironmentParams {
-  /**
-   * The [StackWalker.StackFrame] from which the test is being
-   * run. Defaults to the current stack frame if not provided.
-   */
-  val testStackFrame: StackWalker.StackFrame
-
-  /**
-   * The variant name(s) related to the test. The first name corresponds to
-   * a subdirectory under the directory derived from [testStackFrame]. Each
-   * additional name corresponds to a subdirectory inside its predecessor.
-   */
-  val testVariantNames: List<String>
-}
+interface TestEnvironmentParams

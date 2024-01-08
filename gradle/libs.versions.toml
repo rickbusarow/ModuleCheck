@@ -41,7 +41,9 @@ google-material = "1.4.0"
 gradle-plugin-publish = "1.2.1"
 graphviz = "0.18.1"
 groovy = "3.0.20"
+jUnit4 = "4.13.2"
 jUnit = "5.10.1"
+jUnit-platform = "1.10.1"
 jackson = "2.13.0"
 java-diff-utils = "4.12"
 javaParser = "3.25.8"
@@ -65,6 +67,7 @@ prettier-plugin-sh = "0.12.8"
 rickBusarow-dependencySync = "0.11.2"
 rickBusarow-dispatch = "1.0.0-beta10"
 rickBusarow-doks = "0.1.4"
+rickBusarow-kase = "0.7.0"
 rickBusarow-kgx = "0.1.10"
 rickBusarow-ktlint = "0.1.8"
 rickBusarow-ktrules = "1.1.4"
@@ -181,10 +184,15 @@ jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "jetbrai
 
 johnrengelman-shadow = { module = "gradle.plugin.com.github.johnrengelman:shadow", version.ref = "johnrengelman-shadow" }
 
-junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jUnit" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "jUnit" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jUnit" }
-junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jUnit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jUnit" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jUnit" }
+junit-platform-suite = { module = "org.junit.platformr:junit-platform-suite", version.ref = "jUnit-platform" }
+junit-platform-suite-api = { module = "org.junit.platform:junit-platform-suite-api", version.ref = "jUnit-platform" }
+junit-platform-suite-engine = { module = "org.junit.platform:junit-platform-suite-engine", version.ref = "jUnit-platform" }
+junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "jUnit" }
+junit4 = { module = "junit:junit", version.ref = "jUnit4" }
 
 kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "kaml" }
 
@@ -249,6 +257,10 @@ rickBusarow-dispatch-test-jUnit4 = { module = "com.rickbusarow.dispatch:dispatch
 rickBusarow-dispatch-test-jUnit5 = { module = "com.rickbusarow.dispatch:dispatch-test-junit5", version.ref = "rickBusarow-dispatch" }
 rickBusarow-dispatch-viewModel = { module = "com.rickbusarow.dispatch:dispatch-android-viewmodel", version.ref = "rickBusarow-dispatch" }
 
+rickBusarow-kase = { module = "com.rickbusarow.kase:kase", version.ref = "rickBusarow-kase" }
+rickBusarow-kase-gradle = { module = "com.rickbusarow.kase:kase-gradle", version.ref = "rickBusarow-kase" }
+rickBusarow-kase-gradle-dsl = { module = "com.rickbusarow.kase:kase-gradle-dsl", version.ref = "rickBusarow-kase" }
+
 rickBusarow-kgx = { module = "com.rickbusarow.kgx:kotlin-gradle-extensions", version.ref = "rickBusarow-kgx" }
 
 rickBusarow-ktlint = { module = "com.rickbusarow.ktlint:ktlint-gradle-plugin", version.ref = "rickBusarow-ktlint" }
@@ -299,8 +311,8 @@ zacSweers-auto-service-ksp = "dev.zacsweers.autoservice:auto-service-ksp:1.1.0"
 [bundles]
 junit = [
   "junit-jupiter-api",
-  "junit-params",
-  "junit-engine"
+  "junit-jupiter-engine",
+  "junit-jupiter-params"
 ]
 kotest = [
   "kotest-assertions-api",

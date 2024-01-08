@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,7 +40,8 @@ dependencies {
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlinx.coroutines.test)
-  testImplementation(libs.square.okio)
+
+  // testImplementation(libs.square.okio)
 
   testImplementation(project(path = ":modulecheck-config:fake"))
   testImplementation(project(path = ":modulecheck-finding:impl"))

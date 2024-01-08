@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,12 +26,11 @@ import modulecheck.parsing.source.PackageName.Companion.asPackageName
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.test.McNameTest
 import modulecheck.project.test.ProjectTest
-import modulecheck.project.test.ProjectTestEnvironment
 import org.jetbrains.kotlin.config.JvmTarget
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-internal class JavaFileTest : ProjectTest<ProjectTestEnvironment>(), McNameTest {
+internal class JavaFileTest : ProjectTest(), McNameTest {
 
   override val defaultLanguage: CompatibleLanguage
     get() = JAVA

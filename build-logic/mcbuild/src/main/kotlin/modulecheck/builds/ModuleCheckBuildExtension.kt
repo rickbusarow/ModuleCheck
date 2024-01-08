@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,27 +17,25 @@ package modulecheck.builds
 
 import modulecheck.builds.matrix.VersionsMatrixExtension
 import org.gradle.api.Project
-import org.gradle.api.plugins.PluginManager
 import javax.inject.Inject
 
 @Suppress("MemberVisibilityCanBePrivate", "UnnecessaryAbstractClass")
 abstract class ModuleCheckBuildExtension @Inject constructor(
-  private val pluginManager: PluginManager,
-  private val project: Project
-) : BuildPropertiesExtension,
+  private val target: Project
+) : VersionsMatrixExtension(target),
+  BuildPropertiesExtension,
   PublishingExtension,
-  DiExtension,
-  VersionsMatrixExtension {
+  DiExtension {
 
   override fun anvil() {
-    project.applyAnvil()
+    target.applyAnvil()
   }
 
   override fun dagger() {
-    project.applyDagger()
+    target.applyDagger()
   }
 
   fun ksp() {
-    pluginManager.apply("com.google.devtools.ksp")
+    target.pluginManager.apply("com.google.devtools.ksp")
   }
 }

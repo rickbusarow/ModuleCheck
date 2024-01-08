@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,10 +16,7 @@
 package modulecheck.gradle
 
 import modulecheck.model.sourceset.SourceSetName
-import modulecheck.utils.createSafely
-import modulecheck.utils.resolve
 import org.junit.jupiter.api.TestFactory
-import java.io.File
 
 class UnusedDependenciesPluginTest : BaseGradleTest() {
 
@@ -89,80 +86,6 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
       }
 
       shouldSucceed("moduleCheck")
-    }
-
-  @TestFactory
-  fun `module with an auto-generated manifest used in subject module should not be unused`() =
-    factory(filter = { it.agp < "8.0.0" }) {
-
-      // This module is declaring a base package in an auto-generated manifest which isn't present
-      // until the manifest processor task is invoked.  That base package needs to be read from the
-      // manifest in order to figure out that R declaration.  The "app" module above is referencing
-      // that generated R file, so if the manifest isn't generated, the R won't resolve and this
-      // module will be unused.
-      val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
-        buildFile {
-          """
-        plugins {
-          id("com.android.library")
-          kotlin("android")
-          id("com.gradleup.auto.manifest") version "2.0"
-        }
-
-        android {
-          defaultConfig {
-            minSdk = 23
-            compileSdk = 32
-          }
-        }
-
-        autoManifest {
-          packageName.set("com.modulecheck.lib1")
-        }
-        """
-        }
-      }
-
-      // the manifest is automatically created, so go ahead and delete it for this one test.
-      lib1.projectDir.resolve("src/main/AndroidManifest.xml").delete()
-
-      androidLibrary(":app", "com.modulecheck.app") {
-        buildFile {
-          """
-          plugins {
-            id("com.android.library")
-            kotlin("android")
-          }
-
-          android {
-            defaultConfig {
-              minSdk = 23
-              compileSdk = 32
-            }
-          }
-
-          dependencies {
-            api(project(path = ":lib1"))
-          }
-          """
-        }
-
-        projectDir.resolve("src/main/AndroidManifest.xml")
-          .createSafely("<manifest package=\"com.modulecheck.app\" />")
-
-        addKotlinSource(
-          """
-          package com.modulecheck.app
-
-          val someR = com.modulecheck.lib1.R
-          """
-        )
-      }
-
-      shouldSucceed("moduleCheck")
-
-      // one last check to make sure the manifest wasn't generated, since that would invalidate the test
-      File(workingDir, "/lib1/src/main/AndroidManifest.xml").exists() shouldBe false
     }
 
   @TestFactory

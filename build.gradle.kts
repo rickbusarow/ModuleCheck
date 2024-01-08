@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+import com.rickbusarow.kgx.buildDir
 import modulecheck.builds.GROUP
 import modulecheck.builds.PLUGIN_ID
 import modulecheck.builds.VERSION_NAME
@@ -22,6 +23,7 @@ buildscript {
   dependencies {
     classpath(libs.kotlin.gradle.plugin)
     classpath(libs.vanniktech.publish)
+    classpath(libs.rickBusarow.kgx)
   }
 }
 
@@ -123,7 +125,7 @@ moduleCheck {
     depths.enabled = true
     graphs {
       enabled = true
-      outputDir = "$buildDir/reports/modulecheck/graphs"
+      outputDir = "${buildDir()}/reports/modulecheck/graphs"
     }
   }
 }

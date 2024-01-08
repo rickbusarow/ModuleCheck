@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,49 +15,49 @@
 
 package modulecheck.gradle
 
-import modulecheck.project.ProjectCache
-import modulecheck.testing.BaseTest
-import modulecheck.testing.TestEnvironmentParams
-import modulecheck.testing.TestVersions
+import com.rickbusarow.kase.HasKaseMatrix
+import com.rickbusarow.kase.HasParams
+import com.rickbusarow.kase.asClueCatching
+import com.rickbusarow.kase.files.TestLocation
+import kotlinx.coroutines.runBlocking
+import modulecheck.testing.McTestVersions
+import modulecheck.testing.McVersionMatrix
 import modulecheck.testing.VersionsFactoryTest
-import modulecheck.utils.remove
+import modulecheck.testing.assert.TrimmedAsserts
 import org.junit.jupiter.api.parallel.Execution
 import org.junit.jupiter.api.parallel.ExecutionMode.SAME_THREAD
 import org.junit.jupiter.api.parallel.ResourceLock
-import java.lang.StackWalker.StackFrame
 
 @Suppress("UnnecessaryAbstractClass")
 @ResourceLock("Gradle")
 @Execution(SAME_THREAD)
-abstract class BaseGradleTest :
-  BaseTest<GradleTestEnvironment>(),
-  VersionsFactoryTest<GradleTestEnvironment> {
+abstract class BaseGradleTest(
+  final override val kaseMatrix: McVersionMatrix = McVersionMatrix()
+) : VersionsFactoryTest<McGradleTestEnvironment, McGradleTestEnvironmentFactory>,
+  HasParams<McTestVersions>,
+  TrimmedAsserts,
+  HasKaseMatrix {
 
-  override fun newTestEnvironment(params: TestEnvironmentParams): GradleTestEnvironment {
+  override val params: List<McTestVersions> by lazy { versions() }
 
-    return when (params) {
-      is GradleTestEnvironmentParams -> GradleTestEnvironment(params)
-      else -> GradleTestEnvironment(
-        GradleTestEnvironmentParams(
-          testVersions = defaultTestVersions(),
-          projectCache = ProjectCache(),
-          testStackFrame = params.testStackFrame,
-          testVariantNames = params.testVariantNames
-        )
-      )
-    }
-  }
+  override val testEnvironmentFactory = McGradleTestEnvironmentFactory()
 
-  final override fun TestVersions.newParams(stackFrame: StackFrame): GradleTestEnvironmentParams {
-    return GradleTestEnvironmentParams(
-      testVersions = this,
-      projectCache = ProjectCache(),
-      testStackFrame = stackFrame,
-      testVariantNames = this.toString()
-        .substringAfter('[')
-        .substringBefore(']')
-        .split(',')
-        .map { it.trim().replace(" ", "_").remove(":") }
+  /** shorthand for executing a test in a hermetic TestEnvironment but without any kase parameters */
+  fun test(
+    testLocation: TestLocation = TestLocation.get(),
+    testAction: suspend McGradleTestEnvironment.() -> Unit
+  ) {
+    val testEnvironment = testEnvironmentFactory.createEnvironment(
+      params = params.last(),
+      names = emptyList(),
+      location = testLocation
     )
+
+    runBlocking {
+      testEnvironment.asClueCatching {
+        testEnvironment.testAction()
+        println(testEnvironment)
+      }
+    }
   }
 }

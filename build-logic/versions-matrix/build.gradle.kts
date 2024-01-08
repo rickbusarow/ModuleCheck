@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -50,6 +50,7 @@ dependencies {
   compileOnly(libs.kotlin.gradle.plugin)
 
   implementation(libs.benManes.versions)
+  implementation(libs.buildconfig)
   implementation(libs.detekt.gradle)
   implementation(libs.dokka.gradle)
   implementation(libs.dropbox.dependencyGuard)
@@ -62,6 +63,8 @@ dependencies {
   implementation(libs.kotlin.stdlib.jdk7)
   implementation(libs.kotlin.stdlib.jdk8)
   implementation(libs.kotlinx.knit)
+  implementation(libs.rickBusarow.kase)
+  implementation(libs.rickBusarow.kase.gradle)
   implementation(libs.rickBusarow.ktlint)
   implementation(libs.scabbard)
   implementation(libs.square.anvil.gradle)

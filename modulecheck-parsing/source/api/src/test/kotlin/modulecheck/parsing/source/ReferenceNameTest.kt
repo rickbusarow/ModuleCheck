@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,11 +15,11 @@
 
 package modulecheck.parsing.source
 
+import com.rickbusarow.kase.asTests
 import io.kotest.matchers.shouldNotBe
 import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.McName.CompatibleLanguage.XML
-import modulecheck.testing.asTests
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
@@ -34,7 +34,7 @@ class ReferenceNameTest : BaseMcNameTest() {
     @TestFactory
     fun `equals matches other reference types with the same name and language`() =
       allReferenceNames("com.test.Subject", languages = listOf(JAVA))
-        .asTests { other ->
+        .asTests { (other) ->
 
           other shouldBe subject
           subject shouldBe other
@@ -43,7 +43,7 @@ class ReferenceNameTest : BaseMcNameTest() {
     @TestFactory
     fun `equals does not match any reference types with a different language`() =
       allReferenceNames("com.test.Subject", languages = listOf(XML, KOTLIN))
-        .asTests { other ->
+        .asTests { (other) ->
 
           other shouldNotBe subject
           subject shouldNotBe other
@@ -52,7 +52,7 @@ class ReferenceNameTest : BaseMcNameTest() {
     @TestFactory
     fun `equals does not match any reference types with a different name`() =
       allReferenceNames("com.test.Other", languages = listOf(JAVA))
-        .asTests { other ->
+        .asTests { (other) ->
 
           other shouldNotBe subject
           subject shouldNotBe other

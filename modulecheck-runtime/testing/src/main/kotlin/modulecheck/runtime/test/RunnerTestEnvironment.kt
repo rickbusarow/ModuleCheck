@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,8 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package modulecheck.runtime.test
 
+import com.rickbusarow.kase.TestEnvironmentFactory
+import com.rickbusarow.kase.files.TestLocation
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.Finding
@@ -25,8 +28,19 @@ import modulecheck.rule.ModuleCheckRule
 import modulecheck.rule.RuleFilter
 import modulecheck.testing.TestEnvironmentParams
 import modulecheck.testing.clean
-import java.lang.StackWalker.StackFrame
 
+/**
+ * Defines a test environment which uses a
+ * [ModuleCheckRunner][modulecheck.runtime.ModuleCheckRunner].
+ *
+ * @property projectCache An instance of [ProjectCache].
+ * @property logger A [ReportingLogger] for logging reporting events.
+ * @property ruleFilter A [RuleFilter] for filtering out unwanted rules.
+ * @property settings A function to generate [ModuleCheckSettings].
+ * @property codeGeneratorBindings A function to generate a list of [CodeGeneratorBinding].
+ * @property rules A function to generate a list of [ModuleCheckRule].
+ * @property findingFactory A function to generate a [FindingFactory].
+ */
 data class RunnerTestEnvironmentParams(
   val projectCache: ProjectCache,
   val logger: ReportingLogger,
@@ -34,10 +48,26 @@ data class RunnerTestEnvironmentParams(
   val settings: (RunnerTestEnvironment) -> ModuleCheckSettings,
   val codeGeneratorBindings: (ModuleCheckSettings) -> List<CodeGeneratorBinding>,
   val rules: (ModuleCheckSettings, RuleFilter) -> List<ModuleCheckRule<*>>,
-  val findingFactory: (List<ModuleCheckRule<*>>) -> FindingFactory<out Finding>,
-  override val testStackFrame: StackFrame,
-  override val testVariantNames: List<String>
+  val findingFactory: (List<ModuleCheckRule<*>>) -> FindingFactory<out Finding>
 ) : TestEnvironmentParams
+
+class RunnerTestEnvironmentFactory : TestEnvironmentFactory<RunnerTestEnvironmentParams, RunnerTestEnvironment> {
+  override fun createEnvironment(
+    params: RunnerTestEnvironmentParams,
+    names: List<String>,
+    location: TestLocation
+  ): RunnerTestEnvironment = RunnerTestEnvironment(
+    projectCache = params.projectCache,
+    logger = params.logger,
+    ruleFilter = params.ruleFilter,
+    settings = params.settings,
+    codeGeneratorBindings = params.codeGeneratorBindings,
+    rules = params.rules,
+    findingFactory = params.findingFactory,
+    names = names,
+    testLocation = location
+  )
+}
 
 /**
  * Defines a test environment which uses a
@@ -50,8 +80,11 @@ data class RunnerTestEnvironmentParams(
  * @param codeGeneratorBindings A function to generate a list of [CodeGeneratorBinding].
  * @param rules A function to generate a list of [ModuleCheckRule].
  * @param findingFactory A function to generate a [FindingFactory].
- * @param testStackFrame A stack frame representing the test location.
- * @param testVariantNames Array of variant names for the test.
+ * @param names Array of variant names for the test.
+ * @param testLocation details about the actual test function, so that we can
+ *   get the test name. This must be grabbed as soon as possible, since default
+ *   functions, inline functions, sequences, and iterators all redirect things
+ *   and have a chance of hiding the original calling function completely.
  */
 open class RunnerTestEnvironment(
   override val projectCache: ProjectCache,
@@ -61,25 +94,13 @@ open class RunnerTestEnvironment(
   codeGeneratorBindings: (ModuleCheckSettings) -> List<CodeGeneratorBinding>,
   rules: (ModuleCheckSettings, RuleFilter) -> List<ModuleCheckRule<*>>,
   findingFactory: (List<ModuleCheckRule<*>>) -> FindingFactory<out Finding>,
-  testStackFrame: StackWalker.StackFrame,
-  testVariantNames: List<String>
+  names: List<String>,
+  testLocation: TestLocation
 ) : ProjectTestEnvironment(
   projectCache = projectCache,
-  testStackFrame = testStackFrame,
-  testVariantNames = testVariantNames
+  names = names,
+  testLocation = testLocation
 ) {
-
-  constructor(params: RunnerTestEnvironmentParams) : this(
-    projectCache = params.projectCache,
-    logger = params.logger,
-    ruleFilter = params.ruleFilter,
-    settings = params.settings,
-    codeGeneratorBindings = params.codeGeneratorBindings,
-    rules = params.rules,
-    findingFactory = params.findingFactory,
-    testStackFrame = params.testStackFrame,
-    testVariantNames = params.testVariantNames
-  )
 
   val settings: ModuleCheckSettings by lazy { settings.invoke(this) }
   override val codeGeneratorBindings: List<CodeGeneratorBinding> by lazy {

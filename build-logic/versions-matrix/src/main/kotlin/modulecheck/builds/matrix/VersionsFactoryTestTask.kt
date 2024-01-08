@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -61,7 +61,7 @@ abstract class VersionsFactoryTestTask @Inject constructor(
   val packageName: Property<String> = objectFactory.property(String::class.java)
 
   @get:OutputDirectory
-  val outDir = objectFactory.fileProperty()
+  val outDir = objectFactory.directoryProperty()
 
   @TaskAction
   fun execute() {
@@ -154,7 +154,7 @@ abstract class VersionsFactoryTestTask @Inject constructor(
       .also { it.mkdirs() }
       .resolve("VersionsFactory.kt")
 
-    generatedFile.writeText(content)
+    // generatedFile.writeText(content)
   }
 
   /**

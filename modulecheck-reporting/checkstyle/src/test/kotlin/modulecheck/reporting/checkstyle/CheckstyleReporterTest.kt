@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,11 +20,10 @@ import modulecheck.finding.Finding.Position
 import modulecheck.finding.FindingName
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.testing.BaseTest
-import modulecheck.testing.TestEnvironment
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class CheckstyleReporterTest : BaseTest<TestEnvironment>() {
+internal class CheckstyleReporterTest : BaseTest {
 
   @Test
   fun `empty result list should create checkstyle xml with no child attributes`() {
