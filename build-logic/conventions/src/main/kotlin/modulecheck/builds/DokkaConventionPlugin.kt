@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,9 +16,7 @@
 package modulecheck.builds
 
 import com.rickbusarow.kgx.applyOnce
-import com.rickbusarow.kgx.dependency
 import com.rickbusarow.kgx.dependsOn
-import com.rickbusarow.kgx.libsCatalog
 import com.rickbusarow.ktlint.KtLintTask
 import com.vanniktech.maven.publish.tasks.JavadocJar
 import org.gradle.api.GradleException
@@ -64,10 +62,7 @@ abstract class DokkaConventionPlugin : Plugin<Project> {
       (dokkaTask.logging as LoggingManagerInternal).setLevelInternal(QUIET)
     }
 
-    target.dependencies.add(
-      "dokkaPlugin",
-      target.libsCatalog.dependency("dokka-versioning")
-    )
+    target.dependencies.add("dokkaPlugin", target.libs.dokka.versioning)
 
     fun TaskCollection<out AbstractDokkaTask>.configureVersioning() = configureEach { task ->
 

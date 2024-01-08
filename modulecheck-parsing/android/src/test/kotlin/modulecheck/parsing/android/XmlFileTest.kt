@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,13 +22,12 @@ import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.parsing.source.UnqualifiedAndroidResource.Companion.id
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.testing.BaseTest
-import modulecheck.testing.TestEnvironment
 import modulecheck.utils.createSafely
 import modulecheck.utils.resolve
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 
-internal class XmlFileTest : BaseTest<TestEnvironment>() {
+internal class XmlFileTest : BaseTest {
 
   @Test
   fun `an id which is declared in a layout should count as a declaration`() = test {

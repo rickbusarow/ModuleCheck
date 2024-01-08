@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,32 +15,38 @@
 
 package modulecheck.parsing.psi
 
+import com.rickbusarow.kase.DefaultTestEnvironment
+import com.rickbusarow.kase.DefaultTestEnvironment.Factory
+import com.rickbusarow.kase.Kase1
+import com.rickbusarow.kase.KaseTestFactory
+import com.rickbusarow.kase.files.HasWorkingDir
+import com.rickbusarow.kase.kases
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBlock
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
 import modulecheck.parsing.gradle.dsl.Assignment
 import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
-import modulecheck.testing.BaseTest
-import modulecheck.testing.SkipInStackTrace
-import modulecheck.testing.TestEnvironment
-import modulecheck.testing.asTests
 import modulecheck.utils.createSafely
 import modulecheck.utils.resolve
 import org.jetbrains.kotlin.cli.common.repl.replEscapeLineBreaks
-import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.TestFactory
 import java.io.File
-import java.util.stream.Stream
 
-internal class KotlinAndroidGradleParserTest : BaseTest<TestEnvironment>() {
+internal class KotlinAndroidGradleParserTest :
+  KaseTestFactory<Kase1<Boolean>, com.rickbusarow.kase.TestEnvironment, Factory> {
 
-  val TestEnvironment.testFile: File
+  override val testEnvironmentFactory = DefaultTestEnvironment.Factory()
+
+  override val params = kases(listOf(true, false), displayNameFactory = { "enabled: $a1" })
+
+  val HasWorkingDir.testFile: File
     get() = workingDir.resolve("build.gradle.kts").createSafely()
 
   @TestFactory
-  fun `lots of blocks`() = runTest { enabled ->
+  fun `lots of blocks`() = testFactory { (enabled) ->
 
     val block = """
       @Suppress("disable-android-buildConfig")
@@ -161,7 +167,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest<TestEnvironment>() {
   }
 
   @TestFactory
-  fun `fully scoped boolean property`() = runTest { enabled ->
+  fun `fully scoped boolean property`() = testFactory { (enabled) ->
 
     val block = """
       android {
@@ -255,7 +261,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest<TestEnvironment>() {
   }
 
   @TestFactory
-  fun `fully dot qualified boolean property`() = runTest { enabled ->
+  fun `fully dot qualified boolean property`() = testFactory { (enabled) ->
 
     val block = """
       @Suppress("disable-android-resources")
@@ -281,7 +287,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest<TestEnvironment>() {
   }
 
   @TestFactory
-  fun `dot qualified and then scoped boolean property`() = runTest { enabled ->
+  fun `dot qualified and then scoped boolean property`() = testFactory { (enabled) ->
 
     val block = """
       android.buildFeatures {
@@ -328,7 +334,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest<TestEnvironment>() {
   }
 
   @TestFactory
-  fun `scoped and then dot qualified boolean property`() = runTest { enabled ->
+  fun `scoped and then dot qualified boolean property`() = testFactory { (enabled) ->
 
     val block = """
       android {
@@ -374,11 +380,6 @@ internal class KotlinAndroidGradleParserTest : BaseTest<TestEnvironment>() {
   fun parse(file: File) = runBlocking {
     KotlinAndroidGradleParser(NoContextPsiFileFactory()).parse(file)
   }
-
-  @SkipInStackTrace
-  fun runTest(block: suspend TestEnvironment.(enabled: Boolean) -> Unit): Stream<out DynamicNode> =
-    listOf(true, false)
-      .asTests({ "enabled: $it" }) { enabled -> block(enabled) }
 }
 
 fun AndroidGradleSettings.buildSettings() = """

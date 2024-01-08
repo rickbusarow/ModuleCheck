@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,12 @@
 
 package modulecheck.testing
 
+import com.rickbusarow.kase.DefaultTestEnvironment
+import com.rickbusarow.kase.HasTestEnvironmentFactory
+import com.rickbusarow.kase.TestEnvironment
+import com.rickbusarow.kase.asClueCatching
+import com.rickbusarow.kase.files.TestLocation
+import kotlinx.coroutines.runBlocking
 import modulecheck.testing.assert.TrimmedAsserts
 import modulecheck.utils.mapLines
 import modulecheck.utils.noAnsi
@@ -23,10 +29,30 @@ import modulecheck.utils.remove
 import java.io.File
 
 /** */
-@Suppress("UnnecessaryAbstractClass")
-abstract class BaseTest<T : TestEnvironment> :
-  TrimmedAsserts,
-  HasTestEnvironment<T>
+interface BaseTest :
+  HasTestEnvironmentFactory<DefaultTestEnvironment.Factory>,
+  TrimmedAsserts {
+  override val testEnvironmentFactory
+    get() = DefaultTestEnvironment.Factory()
+
+  /** shorthand for executing a test in a hermetic TestEnvironment but without any kase parameters */
+  fun test(
+    testLocation: TestLocation = TestLocation.get(),
+    testAction: suspend TestEnvironment.() -> Unit
+  ) {
+    val testEnvironment = testEnvironmentFactory.createEnvironment(
+      names = emptyList(),
+      location = testLocation
+    )
+
+    runBlocking {
+      testEnvironment.asClueCatching {
+        testEnvironment.testAction()
+        println(testEnvironment)
+      }
+    }
+  }
+}
 
 /**
  * Replace Windows file separators with Unix ones, just for string comparison in tests

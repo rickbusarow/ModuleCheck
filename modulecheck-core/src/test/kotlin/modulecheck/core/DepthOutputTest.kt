@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,16 +15,18 @@
 
 package modulecheck.core
 
+import com.rickbusarow.kase.Kase3
+import com.rickbusarow.kase.asTests
+import com.rickbusarow.kase.kases
 import io.kotest.matchers.file.shouldNotExist
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
 import modulecheck.model.dependency.ConfigurationName
+import modulecheck.project.ProjectCache
 import modulecheck.rule.impl.FindingFactoryImpl
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.runtime.test.RunnerTestEnvironment
-import modulecheck.testing.SkipInStackTrace
-import modulecheck.testing.asContainers
 import modulecheck.utils.remove
 import modulecheck.utils.resolve
 import org.junit.jupiter.api.DynamicNode
@@ -211,7 +213,7 @@ internal class DepthOutputTest : RunnerTest() {
 
   @TestFactory
   fun `all outputs around depth findings should behave according to their own settings`() =
-    flags { depthsConsole, depthsReport, graphsReport ->
+    flags { (depthsConsole, depthsReport, graphsReport) ->
 
       settings.checks.depths = depthsConsole
       settings.reports.depths.enabled = depthsReport
@@ -303,21 +305,31 @@ internal class DepthOutputTest : RunnerTest() {
       }
     }
 
-  @SkipInStackTrace
   fun flags(
-    block: suspend RunnerTestEnvironment.(Boolean, Boolean, Boolean) -> Unit
+    block: suspend RunnerTestEnvironment.(Kase3<Boolean, Boolean, Boolean>) -> Unit
   ): Stream<out DynamicNode> {
 
-    return listOf(true, false)
-      .asContainers({ "depthsConsole: $it" }) { depthsConsole ->
-
-        listOf(true, false)
-          .asContainers({ "depthsReport: $it" }) { depthsReport ->
-            listOf(true, false)
-              .asTests({ "graphsReport: $it" }) { graphsReport ->
-                block(depthsConsole, depthsReport, graphsReport)
-              }
-          }
-      }
+    return kases(
+      listOf(true, false),
+      listOf(true, false),
+      listOf(true, false),
+      displayNameFactory = { "depthsConsole: $a1 | depthsReport: $a2 | graphsReport: $a3" }
+    )
+      .asTests(
+        testEnvironmentFactory = { kase, names, location ->
+          RunnerTestEnvironment(
+            projectCache = ProjectCache(),
+            logger = logger(),
+            ruleFilter = ruleFilter(),
+            settings = settings,
+            codeGeneratorBindings = codeGeneratorBindings,
+            rules = rules,
+            findingFactory = findingFactory,
+            names = names + kase.displayName,
+            testLocation = location
+          )
+        },
+        testAction = block
+      )
   }
 }

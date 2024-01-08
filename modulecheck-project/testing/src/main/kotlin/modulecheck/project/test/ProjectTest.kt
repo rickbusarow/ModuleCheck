@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,9 +15,11 @@
 
 package modulecheck.project.test
 
+import com.rickbusarow.kase.HasTestEnvironmentFactory
+import com.rickbusarow.kase.asClueCatching
+import com.rickbusarow.kase.files.TestLocation
+import kotlinx.coroutines.runBlocking
 import modulecheck.project.ProjectCache
-import modulecheck.testing.BaseTest
-import modulecheck.testing.TestEnvironmentParams
 import java.io.File
 import java.nio.charset.Charset
 
@@ -26,22 +28,27 @@ import java.nio.charset.Charset
  * useful utility functions for setting up project-related tests.
  */
 @Suppress("UnnecessaryAbstractClass")
-abstract class ProjectTest<T : ProjectTestEnvironment> : BaseTest<T>() {
+abstract class ProjectTest : HasTestEnvironmentFactory<ProjectTestEnvironmentFactory> {
 
-  override fun newTestEnvironment(params: TestEnvironmentParams): T {
+  override val testEnvironmentFactory = ProjectTestEnvironmentFactory()
 
-    val environment = when (params) {
-      is ProjectTestEnvironmentParams -> ProjectTestEnvironment(params)
-      else -> ProjectTestEnvironment(
-        ProjectTestEnvironmentParams(
-          projectCache = ProjectCache(),
-          testStackFrame = params.testStackFrame,
-          testVariantNames = params.testVariantNames
-        )
-      )
+  /** shorthand for executing a test in a hermetic TestEnvironment but without any kase parameters */
+  fun test(
+    testLocation: TestLocation = TestLocation.get(),
+    testAction: suspend ProjectTestEnvironment.() -> Unit
+  ) {
+    val testEnvironment = testEnvironmentFactory.createEnvironment(
+      params = ProjectTestEnvironmentParams(ProjectCache()),
+      names = emptyList(),
+      location = testLocation
+    )
+
+    runBlocking {
+      testEnvironment.asClueCatching {
+        testEnvironment.testAction()
+        println(testEnvironment)
+      }
     }
-    @Suppress("UNCHECKED_CAST")
-    return environment as T
   }
 
   /**

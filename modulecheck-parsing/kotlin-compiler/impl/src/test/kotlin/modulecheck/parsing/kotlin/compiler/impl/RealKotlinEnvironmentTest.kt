@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,6 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.internal.isKtFile
 import modulecheck.parsing.psi.internal.childrenOfTypeBreadthFirst
 import modulecheck.project.test.ProjectTest
-import modulecheck.project.test.ProjectTestEnvironment
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.js.descriptorUtils.getKotlinTypeFqName
 import org.jetbrains.kotlin.psi.KtProperty
@@ -32,7 +31,7 @@ import org.jetbrains.kotlin.types.isNullable
 import org.junit.jupiter.api.Test
 
 @Suppress("UnusedPrivateMember")
-class RealKotlinEnvironmentTest : ProjectTest<ProjectTestEnvironment>() {
+class RealKotlinEnvironmentTest : ProjectTest() {
 
   @Test
   fun `resolution should work for sources from a dependency module`() = test {

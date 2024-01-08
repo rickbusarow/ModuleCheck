@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,16 +15,23 @@
 
 package modulecheck.testing
 
+import com.rickbusarow.kase.TestEnvironmentFactory
+import com.rickbusarow.kase.files.TestLocation
 import io.kotest.matchers.ints.shouldBeGreaterThan
+import io.kotest.matchers.shouldBe
+import modulecheck.testing.VersionFactoryTestTestEnvironment.Factory
 import org.junit.jupiter.api.Test
-import java.lang.StackWalker.StackFrame
 
 internal class VersionsFactoryFilteringTest :
-  BaseTest<VersionFactoryTestTestEnvironment>(),
-  VersionsFactoryTest<VersionFactoryTestTestEnvironment> {
+  VersionsFactoryTest<VersionFactoryTestTestEnvironment, Factory> {
 
-  override val exhaustive: Boolean
-    get() = true
+  override val kaseMatrix = McVersionMatrix()
+
+  override val exhaustive: Boolean = true
+  override val params: List<McTestVersions>
+    get() = kaseMatrix.versions(exhaustive)
+
+  override val testEnvironmentFactory: Factory = Factory()
 
   @Test
   fun `class-level 'exhaustive' value of true makes the function exhaustive by default`() {
@@ -33,7 +40,7 @@ internal class VersionsFactoryFilteringTest :
     exhaustive shouldBe true
 
     versions().size shouldBeGreaterThan 1
-    versions() shouldBe versions(exhaustive = true)
+    versions() shouldBe kaseMatrix.versions(exhaustive = true)
   }
 
   @Test
@@ -42,17 +49,27 @@ internal class VersionsFactoryFilteringTest :
     // the class-level variable can't be changed
     exhaustive shouldBe true
 
-    versions(false) shouldBe listOf(defaultTestVersions())
+    kaseMatrix.versions(false) shouldBe listOf(defaultTestVersions())
   }
-
-  override fun TestVersions.newParams(stackFrame: StackFrame): TestEnvironmentParams =
-    throw NotImplementedError("forced override")
 }
 
 /** unused */
 internal data class VersionFactoryTestTestEnvironment(
-  override val testVersions: TestVersions,
-  val testStackFrame: StackWalker.StackFrame,
-  val testVariantNames: List<String>
-) : TestEnvironment(testStackFrame, testVariantNames),
-  HasTestVersions
+  override val testVersions: McTestVersions,
+  val testVariantNames: List<String>,
+  val testLocation: TestLocation
+) : TestEnvironment(testVariantNames, testLocation),
+  HasTestVersions {
+  class Factory : TestEnvironmentFactory<McTestVersions, VersionFactoryTestTestEnvironment> {
+
+    override fun createEnvironment(
+      params: McTestVersions,
+      names: List<String>,
+      location: TestLocation
+    ): VersionFactoryTestTestEnvironment = VersionFactoryTestTestEnvironment(
+      testVersions = params,
+      testVariantNames = names,
+      testLocation = location
+    )
+  }
+}

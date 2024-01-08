@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +20,6 @@ import io.kotest.assertions.throwables.shouldNotThrow
 import modulecheck.parsing.kotlin.compiler.HasAnalysisResult
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccessImpl.PendingRequest
 import modulecheck.testing.BaseTest
-import modulecheck.testing.TestEnvironment
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
@@ -30,7 +29,7 @@ import org.jetbrains.kotlin.resolve.BindingContext
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 
-internal class PendingRequestSortingTest : BaseTest<TestEnvironment>() {
+internal class PendingRequestSortingTest : BaseTest {
 
   @Test
   fun `sorting does not violate general contract`() {

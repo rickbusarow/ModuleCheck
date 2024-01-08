@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,10 +19,9 @@ import modulecheck.parsing.gradle.dsl.PluginDeclaration
 import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
 import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.BaseTest
-import modulecheck.testing.TestEnvironment
 import org.junit.jupiter.api.Test
 
-internal class KotlinPluginsBlockParserTest : BaseTest<TestEnvironment>() {
+internal class KotlinPluginsBlockParserTest : BaseTest {
 
   @Test
   fun `external declaration`() = test {

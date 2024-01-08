@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,13 +19,12 @@ import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.testing.BaseTest
-import modulecheck.testing.TestEnvironment
 import modulecheck.utils.createSafely
 import modulecheck.utils.resolve
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 
-internal class StylesFileTest : BaseTest<TestEnvironment>() {
+internal class StylesFileTest : BaseTest {
 
   @Test
   fun `external style parent and value references should count as references`() = test {

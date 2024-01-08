@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,8 @@
 
 package modulecheck.gradle
 
+import com.rickbusarow.kase.TestEnvironmentFactory
+import com.rickbusarow.kase.files.TestLocation
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.internal.defaultCodeGeneratorBindings
 import modulecheck.gradle.internal.BuildProperties
@@ -22,9 +24,8 @@ import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.project.ProjectCache
 import modulecheck.project.generation.ProjectCollector
 import modulecheck.testing.HasTestVersions
+import modulecheck.testing.McTestVersions
 import modulecheck.testing.TestEnvironment
-import modulecheck.testing.TestEnvironmentParams
-import modulecheck.testing.TestVersions
 import modulecheck.testing.clean
 import modulecheck.utils.createSafely
 import modulecheck.utils.letIf
@@ -34,39 +35,23 @@ import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import java.io.File
-import java.lang.StackWalker.StackFrame
 import kotlin.text.RegexOption.IGNORE_CASE
 
-data class GradleTestEnvironmentParams(
-  val testVersions: TestVersions,
-  val projectCache: ProjectCache,
-  override val testStackFrame: StackFrame,
-  override val testVariantNames: List<String>
-) : TestEnvironmentParams
-
-@Suppress("PropertyName", "VariableNaming")
-class GradleTestEnvironment(
-  override val testVersions: TestVersions,
+class McGradleTestEnvironment(
+  override val testVersions: McTestVersions,
   override val projectCache: ProjectCache,
-  testStackFrame: StackWalker.StackFrame,
-  testVariantNames: List<String>
-) : TestEnvironment(testStackFrame, testVariantNames),
+  testVariantNames: List<String>,
+  testLocation: TestLocation
+) : TestEnvironment(testVariantNames, testLocation),
   ProjectCollector,
   HasTestVersions {
 
-  constructor(params: GradleTestEnvironmentParams) : this(
-    testVersions = params.testVersions,
-    projectCache = params.projectCache,
-    testStackFrame = params.testStackFrame,
-    testVariantNames = params.testVariantNames
-  )
-
   override val root: File get() = workingDir
 
-  val kotlinVersion get() = testVersions.kotlin
-  val agpVersion get() = testVersions.agp
-  val gradleVersion get() = testVersions.gradle
-  val anvilVersion get() = testVersions.anvil
+  val kotlinVersion get() = testVersions.kotlinVersion
+  val agpVersion get() = testVersions.agpVersion
+  val gradleVersion get() = testVersions.gradleVersion
+  val anvilVersion get() = testVersions.anvilVersion
 
   override val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess by lazy {
     DependencyModuleDescriptorAccess(projectCache)
@@ -76,6 +61,7 @@ class GradleTestEnvironment(
     defaultCodeGeneratorBindings()
   }
 
+  @Suppress("PropertyName", "VariableNaming")
   val DEFAULT_BUILD_FILE by lazy {
     """
       buildscript {
@@ -96,6 +82,7 @@ class GradleTestEnvironment(
       .createSafely(DEFAULT_BUILD_FILE, overwrite = false)
   }
 
+  @Suppress("PropertyName", "VariableNaming")
   val DEFAULT_SETTINGS_FILE by lazy {
     """
       rootProject.name = "root"
@@ -250,4 +237,17 @@ class GradleTestEnvironment(
     protected val durationSuffixRegex: Regex =
       """(ModuleCheck found \d+ issues?) in [\d.]+ seconds\.[\s\S]*""".toRegex()
   }
+}
+
+class McGradleTestEnvironmentFactory : TestEnvironmentFactory<McTestVersions, McGradleTestEnvironment> {
+  override fun createEnvironment(
+    params: McTestVersions,
+    names: List<String>,
+    location: TestLocation
+  ): McGradleTestEnvironment = McGradleTestEnvironment(
+    testVersions = params,
+    projectCache = ProjectCache(),
+    testVariantNames = names,
+    testLocation = location
+  )
 }

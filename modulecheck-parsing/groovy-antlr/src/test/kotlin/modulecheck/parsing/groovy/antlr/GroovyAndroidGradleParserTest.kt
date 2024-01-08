@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,28 +15,33 @@
 
 package modulecheck.parsing.groovy.antlr
 
+import com.rickbusarow.kase.DefaultTestEnvironment
+import com.rickbusarow.kase.Kase1
+import com.rickbusarow.kase.KaseTestFactory
+import com.rickbusarow.kase.TestEnvironment
+import com.rickbusarow.kase.kases
+import io.kotest.matchers.shouldBe
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBlock
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
 import modulecheck.parsing.gradle.dsl.Assignment
-import modulecheck.testing.BaseTest
-import modulecheck.testing.SkipInStackTrace
-import modulecheck.testing.TestEnvironment
-import modulecheck.testing.asTests
 import modulecheck.utils.createSafely
 import modulecheck.utils.resolve
-import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.TestFactory
 import java.io.File
-import java.util.stream.Stream
 
-internal class GroovyAndroidGradleParserTest : BaseTest<TestEnvironment>() {
+internal class GroovyAndroidGradleParserTest :
+  KaseTestFactory<Kase1<Boolean>, TestEnvironment, DefaultTestEnvironment.Factory> {
+
+  override val testEnvironmentFactory = DefaultTestEnvironment.Factory()
+
+  override val params = kases(listOf(true, false), displayNameFactory = { "enabled: $a1" })
 
   val TestEnvironment.testFile: File
     get() = workingDir.resolve("build.gradle").createSafely()
 
   @TestFactory
-  fun `lots of blocks`() = runTest { enabled ->
+  fun `lots of blocks`() = testFactory { (enabled) ->
 
     val block = """
       android {
@@ -181,7 +186,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest<TestEnvironment>() {
   }
 
   @TestFactory
-  fun `fully scoped boolean property`() = runTest { enabled ->
+  fun `fully scoped boolean property`() = testFactory { (enabled) ->
 
     val block = """
       android {
@@ -305,7 +310,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest<TestEnvironment>() {
   }
 
   @TestFactory
-  fun `fully dot qualified boolean property`() = runTest { enabled ->
+  fun `fully dot qualified boolean property`() = testFactory { (enabled) ->
 
     val block = """
       plugins {
@@ -333,7 +338,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest<TestEnvironment>() {
   }
 
   @TestFactory
-  fun `dot qualified and then scoped boolean property`() = runTest { enabled ->
+  fun `dot qualified and then scoped boolean property`() = testFactory { (enabled) ->
 
     val block = """
       android.buildFeatures {
@@ -384,7 +389,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest<TestEnvironment>() {
   }
 
   @TestFactory
-  fun `scoped and then dot qualified boolean property`() = runTest { enabled ->
+  fun `scoped and then dot qualified boolean property`() = testFactory { (enabled) ->
 
     val block = """
       android {
@@ -433,9 +438,4 @@ internal class GroovyAndroidGradleParserTest : BaseTest<TestEnvironment>() {
       buildFeaturesBlocks = emptyList()
     )
   }
-
-  @SkipInStackTrace
-  fun runTest(block: suspend TestEnvironment.(enabled: Boolean) -> Unit): Stream<out DynamicNode> =
-    listOf(true, false)
-      .asTests({ "enabled: $it" }) { enabled -> block(enabled) }
 }

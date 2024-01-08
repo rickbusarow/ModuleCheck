@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,52 +15,14 @@
 
 package modulecheck.gradle
 
-import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.collections.shouldNotContainAnyOf
 import org.junit.jupiter.api.TestFactory
 
 class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
 
   @TestFactory
-  fun `AGP before 8 -- buildConfig task should be required when not configured in android library module`() =
-    factory(filter = { it.agp < "8.0.0" }) {
-      androidLibrary(":lib", "com.modulecheck.lib1") {
-        buildFile {
-          """
-        plugins {
-          id("com.android.library")
-          kotlin("android")
-        }
-
-        android {
-          defaultConfig {
-            minSdk = 23
-            compileSdk = 33
-            targetSdk = 33
-          }
-          namespace = "com.modulecheck.lib1"
-        }
-        """
-        }
-      }
-
-      shouldSucceed(":lib:assembleDebug")
-
-      shouldSucceed("moduleCheck").apply {
-        // Assert that nothing else executed.
-        // If ModuleCheck is relying upon buildConfig tasks, they'll be in this list.
-        tasks.map { it.path }.sorted() shouldContainAll listOf(
-          ":lib:generateDebugAndroidTestBuildConfig",
-          ":lib:generateDebugBuildConfig",
-          ":lib:generateReleaseBuildConfig",
-          ":moduleCheck"
-        )
-      }
-    }
-
-  @TestFactory
-  fun `AGP after 8 -- buildConfig task not should be required if not explicitly enabled in android library module`() =
-    factory(filter = { it.agp >= "8.0.0" }) {
+  fun `buildConfig task not should be required if not explicitly enabled in android library module`() =
+    factory {
       androidLibrary(":lib", "com.modulecheck.lib1") {
         buildFile {
           """

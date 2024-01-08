@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,29 +15,38 @@
 
 package modulecheck.testing
 
+import com.rickbusarow.kase.HasKaseMatrix
+import com.rickbusarow.kase.KaseTestFactory
+import com.rickbusarow.kase.TestEnvironmentFactory
+import com.rickbusarow.kase.TestNodeBuilder
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import modulecheck.utils.letIf
 import modulecheck.utils.requireNotNull
 import org.junit.jupiter.api.DynamicNode
 import org.junit.jupiter.api.DynamicTest
-import java.lang.StackWalker.StackFrame
 import java.util.stream.Stream
 
 /**
- * Convenience interface for a test which uses [VersionsFactory]
+ * Convenience interface for a test which uses [KaseTestFactory]
  * in order to create [DynamicTest]s for a JUnit5 test factory.
  */
-interface VersionsFactoryTest<T> :
-  VersionsFactory,
-  HasTestEnvironment<T>
-  where T : TestEnvironment,
-        T : HasTestVersions {
+interface VersionsFactoryTest<ENV, FACT> :
+  KaseTestFactory<McTestVersions, ENV, FACT>,
+  HasKaseMatrix
+  where ENV : TestEnvironment,
+        ENV : HasTestVersions,
+        FACT : TestEnvironmentFactory<McTestVersions, ENV> {
+
+  /** */
+  override val kaseMatrix: McVersionMatrix
+
+  /** If false, then tests will only use the latest version of each dependency */
+  val exhaustive: Boolean
+    get() = Versions.exhaustive
 
   /** @return the latest version of valid dependencies which is not excluded by the current rules */
-  fun defaultTestVersions(): TestVersions {
-    return nonExhaustiveDefaults()
-  }
+  fun defaultTestVersions(): McTestVersions = kaseMatrix.allVersions.last()
 
   /**
    * @return a stream of [DynamicTest] from all valid versions combinations,
@@ -46,18 +55,15 @@ interface VersionsFactoryTest<T> :
   @SkipInStackTrace
   fun factory(
     exhaustive: Boolean = this.exhaustive,
-    filter: ((TestVersions) -> Boolean)? = null,
-    action: suspend T.() -> Unit
-  ): Stream<out DynamicNode> = testFactory {
-
-    testVersionsPrivate(exhaustive, filter)
-      .asTests { subject ->
-        test(
-          params = subject.newParams(rootStackFrame),
-          action = action
-        )
-      }
-  }
+    filter: ((McTestVersions) -> Boolean)? = null,
+    testEnvironmentFactory: TestEnvironmentFactory<McTestVersions, ENV> =
+      this@VersionsFactoryTest.testEnvironmentFactory,
+    testAction: suspend ENV.(McTestVersions) -> Unit
+  ): Stream<out DynamicNode> = testVersionsPrivate(exhaustive, filter)
+    .asTests(
+      testEnvironmentFactory = testEnvironmentFactory,
+      testAction = testAction
+    )
 
   /**
    * @return a stream of [DynamicNode] from all valid versions combinations,
@@ -66,25 +72,25 @@ interface VersionsFactoryTest<T> :
   @SkipInStackTrace
   fun factoryContainers(
     exhaustive: Boolean = this.exhaustive,
-    filter: ((TestVersions) -> Boolean)? = null,
-    builder: TestNodeBuilder.(TestVersions) -> Unit
-  ): Stream<out DynamicNode> = testFactory {
-    testVersionsPrivate(exhaustive, filter)
-      .asContainers { testVersions -> builder(testVersions) }
-  }
+    filter: ((McTestVersions) -> Boolean)? = null,
+    builder: TestNodeBuilder.(McTestVersions) -> Stream<out DynamicNode>
+  ): Stream<out DynamicNode> = testVersionsPrivate(exhaustive, filter)
+    .asContainers { testVersions -> builder(testVersions) }
 
-  /** hook for creating a custom TestEnvironment within a base test class */
-  fun TestVersions.newParams(stackFrame: StackFrame): TestEnvironmentParams
+  /** either all permutations or just the last */
+  fun versions(exhaustive: Boolean = this.exhaustive): List<McTestVersions> {
+    return kaseMatrix.allVersions.letIf(!exhaustive) { it.takeLast(1) }
+  }
 }
 
 @PublishedApi
-internal fun VersionsFactoryTest<*>.testVersionsPrivate(
+internal fun VersionsFactoryTest<*, *>.testVersionsPrivate(
   exhaustive: Boolean,
-  filter: ((TestVersions) -> Boolean)?
-): List<TestVersions> = versions(exhaustive = exhaustive)
+  filter: ((McTestVersions) -> Boolean)?
+): List<McTestVersions> = kaseMatrix.versions(exhaustive = exhaustive)
   .letIf(filter != null) { versions ->
 
-    val (included, excluded) = allVersions
+    val (included, excluded) = kaseMatrix.allVersions
       .partition(filter.requireNotNull())
 
     "The filter excludes all possible versions".asClue {

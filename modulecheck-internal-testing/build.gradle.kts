@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,6 +25,8 @@ dependencies {
 
   api(libs.bundles.junit)
   api(libs.bundles.kotest)
+  api(libs.rickBusarow.kase)
+  api(libs.rickBusarow.kase.gradle)
 
   compileOnly(gradleApi())
 
@@ -34,5 +36,4 @@ dependencies {
   implementation(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-utils:stdlib"))
-  implementation(project(path = ":modulecheck-utils:trace-testing"))
 }

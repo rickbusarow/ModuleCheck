@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -58,7 +58,7 @@ dependencyResolutionManagement {
 }
 
 plugins {
-  id("com.gradle.enterprise") version "3.15"
+  id("com.gradle.enterprise") version "3.16.1"
 }
 
 val isCI = System.getenv("CI")?.toBoolean() == true
@@ -91,16 +91,6 @@ gradleEnterprise {
     }
   }
 }
-
-// Copy the root project's properties file to build-logic,
-// to ensure that Gradle settings are identical and there's only 1 daemon.
-// Note that with this copy, any changes to build-logic's properties file with just be overwritten.
-// https://twitter.com/Louis_CAD/status/1498270951175299080?s=20&t=ZTgr-FiwhnjzGyNfDxfDlA
-rootDir.resolve("gradle.properties")
-  .copyTo(
-    target = rootDir.resolve("build-logic/gradle.properties"),
-    overwrite = true
-  )
 
 include(
   ":modulecheck-api",
