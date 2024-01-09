@@ -121,7 +121,7 @@ runs:
 
     - name: Upload heap dump
       if: failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: heap-dump
         path: ${{github.workspace}}/**/*{.hprof,.log}
