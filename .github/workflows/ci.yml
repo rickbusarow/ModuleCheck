@@ -223,7 +223,7 @@ jobs:
           restore-cache-key: main-build-artifacts
 
       - name: Archive test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: test-results
@@ -296,7 +296,7 @@ jobs:
           restore-cache-key: main-build-artifacts
 
       - name: Archive integration test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: integration-test-results-windows
