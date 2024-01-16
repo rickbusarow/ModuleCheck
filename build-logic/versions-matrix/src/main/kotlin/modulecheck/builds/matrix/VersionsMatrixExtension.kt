@@ -21,6 +21,10 @@ import com.rickbusarow.kgx.listProperty
 import com.rickbusarow.kgx.pluginId
 import com.rickbusarow.kgx.propertyOrNull
 import com.rickbusarow.kgx.version
+import modulecheck.builds.matrix.Versions.Companion.agpListDefault
+import modulecheck.builds.matrix.Versions.Companion.anvilListDefault
+import modulecheck.builds.matrix.Versions.Companion.gradleListDefault
+import modulecheck.builds.matrix.Versions.Companion.kotlinListDefault
 import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
 import org.gradle.kotlin.dsl.buildConfigField
@@ -35,16 +39,19 @@ open class Versions @Inject constructor(
 
   val gradleList: ListProperty<String> = target.objects
     .listProperty<String>()
-    .convention(propertyName = "modulecheck.gradleVersion", listOf("8.0.2", "8.1.1", "8.4", "8.5"))
+    .convention(propertyName = "modulecheck.gradleVersion", gradleListDefault)
+
   val agpList: ListProperty<String> = target.objects
     .listProperty<String>()
-    .convention("modulecheck.agpVersion", listOf("8.0.2", "8.1.0"))
+    .convention("modulecheck.agpVersion", agpListDefault)
+
   val anvilList: ListProperty<String> = target.objects
     .listProperty<String>()
-    .convention("modulecheck.anvilVersion", listOf("2.4.6"))
+    .convention("modulecheck.anvilVersion", anvilListDefault)
+
   val kotlinList: ListProperty<String> = target.objects
     .listProperty<String>()
-    .convention("modulecheck.kotlinVersion", listOf("1.8.0", "1.8.10", "1.8.22"))
+    .convention("modulecheck.kotlinVersion", kotlinListDefault)
 
   private fun ListProperty<String>.convention(
     propertyName: String,
@@ -54,6 +61,13 @@ open class Versions @Inject constructor(
       .map { it.split("""\s*,\s*""".toRegex()) }
       .orElse(default)
   )
+
+  companion object {
+    internal val gradleListDefault = listOf("8.5")
+    internal val agpListDefault = listOf("8.0.2", "8.1.0")
+    internal val anvilListDefault = listOf("2.4.9-1-8", "2.4.9")
+    internal val kotlinListDefault = listOf("1.8.22", "1.9.10", "1.9.22")
+  }
 }
 
 open class VersionsMatrixExtension @Inject constructor(target: Project) : Serializable {
@@ -121,12 +135,17 @@ private fun Project.requireInSyncWithToml() {
     "Could not resolve the $simpleName file: $versionMatrixFile"
   }
 
-  with(VersionsMatrix()) {
+  VersionsMatrix(
+    gradleList = gradleListDefault,
+    agpList = agpListDefault,
+    anvilList = anvilListDefault,
+    kotlinList = kotlinListDefault
+  ).run {
 
     sequenceOf(
       Triple(agpList, "agpList", "androidTools"),
       Triple(anvilList, "anvilList", "square-anvil"),
-      Triple(kotlinList, "kotlinList", "kotlin")
+      Triple(kotlinList, "kotlinList", "kotlin-core")
     )
       .forEach { (list, listName, alias) ->
         require(list.contains(libsCatalog.version(alias))) {
