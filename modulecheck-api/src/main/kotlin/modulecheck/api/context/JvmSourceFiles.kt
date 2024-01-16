@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,9 +24,9 @@ import java.io.File
 /**
  * All JVM source files for a specific source set in a project.
  *
- * @property delegate a [SafeCache] instance which manages a
- *   cache of source set names to the associated JVM source files.
- * @property project the [McProject] for which the source files are retrieved.
+ * @param delegate a [SafeCache] instance which manages a cache
+ *   of source set names to the associated JVM source files.
+ * @param project the [McProject] for which the source files are retrieved.
  */
 data class JvmSourceFiles(
   private val delegate: SafeCache<SourceSetName, Set<File>>,

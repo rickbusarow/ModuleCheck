@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -61,14 +61,14 @@ import javax.inject.Inject
  * @property sourceSetName name of the associated
  *   [SourceSet][modulecheck.model.dependency.McSourceSet]
  * @property classpathFiles `.jar` files from external dependencies
- * @property sourceDirs all jvm source code directories for
+ * @param sourceDirs all jvm source code directories for
  *   this source set, like `[...]/myProject/src/main/java`.
  * @property kotlinLanguageVersion the version of Kotlin being used
  * @property jvmTarget the version of Java being compiled to
  * @property dependencyModuleDescriptorAccess provides the module descriptors of
  *   all dependency source sets from the current module and dependency modules
  * @property logger logs Kotlin compiler messages during analysis
- * @property resetManager used to reset caching
+ * @param resetManager used to reset caching
  */
 class RealKotlinEnvironment(
   val projectPath: StringProjectPath,

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@ import modulecheck.utils.traversal.AbstractTreePrinter.NameType.TYPE
 /**
  * Base class for printing a tree structure of objects of type [T].
  *
- * @property whitespaceChar the character to use for replacing
+ * @param whitespaceChar the character to use for replacing
  *   whitespaces in the node text when printing. Default is ' '.
  */
 abstract class AbstractTreePrinter<T : Any>(

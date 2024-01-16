@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -46,7 +46,7 @@ suspend fun McProject.uses(dependency: ConfiguredDependency): Boolean {
 private suspend fun <T> McProject.usesCodeGenDependency(
   dependency: T
 ): Boolean where T : ConfiguredDependency,
-      T : MightHaveCodeGeneratorBinding {
+                 T : MightHaveCodeGeneratorBinding {
 
   val codeGeneratorBinding = dependency.codeGeneratorBindingOrNull
     // If the dependency doesn't have a binding, default to treating it as used
