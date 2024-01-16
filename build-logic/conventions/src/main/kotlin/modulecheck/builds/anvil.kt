@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,8 +16,6 @@
 package modulecheck.builds
 
 import com.rickbusarow.kgx.applyOnce
-import com.rickbusarow.kgx.dependency
-import com.rickbusarow.kgx.libsCatalog
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ExternalDependency
@@ -36,15 +34,15 @@ fun Project.applyAnvil() {
     it.generateDaggerFactories.set(true) // default is false
   }
 
-  dependencies.add("compileOnly", project.libsCatalog.dependency("javax-inject"))
-  dependencies.add("compileOnly", project.libsCatalog.dependency("google-dagger-api"))
+  dependencies.add("compileOnly", project.libs.javax.inject)
+  dependencies.add("compileOnly", project.libs.google.dagger.api)
 
   // Anvil adds its annotations artifact as 'implementation', which is unnecessary.
   // Replace it with a 'compileOnly' dependency.
-  dependencies.add("compileOnly", project.libsCatalog.dependency("square-anvil-annotations"))
+  dependencies.add("compileOnly", project.libs.square.anvil.annotations)
   afterEvaluate {
     configurations.named("implementation") {
-      val annotations = project.libsCatalog.dependency("square-anvil-annotations").get()
+      val annotations = project.libs.square.anvil.annotations.get()
 
       it.dependencies.removeIf { dep ->
         dep is ExternalDependency && dep.group == annotations.group && dep.name == annotations.name

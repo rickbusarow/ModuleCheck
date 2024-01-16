@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,15 +16,13 @@
 package modulecheck.builds
 
 import com.rickbusarow.kgx.applyOnce
-import com.rickbusarow.kgx.dependency
-import com.rickbusarow.kgx.libsCatalog
 import org.gradle.api.Project
 
 fun Project.applyDagger() {
   plugins.applyOnce("org.jetbrains.kotlin.kapt")
   plugins.applyOnce("com.squareup.anvil")
 
-  dependencies.add("compileOnly", project.libsCatalog.dependency("javax-inject"))
-  dependencies.add("compileOnly", project.libsCatalog.dependency("google-dagger-api"))
-  dependencies.add("kapt", project.libsCatalog.dependency("google-dagger-compiler"))
+  dependencies.add("compileOnly", project.libs.javax.inject)
+  dependencies.add("compileOnly", project.libs.google.dagger.api)
+  dependencies.add("kapt", project.libs.google.dagger.compiler)
 }

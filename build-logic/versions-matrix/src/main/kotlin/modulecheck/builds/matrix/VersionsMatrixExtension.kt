@@ -22,7 +22,6 @@ import com.rickbusarow.kgx.pluginId
 import com.rickbusarow.kgx.propertyOrNull
 import com.rickbusarow.kgx.version
 import modulecheck.builds.gradlePropertyAsProvider
-import modulecheck.builds.registerSimpleGenerationTaskAsDependency
 import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
 import org.gradle.kotlin.dsl.buildConfigField
@@ -97,31 +96,6 @@ private fun Project.setUpGeneration(
       }
     }
   }
-
-  val versionsMatrixGenerateFactory = tasks.register(
-    "versionsMatrixGenerateFactory",
-    VersionsFactoryTestTask::class.java
-  ) { task ->
-
-    task.gradleVersion.set(project.gradlePropertyAsProvider("modulecheck.gradleVersion"))
-    task.agpVersion.set(project.gradlePropertyAsProvider("modulecheck.agpVersion"))
-    task.anvilVersion.set(project.gradlePropertyAsProvider("modulecheck.anvilVersion"))
-    task.kotlinVersion.set(project.gradlePropertyAsProvider("modulecheck.kotlinVersion"))
-
-    task.exhaustive.set(
-      project.gradlePropertyAsProvider<String, Boolean>("modulecheck.exhaustive") {
-        it?.toBoolean() ?: false
-      }
-    )
-
-    task.packageName.set(packageName)
-    task.outDir.set(generatedDirPath)
-
-    // auto-update the ci.yml file whenever re-generating the class
-    task.dependsOn(rootProject.tasks.named("versionsMatrixYamlUpdate"))
-  }
-
-  registerSimpleGenerationTaskAsDependency(sourceSetName, versionsMatrixGenerateFactory)
 
   extensions.configure(KotlinJvmProjectExtension::class.java) { extension ->
     extension.sourceSets.named("main") { kotlinSourceSet ->
