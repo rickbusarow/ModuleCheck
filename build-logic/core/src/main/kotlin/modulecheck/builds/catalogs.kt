@@ -17,8 +17,6 @@ package modulecheck.builds
 
 import com.rickbusarow.kgx.extras
 import com.rickbusarow.kgx.getOrNullAs
-import com.rickbusarow.kgx.libsCatalog
-import com.rickbusarow.kgx.version
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
 
@@ -26,13 +24,17 @@ val Project.libs: LibrariesForLibs
   get() = extensions.getByType(LibrariesForLibs::class.java)
 
 val Project.VERSION_NAME_STABLE: String
-  get() = libsCatalog.version("rickBusarow-moduleCheck")
+  get() = libs.versions.rickBusarow.moduleCheck.get()
+
+@Suppress("UnusedReceiverParameter")
+val Project.VERSION_NAME: String
+  get() = modulecheck.builds.VERSION_NAME
 
 const val GROUP = "com.rickbusarow.modulecheck"
 const val PLUGIN_ID = "com.rickbusarow.module-check"
 const val VERSION_NAME = "0.13.0-SNAPSHOT"
-const val SOURCE_WEBSITE = "https://github.com/rbusarow/ModuleCheck"
-const val DOCS_WEBSITE = "https://rbusarow.github.io/ModuleCheck"
+const val SOURCE_WEBSITE = "https://github.com/rickbusarow/ModuleCheck"
+const val DOCS_WEBSITE = "https://rickbusarow.github.io/ModuleCheck"
 
 var Project.artifactId: String?
   get() = extras.getOrNullAs("artifactId")
@@ -42,7 +44,7 @@ var Project.artifactId: String?
 
 /** "1.6", "1.7", "1.8", etc. */
 val Project.KOTLIN_API: String
-  get() = libsCatalog.version("kotlinApi")
+  get() = libs.versions.kotlinApi.get()
 
 /**
  * the jdk used in packaging
@@ -50,7 +52,7 @@ val Project.KOTLIN_API: String
  * "1.6", "1.8", "11", etc.
  */
 val Project.JVM_TARGET: String
-  get() = libsCatalog.version("jvmTarget")
+  get() = libs.versions.jvmTarget.get()
 
 /**
  * the jdk used to build the project
@@ -58,7 +60,7 @@ val Project.JVM_TARGET: String
  * "1.6", "1.8", "11", etc.
  */
 val Project.JDK: String
-  get() = libsCatalog.version("jdk")
+  get() = libs.versions.jdk.get()
 
 /** `6`, `8`, `11`, etc. */
 val Project.JVM_TARGET_INT: Int

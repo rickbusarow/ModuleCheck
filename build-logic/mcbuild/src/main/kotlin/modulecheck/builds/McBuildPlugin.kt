@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,7 +29,7 @@ abstract class McBuildPlugin : Plugin<Project> {
     target.plugins.apply(CleanPlugin::class.java)
     target.plugins.apply(DependencyGuardConventionPlugin::class.java)
     target.plugins.apply(DetektConventionPlugin::class.java)
-    target.plugins.apply(DokkaConventionPlugin::class.java)
+    target.plugins.apply(DokkatooConventionPlugin::class.java)
     target.plugins.apply(KotlinJvmConventionPlugin::class.java)
     target.plugins.apply(KtLintConventionPlugin::class.java)
     target.plugins.apply(TestConventionPlugin::class.java)

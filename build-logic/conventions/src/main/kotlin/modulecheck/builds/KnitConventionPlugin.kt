@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,6 +18,7 @@ package modulecheck.builds
 import com.rickbusarow.kgx.applyOnce
 import kotlinx.knit.KnitPluginExtension
 import kotlinx.knit.KnitTask
+import modulecheck.builds.DokkatooConventionPlugin.Companion.DOKKATOO_HTML_TASK_NAME
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -32,13 +33,13 @@ abstract class KnitConventionPlugin : Plugin<Project> {
       extension.moduleDocs = "build/dokka/htmlMultiModule"
       extension.dokkaMultiModuleRoot = "build/dokka/htmlMultiModule"
       extension.moduleMarkers = listOf("build.gradle", "build.gradle.kts")
-      extension.siteRoot = "https://rbusarow.github.io/ModuleCheck/api/"
+      extension.siteRoot = "$DOCS_WEBSITE/api"
     }
 
     target.tasks.withType(KnitTask::class.java).configureEach { task ->
       task.notCompatibleWithConfigurationCache("knit does not support configuration cache")
 
-      task.dependsOn("dokkaHtmlMultiModule")
+      task.inputs.files(target.tasks.named(DOKKATOO_HTML_TASK_NAME))
 
       task.rootDir = target.rootProject.rootDir
 
