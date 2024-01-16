@@ -243,11 +243,17 @@ jobs:
       fail-fast: false
       ### <start-versions-matrix>
       matrix:
-        kotlin-version: [ 1.8.0, 1.8.10, 1.8.22 ]
-        gradle-version: [ 8.0.2, 8.1.1, 8.4, 8.5 ]
+        kotlin-version: [ 1.8.22, 1.9.10, 1.9.22 ]
+        gradle-version: [ 8.5 ]
         agp-version: [ 8.0.2, 8.1.0 ]
-        anvil-version: [ 2.4.6 ]
-        exclude: [ ]
+        anvil-version: [ 2.4.9-1-8, 2.4.9 ]
+        exclude:
+          - kotlin-version: 1.9.10
+            anvil-version: 2.4.9-1-8
+          - kotlin-version: 1.9.22
+            anvil-version: 2.4.9-1-8
+          - kotlin-version: 1.8.22
+            anvil-version: 2.4.9
       ### <end-versions-matrix>
     runs-on: ubuntu-latest
     steps:

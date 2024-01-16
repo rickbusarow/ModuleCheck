@@ -16,31 +16,17 @@
 package modulecheck.builds.matrix
 
 class VersionsMatrix(
-  val exhaustive: Boolean = false,
-  private val gradleArg: String? = null,
-  private val agpArg: String? = null,
-  private val anvilArg: String? = null,
-  private val kotlinArg: String? = null
+  val gradleList: List<String>,
+  val agpList: List<String>,
+  val anvilList: List<String>,
+  val kotlinList: List<String>
 ) {
 
-  internal val gradleListDefault = listOf("8.0.2", "8.1.1", "8.4", "8.5")
-  internal val agpListDefault = listOf("8.0.2", "8.1.0")
-  internal val anvilListDefault = listOf("2.4.6")
-  internal val kotlinListDefault = listOf("1.8.0", "1.8.10", "1.8.22")
-
-  val gradleList = gradleArg?.singletonList() ?: gradleListDefault
-  val agpList = agpArg?.singletonList() ?: agpListDefault
-  val anvilList = anvilArg?.singletonList() ?: anvilListDefault
-  val kotlinList = kotlinArg?.singletonList() ?: kotlinListDefault
-
-  internal val exclusions = listOf<Exclusion>().requireNoDuplicates()
-
-  private val latest by lazy { allValid.last() }
-
-  val defaultGradle by lazy { gradleArg ?: latest.gradle }
-  val defaultAgp by lazy { agpArg ?: latest.agp }
-  val defaultAnvil by lazy { anvilArg ?: latest.anvil }
-  val defaultKotlin by lazy { kotlinArg ?: latest.kotlin }
+  internal val exclusions = listOf(
+    Exclusion(anvil = "2.4.9-1-8", kotlin = "1.9.10"),
+    Exclusion(anvil = "2.4.9-1-8", kotlin = "1.9.22"),
+    Exclusion(anvil = "2.4.9", kotlin = "1.8.22")
+  ).requireNoDuplicates()
 
   // ORDER MATTERS.
   // ...at least with regard to Gradle.
@@ -68,37 +54,21 @@ class VersionsMatrix(
     }
   }
 
-  val allValidDefaults = combinations(
-    gradleList = gradleListDefault,
-    agpList = agpListDefault,
-    anvilList = anvilListDefault,
-    kotlinList = kotlinListDefault
-  ).filtered(exclusions).requireNotEmpty()
-
   val allValid = combinations(
     gradleList = gradleList,
     agpList = agpList,
     anvilList = anvilList,
     kotlinList = kotlinList
-  ).filtered(exclusions).requireNotEmpty()
+  ).filtered(exclusions)
+    .requireNotEmpty()
 
   init {
-
     requireNoUselessExclusions()
   }
 
   private fun List<TestVersions>.requireNotEmpty() = apply {
     require(isNotEmpty()) {
-      val arguments = listOf(
-        "gradle" to gradleArg,
-        "agp" to agpArg,
-        "anvil" to anvilArg,
-        "kotlin" to kotlinArg
-      ).filter { pair -> pair.second != null }
-        .map { (name, version) -> "$name=$version" }
-
-      "There are no valid version combinations to be made " +
-        "from the provided arguments: $arguments"
+      "There are no valid version combinations to be made from the provided arguments."
     }
   }
 
@@ -117,7 +87,7 @@ class VersionsMatrix(
   private fun requireNoUselessExclusions() {
     // If we're using arguments, then the baseline `combinations` list will naturally be smaller.
     // This check can be skipped.
-    if (listOfNotNull(gradleArg, agpArg, anvilArg, kotlinArg).isNotEmpty()) return
+    // if (listOfNotNull(gradleArg, agpArg, anvilArg, kotlinArg).isNotEmpty()) return
 
     val redundant = mutableListOf<Exclusion>()
 
@@ -142,8 +112,6 @@ class VersionsMatrix(
         redundant.joinToString("\n\t", "\t")
     }
   }
-
-  private fun <T> T.singletonList() = listOf(this)
 
   internal operator fun Collection<Exclusion>.contains(testVersions: TestVersions): Boolean {
     return any { testVersions.excludedBy(it) }

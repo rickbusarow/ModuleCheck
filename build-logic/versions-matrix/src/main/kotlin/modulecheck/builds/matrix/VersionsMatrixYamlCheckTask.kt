@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -101,11 +101,10 @@ abstract class VersionsMatrixYamlGenerateTask @Inject constructor(
 
 private fun createYaml(indentSize: Int): String {
   val versionsMatrix = VersionsMatrix(
-    exhaustive = true,
-    gradleArg = null,
-    agpArg = null,
-    anvilArg = null,
-    kotlinArg = null
+    gradleList = Versions.gradleListDefault,
+    agpList = Versions.agpListDefault,
+    anvilList = Versions.anvilListDefault,
+    kotlinList = Versions.kotlinListDefault
   )
 
   return VersionsMatrixYamlGenerator()
