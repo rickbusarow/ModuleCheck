@@ -32,7 +32,7 @@ import java.io.File
 interface BaseTest :
   HasTestEnvironmentFactory<DefaultTestEnvironment.Factory>,
   TrimmedAsserts {
-  override val testEnvironmentFactory
+  override val testEnvironmentFactory: DefaultTestEnvironment.Factory
     get() = DefaultTestEnvironment.Factory()
 
   /** shorthand for executing a test in a hermetic TestEnvironment but without any kase parameters */

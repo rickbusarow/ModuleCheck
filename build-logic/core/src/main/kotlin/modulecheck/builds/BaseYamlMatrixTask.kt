@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,11 +40,11 @@ abstract class BaseYamlMatrixTask @Inject constructor(
 
   @get:Input abstract val startTagProperty: Property<String>
   private val startTag: String
-    get() = startTagProperty.getFinal()
+    get() = startTagProperty.get()
 
   @get:Input abstract val endTagProperty: Property<String>
   private val endTag: String
-    get() = endTagProperty.getFinal()
+    get() = endTagProperty.get()
 
   @get:Internal
   protected val matrixSectionRegex by lazy(NONE) {
