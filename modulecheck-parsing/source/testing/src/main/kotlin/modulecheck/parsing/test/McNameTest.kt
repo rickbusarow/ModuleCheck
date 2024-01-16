@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,7 +40,7 @@ import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqNam
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.parsing.source.asDeclaredName
-import modulecheck.testing.assert.TrimmedAsserts
+import modulecheck.testing.assertions.TrimmedAsserts
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.trace.Trace

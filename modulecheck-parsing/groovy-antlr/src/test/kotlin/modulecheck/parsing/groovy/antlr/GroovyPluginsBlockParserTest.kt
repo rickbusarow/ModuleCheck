@@ -18,7 +18,7 @@ package modulecheck.parsing.groovy.antlr
 import modulecheck.parsing.gradle.dsl.PluginDeclaration
 import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.BaseTest
-import modulecheck.testing.assert.requireNotNullOrFail
+import modulecheck.testing.assertions.requireNotNullOrFail
 import modulecheck.utils.createSafely
 import modulecheck.utils.resolve
 import org.intellij.lang.annotations.Language

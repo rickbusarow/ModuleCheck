@@ -48,7 +48,7 @@ import modulecheck.rule.impl.FindingFactoryImpl
 import modulecheck.rule.impl.RealFindingResultFactory
 import modulecheck.rule.test.AllRulesComponent
 import modulecheck.runtime.ModuleCheckRunner
-import modulecheck.testing.assert.TrimmedAsserts
+import modulecheck.testing.assertions.TrimmedAsserts
 import modulecheck.utils.mapToSet
 
 @Suppress("UnnecessaryAbstractClass")
