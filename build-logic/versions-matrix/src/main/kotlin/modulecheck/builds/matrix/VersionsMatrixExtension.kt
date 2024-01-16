@@ -21,7 +21,6 @@ import com.rickbusarow.kgx.listProperty
 import com.rickbusarow.kgx.pluginId
 import com.rickbusarow.kgx.propertyOrNull
 import com.rickbusarow.kgx.version
-import modulecheck.builds.gradlePropertyAsProvider
 import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
 import org.gradle.kotlin.dsl.buildConfigField
@@ -51,7 +50,9 @@ open class Versions @Inject constructor(
     propertyName: String,
     default: List<String>
   ): ListProperty<String> = convention(
-    target.gradlePropertyAsProvider<List<String>>(propertyName).orElse(default)
+    target.providers.gradleProperty(propertyName)
+      .map { it.split("""\s*,\s*""".toRegex()) }
+      .orElse(default)
   )
 }
 
