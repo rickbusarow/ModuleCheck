@@ -22,11 +22,7 @@ class VersionsMatrix(
   val kotlinList: List<String>
 ) {
 
-  internal val exclusions = listOf(
-    Exclusion(anvil = "2.4.9-1-8", kotlin = "1.9.10"),
-    Exclusion(anvil = "2.4.9-1-8", kotlin = "1.9.22"),
-    Exclusion(anvil = "2.4.9", kotlin = "1.8.22")
-  ).requireNoDuplicates()
+  internal val exclusions = listOf<Exclusion>().requireNoDuplicates()
 
   // ORDER MATTERS.
   // ...at least with regard to Gradle.

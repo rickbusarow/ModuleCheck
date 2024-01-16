@@ -89,7 +89,9 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
     }
 
   @TestFactory
-  fun `android test fixtures from android DSL should be treated as test fixtures`() = factory {
+  fun `android test fixtures from android DSL should be treated as test fixtures`() = factory(
+    exhaustive = true
+  ) {
 
     androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
