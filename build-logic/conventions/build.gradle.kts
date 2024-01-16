@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -44,7 +44,7 @@ gradlePlugin {
     }
     create("mcbuild.dokka") {
       id = "mcbuild.dokka"
-      implementationClass = "modulecheck.builds.DokkaConventionPlugin"
+      implementationClass = "modulecheck.builds.DokkatooConventionPlugin"
     }
     create("mcbuild.dokka-version-archive") {
       id = "mcbuild.dokka-version-archive"
@@ -91,6 +91,7 @@ dependencies {
   implementation(libs.dokka.versioning)
   implementation(libs.dropbox.dependencyGuard)
   implementation(libs.google.dagger.api)
+  implementation(libs.dokkatoo.plugin)
   implementation(libs.google.ksp)
   implementation(libs.gradle.plugin.publish)
   implementation(libs.kotlin.compiler)

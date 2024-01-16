@@ -84,10 +84,10 @@ This version was published with stale artifacts. Use 0.12.5 instead.
 - The names of all findings have been updated/standardized. Any declarations which were suppressing
   a finding with the old ID (via `@Suppress("someFinding")` or `//suppress=someFinding`) will still
   work, but they should be updated to use the new names.
-  See [the migrations guide](/migrations#standardized-finding-names)
+  See [the migrations guide](https://rbusarow.github.io/ModuleCheck/migrations#standardized-finding-names)
 - The method for defining `additionalKaptMatchers` in the Gradle DSL has been deprecated, replaced
   with the `additionalCodeGenerators` property and `CodeGeneratorBinding`.
-  See [the migrations guide](/migrations#code-generator-binding)
+  See [the migrations guide](https://rbusarow.github.io/ModuleCheck/migrations#code-generator-binding)
 
 #### 💥 Breaking Changes
 
@@ -265,16 +265,16 @@ delete `ConfiguredModule` [@RBusarow](https://github.com/RBusarow) ([#609](https
   ./gradlew moduleCheckAuto
   ```
 - Tasks are no longer generated for most individual rules. Instead, rules should be toggled via
-  the [Gradle DSL](/docs/next/configuration) and can be
+  the [Gradle DSL](https://rbusarow.github.io/ModuleCheck/docs/next/configuration) and can be
   invoked
   through `./gradlew modulecheck` or `./gradlew moduleCheckAuto`.
 
 #### 📐 New Rules
 
-- Add the [Depths](/docs/rules/project_depth)
+- Add the [Depths](https://rbusarow.github.io/ModuleCheck/docs/rules/project_depth)
   rule [@RBusarow](https://github.com/RBusarow)  ([#278](https://github.com/rbusarow/ModuleCheck/pull/278))
 - New
-  rule: [Unused Android Extensions](/docs/rules/unused_kotlin_android_extensions) [@tasomaniac](https://github.com/tasomaniac) ([#440](https://github.com/rbusarow/ModuleCheck/pull/440))
+  rule: [Unused Android Extensions](https://rbusarow.github.io/ModuleCheck/docs/rules/unused_kotlin_android_extensions) [@tasomaniac](https://github.com/tasomaniac) ([#440](https://github.com/rbusarow/ModuleCheck/pull/440))
 
 #### 🚀 Features
 

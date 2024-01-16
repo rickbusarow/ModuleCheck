@@ -18,6 +18,7 @@ import com.rickbusarow.kgx.isRealRootProject
 import com.rickbusarow.kgx.namedOrNull
 import com.rickbusarow.ktlint.KtLintPlugin
 import com.rickbusarow.ktlint.KtLintTask
+import com.rickbusarow.ktrules.rules.internal.sequenceOfNotNull
 import kotlinx.validation.KotlinApiBuildTask
 import kotlinx.validation.KotlinApiCompareTask
 import org.gradle.api.Plugin
@@ -35,12 +36,15 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
     target.tasks.withType(KtLintTask::class.java).configureEach { task ->
       task.dependsOn(":updateEditorConfigVersion")
       task.mustRunAfter(
-        target.tasks.namedOrNull("apiDump"),
-        target.tasks.namedOrNull("dependencyGuard"),
-        target.tasks.namedOrNull("dependencyGuardBaseline"),
         target.tasks.withType(KotlinApiBuildTask::class.java),
         target.tasks.withType(KotlinApiCompareTask::class.java)
       )
+      sequenceOfNotNull(
+        target.tasks.namedOrNull("apiDump"),
+        target.tasks.namedOrNull("dependencyGuard"),
+        target.tasks.namedOrNull("dependencyGuardBaseline")
+      )
+        .forEach { task.mustRunAfter(it.name) }
     }
 
     if (target.isRealRootProject()) {
