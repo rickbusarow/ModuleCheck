@@ -205,7 +205,7 @@ abstract class WebsitePlugin : Plugin<Project> {
       task.dependsOn(target.tasks.findByName("knit"))
 
       task.from(
-        target.fileTree("${target.buildDir}/dokka/htmlMultiModule") {
+        target.fileTree(target.layout.buildDirectory.dir("dokka/htmlMultiModule")) {
           it.exclude("**/styles/*")
         }
       )

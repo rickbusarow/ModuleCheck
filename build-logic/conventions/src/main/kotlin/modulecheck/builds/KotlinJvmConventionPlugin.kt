@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@ package modulecheck.builds
 
 import com.rickbusarow.kgx.applyOnce
 import com.rickbusarow.kgx.dependsOn
-import com.rickbusarow.kgx.java
+import com.rickbusarow.kgx.javaExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -91,7 +91,7 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
     target.tasks.register("testJvm").dependsOn("test")
     target.tasks.register("buildTests").dependsOn("testClasses")
     target.tasks.register("buildAll").dependsOn(
-      target.provider { target.java.sourceSets.map { it.classesTaskName } }
+      target.provider { target.javaExtension.sourceSets.map { it.classesTaskName } }
     )
 
     target.tasks.register("moveJavaSrcToKotlin") { task ->
