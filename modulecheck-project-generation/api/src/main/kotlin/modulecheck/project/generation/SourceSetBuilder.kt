@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,7 +25,7 @@ import modulecheck.model.sourceset.removeSuffix
 import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.parsing.kotlin.compiler.impl.RealKotlinEnvironment
 import modulecheck.reporting.logging.PrintLogger
-import modulecheck.testing.assert.requireNotNullOrFail
+import modulecheck.testing.assertions.requireNotNullOrFail
 import modulecheck.utils.capitalize
 import modulecheck.utils.lazy.ResetManager
 import modulecheck.utils.lazy.lazyDeferred

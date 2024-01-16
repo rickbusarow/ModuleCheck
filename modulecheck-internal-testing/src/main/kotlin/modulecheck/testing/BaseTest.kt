@@ -21,7 +21,7 @@ import com.rickbusarow.kase.TestEnvironment
 import com.rickbusarow.kase.asClueCatching
 import com.rickbusarow.kase.files.TestLocation
 import kotlinx.coroutines.runBlocking
-import modulecheck.testing.assert.TrimmedAsserts
+import modulecheck.testing.assertions.TrimmedAsserts
 import modulecheck.utils.mapLines
 import modulecheck.utils.noAnsi
 import modulecheck.utils.normaliseLineSeparators

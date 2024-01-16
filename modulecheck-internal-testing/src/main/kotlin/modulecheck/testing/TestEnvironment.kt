@@ -18,7 +18,7 @@ package modulecheck.testing
 import com.rickbusarow.kase.DefaultTestEnvironment
 import com.rickbusarow.kase.TestEnvironment
 import com.rickbusarow.kase.files.TestLocation
-import modulecheck.testing.assert.TrimmedAsserts
+import modulecheck.testing.assertions.TrimmedAsserts
 import java.io.File
 
 /** */

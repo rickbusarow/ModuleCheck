@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.testing.assert
+package modulecheck.testing.assertions
 
 import com.rickbusarow.kase.files.HasWorkingDir
 import modulecheck.testing.BaseTest

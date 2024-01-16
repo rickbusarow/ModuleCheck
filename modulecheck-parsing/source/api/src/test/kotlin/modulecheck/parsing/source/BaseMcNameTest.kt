@@ -23,7 +23,7 @@ import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.McName.CompatibleLanguage.XML
-import modulecheck.testing.assert.TrimmedAsserts
+import modulecheck.testing.assertions.TrimmedAsserts
 import modulecheck.utils.letIf
 
 @Suppress("UnnecessaryAbstractClass")

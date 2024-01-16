@@ -23,7 +23,7 @@ import kotlinx.coroutines.runBlocking
 import modulecheck.testing.McTestVersions
 import modulecheck.testing.McVersionMatrix
 import modulecheck.testing.VersionsFactoryTest
-import modulecheck.testing.assert.TrimmedAsserts
+import modulecheck.testing.assertions.TrimmedAsserts
 import org.junit.jupiter.api.parallel.Execution
 import org.junit.jupiter.api.parallel.ExecutionMode.SAME_THREAD
 import org.junit.jupiter.api.parallel.ResourceLock
