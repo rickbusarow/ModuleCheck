@@ -20,7 +20,7 @@ ij_wrap_on_typing = false
 ############
 ############    KtLint specific settings
 ############
-# noinspection EditorConfigKeyCorrectness
+# noinspection EditorConfigKeyCorrectness,EditorConfigHeaderUniqueness,EditorConfigPartialOverride
 [{*.kt,*.kts}]
 kotlin_imports_layout = *,java.**,javax.**,kotlin.**,^
 # Back-ticked method names are allowed to exceed the line length. That's especially helpful for
@@ -28,6 +28,7 @@ kotlin_imports_layout = *,java.**,javax.**,kotlin.**,^
 ktlint_ignore_back_ticked_identifier = true
 
 kt-rules_project_version = 0.13.0-SNAPSHOT
+kt-rules_wrapping_style = equal
 
 ktlint_standard_class-naming = disabled
 ktlint_standard_class-signature = disabled
@@ -42,6 +43,7 @@ ktlint_standard_property-naming = disabled
 ktlint_experimental = disabled
 ktlint_code_style = intellij_idea
 
+# noinspection EditorConfigKeyCorrectness,EditorConfigHeaderUniqueness,EditorConfigPartialOverride
 [{*.kt,*.kts}]
 ij_continuation_indent_size = 2
 ij_kotlin_align_in_columns_case_branch = false

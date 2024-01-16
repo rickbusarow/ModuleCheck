@@ -34,15 +34,13 @@ Thumbs.db
 
 # IDEA/Android Studio Ignore exceptions
 !/.idea/codeStyleSettings.xml
-!/.idea/compiler.xml
+!/.idea/codeStyles/
 !/.idea/copyright/
-!/.idea/dictionaries/*
-!/.idea/encodings.xml
+!/.idea/detekt.xml
 !/.idea/fileTemplates/
 !/.idea/icon.png
 !/.idea/inspectionProfiles/
-!/.idea/detekt.xml
-!/.idea/ktlint.xml
+!/.idea/ktlint-plugin.xml
 !/.idea/scopes/
 
 /gradle/profiler/gradle-user-home/
@@ -55,14 +53,6 @@ obj/
 /.idea/vcs.xml
 captures/
 java_pid1690.hprof
-/.idea/compiler.xml
-!/.idea/codeStyles/
-!/gradle/wrapper/gradle-wrapper.properties
-true/
-
-.cache-proxy/*
-libs/
-/buildSrc/.gradle/
 
 # all build dirs at any level
 **/build
