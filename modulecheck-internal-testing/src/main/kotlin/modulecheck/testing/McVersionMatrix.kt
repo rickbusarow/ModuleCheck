@@ -48,6 +48,13 @@ class McVersionMatrix(
       AgpDependencyVersion,
       ::McTestVersions
     )
+      .filter { (_, kotlin, anvil, _) ->
+
+        when {
+          anvil.value.endsWith("-1-8") -> kotlin.value < "1.9.0"
+          else -> kotlin.value >= "1.9.0"
+        }
+      }
   }
 
   /** either all permutations or just the last */
