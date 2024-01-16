@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -50,9 +50,10 @@ data class AnvilScopedDeclarations(
 
 /**
  * Represents a graph of Anvil scopes and their associated declarations.
- * @property project the [McProject] for which this graph is defined
- * @property delegate a cache that maps from [SourceSetName]
- *   to a map of [AnvilScopeName] to [AnvilScopedDeclarations]
+ *
+ * @param project the [McProject] for which this graph is defined
+ * @param delegate a cache that maps from [SourceSetName] to
+ *   a map of [AnvilScopeName] to [AnvilScopedDeclarations]
  */
 data class AnvilGraph(
   private val project: McProject,

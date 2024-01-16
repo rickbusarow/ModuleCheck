@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,9 +35,9 @@ import javax.inject.Inject
  * and [generatorBindings] to look up a [CodeGeneratorBinding] in the event
  * that the project dependency in question is an annotation processor.
  *
- * @property pathResolver used to look up the [StringProjectPath] of any internal project
+ * @param pathResolver used to look up the [StringProjectPath] of any internal project
  *   code generators. This is necessary in order to look up the [CodeGeneratorBinding].
- * @property generatorBindings the list of possible bindings to search
+ * @param generatorBindings the list of possible bindings to search
  * @since 0.12.0
  */
 @ContributesBinding(TaskScope::class)

@@ -18,6 +18,7 @@ package modulecheck.builds
 import com.rickbusarow.kgx.applyOnce
 import com.rickbusarow.kgx.dependsOn
 import com.rickbusarow.kgx.javaExtension
+import com.rickbusarow.kgx.names.ConfigurationName
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -47,6 +48,11 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
     target.extensions.configure(JavaPluginExtension::class.java) { extension ->
       extension.sourceCompatibility = JavaVersion.toVersion(target.JVM_TARGET)
     }
+
+    target.dependencies.add(
+      ConfigurationName.implementation.value,
+      target.dependencies.platform(target.libs.kotlin.bom)
+    )
 
     target.tasks.withType(KotlinCompile::class.java).configureEach { task ->
       task.kotlinOptions {

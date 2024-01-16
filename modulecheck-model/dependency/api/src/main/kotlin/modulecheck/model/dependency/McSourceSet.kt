@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -55,9 +55,9 @@ class SourceSets(
  * @property jvmTarget the Java version used when compiling this source set
  * @property kotlinEnvironmentDeferred the kotlin environment
  *   used for "compiling" and parsing this source set
- * @property upstreamLazy all source sets upstream of
+ * @param upstreamLazy all source sets upstream of
  *   this one, like `main` if this source set is `test`
- * @property downstreamLazy all source sets downstream of
+ * @param downstreamLazy all source sets downstream of
  *   this one, like `test` if this source set is `main`
  * @since 0.12.0
  */

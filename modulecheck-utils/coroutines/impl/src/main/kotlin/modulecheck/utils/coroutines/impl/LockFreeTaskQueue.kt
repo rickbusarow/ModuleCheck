@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,7 +41,8 @@ private typealias Core<E> = LockFreeTaskQueueCore<E>
  * @since 0.12.0
  */
 internal open class LockFreeTaskQueue<E : Any>(
-  singleConsumer: Boolean // true when there is only a single consumer (slightly faster & lock-free)
+  // true when there is only a single consumer (slightly faster & lock-free)
+  singleConsumer: Boolean
 ) {
   private val _cur =
     AtomicReference(Core<E>(LockFreeTaskQueueCore.INITIAL_CAPACITY, singleConsumer))
@@ -107,7 +108,8 @@ internal class Symbol(
  */
 internal class LockFreeTaskQueueCore<E : Any>(
   private val capacity: Int,
-  private val singleConsumer: Boolean // true when there is only a single consumer (slightly faster)
+  // true when there is only a single consumer (slightly faster)
+  private val singleConsumer: Boolean
 ) {
   private val mask = capacity - 1
   private val _next = AtomicReference<Core<E>?>(null)

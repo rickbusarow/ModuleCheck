@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,9 +45,9 @@ import kotlin.LazyThreadSafetyMode.NONE
  * Factory for creating [AndroidPlatformPlugin] instances
  * based on the type of Android Gradle Plugin (AGP) extension.
  *
- * @property agpApiAccess Provides access to AGP APIs.
- * @property configurationsFactory Factory for creating [Configurations] instances.
- * @property sourceSetsFactory Factory for creating [SourceSets] instances.
+ * @param agpApiAccess Provides access to AGP APIs.
+ * @param configurationsFactory Factory for creating [Configurations] instances.
+ * @param sourceSetsFactory Factory for creating [SourceSets] instances.
  */
 @ContributesBinding(TaskScope::class)
 class RealAndroidPlatformPluginFactory @Inject constructor(

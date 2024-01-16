@@ -210,7 +210,7 @@ public final class modulecheck/runtime/test/ProjectFindingReport$useAnvilFactori
 	public fun toString ()Ljava/lang/String;
 }
 
-public abstract class modulecheck/runtime/test/RunnerTest : com/rickbusarow/kase/HasTestEnvironmentFactory, modulecheck/testing/assert/TrimmedAsserts {
+public abstract class modulecheck/runtime/test/RunnerTest : com/rickbusarow/kase/HasTestEnvironmentFactory, modulecheck/testing/assertions/TrimmedAsserts {
 	public fun <init> ()V
 	public final fun findingFactory (Ljava/util/List;Ljava/util/List;Ljava/util/List;)Lmodulecheck/rule/FindingFactory;
 	public static synthetic fun findingFactory$default (Lmodulecheck/runtime/test/RunnerTest;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lmodulecheck/rule/FindingFactory;
@@ -222,7 +222,6 @@ public abstract class modulecheck/runtime/test/RunnerTest : com/rickbusarow/kase
 	public fun getSettings ()Lkotlin/jvm/functions/Function1;
 	public synthetic fun getTestEnvironmentFactory ()Lcom/rickbusarow/kase/TestEnvironmentFactory;
 	public fun getTestEnvironmentFactory ()Lmodulecheck/runtime/test/RunnerTestEnvironmentFactory;
-	public final fun newParams ()Lmodulecheck/runtime/test/RunnerTestEnvironmentParams;
 	public final fun run-5dDjBWM (Lmodulecheck/runtime/test/RunnerTestEnvironment;ZZLmodulecheck/rule/FindingFactory;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/project/ProjectProvider;Lmodulecheck/finding/FindingResultFactory;Lcom/github/ajalt/mordant/terminal/Terminal;Lmodulecheck/reporting/console/ReportFactory;Lmodulecheck/reporting/checkstyle/CheckstyleReporter;Lmodulecheck/reporting/graphviz/GraphvizFileWriter;Ldispatch/core/DispatcherProvider;Ljava/util/List;)Ljava/lang/Object;
 	public static synthetic fun run-5dDjBWM$default (Lmodulecheck/runtime/test/RunnerTest;Lmodulecheck/runtime/test/RunnerTestEnvironment;ZZLmodulecheck/rule/FindingFactory;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/project/ProjectProvider;Lmodulecheck/finding/FindingResultFactory;Lcom/github/ajalt/mordant/terminal/Terminal;Lmodulecheck/reporting/console/ReportFactory;Lmodulecheck/reporting/checkstyle/CheckstyleReporter;Lmodulecheck/reporting/graphviz/GraphvizFileWriter;Ldispatch/core/DispatcherProvider;Ljava/util/List;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun shouldBe (Ljava/util/List;Ljava/util/List;)V

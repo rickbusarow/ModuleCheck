@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,7 +32,7 @@ import java.io.File
  *
  * @property fileFactoryCache a cache for mapping source
  *   set names to corresponding JVM file providers
- * @property project the project for which the JVM files are needed
+ * @param project the project for which the JVM files are needed
  */
 data class JvmFiles(
   internal val fileFactoryCache: SafeCache<SourceSetName, JvmFileProvider>,

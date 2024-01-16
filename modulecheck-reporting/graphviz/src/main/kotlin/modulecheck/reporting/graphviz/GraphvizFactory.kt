@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -44,8 +44,7 @@ import javax.inject.Inject
 /**
  * Creates a [Graphviz] model of a dependency graph from a given [ProjectDepth] root.
  *
- * @property typeSafeProjectPathResolver used to resolve
- *   project paths from type-safe project accessors
+ * @param typeSafeProjectPathResolver used to resolve project paths from type-safe project accessors
  * @since 0.12.0
  */
 class GraphvizFactory @Inject constructor(
@@ -56,7 +55,7 @@ class GraphvizFactory @Inject constructor(
    * Creates a [Graphviz] model of a dependency graph from a given [ProjectDepth] root.
    *
    * @param root the root of the dependency graph, starting at a
-   *   single [SourceSet][modulecheck.parsing.gradle.model.McSourceSet]
+   *   single [SourceSet][modulecheck.model.dependency.McSourceSet]
    * @return the graph model for this dependency graph
    * @since 0.12.0
    */

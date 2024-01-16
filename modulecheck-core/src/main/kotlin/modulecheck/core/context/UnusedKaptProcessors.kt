@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,9 +28,9 @@ import modulecheck.utils.mapToSet
 /**
  * Represents a data class that contains all unused Kapt processors in a project.
  *
- * @property delegate a [SafeCache] instance which manages a cache
- *   of configuration names to the associated unused Kapt processors.
- * @property project the [McProject] for which the unused Kapt processors are retrieved.
+ * @param delegate a [SafeCache] instance which manages a cache of
+ *   configuration names to the associated unused Kapt processors.
+ * @param project the [McProject] for which the unused Kapt processors are retrieved.
  */
 data class UnusedKaptProcessors(
   private val delegate: SafeCache<ConfigurationName, Set<UnusedKaptProcessorFinding>>,
