@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,15 +14,6 @@
  */
 
 package modulecheck.utils
-
-/** @return the receiver `Iterable` if it's already a `List`, otherwise the result of `toList()` */
-@Suppress("NOTHING_TO_INLINE")
-inline fun <E> Iterable<E>.asList(): List<E> {
-  return when (this) {
-    is List<E> -> this
-    else -> toList()
-  }
-}
 
 /**
  * Wraps a given item in a list.
