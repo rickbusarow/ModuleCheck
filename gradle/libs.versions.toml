@@ -32,7 +32,7 @@ dokkatoo = "2.0.0"
 dropbox-dependencyGuard = "0.4.3"
 ec4j = "0.3.0"
 exhaustive = "0.2.0"
-github-release = "2.4.1"
+github-release = "2.5.2"
 
 google-auto-common = "1.2.2"
 google-auto-service = "1.1.1"
