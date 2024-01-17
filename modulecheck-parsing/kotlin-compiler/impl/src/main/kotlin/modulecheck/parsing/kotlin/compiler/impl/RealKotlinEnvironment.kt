@@ -91,9 +91,7 @@ class RealKotlinEnvironment(
 
   override val compilerConfiguration: LazyDeferred<CompilerConfiguration> = lazyDeferred {
     createCompilerConfiguration(
-      // TODO re-enable classpath files once external dependency resolution is working
-      // classpathFiles =   classpathFiles.await(),
-      classpathFiles = emptyList(),
+      classpathFiles = classpathFiles.await(),
       sourceFiles = sourceFiles.toList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget

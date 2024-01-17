@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,8 +16,15 @@
 package modulecheck.model.dependency
 
 import modulecheck.model.sourceset.SourceSetName
+import modulecheck.parsing.kotlin.compiler.HasAnalysisResult
 import modulecheck.utils.filterToSet
 import modulecheck.utils.flatMapToSet
+import modulecheck.utils.lazy.LazyDeferred
+import org.jetbrains.kotlin.config.JvmTarget
+import org.jetbrains.kotlin.config.LanguageVersion
+import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
+import org.jetbrains.kotlin.descriptors.DeclarationDescriptorWithVisibility
+import java.io.File
 
 class ExternalDependencies(
   map: Map<ConfigurationName, Set<ExternalDependency>>
@@ -50,4 +57,20 @@ class ExternalDependencies(
     val oldDependencies = get(dependency.configurationName).orEmpty()
     put(dependency.configurationName, oldDependencies.filterToSet { it != dependency })
   }
+}
+
+fun interface ExternalDependencyDescriptorCache {
+
+  suspend fun get(
+    mavenCoordinates: MavenCoordinates,
+    jarFile: File,
+    kotlinLanguageVersion: LanguageVersion?,
+    jvmTarget: JvmTarget
+  ): ExternalDependencyDescriptor
+}
+
+interface ExternalDependencyDescriptor : HasAnalysisResult {
+
+  val declarations: LazyDeferred<Set<DeclarationDescriptorWithVisibility>>
+  suspend fun contains(declarationDescriptor: DeclarationDescriptor): Boolean
 }

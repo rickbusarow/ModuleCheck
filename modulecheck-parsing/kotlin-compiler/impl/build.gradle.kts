@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,10 +41,13 @@ dependencies {
   compileOnly(libs.agp)
 
   implementation(project(path = ":modulecheck-dagger"))
+  implementation(project(path = ":modulecheck-utils:cache"))
   implementation(project(path = ":modulecheck-utils:coroutines:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.junit)
+  testImplementation(libs.rickBusarow.dispatch.test.core)
+  testImplementation(libs.rickBusarow.dispatch.core)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotest.runner.junit5.jvm)
 
@@ -52,6 +55,8 @@ dependencies {
   testImplementation(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   testImplementation(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
   testImplementation(project(path = ":modulecheck-parsing:psi"))
+  testImplementation(project(path = ":modulecheck-parsing:source:api"))
+  testImplementation(project(path = ":modulecheck-parsing:source:testing"))
   testImplementation(project(path = ":modulecheck-project:testing"))
   testImplementation(project(path = ":modulecheck-utils:stdlib"))
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,8 @@
 
 package modulecheck.gradle.platforms
 
+import modulecheck.model.dependency.ExternalDependencyDescriptor
+import modulecheck.model.dependency.MavenCoordinates
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
@@ -41,4 +43,22 @@ fun interface KotlinEnvironmentFactory {
     kotlinLanguageVersion: LanguageVersion?,
     jvmTarget: JvmTarget
   ): KotlinEnvironment
+}
+
+/**
+ * Kotlin environment factory
+ *
+ * @since 0.12.0
+ */
+fun interface ExternalDependencyDescriptorFactory {
+  /**
+   * @return a kotlin environment for these many arguments
+   * @since 0.12.0
+   */
+  fun create(
+    mavenCoordinates: MavenCoordinates,
+    jarFile: File,
+    kotlinLanguageVersion: LanguageVersion?,
+    jvmTarget: JvmTarget
+  ): ExternalDependencyDescriptor
 }
