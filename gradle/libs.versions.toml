@@ -7,7 +7,7 @@ kotlinApi = "1.6"
 
 kotlin-gradle = "1.9.22"
 kotlin-core = "1.9.22"
-google-ksp = "1.9.22-1.0.16"
+google-ksp = "1.9.22-1.0.17"
 square-anvil = "2.4.9"
 
 ajalt-clikt = "4.2.2"
