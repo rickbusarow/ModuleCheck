@@ -15,7 +15,7 @@
 
 package modulecheck.builds.matrix
 
-class VersionsMatrix(
+class VersionsMatrix constructor(
   val gradleList: List<String>,
   val agpList: List<String>,
   val anvilList: List<String>,

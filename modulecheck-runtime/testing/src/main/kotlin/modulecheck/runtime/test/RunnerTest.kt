@@ -84,7 +84,7 @@ abstract class RunnerTest :
     testLocation: TestLocation = TestLocation.get(),
     testAction: suspend RunnerTestEnvironment.() -> Unit
   ) {
-    val testEnvironment = testEnvironmentFactory.createEnvironment(
+    val testEnvironment = testEnvironmentFactory.create(
       params = RunnerTestEnvironmentParams(
         projectCache = ProjectCache(),
         logger = logger(),

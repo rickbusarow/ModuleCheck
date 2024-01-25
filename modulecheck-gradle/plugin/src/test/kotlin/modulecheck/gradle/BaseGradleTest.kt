@@ -47,7 +47,7 @@ abstract class BaseGradleTest(
     testLocation: TestLocation = TestLocation.get(),
     testAction: suspend McGradleTestEnvironment.() -> Unit
   ) {
-    val testEnvironment = testEnvironmentFactory.createEnvironment(
+    val testEnvironment = testEnvironmentFactory.create(
       params = params.last(),
       names = emptyList(),
       location = testLocation

@@ -40,7 +40,7 @@ interface BaseTest :
     testLocation: TestLocation = TestLocation.get(),
     testAction: suspend TestEnvironment.() -> Unit
   ) {
-    val testEnvironment = testEnvironmentFactory.createEnvironment(
+    val testEnvironment = testEnvironmentFactory.create(
       names = emptyList(),
       location = testLocation
     )

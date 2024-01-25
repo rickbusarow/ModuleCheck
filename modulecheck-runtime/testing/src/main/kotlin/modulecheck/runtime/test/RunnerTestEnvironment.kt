@@ -15,7 +15,7 @@
 
 package modulecheck.runtime.test
 
-import com.rickbusarow.kase.TestEnvironmentFactory
+import com.rickbusarow.kase.ParamTestEnvironmentFactory
 import com.rickbusarow.kase.files.TestLocation
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.ModuleCheckSettings
@@ -51,8 +51,8 @@ data class RunnerTestEnvironmentParams(
   val findingFactory: (List<ModuleCheckRule<*>>) -> FindingFactory<out Finding>
 ) : TestEnvironmentParams
 
-class RunnerTestEnvironmentFactory : TestEnvironmentFactory<RunnerTestEnvironmentParams, RunnerTestEnvironment> {
-  override fun createEnvironment(
+class RunnerTestEnvironmentFactory : ParamTestEnvironmentFactory<RunnerTestEnvironmentParams, RunnerTestEnvironment> {
+  override fun create(
     params: RunnerTestEnvironmentParams,
     names: List<String>,
     location: TestLocation

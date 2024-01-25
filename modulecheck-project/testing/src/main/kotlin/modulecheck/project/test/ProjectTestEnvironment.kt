@@ -15,7 +15,7 @@
 
 package modulecheck.project.test
 
-import com.rickbusarow.kase.TestEnvironmentFactory
+import com.rickbusarow.kase.ParamTestEnvironmentFactory
 import com.rickbusarow.kase.files.TestLocation
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
@@ -45,8 +45,8 @@ data class ProjectTestEnvironmentParams(
   val projectCache: ProjectCache
 ) : TestEnvironmentParams
 
-class ProjectTestEnvironmentFactory : TestEnvironmentFactory<ProjectTestEnvironmentParams, ProjectTestEnvironment> {
-  override fun createEnvironment(
+class ProjectTestEnvironmentFactory : ParamTestEnvironmentFactory<ProjectTestEnvironmentParams, ProjectTestEnvironment> {
+  override fun create(
     params: ProjectTestEnvironmentParams,
     names: List<String>,
     location: TestLocation

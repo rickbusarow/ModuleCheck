@@ -16,6 +16,7 @@
 package modulecheck.core
 
 import com.rickbusarow.kase.Kase3
+import com.rickbusarow.kase.ParamTestEnvironmentFactory
 import com.rickbusarow.kase.asTests
 import com.rickbusarow.kase.kases
 import io.kotest.matchers.file.shouldNotExist
@@ -316,7 +317,7 @@ internal class DepthOutputTest : RunnerTest() {
       displayNameFactory = { "depthsConsole: $a1 | depthsReport: $a2 | graphsReport: $a3" }
     )
       .asTests(
-        testEnvironmentFactory = { kase, names, location ->
+        testEnvironmentFactory = ParamTestEnvironmentFactory { kase, names, location ->
           RunnerTestEnvironment(
             projectCache = ProjectCache(),
             logger = logger(),
