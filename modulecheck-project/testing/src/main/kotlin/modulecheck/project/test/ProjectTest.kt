@@ -37,7 +37,7 @@ abstract class ProjectTest : HasTestEnvironmentFactory<ProjectTestEnvironmentFac
     testLocation: TestLocation = TestLocation.get(),
     testAction: suspend ProjectTestEnvironment.() -> Unit
   ) {
-    val testEnvironment = testEnvironmentFactory.createEnvironment(
+    val testEnvironment = testEnvironmentFactory.create(
       params = ProjectTestEnvironmentParams(ProjectCache()),
       names = emptyList(),
       location = testLocation

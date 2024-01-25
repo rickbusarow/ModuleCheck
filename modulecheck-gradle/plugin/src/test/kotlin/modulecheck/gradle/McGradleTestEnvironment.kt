@@ -15,7 +15,7 @@
 
 package modulecheck.gradle
 
-import com.rickbusarow.kase.TestEnvironmentFactory
+import com.rickbusarow.kase.ParamTestEnvironmentFactory
 import com.rickbusarow.kase.files.TestLocation
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.internal.defaultCodeGeneratorBindings
@@ -239,8 +239,8 @@ class McGradleTestEnvironment(
   }
 }
 
-class McGradleTestEnvironmentFactory : TestEnvironmentFactory<McTestVersions, McGradleTestEnvironment> {
-  override fun createEnvironment(
+class McGradleTestEnvironmentFactory : ParamTestEnvironmentFactory<McTestVersions, McGradleTestEnvironment> {
+  override fun create(
     params: McTestVersions,
     names: List<String>,
     location: TestLocation

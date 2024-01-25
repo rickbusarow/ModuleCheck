@@ -15,7 +15,7 @@
 
 package modulecheck.testing
 
-import com.rickbusarow.kase.TestEnvironmentFactory
+import com.rickbusarow.kase.ParamTestEnvironmentFactory
 import com.rickbusarow.kase.files.TestLocation
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
@@ -60,9 +60,10 @@ internal data class VersionFactoryTestTestEnvironment(
   val testLocation: TestLocation
 ) : TestEnvironment(testVariantNames, testLocation),
   HasTestVersions {
-  class Factory : TestEnvironmentFactory<McTestVersions, VersionFactoryTestTestEnvironment> {
 
-    override fun createEnvironment(
+  class Factory : ParamTestEnvironmentFactory<McTestVersions, VersionFactoryTestTestEnvironment> {
+
+    override fun create(
       params: McTestVersions,
       names: List<String>,
       location: TestLocation
