@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: check out
         uses: actions/checkout@v4
-      - uses: gradle/wrapper-validation-action@v1
+      - uses: gradle/wrapper-validation-action@v2
 
   build-all:
     needs: validate-wrapper
