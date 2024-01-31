@@ -1,6 +1,6 @@
 # 0.12.5
 
-This is a re-release of [0.12.4](#0.12.4).
+This is a re-release of [0.12.4](#0124).
 
 ### 🐛 Bug Fixes
 
