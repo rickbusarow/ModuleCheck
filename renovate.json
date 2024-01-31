@@ -1,39 +1,67 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    "default:disableRateLimiting"
+  ],
+  "rebaseWhen": "conflicted",
+  "rebaseLabel": "rebase",
+  "stopUpdatingLabel": "renovate-ignore",
   "labels": [
     "dependencies",
     "automerge"
   ],
-  "extends": [
-    "config:base"
-  ],
   "packageRules": [
     {
-      "matchPackagePatterns": [
-        "^org\\.jetbrains\\.kotlin:(?:[\\w-]+)$",
-        "^com\\.google\\.devtools\\.ksp:(?:[\\w-]+)$",
-        "^com\\.square\\.anvil:(?:[\\w-]+)$"
-      ],
       "groupName": "Kotlin and compiler plugins",
+      "matchPackagePrefixes": [
+        "org.jetbrains.kotlin:",
+        "com.google.devtools.ksp:",
+        "com.square.anvil:",
+        "dev.drewhamilton.poko:"
+      ],
       "separateMultipleMajor": false
     },
     {
-      "matchPackagePatterns": [
-        "^com\\.pinterest\\.ktlint:(?:[\\w-]+)$",
-        "^com\\.rickbusarow\\.ktlint:(?:[\\w-]+)$",
-        "^com\\.rickbusarow\\.ktrules:(?:[\\w-]+)$"
-      ],
-      "groupName": "KtLint libs"
+      "groupName": "JUnit5 libs",
+      "matchPackagePrefixes": [
+        "org.junit.jupiter:",
+        "org.junit.platform:",
+        "org.junit.vintage:"
+      ]
     },
     {
-      "matchPackagePatterns": [
-        "^org\\.junit\\.jupiter:(?:[\\w-]+)$",
-        "^org\\.junit\\.platform:(?:[\\w-]+)$",
-        "^org\\.junit\\.vintage:(?:[\\w-]+)$"
+      "groupName": "KtLint libs",
+      "matchPackagePrefixes": [
+        "com.pinterest.ktlint:",
+        "com.rickbusarow.ktlint:",
+        "com.rickbusarow.ktrules:"
+      ]
+    },
+    {
+      "matchPackagePrefixes": [
+        "com.rickbusarow.dispatch:",
+        "com.rickbusarow.doks:",
+        "com.rickbusarow.gradle-dependency-sync:",
+        "com.rickbusarow.hermit:",
+        "com.rickbusarow.kase:",
+        "com.rickbusarow.kgx:",
+        "com.rickbusarow.ktlint:",
+        "com.rickbusarow.ktrules:",
+        "com.rickbusarow.lattice:",
+        "com.rickbusarow.modulecheck:"
       ],
-      "groupName": "JUnit5 libs"
+      "matchPackageNames": [
+        "com.rickbusarow.module-check"
+      ],
+      "matchRepositories": [
+        "repo.maven.apache.org/maven2",
+        "plugins.gradle.org/m2"
+      ],
+      "automerge": true,
+      "automergeStrategy": "rebase",
+      "automergeType": "pr",
+      "rebaseWhen": "smart"
     }
-  ],
-  "rebaseWhen": "conflicted",
-  "stopUpdatingLabel": "renovate-ignore"
+  ]
 }
