@@ -24,7 +24,7 @@ module.exports = {
   url: "https://rbusarow.github.io/",
   baseUrl: "/ModuleCheck/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  onBrokenMarkdownLinks: "throw",
   favicon: "img/favicon.ico",
   markdown: {
     mermaid: true,
@@ -54,97 +54,97 @@ module.exports = {
   ],
   themeConfig:
   /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
-      docs: {
-        sidebar: {
-          hideable: true,
-        }
-      },
-      colorMode: {
-        defaultMode: "light",
-        disableSwitch: false,
-        respectPrefersColorScheme: true,
-      },
-      // announcementBar: {id: "supportus", content: '⭐️ If you like ModuleCheck, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/rickbusarow/ModuleCheck/">GitHub</a>! ⭐️',},
-      navbar: {
-        title: "ModuleCheck",
-        logo: {
-          alt: 'ModuleCheck Logo',
-          src: 'img/logo.png',
+      ({
+        docs: {
+          sidebar: {
+            hideable: true,
+          }
         },
-        items: [
-          {
-            type: "doc",
-            docId: "quickstart",
-            label: "Docs",
-            position: "left",
-          },
-          {
-            to: 'CHANGELOG',
-            label: 'ChangeLog',
-            position: 'left'
-          },
-          {
-            to: 'migrations',
-            label: 'Migrations',
-            position: 'left'
-          },
-          {
-            type: "docsVersionDropdown",
-            position: "left",
-            dropdownActiveClassDisabled: true,
-            dropdownItemsAfter: [
-              {
-                to: "/changelog",
-                label: "CHANGELOG",
-              },
-            ],
-          },
-          {
-            label: "Api",
-            href: 'pathname:///api/index.html',
-            position: "left",
-          },
-          {
-            label: "GitHub",
-            href: "https://github.com/rbusarow/ModuleCheck",
-            position: "right",
-          },
-        ],
-      },
-      footer: {
-        copyright: `Copyright © ${new Date().getFullYear()} Rick Busarow, Built with Docusaurus.`,
-      },
-      mermaid: {
-        theme: {
-          light: 'neutral',
+        colorMode: {
+          defaultMode: "light",
+          disableSwitch: false,
+          respectPrefersColorScheme: true,
         },
-        options: {},
-      },
-      prism: {
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        additionalLanguages: ["kotlin", "groovy", "java"],
-      },
-      algolia: {
-        // The application ID provided by Algolia
-        appId: 'D6Z21RYLG1',
+        // announcementBar: {id: "supportus", content: '⭐️ If you like ModuleCheck, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/rickbusarow/ModuleCheck/">GitHub</a>! ⭐️',},
+        navbar: {
+          title: "ModuleCheck",
+          logo: {
+            alt: 'ModuleCheck Logo',
+            src: 'img/logo.png',
+          },
+          items: [
+            {
+              type: "doc",
+              docId: "quickstart",
+              label: "Docs",
+              position: "left",
+            },
+            {
+              to: 'changelog',
+              label: 'ChangeLog',
+              position: 'left'
+            },
+            {
+              to: 'migrations',
+              label: 'Migrations',
+              position: 'left'
+            },
+            {
+              type: "docsVersionDropdown",
+              position: "left",
+              dropdownActiveClassDisabled: true,
+              dropdownItemsAfter: [
+                {
+                  to: "/changelog",
+                  label: "CHANGELOG",
+                },
+              ],
+            },
+            {
+              label: "Api",
+              href: 'pathname:///api/index.html',
+              position: "left",
+            },
+            {
+              label: "GitHub",
+              href: "https://github.com/rbusarow/ModuleCheck",
+              position: "right",
+            },
+          ],
+        },
+        footer: {
+          copyright: `Copyright © ${new Date().getFullYear()} Rick Busarow, Built with Docusaurus.`,
+        },
+        mermaid: {
+          theme: {
+            light: 'neutral',
+          },
+          options: {},
+        },
+        prism: {
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          additionalLanguages: ["kotlin", "groovy", "java"],
+        },
+        algolia: {
+          // The application ID provided by Algolia
+          appId: 'D6Z21RYLG1',
 
-        // Public API key: it is safe to commit it
-        apiKey: '2b25d0dd3470c3fdbe2ffa4e3299b0e9',
+          // Public API key: it is safe to commit it
+          apiKey: '2b25d0dd3470c3fdbe2ffa4e3299b0e9',
 
-        indexName: 'modulecheck',
+          indexName: 'modulecheck',
 
-        // Optional: see doc section below
-        contextualSearch: true,
+          // Optional: see doc section below
+          contextualSearch: true,
 
-        // Optional: Algolia search parameters
-        searchParameters: {},
+          // Optional: Algolia search parameters
+          searchParameters: {},
 
-        // Optional: path for search page that enabled by default (`false` to disable it)
-        searchPagePath: 'search',
+          // Optional: path for search page that enabled by default (`false` to disable it)
+          searchPagePath: 'search',
 
-        //... other Algolia params
-      },
-    }),
+          //... other Algolia params
+        },
+      }),
 };
