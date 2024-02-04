@@ -43,7 +43,7 @@ runs:
 
     # ensure that we have the actual branch checked out.  By default, actions/checkout is headless.
     - name: check out with PAT
-      uses: actions/checkout@v4
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       if: steps.can-push.outputs.can_push == 'true'
       with:
         token: ${{ inputs.personal-access-token }}
@@ -73,7 +73,7 @@ runs:
 
     - name: commit ${{ inputs.fix-task }} changes
       if: steps.can-push.outputs.can_push == 'true'
-      uses: stefanzweifel/git-auto-commit-action@v5
+      uses: stefanzweifel/git-auto-commit-action@8756aa072ef5b4a080af5dc8fef36c5d586e521d # v5
       with:
         commit_message: ${{ steps.set-commit-message.outputs.commit-message }}
         commit_options: '--no-verify --signoff'

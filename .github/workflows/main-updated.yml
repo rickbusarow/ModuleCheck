@@ -11,7 +11,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: build build-logic
         uses: ./.github/actions/gradle-task
@@ -23,7 +23,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: main build
         uses: ./.github/actions/gradle-task
@@ -40,7 +40,7 @@ jobs:
 
     steps:
       - name: check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Dokka & JavadocJar
         uses: ./.github/actions/gradle-task
@@ -63,7 +63,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: dokkaHtmlMultiModule
         uses: ./.github/actions/gradle-task
@@ -73,7 +73,7 @@ jobs:
           write-cache-key: dokka-build-artifacts
 
       - name: website build cache
-        uses: actions/cache@v4
+        uses: actions/cache@13aacd865c20de90d75de3b17ebe84f7a17d57d2 # v4
         with:
           path: |
             website/.docusaurus
@@ -88,7 +88,7 @@ jobs:
 
       # Node is required for pnpm
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4
         with:
           node-version: 18
           cache: pnpm
@@ -106,7 +106,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v4
+        uses: crazy-max/ghaction-github-pages@c05ee637ec73429400a359430db8e5629f3f2564 # v4
         with:
           target_branch: gh-pages
           build_dir: website/build
