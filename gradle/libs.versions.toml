@@ -16,7 +16,6 @@ ajalt-mordant = "2.1.0"
 androidTools = "8.1.0"
 
 antlr = "4.13.1"
-autoManifest = "2.0"
 
 benManes-caffeine = "3.1.8"
 benManes-versions = "0.51.0"
@@ -91,7 +90,6 @@ vanniktech-publish = "0.27.0"
 [plugins]
 
 anvil = { id = "com.squareup.anvil", version.ref = "square-anvil" }
-autoManifest = { id = "com.gradleup.auto.manifest", version.ref = "autoManifest" }
 benManes = { id = "com.github.ben-manes.versions", version.ref = "benManes-versions" }
 buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
 dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
