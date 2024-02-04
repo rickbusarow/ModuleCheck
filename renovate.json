@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
+    "config:best-practices",
     "default:disableRateLimiting"
   ],
   "rebaseWhen": "conflicted",
@@ -55,8 +55,8 @@
         "com.rickbusarow.module-check"
       ],
       "matchRepositories": [
-        "repo.maven.apache.org/maven2",
-        "plugins.gradle.org/m2"
+        "repo.maven.apache.org",
+        "plugins.gradle.org"
       ],
       "automerge": true,
       "automergeStrategy": "rebase",
