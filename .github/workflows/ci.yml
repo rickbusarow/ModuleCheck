@@ -223,7 +223,7 @@ jobs:
           restore-cache-key: main-build-artifacts
 
       - name: Archive test results
-        uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4
+        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
         if: failure()
         with:
           name: test-results
@@ -290,7 +290,7 @@ jobs:
           restore-cache-key: main-build-artifacts
 
       - name: Archive integration test results
-        uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4
+        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
         if: failure()
         with:
           name: integration-test-results-windows
