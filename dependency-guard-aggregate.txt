@@ -312,8 +312,8 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.8
-:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.8
-:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.8
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.9
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.9
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.dagger:dagger:2.51
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.23.0
@@ -429,8 +429,8 @@
 :modulecheck-parsing:java -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
 :modulecheck-parsing:java -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-parsing:java -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.8
-:modulecheck-parsing:java -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.8
-:modulecheck-parsing:java -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.8
+:modulecheck-parsing:java -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.9
+:modulecheck-parsing:java -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.9
 :modulecheck-parsing:java -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-parsing:java -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.23.0
 :modulecheck-parsing:java -- runtimeClasspath -- com.google.guava:failureaccess:1.0.2
@@ -501,8 +501,8 @@
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.8
-:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.8
-:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.8
+:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.9
+:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.9
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.23.0
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.google.guava:failureaccess:1.0.2
@@ -616,8 +616,8 @@
 :modulecheck-project:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-project:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.8
 :modulecheck-project:testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
-:modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.8
-:modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.8
+:modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.9
+:modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.9
 :modulecheck-project:testing -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-project:testing -- runtimeClasspath -- com.google.dagger:dagger:2.51
 :modulecheck-project:testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.23.0
@@ -684,8 +684,8 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.8
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
-:modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.8
-:modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.8
+:modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.9
+:modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.9
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.dagger:dagger:2.51
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.23.0
@@ -1075,8 +1075,8 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.8
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
-:modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.8
-:modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.8
+:modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.9
+:modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.9
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.dagger:dagger:2.51
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.23.0
