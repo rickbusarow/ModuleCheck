@@ -71,8 +71,10 @@
 :modulecheck-dagger -- runtimeClasspath -- org.jetbrains:annotations:13.0
 
 :modulecheck-internal-testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
-:modulecheck-internal-testing -- runtimeClasspath -- com.rickbusarow.kase:kase-gradle:0.10.0
-:modulecheck-internal-testing -- runtimeClasspath -- com.rickbusarow.kase:kase:0.10.0
+:modulecheck-internal-testing -- runtimeClasspath -- com.rickbusarow.kase:kase-gradle:0.11.0
+:modulecheck-internal-testing -- runtimeClasspath -- com.rickbusarow.kase:kase:0.11.0
+:modulecheck-internal-testing -- runtimeClasspath -- dev.drewhamilton.poko:poko-annotations-jvm:0.15.2
+:modulecheck-internal-testing -- runtimeClasspath -- dev.drewhamilton.poko:poko-annotations:0.15.2
 :modulecheck-internal-testing -- runtimeClasspath -- io.github.java-diff-utils:java-diff-utils:4.12
 :modulecheck-internal-testing -- runtimeClasspath -- io.kotest:kotest-assertions-api-jvm:5.8.0
 :modulecheck-internal-testing -- runtimeClasspath -- io.kotest:kotest-assertions-api:5.8.0
@@ -626,8 +628,10 @@
 :modulecheck-project:testing -- runtimeClasspath -- com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 :modulecheck-project:testing -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-project:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-project:testing -- runtimeClasspath -- com.rickbusarow.kase:kase-gradle:0.10.0
-:modulecheck-project:testing -- runtimeClasspath -- com.rickbusarow.kase:kase:0.10.0
+:modulecheck-project:testing -- runtimeClasspath -- com.rickbusarow.kase:kase-gradle:0.11.0
+:modulecheck-project:testing -- runtimeClasspath -- com.rickbusarow.kase:kase:0.11.0
+:modulecheck-project:testing -- runtimeClasspath -- dev.drewhamilton.poko:poko-annotations-jvm:0.15.2
+:modulecheck-project:testing -- runtimeClasspath -- dev.drewhamilton.poko:poko-annotations:0.15.2
 :modulecheck-project:testing -- runtimeClasspath -- io.github.java-diff-utils:java-diff-utils:4.12
 :modulecheck-project:testing -- runtimeClasspath -- io.kotest:kotest-assertions-api-jvm:5.8.0
 :modulecheck-project:testing -- runtimeClasspath -- io.kotest:kotest-assertions-api:5.8.0
@@ -694,8 +698,10 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 :modulecheck-project-generation:api -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-project-generation:api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-project-generation:api -- runtimeClasspath -- com.rickbusarow.kase:kase-gradle:0.10.0
-:modulecheck-project-generation:api -- runtimeClasspath -- com.rickbusarow.kase:kase:0.10.0
+:modulecheck-project-generation:api -- runtimeClasspath -- com.rickbusarow.kase:kase-gradle:0.11.0
+:modulecheck-project-generation:api -- runtimeClasspath -- com.rickbusarow.kase:kase:0.11.0
+:modulecheck-project-generation:api -- runtimeClasspath -- dev.drewhamilton.poko:poko-annotations-jvm:0.15.2
+:modulecheck-project-generation:api -- runtimeClasspath -- dev.drewhamilton.poko:poko-annotations:0.15.2
 :modulecheck-project-generation:api -- runtimeClasspath -- io.github.java-diff-utils:java-diff-utils:4.12
 :modulecheck-project-generation:api -- runtimeClasspath -- io.kotest:kotest-assertions-api-jvm:5.8.0
 :modulecheck-project-generation:api -- runtimeClasspath -- io.kotest:kotest-assertions-api:5.8.0
@@ -1085,12 +1091,14 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
 :modulecheck-runtime:testing -- runtimeClasspath -- com.ibm.icu:icu4j:72.1
 :modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.kase:kase-gradle:0.10.0
-:modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.kase:kase:0.10.0
+:modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.kase:kase-gradle:0.11.0
+:modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.kase:kase:0.11.0
 :modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.anvil:annotations:2.4.9
 :modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.1
 :modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.okio:okio-jvm:3.7.0
 :modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.okio:okio:3.7.0
+:modulecheck-runtime:testing -- runtimeClasspath -- dev.drewhamilton.poko:poko-annotations-jvm:0.15.2
+:modulecheck-runtime:testing -- runtimeClasspath -- dev.drewhamilton.poko:poko-annotations:0.15.2
 :modulecheck-runtime:testing -- runtimeClasspath -- guru.nidi:graphviz-java-min-deps:0.18.1
 :modulecheck-runtime:testing -- runtimeClasspath -- guru.nidi:graphviz-java:0.18.1
 :modulecheck-runtime:testing -- runtimeClasspath -- io.github.java-diff-utils:java-diff-utils:4.12
@@ -1413,8 +1421,10 @@
 
 :modulecheck-parsing:source:testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
 :modulecheck-parsing:source:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-parsing:source:testing -- runtimeClasspath -- com.rickbusarow.kase:kase-gradle:0.10.0
-:modulecheck-parsing:source:testing -- runtimeClasspath -- com.rickbusarow.kase:kase:0.10.0
+:modulecheck-parsing:source:testing -- runtimeClasspath -- com.rickbusarow.kase:kase-gradle:0.11.0
+:modulecheck-parsing:source:testing -- runtimeClasspath -- com.rickbusarow.kase:kase:0.11.0
+:modulecheck-parsing:source:testing -- runtimeClasspath -- dev.drewhamilton.poko:poko-annotations-jvm:0.15.2
+:modulecheck-parsing:source:testing -- runtimeClasspath -- dev.drewhamilton.poko:poko-annotations:0.15.2
 :modulecheck-parsing:source:testing -- runtimeClasspath -- io.github.java-diff-utils:java-diff-utils:4.12
 :modulecheck-parsing:source:testing -- runtimeClasspath -- io.kotest:kotest-assertions-api-jvm:5.8.0
 :modulecheck-parsing:source:testing -- runtimeClasspath -- io.kotest:kotest-assertions-api:5.8.0
