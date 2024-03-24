@@ -1,0 +1,70 @@
+pull_request_rules:
+  - name: Queue PRs for rebase-merge when CI passes and approved
+    # GitHub branch protection rules are also applied automatically
+    conditions:
+      - label=automerge
+      - base=main
+      - label!=do-not-merge
+    actions:
+      queue:
+        # maybe change to 'rebase' if this causes problems
+        merge_method: fast-forward
+        update_method: rebase # this is also the default when 'merge_method' is 'fast-forward'
+        autosquash: true
+        merge_bot_account: rb-org-bot[bot]
+
+  - name: Remove automerge label once merged
+    conditions:
+      - merged
+      - label=automerge
+    actions:
+      label:
+        remove:
+          - automerge
+
+  - name: Auto-approve RBusarow PRs
+    conditions:
+      - check-success=all-checks
+      - author=RBusarow
+    actions:
+      review:
+        type: APPROVE
+        message: Automatically approving RBusarow pull request
+        bot_account: rb-org-bot[bot]
+
+#   - name: Auto-approve bot PRs
+#     conditions:
+#       - check-success=all-checks
+#       - or:
+#         - author=rb-org-bot[bot]
+#         - author=dependabot[bot]
+#         - author=renovate[bot]
+#     actions:
+#       review:
+#         type: APPROVE
+#         message: Automatically approving bot pull request
+
+  - name: Rebase any PR with a 'rebase' label
+    conditions:
+      - label=rebase
+    actions:
+      rebase:
+        autosquash: true
+        bot_account: rb-org-bot[bot]
+      label:
+        remove:
+          - rebase
+
+  - name: Re-queue any PR with a 'requeue' label
+    conditions:
+      - label=requeue
+    actions:
+      queue:
+        # maybe change to 'rebase' if this causes problems
+        merge_method: fast-forward
+        update_method: rebase # this is also the default when 'merge_method' is 'fast-forward'
+        autosquash: true
+        merge_bot_account: rb-org-bot[bot]
+      label:
+        remove:
+          - requeue
