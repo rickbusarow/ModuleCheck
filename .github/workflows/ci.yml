@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: check out
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-      - uses: gradle/wrapper-validation-action@699bb18358f12c5b78b37bb0111d3a0e2276e0e2 # v2
+      - uses: gradle/wrapper-validation-action@b231772637bb498f11fdbc86052b6e8a8dc9fc92 # v2
 
   build-all:
     needs: validate-wrapper
@@ -148,7 +148,7 @@ jobs:
         run: ./gradlew detektReportMerge
 
       - name: Upload SARIF to Github using the upload-sarif action
-        uses: github/codeql-action/upload-sarif@3ab4101902695724f9365a384f86c1074d94e18c # v3
+        uses: github/codeql-action/upload-sarif@1b1aada464948af03b950897e5eb522f92603cc2 # v3
         if: success() || failure()
         with:
           sarif_file: build/reports/detekt/merged.sarif
@@ -168,7 +168,7 @@ jobs:
           write-cache-key: dokka-build-artifacts
 
       - name: website build cache
-        uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4
         with:
           path: |
             website/.docusaurus
