@@ -1,0 +1,224 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>modulecheck.dagger</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.dagger/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../older/0.12.5/modulecheck-dagger/modulecheck.dagger/index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-dagger/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageids="modulecheck-dagger::modulecheck.dagger////PointingToDeclaration//-435666277">
+  <div class="breadcrumbs"><a href="../index.html">modulecheck-dagger</a><span class="delimiter">/</span><span class="current">modulecheck.dagger</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-1938894656%2FClasslikes%2F-435666277" anchor-label="DaggerLazy" id="-1938894656%2FClasslikes%2F-435666277" data-filterable-set=":modulecheck-dagger/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-dagger/main" data-filterable-set=":modulecheck-dagger/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-dagger-lazy/index.html"><span>Dagger</span><wbr><span><span>Lazy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1938894656%2FClasslikes%2F-435666277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-dagger/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-dagger-lazy/index.html">DaggerLazy</a><span class="token operator">&lt;</span><a href="-dagger-lazy/index.html">T</a><span class="token operator">&gt;</span><span class="token operator"> = </span><span data-unresolved-link="dagger/Lazy///PointingToDeclaration/">Lazy</span><span class="token operator">&lt;</span><span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-suppress-wildcards/index.html"><span class="token annotation builtin">JvmSuppressWildcards</span></a>&nbsp;</span><a href="-dagger-lazy/index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">shorthand for <code class="lang-kotlin">dagger.Lazy&lt;@JvmSuppressWildcards T&gt;</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2021717718%2FClasslikes%2F-435666277" anchor-label="DaggerList" id="2021717718%2FClasslikes%2F-435666277" data-filterable-set=":modulecheck-dagger/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-dagger/main" data-filterable-set=":modulecheck-dagger/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-dagger-list/index.html"><span>Dagger</span><wbr><span><span>List</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2021717718%2FClasslikes%2F-435666277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-dagger/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-dagger-list/index.html">DaggerList</a><span class="token operator">&lt;</span><a href="-dagger-list/index.html">T</a><span class="token operator">&gt;</span><span class="token operator"> = </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-suppress-wildcards/index.html"><span class="token annotation builtin">JvmSuppressWildcards</span></a>&nbsp;</span><a href="-dagger-list/index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">shorthand for <code class="lang-kotlin">List&lt;@JvmSuppressWildcards T&gt;</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1513886676%2FClasslikes%2F-435666277" anchor-label="DaggerSet" id="-1513886676%2FClasslikes%2F-435666277" data-filterable-set=":modulecheck-dagger/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-dagger/main" data-filterable-set=":modulecheck-dagger/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-dagger-set/index.html"><span>Dagger</span><wbr><span><span>Set</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1513886676%2FClasslikes%2F-435666277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-dagger/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-dagger-set/index.html">DaggerSet</a><span class="token operator">&lt;</span><a href="-dagger-set/index.html">T</a><span class="token operator">&gt;</span><span class="token operator"> = </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-suppress-wildcards/index.html"><span class="token annotation builtin">JvmSuppressWildcards</span></a>&nbsp;</span><a href="-dagger-set/index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">shorthand for <code class="lang-kotlin">Set&lt;@JvmSuppressWildcards T&gt;</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="956900126%2FClasslikes%2F-435666277" anchor-label="DocsWebsiteUrlProvider" id="956900126%2FClasslikes%2F-435666277" data-filterable-set=":modulecheck-dagger/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-dagger/main" data-filterable-set=":modulecheck-dagger/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-docs-website-url-provider/index.html"><span>Docs</span><wbr><span>Website</span><wbr><span>Url</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="956900126%2FClasslikes%2F-435666277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-dagger/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token keyword">interface </span><a href="-docs-website-url-provider/index.html">DocsWebsiteUrlProvider</a> : <span data-unresolved-link="javax.inject/Provider///PointingToDeclaration/">Provider</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">example: "https://rbusarow.github.io/ModuleCheck"</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-511682959%2FClasslikes%2F-435666277" anchor-label="ModuleCheckVersionProvider" id="-511682959%2FClasslikes%2F-435666277" data-filterable-set=":modulecheck-dagger/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-dagger/main" data-filterable-set=":modulecheck-dagger/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-module-check-version-provider/index.html"><span>Module</span><wbr><span>Check</span><wbr><span>Version</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-511682959%2FClasslikes%2F-435666277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-dagger/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token keyword">interface </span><a href="-module-check-version-provider/index.html">ModuleCheckVersionProvider</a> : <span data-unresolved-link="javax.inject/Provider///PointingToDeclaration/">Provider</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">example: "0.13.0"</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2000202348%2FClasslikes%2F-435666277" anchor-label="RootGradleProject" id="-2000202348%2FClasslikes%2F-435666277" data-filterable-set=":modulecheck-dagger/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-dagger/main" data-filterable-set=":modulecheck-dagger/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-root-gradle-project/index.html"><span>Root</span><wbr><span>Gradle</span><wbr><span><span>Project</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2000202348%2FClasslikes%2F-435666277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-dagger/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Qualifier///PointingToDeclaration/"><span class="token annotation builtin">Qualifier</span></span></div></div><span class="token keyword">annotation class </span><a href="-root-gradle-project/index.html">RootGradleProject</a></div><div class="brief "><p class="paragraph">path of ":"</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="59003249%2FClasslikes%2F-435666277" anchor-label="SingleIn" id="59003249%2FClasslikes%2F-435666277" data-filterable-set=":modulecheck-dagger/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-dagger/main" data-filterable-set=":modulecheck-dagger/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-single-in/index.html"><span>Single</span><wbr><span><span>In</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="59003249%2FClasslikes%2F-435666277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-dagger/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Scope///PointingToDeclaration/"><span class="token annotation builtin">Scope</span></span></div></div><span class="token keyword">annotation class </span><a href="-single-in/index.html">SingleIn</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>scope<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Indicates that the annotated dependency will be a singleton within this scope.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="143772158%2FClasslikes%2F-435666277" anchor-label="SourceWebsiteUrlProvider" id="143772158%2FClasslikes%2F-435666277" data-filterable-set=":modulecheck-dagger/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-dagger/main" data-filterable-set=":modulecheck-dagger/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-source-website-url-provider/index.html"><span>Source</span><wbr><span>Website</span><wbr><span>Url</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="143772158%2FClasslikes%2F-435666277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-dagger/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token keyword">interface </span><a href="-source-website-url-provider/index.html">SourceWebsiteUrlProvider</a> : <span data-unresolved-link="javax.inject/Provider///PointingToDeclaration/">Provider</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">example: "https://github.com/rbusarow/ModuleCheck"</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1735426229%2FClasslikes%2F-435666277" anchor-label="TaskScope" id="1735426229%2FClasslikes%2F-435666277" data-filterable-set=":modulecheck-dagger/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-dagger/main" data-filterable-set=":modulecheck-dagger/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-task-scope/index.html"><span>Task</span><wbr><span><span>Scope</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1735426229%2FClasslikes%2F-435666277"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-dagger/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="-task-scope/index.html">TaskScope</a></div><div class="brief "><p class="paragraph">Tied to a single Gradle task. Currently, that's essentially the same as an <code class="lang-kotlin">AppScope</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

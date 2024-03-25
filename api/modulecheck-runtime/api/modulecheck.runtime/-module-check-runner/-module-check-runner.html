@@ -1,0 +1,81 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>ModuleCheckRunner</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.runtime/-module-check-runner/-module-check-runner.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="-module-check-runner.html">0.13.0-SNAPSHOT</a><a href="../../../../older/0.12.5/modulecheck-runtime/api/modulecheck.runtime/-module-check-runner/-module-check-runner.html">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-runtime:api/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="member" id="content" pageids="modulecheck-runtime:api::modulecheck.runtime/ModuleCheckRunner/ModuleCheckRunner/#modulecheck.config.ModuleCheckSettings#modulecheck.rule.FindingFactory[modulecheck.finding.Finding]#modulecheck.reporting.logging.McLogger#modulecheck.finding.FindingResultFactory#modulecheck.reporting.console.ReportFactory#modulecheck.reporting.checkstyle.CheckstyleReporter#modulecheck.reporting.graphviz.GraphvizFileWriter#dispatch.core.DispatcherProvider#modulecheck.reporting.sarif.SarifReportFactory#dagger.Lazy[modulecheck.reporting.console.DepthLogFactory]#modulecheck.project.ProjectProvider#kotlin.collections.List[modulecheck.rule.ModuleCheckRule[*]]#kotlin.Boolean/PointingToDeclaration//1802463093">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-runtime:api</a><span class="delimiter">/</span><a href="../index.html">modulecheck.runtime</a><span class="delimiter">/</span><a href="index.html">ModuleCheckRunner</a><span class="delimiter">/</span><span class="current">ModuleCheckRunner</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Module</span><wbr><span>Check</span><wbr><span><span>Runner</span></span></h1>
+  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="dagger.assisted/AssistedInject///PointingToDeclaration/"><span class="token annotation builtin">AssistedInject</span></span></div></div><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">settings<span class="token operator">: </span><a href="../../../../modulecheck-config/api/modulecheck.config/-module-check-settings/index.html">ModuleCheckSettings</a><span class="token punctuation">, </span></span><span class="parameter ">findingFactory<span class="token operator">: </span><a href="../../../../modulecheck-rule/api/modulecheck.rule/-finding-factory/index.html">FindingFactory</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding/index.html">Finding</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">logger<span class="token operator">: </span><a href="../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter ">findingResultFactory<span class="token operator">: </span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding-result-factory/index.html">FindingResultFactory</a><span class="token punctuation">, </span></span><span class="parameter ">reportFactory<span class="token operator">: </span><a href="../../../../modulecheck-reporting/console/modulecheck.reporting.console/-report-factory/index.html">ReportFactory</a><span class="token punctuation">, </span></span><span class="parameter ">checkstyleReporter<span class="token operator">: </span><a href="../../../../modulecheck-reporting/checkstyle/modulecheck.reporting.checkstyle/-checkstyle-reporter/index.html">CheckstyleReporter</a><span class="token punctuation">, </span></span><span class="parameter ">graphvizFileWriter<span class="token operator">: </span><a href="../../../../modulecheck-reporting/graphviz/modulecheck.reporting.graphviz/-graphviz-file-writer/index.html">GraphvizFileWriter</a><span class="token punctuation">, </span></span><span class="parameter ">dispatcherProvider<span class="token operator">: </span><span data-unresolved-link="dispatch.core/DispatcherProvider///PointingToDeclaration/">DispatcherProvider</span><span class="token punctuation">, </span></span><span class="parameter ">sarifReportFactory<span class="token operator">: </span><a href="../../../../modulecheck-reporting/sarif/modulecheck.reporting.sarif/-sarif-report-factory/index.html">SarifReportFactory</a><span class="token punctuation">, </span></span><span class="parameter ">depthLogFactoryLazy<span class="token operator">: </span><a href="../../../../modulecheck-dagger/modulecheck.dagger/-dagger-lazy/index.html">DaggerLazy</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-reporting/console/modulecheck.reporting.console/-depth-log-factory/index.html">DepthLogFactory</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">projectProvider<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-provider/index.html">ProjectProvider</a><span class="token punctuation">, </span></span><span class="parameter ">rules<span class="token operator">: </span><a href="../../../../modulecheck-dagger/modulecheck.dagger/-dagger-list/index.html">DaggerList</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-rule/api/modulecheck.rule/-module-check-rule/index.html">ModuleCheckRule</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="dagger.assisted/Assisted///PointingToDeclaration/"><span class="token annotation builtin">Assisted</span></span>&nbsp;</span>autoCorrect<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-runtime/api/src/main/kotlin/modulecheck/runtime/ModuleCheckRunner.kt#L59">source</a>)</span></span></div></div></div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

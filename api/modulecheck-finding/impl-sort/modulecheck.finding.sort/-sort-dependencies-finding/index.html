@@ -1,0 +1,323 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>SortDependenciesFinding</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.finding.sort/-sort-dependencies-finding/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../../../older/0.12.5/modulecheck-finding/impl-sort/modulecheck.finding.sort/-sort-dependencies-finding/index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-finding:impl-sort/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-finding:impl-sort::modulecheck.finding.sort/SortDependenciesFinding///PointingToDeclaration//1004866039">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-finding:impl-sort</a><span class="delimiter">/</span><a href="../index.html">modulecheck.finding.sort</a><span class="delimiter">/</span><span class="current">SortDependenciesFinding</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Sort</span><wbr><span>Dependencies</span><wbr><span><span>Finding</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">SortDependenciesFinding</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>findingName<span class="token operator">: </span><a href="../../../../modulecheck-finding/name/modulecheck.finding/-finding-name/index.html">FindingName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>dependentProject<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>dependentPath<span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-path/-string-project-path/index.html">ProjectPath.StringProjectPath</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>buildFile<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>comparator<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-comparator/index.html">Comparator</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding/index.html">Finding</a>, <a href="../../../../modulecheck-finding/api/modulecheck.finding/-fixable/index.html">Fixable</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-finding/impl-sort/src/main/kotlin/modulecheck/finding/sort/SortDependenciesFinding.kt#L34">source</a>)</span></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-897993502%2FConstructors%2F1004866039" anchor-label="SortDependenciesFinding" id="-897993502%2FConstructors%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-sort-dependencies-finding.html"><span>Sort</span><wbr><span>Dependencies</span><wbr><span><span>Finding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-897993502%2FConstructors%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">findingName<span class="token operator">: </span><a href="../../../../modulecheck-finding/name/modulecheck.finding/-finding-name/index.html">FindingName</a><span class="token punctuation">, </span></span><span class="parameter ">dependentProject<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="token punctuation">, </span></span><span class="parameter ">dependentPath<span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-path/-string-project-path/index.html">ProjectPath.StringProjectPath</a><span class="token punctuation">, </span></span><span class="parameter ">buildFile<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter ">comparator<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-comparator/index.html">Comparator</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="1388200570%2FProperties%2F1004866039" anchor-label="buildFile" id="1388200570%2FProperties%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="build-file.html"><span>build</span><wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1388200570%2FProperties%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="build-file.html">buildFile</a><span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-924001280%2FProperties%2F1004866039" anchor-label="comparator" id="-924001280%2FProperties%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="comparator.html"><span><span>comparator</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-924001280%2FProperties%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="comparator.html">comparator</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-comparator/index.html">Comparator</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1452399874%2FProperties%2F1004866039" anchor-label="dependencyIdentifier" id="1452399874%2FProperties%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dependency-identifier.html"><span>dependency</span><wbr><span><span>Identifier</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1452399874%2FProperties%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="dependency-identifier.html">dependencyIdentifier</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="696306048%2FProperties%2F1004866039" anchor-label="dependentPath" id="696306048%2FProperties%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dependent-path.html"><span>dependent</span><wbr><span><span>Path</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="696306048%2FProperties%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="dependent-path.html">dependentPath</a><span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-path/-string-project-path/index.html">ProjectPath.StringProjectPath</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-726021252%2FProperties%2F1004866039" anchor-label="dependentProject" id="-726021252%2FProperties%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dependent-project.html"><span>dependent</span><wbr><span><span>Project</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-726021252%2FProperties%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="dependent-project.html">dependentProject</a><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1759419216%2FProperties%2F1004866039" anchor-label="findingName" id="1759419216%2FProperties%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="finding-name.html"><span>finding</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1759419216%2FProperties%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="finding-name.html">findingName</a><span class="token operator">: </span><a href="../../../../modulecheck-finding/name/modulecheck.finding/-finding-name/index.html">FindingName</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-3231561%2FProperties%2F1004866039" anchor-label="isSuppressed" id="-3231561%2FProperties%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-sort-plugins-finding/index.html#-3231561%2FProperties%2F1004866039"><span>is</span><wbr><span><span>Suppressed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-3231561%2FProperties%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">val </span><a href="../-sort-plugins-finding/index.html#-3231561%2FProperties%2F1004866039">isSuppressed</a><span class="token operator">: </span><a href="../../../../modulecheck-utils/lazy/modulecheck.utils.lazy/-lazy-deferred/index.html">LazyDeferred</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-596514851%2FProperties%2F1004866039" anchor-label="message" id="-596514851%2FProperties%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="message.html"><span><span>message</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-596514851%2FProperties%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="message.html">message</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-137481629%2FProperties%2F1004866039" anchor-label="positionOrNull" id="-137481629%2FProperties%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="position-or-null.html"><span>position</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-137481629%2FProperties%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="position-or-null.html">positionOrNull</a><span class="token operator">: </span><a href="../../../../modulecheck-utils/lazy/modulecheck.utils.lazy/-lazy-deferred/index.html">LazyDeferred</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding/-position/index.html">Finding.Position</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-986436405%2FProperties%2F1004866039" anchor-label="statementOrNull" id="-986436405%2FProperties%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="statement-or-null.html"><span>statement</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-986436405%2FProperties%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="statement-or-null.html">statementOrNull</a><span class="token operator">: </span><a href="../../../../modulecheck-utils/lazy/modulecheck.utils.lazy/-lazy-deferred/index.html">LazyDeferred</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-build-file-statement/index.html">BuildFileStatement</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1999647266%2FProperties%2F1004866039" anchor-label="statementTextOrNull" id="-1999647266%2FProperties%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="statement-text-or-null.html"><span>statement</span><wbr><span>Text</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1999647266%2FProperties%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="statement-text-or-null.html">statementTextOrNull</a><span class="token operator">: </span><a href="../../../../modulecheck-utils/lazy/modulecheck.utils.lazy/-lazy-deferred/index.html">LazyDeferred</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1174461791%2FFunctions%2F1004866039" anchor-label="fix" id="1174461791%2FFunctions%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="fix.html"><span><span>fix</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1174461791%2FFunctions%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="fix.html"><span class="token function">fix</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">removalStrategy<span class="token operator">: </span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-removes-dependency/-removal-strategy/index.html">RemovesDependency.RemovalStrategy</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1893971750%2FFunctions%2F1004866039" anchor-label="fixLabel" id="1893971750%2FFunctions%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-sort-plugins-finding/index.html#1893971750%2FFunctions%2F1004866039"><span>fix</span><wbr><span><span>Label</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1893971750%2FFunctions%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../-sort-plugins-finding/index.html#1893971750%2FFunctions%2F1004866039"><span class="token function">fixLabel</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1386911692%2FFunctions%2F1004866039" anchor-label="toResult" id="1386911692%2FFunctions%2F1004866039" data-filterable-set=":modulecheck-finding:impl-sort/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-finding:impl-sort/main" data-filterable-set=":modulecheck-finding:impl-sort/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-sort-plugins-finding/index.html#1386911692%2FFunctions%2F1004866039"><span>to</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1386911692%2FFunctions%2F1004866039"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-finding:impl-sort/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../-sort-plugins-finding/index.html#1386911692%2FFunctions%2F1004866039"><span class="token function">toResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">fixed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding/-finding-result/index.html">Finding.FindingResult</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

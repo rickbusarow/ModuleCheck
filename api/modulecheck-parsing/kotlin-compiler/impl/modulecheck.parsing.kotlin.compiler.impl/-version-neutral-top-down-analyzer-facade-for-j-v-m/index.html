@@ -1,0 +1,108 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>VersionNeutralTopDownAnalyzerFacadeForJVM</title>
+<link href="../../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.parsing.kotlin.compiler.impl/-version-neutral-top-down-analyzer-facade-for-j-v-m/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../../../../not-found-version.html?v=0.12.5">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-parsing:kotlin-compiler:impl/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-parsing:kotlin-compiler:impl::modulecheck.parsing.kotlin.compiler.impl/VersionNeutralTopDownAnalyzerFacadeForJVM///PointingToDeclaration//1565557354">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-parsing:kotlin-compiler:impl</a><span class="delimiter">/</span><a href="../index.html">modulecheck.parsing.kotlin.compiler.impl</a><span class="delimiter">/</span><span class="current">VersionNeutralTopDownAnalyzerFacadeForJVM</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Version</span><wbr><span>Neutral</span><wbr><span>Top</span><wbr><span>Down</span><wbr><span>Analyzer</span><wbr><span>Facade</span><wbr><span>For</span><wbr><span><span>JVM</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">VersionNeutralTopDownAnalyzerFacadeForJVM</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-parsing/kotlin-compiler/impl/src/main/kotlin/modulecheck/parsing/kotlin/compiler/impl/VersionNeutralTopDownAnalyzerFacadeForJVM.kt#L47">source</a>)</span></span></div><p class="paragraph">This is a compatibility shim for invoking Kotlin 1.6.2x compiler analysis using the 1.6.10 classes. The <code class="lang-kotlin">explicitCompilerEnvironment: TargetEnvironment = CompilerEnvironment</code> argument with default was added in 1.6.20, and causes a <code class="lang-kotlin">NotSuchMethodError</code> exception if parsing a 1.6.2x project with 1.6.10 source.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="240199223%2FFunctions%2F1565557354" anchor-label="analyzeFilesWithJavaIntegration" id="240199223%2FFunctions%2F1565557354" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:kotlin-compiler:impl/main" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="analyze-files-with-java-integration.html"><span>analyze</span><wbr><span>Files</span><wbr><span>With</span><wbr><span>Java</span><wbr><span><span>Integration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="240199223%2FFunctions%2F1565557354"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="analyze-files-with-java-integration.html"><span class="token function">analyzeFilesWithJavaIntegration</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">project<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.com.intellij.openapi.project/Project///PointingToDeclaration/">Project</span><span class="token punctuation">, </span></span><span class="parameter ">files<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtFile///PointingToDeclaration/">KtFile</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">trace<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.resolve/BindingTrace///PointingToDeclaration/">BindingTrace</span><span class="token punctuation">, </span></span><span class="parameter ">configuration<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.config/CompilerConfiguration///PointingToDeclaration/">CompilerConfiguration</span><span class="token punctuation">, </span></span><span class="parameter ">packagePartProvider<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="org.jetbrains.kotlin.com.intellij.psi.search/GlobalSearchScope///PointingToDeclaration/">GlobalSearchScope</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span data-unresolved-link="org.jetbrains.kotlin.load.kotlin/PackagePartProvider///PointingToDeclaration/">PackagePartProvider</span><span class="token punctuation">, </span></span><span class="parameter ">declarationProviderFactory<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="org.jetbrains.kotlin.storage/StorageManager///PointingToDeclaration/">StorageManager</span><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtFile///PointingToDeclaration/">KtFile</span><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span data-unresolved-link="org.jetbrains.kotlin.resolve.lazy.declarations/DeclarationProviderFactory///PointingToDeclaration/">DeclarationProviderFactory</span><span class="token operator"> = </span>::FileBasedDeclarationProviderFactory<span class="token punctuation">, </span></span><span class="parameter ">sourceModuleSearchScope<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.com.intellij.psi.search/GlobalSearchScope///PointingToDeclaration/">GlobalSearchScope</span><span class="token operator"> = </span>TopDownAnalyzerFacadeForJVM.newModuleSearchScope(
+      project,
+      files
+    )<span class="token punctuation">, </span></span><span class="parameter ">klibList<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.library/KotlinLibrary///PointingToDeclaration/">KotlinLibrary</span><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()<span class="token punctuation">, </span></span><span class="parameter ">explicitModuleDependencyList<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.descriptors.impl/ModuleDescriptorImpl///PointingToDeclaration/">ModuleDescriptorImpl</span><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()<span class="token punctuation">, </span></span><span class="parameter ">explicitModuleFriendsList<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.descriptors.impl/ModuleDescriptorImpl///PointingToDeclaration/">ModuleDescriptorImpl</span><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()<span class="token punctuation">, </span></span><span class="parameter ">explicitCompilerEnvironment<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.resolve/TargetEnvironment///PointingToDeclaration/">TargetEnvironment</span><span class="token operator"> = </span>CompilerEnvironment</span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.analyzer/AnalysisResult///PointingToDeclaration/">AnalysisResult</span></div><div class="brief "><p class="paragraph">Performs the full analysis of this source set/configuration, returning the <span data-unresolved-link="org.jetbrains.kotlin.analyzer/AnalysisResult///PointingToDeclaration/">AnalysisResult</span> so that we can use the <span data-unresolved-link="org.jetbrains.kotlin.resolve/BindingContext///PointingToDeclaration/">BindingContext</span> for type resolution.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

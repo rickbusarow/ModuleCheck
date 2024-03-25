@@ -1,0 +1,502 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>modulecheck.parsing.groovy.antlr</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.parsing.groovy.antlr/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../../older/0.12.5/modulecheck-parsing/groovy-antlr/modulecheck.parsing.groovy.antlr/index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-parsing:groovy-antlr/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageids="modulecheck-parsing:groovy-antlr::modulecheck.parsing.groovy.antlr////PointingToDeclaration//-951652023">
+  <div class="breadcrumbs"><a href="../index.html">modulecheck-parsing:groovy-antlr</a><span class="delimiter">/</span><span class="current">modulecheck.parsing.groovy.antlr</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-798280304%2FClasslikes%2F-951652023" anchor-label="AntlrTreePrinter" id="-798280304%2FClasslikes%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-antlr-tree-printer/index.html"><span>Antlr</span><wbr><span>Tree</span><wbr><span><span>Printer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-798280304%2FClasslikes%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-antlr-tree-printer/index.html">AntlrTreePrinter</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">whitespaceChar<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html">Char</a><span class="token operator"> = </span>' '</span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-utils/traversal/modulecheck.utils.traversal/-abstract-tree-printer/index.html">AbstractTreePrinter</a><span class="token operator">&lt;</span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token operator">&gt; </span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1550902332%2FClasslikes%2F-951652023" anchor-label="GroovyAndroidGradleParser" id="1550902332%2FClasslikes%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-groovy-android-gradle-parser/index.html"><span>Groovy</span><wbr><span>Android</span><wbr><span>Gradle</span><wbr><span><span>Parser</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1550902332%2FClasslikes%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-groovy-android-gradle-parser/index.html">GroovyAndroidGradleParser</a>&nbsp;<span><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation builtin">Inject</span></span>&nbsp;</span><span class="token keyword">constructor</span> : <a href="../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-android-gradle-parser/index.html">AndroidGradleParser</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="864741773%2FClasslikes%2F-951652023" anchor-label="GroovyDependenciesBlock" id="864741773%2FClasslikes%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-groovy-dependencies-block/index.html"><span>Groovy</span><wbr><span>Dependencies</span><wbr><span><span>Block</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="864741773%2FClasslikes%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-groovy-dependencies-block/index.html">GroovyDependenciesBlock</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">logger<span class="token operator">: </span><a href="../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>fullText<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>lambdaContent<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">blockSuppressed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">projectDependency<span class="token operator">: </span><a href="../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/-factory/index.html">ProjectDependency.Factory</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/gradle/dsl/internal/modulecheck.parsing.gradle.dsl.internal/-abstract-dependencies-block/index.html">AbstractDependenciesBlock</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2142650670%2FClasslikes%2F-951652023" anchor-label="GroovyDependenciesBlockParser" id="2142650670%2FClasslikes%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-groovy-dependencies-block-parser/index.html"><span>Groovy</span><wbr><span>Dependencies</span><wbr><span>Block</span><wbr><span><span>Parser</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2142650670%2FClasslikes%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-groovy-dependencies-block-parser/index.html">GroovyDependenciesBlockParser</a>&nbsp;<span><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation builtin">Inject</span></span>&nbsp;</span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>logger<span class="token operator">: </span><a href="../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>projectDependency<span class="token operator">: </span><a href="../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/-factory/index.html">ProjectDependency.Factory</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1880317587%2FClasslikes%2F-951652023" anchor-label="GroovyParsingScope" id="-1880317587%2FClasslikes%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-groovy-parsing-scope/index.html"><span>Groovy</span><wbr><span>Parsing</span><wbr><span><span>Scope</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1880317587%2FClasslikes%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">data </span><span class="token keyword">class </span><a href="-groovy-parsing-scope/index.html">GroovyParsingScope</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>fullText<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1793866308%2FClasslikes%2F-951652023" anchor-label="GroovyPluginsBlock" id="1793866308%2FClasslikes%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-groovy-plugins-block/index.html"><span>Groovy</span><wbr><span>Plugins</span><wbr><span><span>Block</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1793866308%2FClasslikes%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-groovy-plugins-block/index.html">GroovyPluginsBlock</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">logger<span class="token operator">: </span><a href="../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>fullText<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>lambdaContent<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">blockSuppressed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/gradle/dsl/internal/modulecheck.parsing.gradle.dsl.internal/-abstract-plugins-block/index.html">AbstractPluginsBlock</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1385173851%2FClasslikes%2F-951652023" anchor-label="GroovyPluginsBlockParser" id="-1385173851%2FClasslikes%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-groovy-plugins-block-parser/index.html"><span>Groovy</span><wbr><span>Plugins</span><wbr><span>Block</span><wbr><span><span>Parser</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1385173851%2FClasslikes%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-groovy-plugins-block-parser/index.html">GroovyPluginsBlockParser</a>&nbsp;<span><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation builtin">Inject</span></span>&nbsp;</span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>logger<span class="token operator">: </span><a href="../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="830801402%2FProperties%2F-951652023" anchor-label="groovyLangParserLock" id="830801402%2FProperties%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="groovy-lang-parser-lock.html"><span>groovy</span><wbr><span>Lang</span><wbr><span>Parser</span><wbr><span><span>Lock</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="830801402%2FProperties%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="groovy-lang-parser-lock.html">groovyLangParserLock</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="721692694%2FFunctions%2F-951652023" anchor-label="childOfType" id="721692694%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="child-of-type.html"><span>child</span><wbr><span>Of</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="721692694%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="child-of-type.html">T</a><span class="token operator"> : </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime/RuleContext///PointingToDeclaration/">RuleContext</span><span class="token operator">&gt; </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime/ParserRuleContext///PointingToDeclaration/">ParserRuleContext</span><span class="token punctuation">.</span><a href="child-of-type.html"><span class="token function">childOfType</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="child-of-type.html">T</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1433074948%2FFunctions%2F-951652023" anchor-label="children" id="-1433074948%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="children.html"><span><span>children</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1433074948%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token punctuation">.</span><a href="children.html"><span class="token function">children</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1351270100%2FFunctions%2F-951652023" anchor-label="childrenBreadthFirst" id="-1351270100%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="children-breadth-first.html"><span>children</span><wbr><span>Breadth</span><wbr><span><span>First</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1351270100%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token punctuation">.</span><a href="children-breadth-first.html"><span class="token function">childrenBreadthFirst</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token punctuation">.</span><a href="children-breadth-first.html"><span class="token function">childrenBreadthFirst</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">predicate<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1799441278%2FFunctions%2F-951652023" anchor-label="childrenDepthFirst" id="1799441278%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="children-depth-first.html"><span>children</span><wbr><span>Depth</span><wbr><span><span>First</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1799441278%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token punctuation">.</span><a href="children-depth-first.html"><span class="token function">childrenDepthFirst</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token punctuation">.</span><a href="children-depth-first.html"><span class="token function">childrenDepthFirst</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">predicate<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1860023789%2FFunctions%2F-951652023" anchor-label="childrenOfType" id="-1860023789%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="children-of-type.html"><span>children</span><wbr><span>Of</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1860023789%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="children-of-type.html">T</a><span class="token operator">&gt; </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime/ParserRuleContext///PointingToDeclaration/">ParserRuleContext</span><span class="token punctuation">.</span><a href="children-of-type.html"><span class="token function">childrenOfType</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="children-of-type.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1119612177%2FFunctions%2F-951652023" anchor-label="childrenOfTypeBreadthFirst" id="1119612177%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="children-of-type-breadth-first.html"><span>children</span><wbr><span>Of</span><wbr><span>Type</span><wbr><span>Breadth</span><wbr><span><span>First</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1119612177%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="children-of-type-breadth-first.html">T</a><span class="token operator"> : </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token operator">&gt; </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token punctuation">.</span><a href="children-of-type-breadth-first.html"><span class="token function">childrenOfTypeBreadthFirst</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="children-of-type-breadth-first.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1196836518%2FFunctions%2F-951652023" anchor-label="childrenOfTypeDepthFirst" id="-1196836518%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="children-of-type-depth-first.html"><span>children</span><wbr><span>Of</span><wbr><span>Type</span><wbr><span>Depth</span><wbr><span><span>First</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1196836518%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="children-of-type-depth-first.html">T</a><span class="token operator"> : </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token operator">&gt; </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/Tree///PointingToDeclaration/">Tree</span><span class="token punctuation">.</span><a href="children-of-type-depth-first.html"><span class="token function">childrenOfTypeDepthFirst</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="children-of-type-depth-first.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1362486357%2FFunctions%2F-951652023" anchor-label="closureContent" id="-1362486357%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="closure-content.html"><span>closure</span><wbr><span><span>Content</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1362486357%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.apache.groovy.parser.antlr4/GroovyParser.ClosureOrLambdaExpressionContext///PointingToDeclaration/">GroovyParser.ClosureOrLambdaExpressionContext</span><span class="token punctuation">.</span><a href="closure-content.html"><span class="token function">closureContent</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.apache.groovy.parser.antlr4/GroovyParser.BlockStatementsContext///PointingToDeclaration/">GroovyParser.BlockStatementsContext</span><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-737161503%2FFunctions%2F-951652023" anchor-label="commandExpressionVisitor" id="-737161503%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="command-expression-visitor.html"><span>command</span><wbr><span>Expression</span><wbr><span><span>Visitor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-737161503%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="command-expression-visitor.html"><span class="token function">commandExpressionVisitor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">recursive<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">crossinline </span>action<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="org.apache.groovy.parser.antlr4/GroovyParser.CommandExpressionContext///PointingToDeclaration/">GroovyParser.CommandExpressionContext</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.apache.groovy.parser.antlr4/GroovyParserBaseVisitor///PointingToDeclaration/">GroovyParserBaseVisitor</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-293615766%2FFunctions%2F-951652023" anchor-label="isNamed" id="-293615766%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-named.html"><span>is</span><wbr><span><span>Named</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-293615766%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.apache.groovy.parser.antlr4/GroovyParser.CommandExpressionContext///PointingToDeclaration/">GroovyParser.CommandExpressionContext</span><span class="token punctuation">.</span><a href="is-named.html"><span class="token function">isNamed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.apache.groovy.parser.antlr4/GroovyParser.PathExpressionContext///PointingToDeclaration/">GroovyParser.PathExpressionContext</span><span class="token punctuation">.</span><a href="is-named.html"><span class="token function">isNamed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1590361971%2FFunctions%2F-951652023" anchor-label="lambdaBlock" id="1590361971%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="lambda-block.html"><span>lambda</span><wbr><span><span>Block</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1590361971%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.apache.groovy.parser.antlr4/GroovyParser.CommandExpressionContext///PointingToDeclaration/">GroovyParser.CommandExpressionContext</span><span class="token punctuation">.</span><a href="lambda-block.html"><span class="token function">lambdaBlock</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.apache.groovy.parser.antlr4/GroovyParser.ClosureOrLambdaExpressionContext///PointingToDeclaration/">GroovyParser.ClosureOrLambdaExpressionContext</span><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="64198142%2FFunctions%2F-951652023" anchor-label="originalText" id="64198142%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="original-text.html"><span>original</span><wbr><span><span>Text</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="64198142%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime/ParserRuleContext///PointingToDeclaration/">ParserRuleContext</span><span class="token punctuation">.</span><a href="original-text.html"><span class="token function">originalText</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">stream<span class="token operator">: </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime/CharStream///PointingToDeclaration/">CharStream</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1103003229%2FFunctions%2F-951652023" anchor-label="parentOfType" id="1103003229%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="parent-of-type.html"><span>parent</span><wbr><span>Of</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1103003229%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="parent-of-type.html">T</a><span class="token operator">&gt; </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime/RuleContext///PointingToDeclaration/">RuleContext</span><span class="token punctuation">.</span><a href="parent-of-type.html"><span class="token function">parentOfType</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="parent-of-type.html">T</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-216412255%2FFunctions%2F-951652023" anchor-label="parse" id="-216412255%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="parse.html"><span><span>parse</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-216412255%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="parse.html">T</a><span class="token operator">&gt; </span><a href="parse.html"><span class="token function">parse</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">file<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter ">parsingAction<span class="token operator">: </span><a href="-groovy-parsing-scope/index.html">GroovyParsingScope</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="parse.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="parse.html">T</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1242825636%2FFunctions%2F-951652023" anchor-label="pathExpression" id="1242825636%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="path-expression.html"><span>path</span><wbr><span><span>Expression</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1242825636%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.apache.groovy.parser.antlr4/GroovyParser.CommandExpressionContext///PointingToDeclaration/">GroovyParser.CommandExpressionContext</span><span class="token punctuation">.</span><a href="path-expression.html"><span class="token function">pathExpression</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.apache.groovy.parser.antlr4/GroovyParser.PathExpressionContext///PointingToDeclaration/">GroovyParser.PathExpressionContext</span><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1400599067%2FFunctions%2F-951652023" anchor-label="pathExpressionVisitor" id="1400599067%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="path-expression-visitor.html"><span>path</span><wbr><span>Expression</span><wbr><span><span>Visitor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1400599067%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="path-expression-visitor.html"><span class="token function">pathExpressionVisitor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">recursive<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">crossinline </span>action<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="org.apache.groovy.parser.antlr4/GroovyParser.PathExpressionContext///PointingToDeclaration/">GroovyParser.PathExpressionContext</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.apache.groovy.parser.antlr4/GroovyParserBaseVisitor///PointingToDeclaration/">GroovyParserBaseVisitor</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1827725989%2FFunctions%2F-951652023" anchor-label="precedingCommentNodeOrNull" id="1827725989%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="preceding-comment-node-or-null.html"><span>preceding</span><wbr><span>Comment</span><wbr><span>Node</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1827725989%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/RuleNode///PointingToDeclaration/">RuleNode</span><span class="token punctuation">.</span><a href="preceding-comment-node-or-null.html"><span class="token function">precedingCommentNodeOrNull</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.apache.groovy.parser.antlr4/GroovyParser.GroovyParserRuleContext///PointingToDeclaration/">GroovyParser.GroovyParserRuleContext</span><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1683629138%2FFunctions%2F-951652023" anchor-label="previousSibling" id="-1683629138%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="previous-sibling.html"><span>previous</span><wbr><span><span>Sibling</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1683629138%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="previous-sibling.html">T</a><span class="token operator">&gt; </span><span data-unresolved-link="groovyjarjarantlr4.v4.runtime.tree/RuleNode///PointingToDeclaration/">RuleNode</span><span class="token punctuation">.</span><a href="previous-sibling.html"><span class="token function">previousSibling</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="previous-sibling.html">T</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1606943910%2FFunctions%2F-951652023" anchor-label="suppressions" id="-1606943910%2FFunctions%2F-951652023" data-filterable-set=":modulecheck-parsing:groovy-antlr/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:groovy-antlr/main" data-filterable-set=":modulecheck-parsing:groovy-antlr/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="suppressions.html"><span><span>suppressions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1606943910%2FFunctions%2F-951652023"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:groovy-antlr/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="suppressions.html"><span class="token function">suppressions</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

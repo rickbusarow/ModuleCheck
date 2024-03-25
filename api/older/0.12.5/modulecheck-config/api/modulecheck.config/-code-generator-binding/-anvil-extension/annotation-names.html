@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>annotationNames</title>
+<link href="../../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../../scripts/prism.js" async></script>
+<link href="../../../../../styles/multimodule.css" rel="Stylesheet"></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../../../index.html">
+<span>ModuleCheck</span>            </a>    </div>
+    <div>
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.config/-code-generator-binding/-anvil-extension/annotation-names.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.12.5</div>
+  <div class="versions-dropdown-data"><a href="../../../../../../../modulecheck-config/api/modulecheck.config/-code-generator-binding/-anvil-extension/annotation-names.html">0.13.0-SNAPSHOT</a><a href="annotation-names.html">0.12.5</a></div>
+</div>
+</dokka-template-command>    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="modulecheck-config:api::modulecheck.config/CodeGeneratorBinding.AnvilExtension/annotationNames/#/PointingToDeclaration//-1221451403">
+  <div class="breadcrumbs"><a href="../../../index.html">modulecheck-config:api</a><span class="delimiter">/</span><a href="../../index.html">modulecheck.config</a><span class="delimiter">/</span><a href="../index.html">CodeGeneratorBinding</a><span class="delimiter">/</span><a href="index.html">AnvilExtension</a><span class="delimiter">/</span><a href="annotation-names.html">annotationNames</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>annotation</span><wbr><span><span>Names</span></span></h1>
+  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-config:api:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="annotation-names.html">annotationNames</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">The <i>fully qualified</i> names of all annotations which make this compiler extension do something -- typically code generation or perhaps static analysis.</p><p class="paragraph">For instance, <code class="lang-kotlin">androidx.room.Database</code> triggers compilation for the Room compiler, so it would be included in this list.</p><p class="paragraph">The annotations don't necessarily need to come from the same library, so long as the compiler extension looks for them. For instance, <code class="lang-kotlin">javax.Inject</code> is included in the list of annotations for both Anvil and Dagger.</p><p class="paragraph">On the other hand, an annotation from the library does not need to be listed just because it's an annotation. An example of this would be <code class="lang-kotlin">tangle.inject.InternalTangleApi</code>, which is not used by the compiler.</p></div></div>
+  <h2 class="">Sources</h2>
+  <div class="table" data-togglable="Sources"><a data-name="-2138726292%2FSource%2F-1221451403" anchor-label="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-config/api/src/main/kotlin/modulecheck/config/CodeGeneratorBinding.kt#L132" id="-2138726292%2FSource%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+    <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+      <div class="main-subrow keyValue ">
+        <div class=""><span class="inline-flex">
+            <div><a href="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-config/api/src/main/kotlin/modulecheck/config/CodeGeneratorBinding.kt#L132">jvm source</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2138726292%2FSource%2F-1221451403"></span>
+              <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+            </span></span></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+
+

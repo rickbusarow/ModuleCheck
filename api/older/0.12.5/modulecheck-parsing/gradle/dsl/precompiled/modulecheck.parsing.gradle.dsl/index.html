@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>modulecheck.parsing.gradle.dsl</title>
+<link href="../../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../../scripts/prism.js" async></script>
+<link href="../../../../../styles/multimodule.css" rel="Stylesheet"></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../../../index.html">
+<span>ModuleCheck</span>            </a>    </div>
+    <div>
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.parsing.gradle.dsl/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.12.5</div>
+  <div class="versions-dropdown-data"><a href="../../../../../../../modulecheck-parsing/gradle/dsl/precompiled/modulecheck.parsing.gradle.dsl/index.html">0.13.0-SNAPSHOT</a><a href="index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="modulecheck-parsing:gradle:dsl:precompiled::modulecheck.parsing.gradle.dsl////PointingToDeclaration//1185432841">
+  <div class="breadcrumbs"><a href="../index.html">modulecheck-parsing:gradle:dsl:precompiled</a><span class="delimiter">/</span><a href="index.html">modulecheck.parsing.gradle.dsl</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package</span></span> <span>modulecheck.</span><wbr><span>parsing.</span><wbr><span>gradle.</span><wbr><span>dsl</span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Functions">Functions</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="607334780%2FFunctions%2F1185432841" anchor-label="buildFileInvocationText" id="607334780%2FFunctions%2F1185432841" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="build-file-invocation-text.html"><span>build</span><wbr><span>File</span><wbr><span>Invocation</span><wbr><span><span>Text</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="607334780%2FFunctions%2F1185432841"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">.</span><a href="build-file-invocation-text.html"><span class="token function">buildFileInvocationText</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">invokesConfigurationNames<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-invokes-configuration-names/index.html">InvokesConfigurationNames</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Attempts to determine the most idiomatic way of invoking the receiver <a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configuration-name/index.html">configuration name</a>. Typically, this will just be a function with a matching name. However, if a configuration is non-standard (e.g. <code class="lang-kotlin">internalReleaseImplementation</code>) and the build file is using the Kotlin Gradle DSL, then the configuration must be invoked as a String extension function instead (e.g. <code class="lang-kotlin">"internalReleaseImplementation"(libs.myDependency)</code>).</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1295288558%2FFunctions%2F1185432841" anchor-label="createDependencyDeclaration" id="1295288558%2FFunctions%2F1185432841" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="create-dependency-declaration.html"><span>create</span><wbr><span>Dependency</span><wbr><span><span>Declaration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1295288558%2FFunctions%2F1185432841"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="create-dependency-declaration.html">T</a><span class="token operator"> : </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-plugin-aware/index.html">PluginAware</a>, <a href="../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-has-dependency-declarations/index.html">HasDependencyDeclarations</a><span class="token operator">&gt; </span><a href="create-dependency-declaration.html">T</a><span class="token punctuation">.</span><a href="create-dependency-declaration.html"><span class="token function">createDependencyDeclaration</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;configurationName<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;identifier<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-identifier/index.html">Identifier</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;isTestFixtures<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-dependency-declaration/index.html">DependencyDeclaration</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="745659006%2FFunctions%2F1185432841" anchor-label="createExternalDependencyDeclaration" id="745659006%2FFunctions%2F1185432841" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="create-external-dependency-declaration.html"><span>create</span><wbr><span>External</span><wbr><span>Dependency</span><wbr><span><span>Declaration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="745659006%2FFunctions%2F1185432841"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="create-external-dependency-declaration.html">T</a><span class="token operator"> : </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-plugin-aware/index.html">PluginAware</a>, <a href="../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-has-dependency-declarations/index.html">HasDependencyDeclarations</a><span class="token operator">&gt; </span><a href="create-external-dependency-declaration.html">T</a><span class="token punctuation">.</span><a href="create-external-dependency-declaration.html"><span class="token function">createExternalDependencyDeclaration</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;isKotlin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;configInvocation<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;configurationName<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;identifier<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-identifier/index.html">Identifier</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;isTestFixtures<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-external-dependency-declaration/index.html">ExternalDependencyDeclaration</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-178533723%2FFunctions%2F1185432841" anchor-label="createProjectDependencyDeclaration" id="-178533723%2FFunctions%2F1185432841" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="create-project-dependency-declaration.html"><span>create</span><wbr><span>Project</span><wbr><span>Dependency</span><wbr><span><span>Declaration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-178533723%2FFunctions%2F1185432841"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="create-project-dependency-declaration.html">T</a><span class="token operator"> : </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-plugin-aware/index.html">PluginAware</a>, <a href="../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-has-dependency-declarations/index.html">HasDependencyDeclarations</a><span class="token operator">&gt; </span><a href="create-project-dependency-declaration.html">T</a><span class="token punctuation">.</span><a href="create-project-dependency-declaration.html"><span class="token function">createProjectDependencyDeclaration</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;isKotlin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;configInvocation<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;configurationName<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;projectPath<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-project-path/index.html">ProjectPath</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;isTestFixtures<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-module-dependency-declaration/index.html">ModuleDependencyDeclaration</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1532302529%2FFunctions%2F1185432841" anchor-label="isDefinitelyPrecompiledForProject" id="1532302529%2FFunctions%2F1185432841" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="is-definitely-precompiled-for-project.html"><span>is</span><wbr><span>Definitely</span><wbr><span>Precompiled</span><wbr><span>For</span><wbr><span><span>Project</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1532302529%2FFunctions%2F1185432841"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="is-definitely-precompiled-for-project.html">T</a><span class="token operator"> : </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-plugin-aware/index.html">PluginAware</a>, <a href="../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-has-dependency-declarations/index.html">HasDependencyDeclarations</a><span class="token operator">&gt; </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">.</span><a href="is-definitely-precompiled-for-project.html"><span class="token function">isDefinitelyPrecompiledForProject</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">project<span class="token operator">: </span><a href="is-definitely-precompiled-for-project.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Precompiled configuration names are names which are added by a pre-compiled plugin. These names can be used as functions in Kotlin scripts. examples:</p></div><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">tailrec </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="is-definitely-precompiled-for-project.html">T</a><span class="token operator"> : </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-plugin-aware/index.html">PluginAware</a>, <a href="../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-has-dependency-declarations/index.html">HasDependencyDeclarations</a><span class="token operator">&gt; </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">.</span><a href="is-definitely-precompiled-for-project.html"><span class="token function">isDefinitelyPrecompiledForProject</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">project<span class="token operator">: </span><a href="is-definitely-precompiled-for-project.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-985965968%2FFunctions%2F1185432841" anchor-label="projectAccessors" id="-985965968%2FFunctions%2F1185432841" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="project-accessors.html"><span>project</span><wbr><span><span>Accessors</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-985965968%2FFunctions%2F1185432841"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-has-build-file/index.html">HasBuildFile</a><span class="token punctuation">.</span><a href="project-accessors.html"><span class="token function">projectAccessors</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-project-accessor/index.html">ProjectAccessor</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1786969368%2FFunctions%2F1185432841" anchor-label="shouldUseQuotes" id="1786969368%2FFunctions%2F1185432841" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="should-use-quotes.html"><span>should</span><wbr><span>Use</span><wbr><span><span>Quotes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1786969368%2FFunctions%2F1185432841"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">.</span><a href="should-use-quotes.html"><span class="token function">shouldUseQuotes</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">invokesConfigurationNames<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-invokes-configuration-names/index.html">InvokesConfigurationNames</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Returns true if the build file is Kotlin, and one of:</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1659672714%2FFunctions%2F1185432841" anchor-label="wrapInQuotes" id="-1659672714%2FFunctions%2F1185432841" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="wrap-in-quotes.html"><span>wrap</span><wbr><span>In</span><wbr><span><span>Quotes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1659672714%2FFunctions%2F1185432841"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:precompiled:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">.</span><a href="wrap-in-quotes.html"><span class="token function">wrapInQuotes</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+
+

@@ -1,0 +1,491 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>GradleProjectProvider</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet"></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../../index.html">
+<span>ModuleCheck</span>            </a>    </div>
+    <div>
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.gradle.internal/-gradle-project-provider/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.12.5</div>
+  <div class="versions-dropdown-data"><a href="../../../../../../modulecheck-gradle/plugin/modulecheck.gradle.internal/-gradle-project-provider/index.html">0.13.0-SNAPSHOT</a><a href="index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="modulecheck-gradle:plugin::modulecheck.gradle.internal/GradleProjectProvider///PointingToDeclaration//970199845">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-gradle:plugin</a><span class="delimiter">/</span><a href="../index.html">modulecheck.gradle.internal</a><span class="delimiter">/</span><a href="index.html">GradleProjectProvider</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Gradle</span><wbr><span>Project</span><wbr><span><span>Provider</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">GradleProjectProvider</a>&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation">Inject</span></span>&nbsp;</span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>rootGradleProject<span class="token operator">: </span><span data-unresolved-link="org.gradle.api/Project///PointingToDeclaration/">Project</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>settings<span class="token operator">: </span><a href="../../../../modulecheck-config/api/modulecheck.config/-module-check-settings/index.html">ModuleCheckSettings</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>projectCache<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-cache/index.html">ProjectCache</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>gradleLogger<span class="token operator">: </span><a href="../../modulecheck.gradle/-gradle-mc-logger/index.html">GradleMcLogger</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>agpApiAccess<span class="token operator">: </span><a href="../../../../modulecheck-gradle/platforms/api/modulecheck.gradle.platforms.android/-agp-api-access/index.html">AgpApiAccess</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>buildFileParserFactory<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-build-file-parser/-factory/index.html">BuildFileParser.Factory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>jvmFileProviderFactory<span class="token operator">: </span><a href="../../../../modulecheck-parsing/wiring/modulecheck.parsing.wiring/-real-jvm-file-provider/-factory/index.html">RealJvmFileProvider.Factory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>androidPlatformPluginFactory<span class="token operator">: </span><a href="../../../../modulecheck-gradle/platforms/api/modulecheck.gradle.platforms.android/-android-platform-plugin-factory/index.html">AndroidPlatformPluginFactory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>jvmPlatformPluginFactory<span class="token operator">: </span><a href="../../../../modulecheck-gradle/platforms/api/modulecheck.gradle.platforms/-jvm-platform-plugin-factory/index.html">JvmPlatformPluginFactory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>typeSafeProjectPathResolver<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-type-safe-project-path-resolver/index.html">TypeSafeProjectPathResolver</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>allProjectPathsProviderDelegate<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-all-project-paths-provider/index.html">AllProjectPathsProvider</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>projectDependency<span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/-factory/index.html">ProjectDependency.Factory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>externalDependency<span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-external-dependency/-factory/index.html">ExternalDependency.Factory</a></span></span><span class="token punctuation">)</span> : <a href="../../../../modulecheck-project/api/modulecheck.project/-project-provider/index.html">ProjectProvider</a>, <a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-all-project-paths-provider/index.html">AllProjectPathsProvider</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Sources">Sources</button></div>
+    <div class="tabs-section-body">
+      <h2 class="tabbedcontent">Constructors</h2>
+      <div class="table" data-togglable="Constructors"><a data-name="2100115654%2FConstructors%2F970199845" anchor-label="GradleProjectProvider" id="2100115654%2FConstructors%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-gradle-project-provider.html"><span>Gradle</span><wbr><span>Project</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2100115654%2FConstructors%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation">Inject</span></span></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="-gradle-project-provider.html"><span class="token function">GradleProjectProvider</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;rootGradleProject<span class="token operator">: </span><span data-unresolved-link="org.gradle.api/Project///PointingToDeclaration/">Project</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;settings<span class="token operator">: </span><a href="../../../../modulecheck-config/api/modulecheck.config/-module-check-settings/index.html">ModuleCheckSettings</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;projectCache<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-cache/index.html">ProjectCache</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;gradleLogger<span class="token operator">: </span><a href="../../modulecheck.gradle/-gradle-mc-logger/index.html">GradleMcLogger</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;agpApiAccess<span class="token operator">: </span><a href="../../../../modulecheck-gradle/platforms/api/modulecheck.gradle.platforms.android/-agp-api-access/index.html">AgpApiAccess</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;buildFileParserFactory<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-build-file-parser/-factory/index.html">BuildFileParser.Factory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;jvmFileProviderFactory<span class="token operator">: </span><a href="../../../../modulecheck-parsing/wiring/modulecheck.parsing.wiring/-real-jvm-file-provider/-factory/index.html">RealJvmFileProvider.Factory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;androidPlatformPluginFactory<span class="token operator">: </span><a href="../../../../modulecheck-gradle/platforms/api/modulecheck.gradle.platforms.android/-android-platform-plugin-factory/index.html">AndroidPlatformPluginFactory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;jvmPlatformPluginFactory<span class="token operator">: </span><a href="../../../../modulecheck-gradle/platforms/api/modulecheck.gradle.platforms/-jvm-platform-plugin-factory/index.html">JvmPlatformPluginFactory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;typeSafeProjectPathResolver<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-type-safe-project-path-resolver/index.html">TypeSafeProjectPathResolver</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;allProjectPathsProviderDelegate<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-all-project-paths-provider/index.html">AllProjectPathsProvider</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;projectDependency<span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/-factory/index.html">ProjectDependency.Factory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;externalDependency<span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-external-dependency/-factory/index.html">ExternalDependency.Factory</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Types</h2>
+      <div class="table" data-togglable="Types"><a data-name="-415264627%2FClasslikes%2F970199845" anchor-label="Companion" id="-415264627%2FClasslikes%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-415264627%2FClasslikes%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="1333741534%2FFunctions%2F970199845" anchor-label="anvilGradlePluginOrNull" id="1333741534%2FFunctions%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="anvil-gradle-plugin-or-null.html"><span>anvil</span><wbr><span>Gradle</span><wbr><span>Plugin</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1333741534%2FFunctions%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><span data-unresolved-link="org.gradle.api/Project///PointingToDeclaration/">Project</span><span class="token punctuation">.</span><a href="anvil-gradle-plugin-or-null.html"><span class="token function">anvilGradlePluginOrNull</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-anvil-gradle-plugin/index.html">AnvilGradlePlugin</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1797881624%2FFunctions%2F970199845" anchor-label="clearCaches" id="-1797881624%2FFunctions%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="clear-caches.html"><span>clear</span><wbr><span><span>Caches</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1797881624%2FFunctions%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="clear-caches.html"><span class="token function">clearCaches</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1610870744%2FFunctions%2F970199845" anchor-label="createProject" id="-1610870744%2FFunctions%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="create-project.html"><span>create</span><wbr><span><span>Project</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1610870744%2FFunctions%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="create-project.html"><span class="token function">createProject</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">path<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-project-path/-string-project-path/index.html">ProjectPath.StringProjectPath</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1032739768%2FFunctions%2F970199845" anchor-label="externalDependencies" id="-1032739768%2FFunctions%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="external-dependencies.html"><span>external</span><wbr><span><span>Dependencies</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1032739768%2FFunctions%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><span data-unresolved-link="org.gradle.api/Project///PointingToDeclaration/">Project</span><span class="token punctuation">.</span><a href="external-dependencies.html"><span class="token function">externalDependencies</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-lazy/index.html">Lazy</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../modulecheck-project/api/modulecheck.project/-external-dependencies/index.html">ExternalDependencies</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1403723250%2FFunctions%2F970199845" anchor-label="get" id="-1403723250%2FFunctions%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="get.html"><span><span>get</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1403723250%2FFunctions%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="get.html"><span class="token function">get</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">path<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-project-path/index.html">ProjectPath</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="788607177%2FFunctions%2F970199845" anchor-label="getAll" id="788607177%2FFunctions%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="get-all.html"><span>get</span><wbr><span><span>All</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="788607177%2FFunctions%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="get-all.html"><span class="token function">getAll</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="798626083%2FFunctions%2F970199845" anchor-label="getAllPaths" id="798626083%2FFunctions%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="get-all-paths.html"><span>get</span><wbr><span>All</span><wbr><span><span>Paths</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="798626083%2FFunctions%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="get-all-paths.html"><span class="token function">getAllPaths</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-project-path/-string-project-path/index.html">ProjectPath.StringProjectPath</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="933540291%2FFunctions%2F970199845" anchor-label="isTestFixtures" id="933540291%2FFunctions%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="is-test-fixtures.html"><span>is</span><wbr><span>Test</span><wbr><span><span>Fixtures</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="933540291%2FFunctions%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><span data-unresolved-link="org.gradle.api.artifacts/ModuleDependency///PointingToDeclaration/">ModuleDependency</span><span class="token punctuation">.</span><a href="is-test-fixtures.html"><span class="token function">isTestFixtures</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="865968952%2FFunctions%2F970199845" anchor-label="javaVersion" id="865968952%2FFunctions%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="java-version.html"><span>java</span><wbr><span><span>Version</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="865968952%2FFunctions%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><span data-unresolved-link="org.gradle.api/Project///PointingToDeclaration/">Project</span><span class="token punctuation">.</span><a href="java-version.html"><span class="token function">javaVersion</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-java-version/index.html">JavaVersion</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-504639941%2FFunctions%2F970199845" anchor-label="project" id="-504639941%2FFunctions%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#-504639941%2FFunctions%2F970199845"><span><span>project</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-504639941%2FFunctions%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-has-path/index.html">HasPath</a><span class="token punctuation">.</span><a href="index.html#-504639941%2FFunctions%2F970199845"><span class="token function">project</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-229322196%2FFunctions%2F970199845" anchor-label="projectDependencies" id="-229322196%2FFunctions%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="project-dependencies.html"><span>project</span><wbr><span><span>Dependencies</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-229322196%2FFunctions%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><span data-unresolved-link="org.gradle.api/Project///PointingToDeclaration/">Project</span><span class="token punctuation">.</span><a href="project-dependencies.html"><span class="token function">projectDependencies</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-lazy/index.html">Lazy</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-dependencies/index.html">ProjectDependencies</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="-1913503776%2FProperties%2F970199845" anchor-label="agpApiAccess" id="-1913503776%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="agp-api-access.html">agpApiAccess</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1913503776%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="-1913503776%2FProperties%2F970199845" anchor-label="agpApiAccess" id="-1913503776%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="agp-api-access.html">agpApiAccess</a><span class="token operator">: </span><a href="../../../../modulecheck-gradle/platforms/api/modulecheck.gradle.platforms.android/-agp-api-access/index.html">AgpApiAccess</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1532542906%2FProperties%2F970199845" anchor-label="allProjectPathsProviderDelegate" id="1532542906%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="all-project-paths-provider-delegate.html">allProjectPathsProviderDelegate</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1532542906%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="1532542906%2FProperties%2F970199845" anchor-label="allProjectPathsProviderDelegate" id="1532542906%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="all-project-paths-provider-delegate.html">allProjectPathsProviderDelegate</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-all-project-paths-provider/index.html">AllProjectPathsProvider</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-601426497%2FProperties%2F970199845" anchor-label="androidPlatformPluginFactory" id="-601426497%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="android-platform-plugin-factory.html">androidPlatformPluginFactory</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-601426497%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="-601426497%2FProperties%2F970199845" anchor-label="androidPlatformPluginFactory" id="-601426497%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="android-platform-plugin-factory.html">androidPlatformPluginFactory</a><span class="token operator">: </span><a href="../../../../modulecheck-gradle/platforms/api/modulecheck.gradle.platforms.android/-android-platform-plugin-factory/index.html">AndroidPlatformPluginFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-501276941%2FProperties%2F970199845" anchor-label="buildFileParserFactory" id="-501276941%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="build-file-parser-factory.html">buildFileParserFactory</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-501276941%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="-501276941%2FProperties%2F970199845" anchor-label="buildFileParserFactory" id="-501276941%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="build-file-parser-factory.html">buildFileParserFactory</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-build-file-parser/-factory/index.html">BuildFileParser.Factory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1388695966%2FProperties%2F970199845" anchor-label="externalDependency" id="1388695966%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="external-dependency.html">externalDependency</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1388695966%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="1388695966%2FProperties%2F970199845" anchor-label="externalDependency" id="1388695966%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="external-dependency.html">externalDependency</a><span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-external-dependency/-factory/index.html">ExternalDependency.Factory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1882239299%2FProperties%2F970199845" anchor-label="gradleLogger" id="-1882239299%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="gradle-logger.html">gradleLogger</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1882239299%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="-1882239299%2FProperties%2F970199845" anchor-label="gradleLogger" id="-1882239299%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="gradle-logger.html">gradleLogger</a><span class="token operator">: </span><a href="../../modulecheck.gradle/-gradle-mc-logger/index.html">GradleMcLogger</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-622263533%2FProperties%2F970199845" anchor-label="gradleProjects" id="-622263533%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="gradle-projects.html">gradleProjects</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-622263533%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="-622263533%2FProperties%2F970199845" anchor-label="gradleProjects" id="-622263533%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="gradle-projects.html">gradleProjects</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-project-path/-string-project-path/index.html">ProjectPath.StringProjectPath</a><span class="token punctuation">, </span><span class="token keyword"></span><span data-unresolved-link="org.gradle.api/Project///PointingToDeclaration/">Project</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="440333304%2FProperties%2F970199845" anchor-label="jvmFileProviderFactory" id="440333304%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="jvm-file-provider-factory.html">jvmFileProviderFactory</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="440333304%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="440333304%2FProperties%2F970199845" anchor-label="jvmFileProviderFactory" id="440333304%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="jvm-file-provider-factory.html">jvmFileProviderFactory</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/wiring/modulecheck.parsing.wiring/-real-jvm-file-provider/-factory/index.html">RealJvmFileProvider.Factory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1382557711%2FProperties%2F970199845" anchor-label="jvmPlatformPluginFactory" id="-1382557711%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="jvm-platform-plugin-factory.html">jvmPlatformPluginFactory</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1382557711%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="-1382557711%2FProperties%2F970199845" anchor-label="jvmPlatformPluginFactory" id="-1382557711%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="jvm-platform-plugin-factory.html">jvmPlatformPluginFactory</a><span class="token operator">: </span><a href="../../../../modulecheck-gradle/platforms/api/modulecheck.gradle.platforms/-jvm-platform-plugin-factory/index.html">JvmPlatformPluginFactory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-847217717%2FProperties%2F970199845" anchor-label="projectCache" id="-847217717%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="project-cache.html">projectCache</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-847217717%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="-847217717%2FProperties%2F970199845" anchor-label="projectCache" id="-847217717%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="project-cache.html">projectCache</a><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-cache/index.html">ProjectCache</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1533056126%2FProperties%2F970199845" anchor-label="projectDependency" id="-1533056126%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="project-dependency.html">projectDependency</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1533056126%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="-1533056126%2FProperties%2F970199845" anchor-label="projectDependency" id="-1533056126%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="project-dependency.html">projectDependency</a><span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/-factory/index.html">ProjectDependency.Factory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1580535498%2FProperties%2F970199845" anchor-label="rootGradleProject" id="-1580535498%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="root-gradle-project.html">rootGradleProject</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1580535498%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="-1580535498%2FProperties%2F970199845" anchor-label="rootGradleProject" id="-1580535498%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="root-gradle-project.html">rootGradleProject</a><span class="token operator">: </span><span data-unresolved-link="org.gradle.api/Project///PointingToDeclaration/">Project</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-582642607%2FProperties%2F970199845" anchor-label="settings" id="-582642607%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="settings.html">settings</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-582642607%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="-582642607%2FProperties%2F970199845" anchor-label="settings" id="-582642607%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="settings.html">settings</a><span class="token operator">: </span><a href="../../../../modulecheck-config/api/modulecheck.config/-module-check-settings/index.html">ModuleCheckSettings</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1655952905%2FProperties%2F970199845" anchor-label="typeSafeProjectPathResolver" id="1655952905%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="type-safe-project-path-resolver.html">typeSafeProjectPathResolver</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1655952905%2FProperties%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"><a data-name="1655952905%2FProperties%2F970199845" anchor-label="typeSafeProjectPathResolver" id="1655952905%2FProperties%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="type-safe-project-path-resolver.html">typeSafeProjectPathResolver</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-type-safe-project-path-resolver/index.html">TypeSafeProjectPathResolver</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Sources</h2>
+      <div class="table" data-togglable="Sources"><a data-name="1855026635%2FSource%2F970199845" anchor-label="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-gradle/plugin/src/main/kotlin/modulecheck/gradle/internal/GradleProjectProvider.kt#L55" id="1855026635%2FSource%2F970199845" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:plugin:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:plugin:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-gradle/plugin/src/main/kotlin/modulecheck/gradle/internal/GradleProjectProvider.kt#L55">jvm source</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1855026635%2FSource%2F970199845"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+
+
