@@ -12,6 +12,7 @@ pull_request_rules:
         update_method: rebase # this is also the default when 'merge_method' is 'fast-forward'
         autosquash: true
         merge_bot_account: rb-org-bot[bot]
+        update_bot_account: rb-org-bot[bot]
 
   - name: Remove automerge label once merged
     conditions:
@@ -65,6 +66,7 @@ pull_request_rules:
         update_method: rebase # this is also the default when 'merge_method' is 'fast-forward'
         autosquash: true
         merge_bot_account: rb-org-bot[bot]
+        update_bot_account: rb-org-bot[bot]
       label:
         remove:
           - requeue
