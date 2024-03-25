@@ -11,8 +11,8 @@ pull_request_rules:
         merge_method: fast-forward
         update_method: rebase # this is also the default when 'merge_method' is 'fast-forward'
         autosquash: true
-        merge_bot_account: rb-org-bot[bot]
-        update_bot_account: rb-org-bot[bot]
+        merge_bot_account: rb-org-bot
+        update_bot_account: rb-org-bot
 
   - name: Remove automerge label once merged
     conditions:
@@ -31,7 +31,7 @@ pull_request_rules:
       review:
         type: APPROVE
         message: Automatically approving RBusarow pull request
-        bot_account: rb-org-bot[bot]
+        bot_account: rb-org-bot
 
 #   - name: Auto-approve bot PRs
 #     conditions:
@@ -51,7 +51,7 @@ pull_request_rules:
     actions:
       rebase:
         autosquash: true
-        bot_account: rb-org-bot[bot]
+        bot_account: rb-org-bot
       label:
         remove:
           - rebase
@@ -65,8 +65,8 @@ pull_request_rules:
         merge_method: fast-forward
         update_method: rebase # this is also the default when 'merge_method' is 'fast-forward'
         autosquash: true
-        merge_bot_account: rb-org-bot[bot]
-        update_bot_account: rb-org-bot[bot]
+        merge_bot_account: rb-org-bot
+        update_bot_account: rb-org-bot
       label:
         remove:
           - requeue
