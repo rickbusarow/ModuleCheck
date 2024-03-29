@@ -317,7 +317,7 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.9
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.9
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
-:modulecheck-gradle:plugin -- runtimeClasspath -- com.google.dagger:dagger:2.51
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.google.dagger:dagger:2.51.1
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.23.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.guava:failureaccess:1.0.2
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.guava:guava:33.0.0-jre
@@ -621,7 +621,7 @@
 :modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.9
 :modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.9
 :modulecheck-project:testing -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
-:modulecheck-project:testing -- runtimeClasspath -- com.google.dagger:dagger:2.51
+:modulecheck-project:testing -- runtimeClasspath -- com.google.dagger:dagger:2.51.1
 :modulecheck-project:testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.23.0
 :modulecheck-project:testing -- runtimeClasspath -- com.google.guava:failureaccess:1.0.2
 :modulecheck-project:testing -- runtimeClasspath -- com.google.guava:guava:33.0.0-jre
@@ -691,7 +691,7 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.9
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.9
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
-:modulecheck-project-generation:api -- runtimeClasspath -- com.google.dagger:dagger:2.51
+:modulecheck-project-generation:api -- runtimeClasspath -- com.google.dagger:dagger:2.51.1
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.23.0
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.guava:failureaccess:1.0.2
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.guava:guava:33.0.0-jre
@@ -999,7 +999,7 @@
 :modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
 :modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-rule:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.8
-:modulecheck-rule:testing -- runtimeClasspath -- com.google.dagger:dagger:2.51
+:modulecheck-rule:testing -- runtimeClasspath -- com.google.dagger:dagger:2.51.1
 :modulecheck-rule:testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.21.1
 :modulecheck-rule:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-rule:testing -- runtimeClasspath -- com.squareup.anvil:annotations:2.4.9
@@ -1084,7 +1084,7 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.9
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.9
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
-:modulecheck-runtime:testing -- runtimeClasspath -- com.google.dagger:dagger:2.51
+:modulecheck-runtime:testing -- runtimeClasspath -- com.google.dagger:dagger:2.51.1
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.23.0
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.guava:failureaccess:1.0.2
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.guava:guava:33.0.0-jre
@@ -1371,7 +1371,7 @@
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.8
-:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.google.dagger:dagger:2.51
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.google.dagger:dagger:2.51.1
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.21.1
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- javax.inject:javax.inject:1
