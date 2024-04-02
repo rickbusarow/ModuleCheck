@@ -80,7 +80,7 @@ square-kotlinPoet = "1.16.0"
 square-moshi = "1.15.1"
 square-okio = "3.9.0"
 square-retrofit = "2.9.0"
-square-wire = "4.9.8"
+square-wire = "4.9.9"
 square-workflow = "1.0.0"
 
 taskTree = "2.1.1"
