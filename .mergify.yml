@@ -1,60 +1,96 @@
+shared:
+  author-bot: &author_bot
+    - or:
+        - author=rb-org-bot[bot]
+        - author=dependabot[bot]
+        - author=renovate[bot]
+  author-rbusarow: &author_rbusarow
+    - author=RBusarow
+  base-main: &base_main
+    - base=main
+  label-approved: &label_approved
+    - label=approved
+  label-automerge: &label_automerge
+    - label=automerge
+  label-dnm: &label_dnm
+    - label=do-not-merge
+  not-label-dnm: &not_label_dnm
+    - label!=do-not-merge
+  label-rebase: &label_rebase
+    - label=rebase
+  name-approved: &name_approved approved
+  name-automerge: &name_automerge automerge
+  name-rb-org-bot: &name_rb_org_bot rb-org-bot[bot]
+  name-merge-bot: &name_merge_bot rbusarow-bot
+  name-rebase: &name_rebase rebase
+  success-ci: &success_ci
+    - check-success=all-checks
+
 pull_request_rules:
   - name: Queue PRs for rebase-merge when CI passes and approved
     # GitHub branch protection rules are also applied automatically
     conditions:
-      - label=automerge
-      - base=main
-      - label!=do-not-merge
+      - and: *label_automerge
+      - and: *base_main
+      - and: *not_label_dnm
     actions:
       queue:
         # maybe change to 'rebase' if this causes problems
         merge_method: fast-forward
         update_method: rebase # this is also the default when 'merge_method' is 'fast-forward'
         autosquash: true
-        merge_bot_account: rb-org-bot
-        update_bot_account: rb-org-bot
+        merge_bot_account: *name_merge_bot
+        update_bot_account: *name_merge_bot
 
   - name: Remove automerge label once merged
     conditions:
       - merged
-      - label=automerge
+      - and: *label_automerge
     actions:
       label:
         remove:
-          - automerge
+          - *name_automerge
 
   - name: Auto-approve RBusarow PRs
     conditions:
-      - check-success=all-checks
-      - author=RBusarow
+      - and: *success_ci
+      - and: *author_rbusarow
     actions:
       review:
         type: APPROVE
         message: Automatically approving RBusarow pull request
-        bot_account: rb-org-bot
 
-#   - name: Auto-approve bot PRs
-#     conditions:
-#       - check-success=all-checks
-#       - or:
-#         - author=rb-org-bot[bot]
-#         - author=dependabot[bot]
-#         - author=renovate[bot]
-#     actions:
-#       review:
-#         type: APPROVE
-#         message: Automatically approving bot pull request
-
-  - name: Rebase any PR with a 'rebase' label
+  - name: Auto-approve bot PRs
     conditions:
-      - label=rebase
+      - and: *success_ci
+      - or: *author_bot
+    actions:
+      review:
+        type: APPROVE
+        message: Automatically approving bot pull request
+
+  - name: Auto-approve any PR with an 'approved' label
+    conditions:
+      - and: *success_ci
+      - and: *label_approved
     actions:
       rebase:
         autosquash: true
-        bot_account: rb-org-bot
+        bot_account: *name_merge_bot
       label:
         remove:
-          - rebase
+          - *name_approved
+
+  - name: Rebase any PR with a 'rebase' label
+    conditions:
+      - and: *label_rebase
+    actions:
+      rebase:
+        autosquash: true
+        bot_account: *name_merge_bot
+      label:
+        remove:
+          - *name_rebase
 
   - name: Re-queue any PR with a 'requeue' label
     conditions:
@@ -65,8 +101,7 @@ pull_request_rules:
         merge_method: fast-forward
         update_method: rebase # this is also the default when 'merge_method' is 'fast-forward'
         autosquash: true
-        merge_bot_account: rb-org-bot
-        update_bot_account: rb-org-bot
+        merge_bot_account: *name_merge_bot
       label:
         remove:
           - requeue
