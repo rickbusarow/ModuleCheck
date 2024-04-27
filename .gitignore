@@ -67,3 +67,5 @@ java_pid1690.hprof
 build-logic/.editorconfig
 
 **/node_modules/
+
+!/.idea/runConfigurations/all_tests.xml

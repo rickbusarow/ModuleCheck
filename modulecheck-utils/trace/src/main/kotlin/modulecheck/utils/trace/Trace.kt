@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -58,20 +58,15 @@ sealed class Trace(
     }
   }
 
-  abstract fun parentOrNull(): Trace?
-
-  val parents: Sequence<Trace> = generateSequence {
-    when (this) {
-      is Child -> parent
-      is Root -> null
-    }
-  }
+  val parents: Sequence<Trace> = generateSequence({ parentOrNull() }) { it.parentOrNull() }
   val parentsWithSelf: Sequence<Trace>
     get() = sequenceOf(this) + parents
 
   override val key: CoroutineContext.Key<*> get() = Key
 
   abstract val depth: Int
+
+  abstract fun parentOrNull(): Trace?
 
   /**
    * ```
