@@ -10,13 +10,27 @@ public abstract class modulecheck/utils/trace/Trace : kotlin/coroutines/Coroutin
 	public fun get (Lkotlin/coroutines/CoroutineContext$Key;)Lkotlin/coroutines/CoroutineContext$Element;
 	public abstract fun getDepth ()I
 	public fun getKey ()Lkotlin/coroutines/CoroutineContext$Key;
+	public final fun getParents ()Lkotlin/sequences/Sequence;
+	public final fun getParentsWithSelf ()Lkotlin/sequences/Sequence;
 	public final fun getTags ()Ljava/util/List;
 	public fun minusKey (Lkotlin/coroutines/CoroutineContext$Key;)Lkotlin/coroutines/CoroutineContext;
+	public abstract fun parentOrNull ()Lmodulecheck/utils/trace/Trace;
 	public fun plus (Lkotlin/coroutines/CoroutineContext;)Lkotlin/coroutines/CoroutineContext;
 }
 
 public final class modulecheck/utils/trace/Trace$Key : kotlin/coroutines/CoroutineContext$Key {
 	public final fun start ([Ljava/lang/Object;)Lmodulecheck/utils/trace/Trace;
+	public final fun start ([Ljava/lang/Object;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class modulecheck/utils/trace/TraceCollector : kotlin/coroutines/AbstractCoroutineContextElement {
+	public static final field Key Lmodulecheck/utils/trace/TraceCollector$Key;
+	public fun <init> (Ljava/util/List;)V
+	public final fun add (Lmodulecheck/utils/trace/Trace;)Ljava/lang/Boolean;
+	public final fun all ()Ljava/util/List;
+}
+
+public final class modulecheck/utils/trace/TraceCollector$Key : kotlin/coroutines/CoroutineContext$Key {
 }
 
 public final class modulecheck/utils/trace/TraceKt {

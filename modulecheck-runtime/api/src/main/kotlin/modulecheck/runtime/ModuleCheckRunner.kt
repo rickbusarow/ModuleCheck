@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -63,7 +63,7 @@ object TraceCollectorModule {
  *
  * @property findingFactory handles parsing of the projects in order to generate the findings
  * @property findingResultFactory attempts to apply fixes to the findings and
- *   returns a list of     [FindingResult][modulecheck.finding.Finding.FindingResult]
+ *   returns a list of [FindingResult][modulecheck.finding.Finding.FindingResult]
  * @property reportFactory handles console output of the main results
  * @property depthLogFactoryLazy handles console output of the depth results
  * @since 0.12.0
@@ -88,7 +88,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
 
   fun run(projects: List<McProject>): Result<Unit> = runBlocking(
     if (settings.trace) {
-      dispatcherProvider.default + Trace.start(ModuleCheckRunner::class)+ traceCollector
+      dispatcherProvider.default + Trace.start(ModuleCheckRunner::class) + traceCollector
     } else {
       dispatcherProvider.default
     }

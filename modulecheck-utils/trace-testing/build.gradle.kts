@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,7 +29,7 @@ dependencies {
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
 
-  implementation(project(path = ":modulecheck-utils:trace"))
+  api(project(path = ":modulecheck-utils:trace"))
 
   testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)

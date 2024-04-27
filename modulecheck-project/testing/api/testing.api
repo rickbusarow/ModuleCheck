@@ -2,7 +2,11 @@ public abstract class modulecheck/project/test/ProjectTest : com/rickbusarow/kas
 	public fun <init> ()V
 	public synthetic fun getTestEnvironmentFactory ()Lcom/rickbusarow/kase/TestEnvironmentFactory;
 	public fun getTestEnvironmentFactory ()Lmodulecheck/project/test/ProjectTestEnvironmentFactory;
+	public fun test (Lcom/rickbusarow/kase/HasTestEnvironmentFactory;Ljava/lang/Object;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;)V
+	public fun test (Lcom/rickbusarow/kase/HasTestEnvironmentFactory;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;)V
+	public fun test (Lcom/rickbusarow/kase/NoParamTestEnvironmentFactory;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;)V
 	public final fun test (Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;)V
+	public fun test (Ljava/lang/Object;Lcom/rickbusarow/kase/TestEnvironmentFactory;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;)V
 	public static synthetic fun test$default (Lmodulecheck/project/test/ProjectTest;Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
 	public final fun writeText (Ljava/io/File;Ljava/lang/String;)V
 }
@@ -27,10 +31,10 @@ public class modulecheck/project/test/ProjectTestEnvironment : modulecheck/testi
 	public fun getRoot ()Ljava/io/File;
 }
 
-public final class modulecheck/project/test/ProjectTestEnvironmentFactory : com/rickbusarow/kase/TestEnvironmentFactory {
+public final class modulecheck/project/test/ProjectTestEnvironmentFactory : com/rickbusarow/kase/ParamTestEnvironmentFactory {
 	public fun <init> ()V
-	public synthetic fun createEnvironment (Ljava/lang/Object;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;)Lcom/rickbusarow/kase/TestEnvironment;
-	public fun createEnvironment (Lmodulecheck/project/test/ProjectTestEnvironmentParams;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;)Lmodulecheck/project/test/ProjectTestEnvironment;
+	public synthetic fun create (Ljava/lang/Object;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;)Lcom/rickbusarow/kase/TestEnvironment;
+	public fun create (Lmodulecheck/project/test/ProjectTestEnvironmentParams;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;)Lmodulecheck/project/test/ProjectTestEnvironment;
 }
 
 public final class modulecheck/project/test/ProjectTestEnvironmentParams : modulecheck/testing/TestEnvironmentParams {

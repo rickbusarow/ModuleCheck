@@ -1,4 +1,0 @@
-public final class modulecheck/utils/trace/test/RunTestTracedKt {
-	public static final fun runTestTraced (Lkotlin/jvm/functions/Function2;)V
-}
-

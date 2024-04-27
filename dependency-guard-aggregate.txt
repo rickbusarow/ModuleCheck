@@ -1194,7 +1194,10 @@
 :modulecheck-utils:stdlib -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0
 :modulecheck-utils:stdlib -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
+:modulecheck-utils:trace -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.8
+:modulecheck-utils:trace -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.21.1
 :modulecheck-utils:trace -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
+:modulecheck-utils:trace -- runtimeClasspath -- org.checkerframework:checker-qual:3.37.0
 :modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22
 :modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22
@@ -1204,7 +1207,10 @@
 :modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0
 :modulecheck-utils:trace -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
+:modulecheck-utils:trace-testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.8
+:modulecheck-utils:trace-testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.21.1
 :modulecheck-utils:trace-testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
+:modulecheck-utils:trace-testing -- runtimeClasspath -- org.checkerframework:checker-qual:3.37.0
 :modulecheck-utils:trace-testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-utils:trace-testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22
 :modulecheck-utils:trace-testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22
@@ -1419,7 +1425,9 @@
 :modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3
 :modulecheck-parsing:source:api -- runtimeClasspath -- org.jetbrains:annotations:23.0.0
 
+:modulecheck-parsing:source:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.8
 :modulecheck-parsing:source:testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
+:modulecheck-parsing:source:testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.21.1
 :modulecheck-parsing:source:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-parsing:source:testing -- runtimeClasspath -- com.rickbusarow.kase:kase-gradle:0.11.1
 :modulecheck-parsing:source:testing -- runtimeClasspath -- com.rickbusarow.kase:kase:0.11.1
@@ -1436,6 +1444,7 @@
 :modulecheck-parsing:source:testing -- runtimeClasspath -- io.kotest:kotest-property-jvm:5.8.1
 :modulecheck-parsing:source:testing -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
 :modulecheck-parsing:source:testing -- runtimeClasspath -- net.swiftzer.semver:semver:2.0.0
+:modulecheck-parsing:source:testing -- runtimeClasspath -- org.checkerframework:checker-qual:3.37.0
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-parsing:source:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22
