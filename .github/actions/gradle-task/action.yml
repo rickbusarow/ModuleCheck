@@ -36,7 +36,7 @@ runs:
       uses: ./.github/actions/gradle-args
 
     - name: Gradle build action
-      uses: gradle/gradle-build-action@4c39dd82cd5e1ec7c6fa0173bb41b4b6bb3b86ff # v3
+      uses: gradle/gradle-build-action@db35f2304698ac6ff98958322dfd3db0a5da9fdf # v3
       with:
         cache-read-only: false
         gradle-home-cache-cleanup: true
@@ -93,7 +93,7 @@ runs:
 
     # Run the actual task.  Note that this still uses gradle-build-action for more fine-grained caching.
     - name: Run ${{ inputs.task }}
-      uses: gradle/gradle-build-action@4c39dd82cd5e1ec7c6fa0173bb41b4b6bb3b86ff # v3
+      uses: gradle/gradle-build-action@db35f2304698ac6ff98958322dfd3db0a5da9fdf # v3
       with:
         # These arguments need to be on a single line. If they're defined with wrapping (using `|`),
         # something along the way to the actual CLI invocation gets confused and the jvmargs list
