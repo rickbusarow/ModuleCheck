@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: check out
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - uses: gradle/wrapper-validation-action@216d1ad2b3710bf005dc39237337b9673fd8fcd5 # v3
 
   build-all:
@@ -30,7 +30,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     steps:
       - name: check out
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: main build
         uses: ./.github/actions/gradle-task
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-all
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: ktlint
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-all
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: ci-matrices
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-all
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: dependency-guard
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-all
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: moduleCheck
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-all
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: doks
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -103,7 +103,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-all
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: website versioning
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -115,7 +115,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-all
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: artifacts-check
         uses: ./.github/actions/gradle-task-with-commit
         with:
@@ -127,7 +127,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-all
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: check version is snapshot
         uses: ./.github/actions/gradle-task
         with:
@@ -137,7 +137,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-all
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: detektAll
         uses: ./.github/actions/gradle-task
         with:
@@ -158,7 +158,7 @@ jobs:
     needs: build-all
     steps:
       - name: check out
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: dokkaHtmlMultiModule
         uses: ./.github/actions/gradle-task
@@ -214,7 +214,7 @@ jobs:
     runs-on: ${{ matrix.runner }}-latest
     steps:
       - name: check out
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: unit tests
         uses: ./.github/actions/gradle-task
@@ -251,7 +251,7 @@ jobs:
       ### <end-versions-matrix>
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: integration-tests
         uses: ./.github/actions/gradle-task
         with:
@@ -282,7 +282,7 @@ jobs:
         ### <end-integration-test-shards>
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: integration-tests-windows
         uses: ./.github/actions/gradle-task
         with:
