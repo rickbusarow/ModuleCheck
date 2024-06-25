@@ -1,0 +1,222 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>RealConfigurationsFactory</title>
+<link href="../../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.gradle.platforms/-real-configurations-factory/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../../../../older/0.12.5/modulecheck-gradle/platforms/impl/modulecheck.gradle.platforms/-real-configurations-factory/index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-gradle:platforms:impl/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-gradle:platforms:impl::modulecheck.gradle.platforms/RealConfigurationsFactory///PointingToDeclaration//-98353398">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-gradle:platforms:impl</a><span class="delimiter">/</span><a href="../index.html">modulecheck.gradle.platforms</a><span class="delimiter">/</span><span class="current">RealConfigurationsFactory</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Real</span><wbr><span>Configurations</span><wbr><span><span>Factory</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:impl/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">RealConfigurationsFactory</a>&nbsp;<span><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation builtin">Inject</span></span>&nbsp;</span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>projectDependencyFactory<span class="token operator">: </span><a href="../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/-factory/index.html">ProjectDependency.Factory</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>externalDependencyFactory<span class="token operator">: </span><a href="../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-external-dependency/-factory/index.html">ExternalDependency.Factory</a></span></span><span class="token punctuation">)</span> : <a href="../../../../../modulecheck-gradle/platforms/api/modulecheck.gradle.platforms/-configurations-factory/index.html">ConfigurationsFactory</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-gradle/platforms/impl/src/main/kotlin/modulecheck/gradle/platforms/RealConfigurationsFactory.kt#L37">source</a>)</span></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-1277968125%2FConstructors%2F-98353398" anchor-label="RealConfigurationsFactory" id="-1277968125%2FConstructors%2F-98353398" data-filterable-set=":modulecheck-gradle:platforms:impl/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":modulecheck-gradle:platforms:impl/main" data-filterable-set=":modulecheck-gradle:platforms:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-real-configurations-factory.html"><span>Real</span><wbr><span>Configurations</span><wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1277968125%2FConstructors%2F-98353398"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:impl/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation builtin">Inject</span></span></div></div><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">projectDependencyFactory<span class="token operator">: </span><a href="../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/-factory/index.html">ProjectDependency.Factory</a><span class="token punctuation">, </span></span><span class="parameter ">externalDependencyFactory<span class="token operator">: </span><a href="../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-external-dependency/-factory/index.html">ExternalDependency.Factory</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="794817192%2FClasslikes%2F-98353398" anchor-label="Companion" id="794817192%2FClasslikes%2F-98353398" data-filterable-set=":modulecheck-gradle:platforms:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:impl/main" data-filterable-set=":modulecheck-gradle:platforms:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="794817192%2FClasslikes%2F-98353398"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:impl/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-1865464531%2FProperties%2F-98353398" anchor-label="externalDependencyFactory" id="-1865464531%2FProperties%2F-98353398" data-filterable-set=":modulecheck-gradle:platforms:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:impl/main" data-filterable-set=":modulecheck-gradle:platforms:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="external-dependency-factory.html"><span>external</span><wbr><span>Dependency</span><wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1865464531%2FProperties%2F-98353398"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="external-dependency-factory.html">externalDependencyFactory</a><span class="token operator">: </span><a href="../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-external-dependency/-factory/index.html">ExternalDependency.Factory</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-983663821%2FProperties%2F-98353398" anchor-label="projectDependencyFactory" id="-983663821%2FProperties%2F-98353398" data-filterable-set=":modulecheck-gradle:platforms:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:impl/main" data-filterable-set=":modulecheck-gradle:platforms:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="project-dependency-factory.html"><span>project</span><wbr><span>Dependency</span><wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-983663821%2FProperties%2F-98353398"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="project-dependency-factory.html">projectDependencyFactory</a><span class="token operator">: </span><a href="../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/-factory/index.html">ProjectDependency.Factory</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-502000171%2FFunctions%2F-98353398" anchor-label="create" id="-502000171%2FFunctions%2F-98353398" data-filterable-set=":modulecheck-gradle:platforms:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:impl/main" data-filterable-set=":modulecheck-gradle:platforms:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create.html"><span><span>create</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-502000171%2FFunctions%2F-98353398"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="create.html"><span class="token function">create</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gradleProject<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-gradle-project/index.html">GradleProject</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-configurations/index.html">Configurations</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-755505491%2FFunctions%2F-98353398" anchor-label="externalDependencies" id="-755505491%2FFunctions%2F-98353398" data-filterable-set=":modulecheck-gradle:platforms:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:impl/main" data-filterable-set=":modulecheck-gradle:platforms:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="external-dependencies.html"><span>external</span><wbr><span><span>Dependencies</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-755505491%2FFunctions%2F-98353398"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="external-dependencies.html"><span class="token function">externalDependencies</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">configuration<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-gradle-configuration/index.html">GradleConfiguration</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-external-dependency/index.html">ExternalDependency</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1850449054%2FFunctions%2F-98353398" anchor-label="isTestFixtures" id="1850449054%2FFunctions%2F-98353398" data-filterable-set=":modulecheck-gradle:platforms:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:impl/main" data-filterable-set=":modulecheck-gradle:platforms:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-test-fixtures.html"><span>is</span><wbr><span>Test</span><wbr><span><span>Fixtures</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1850449054%2FFunctions%2F-98353398"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><span data-unresolved-link="org.gradle.api.artifacts/ModuleDependency///PointingToDeclaration/">ModuleDependency</span><span class="token punctuation">.</span><a href="is-test-fixtures.html"><span class="token function">isTestFixtures</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-832173721%2FFunctions%2F-98353398" anchor-label="projectDependencies" id="-832173721%2FFunctions%2F-98353398" data-filterable-set=":modulecheck-gradle:platforms:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:impl/main" data-filterable-set=":modulecheck-gradle:platforms:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="project-dependencies.html"><span>project</span><wbr><span><span>Dependencies</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-832173721%2FFunctions%2F-98353398"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="project-dependencies.html"><span class="token function">projectDependencies</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">configuration<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-gradle-configuration/index.html">GradleConfiguration</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/index.html">ProjectDependency</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

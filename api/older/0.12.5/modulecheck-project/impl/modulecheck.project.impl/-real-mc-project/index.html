@@ -1,0 +1,534 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>RealMcProject</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet"></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../../index.html">
+<span>ModuleCheck</span>            </a>    </div>
+    <div>
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.project.impl/-real-mc-project/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.12.5</div>
+  <div class="versions-dropdown-data"><a href="../../../../../../modulecheck-project/impl/modulecheck.project.impl/-real-mc-project/index.html">0.13.0-SNAPSHOT</a><a href="index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="modulecheck-project:impl::modulecheck.project.impl/RealMcProject///PointingToDeclaration//-1207441962">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-project:impl</a><span class="delimiter">/</span><a href="../index.html">modulecheck.project.impl</a><span class="delimiter">/</span><a href="index.html">RealMcProject</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Real</span><wbr><span>Mc</span><wbr><span><span>Project</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">RealMcProject</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>path<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-project-path/-string-project-path/index.html">ProjectPath.StringProjectPath</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>projectDir<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>buildFile<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>hasKapt<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>hasTestFixturesPlugin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>projectCache<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-cache/index.html">ProjectCache</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>anvilGradlePlugin<span class="token operator">: </span><a href="../../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-anvil-gradle-plugin/index.html">AnvilGradlePlugin</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>logger<span class="token operator">: </span><a href="../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>jvmFileProviderFactory<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-jvm-file-provider/-factory/index.html">JvmFileProvider.Factory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>javaSourceVersion<span class="token operator">: </span><a href="../../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-java-version/index.html">JavaVersion</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;projectDependencies<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-lazy/index.html">Lazy</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-dependencies/index.html">ProjectDependencies</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;externalDependencies<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-lazy/index.html">Lazy</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../modulecheck-project/api/modulecheck.project/-external-dependencies/index.html">ExternalDependencies</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;buildFileParserFactory<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-build-file-parser/-factory/index.html">BuildFileParser.Factory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>platformPlugin<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-platform-plugin/index.html">PlatformPlugin</a></span></span><span class="token punctuation">)</span> : <a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Sources">Sources</button></div>
+    <div class="tabs-section-body">
+      <h2 class="tabbedcontent">Constructors</h2>
+      <div class="table" data-togglable="Constructors"><a data-name="1024927526%2FConstructors%2F-1207441962" anchor-label="RealMcProject" id="1024927526%2FConstructors%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-real-mc-project.html"><span>Real</span><wbr><span>Mc</span><wbr><span><span>Project</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1024927526%2FConstructors%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-real-mc-project.html"><span class="token function">RealMcProject</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;path<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-project-path/-string-project-path/index.html">ProjectPath.StringProjectPath</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;projectDir<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;buildFile<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;hasKapt<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;hasTestFixturesPlugin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;projectCache<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-cache/index.html">ProjectCache</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;anvilGradlePlugin<span class="token operator">: </span><a href="../../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-anvil-gradle-plugin/index.html">AnvilGradlePlugin</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;logger<span class="token operator">: </span><a href="../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;jvmFileProviderFactory<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-jvm-file-provider/-factory/index.html">JvmFileProvider.Factory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;javaSourceVersion<span class="token operator">: </span><a href="../../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-java-version/index.html">JavaVersion</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;projectDependencies<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-lazy/index.html">Lazy</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-dependencies/index.html">ProjectDependencies</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;externalDependencies<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-lazy/index.html">Lazy</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../modulecheck-project/api/modulecheck.project/-external-dependencies/index.html">ExternalDependencies</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;buildFileParserFactory<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-build-file-parser/-factory/index.html">BuildFileParser.Factory</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;platformPlugin<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-platform-plugin/index.html">PlatformPlugin</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="-419301975%2FFunctions%2F-1207441962" anchor-label="clearContext" id="-419301975%2FFunctions%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="clear-context.html"><span>clear</span><wbr><span><span>Context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-419301975%2FFunctions%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="clear-context.html"><span class="token function">clearContext</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="904281815%2FFunctions%2F-1207441962" anchor-label="compareTo" id="904281815%2FFunctions%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="compare-to.html"><span>compare</span><wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="904281815%2FFunctions%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><a href="compare-to.html"><span class="token function">compareTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">other<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="810196694%2FFunctions%2F-1207441962" anchor-label="equals" id="810196694%2FFunctions%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="equals.html"><span><span>equals</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="810196694%2FFunctions%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><a href="equals.html"><span class="token function">equals</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">other<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="246386856%2FFunctions%2F-1207441962" anchor-label="get" id="246386856%2FFunctions%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="get.html"><span><span>get</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="246386856%2FFunctions%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="get.html">E</a><span class="token operator"> : </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-context/-element/index.html">ProjectContext.Element</a><span class="token operator">&gt; </span><a href="get.html"><span class="token function">get</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-context/-key/index.html">ProjectContext.Key</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="get.html">E</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="get.html">E</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="633438318%2FFunctions%2F-1207441962" anchor-label="getConfigurationInvocations" id="633438318%2FFunctions%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#633438318%2FFunctions%2F-1207441962"><span>get</span><wbr><span>Configuration</span><wbr><span><span>Invocations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="633438318%2FFunctions%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="index.html#633438318%2FFunctions%2F-1207441962"><span class="token function">getConfigurationInvocations</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1110351536%2FFunctions%2F-1207441962" anchor-label="hashCode" id="-1110351536%2FFunctions%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="hash-code.html"><span>hash</span><wbr><span><span>Code</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1110351536%2FFunctions%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="hash-code.html"><span class="token function">hashCode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-504639941%2FFunctions%2F-1207441962" anchor-label="project" id="-504639941%2FFunctions%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#-504639941%2FFunctions%2F-1207441962"><span><span>project</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-504639941%2FFunctions%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-has-path/index.html">HasPath</a><span class="token punctuation">.</span><a href="index.html#-504639941%2FFunctions%2F-1207441962"><span class="token function">project</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1192739916%2FFunctions%2F-1207441962" anchor-label="resolveFqNameOrNull" id="-1192739916%2FFunctions%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="resolve-fq-name-or-null.html"><span>resolve</span><wbr><span>Fq</span><wbr><span>Name</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1192739916%2FFunctions%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="resolve-fq-name-or-null.html"><span class="token function">resolveFqNameOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">declaredName<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.name/FqName///PointingToDeclaration/">FqName</span><span class="token punctuation">, </span></span><span class="parameter ">sourceSetName<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-source-set-name/index.html">SourceSetName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.name/FqName///PointingToDeclaration/">FqName</span><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1288517601%2FFunctions%2F-1207441962" anchor-label="toString" id="-1288517601%2FFunctions%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="to-string.html"><span>to</span><wbr><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1288517601%2FFunctions%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="to-string.html"><span class="token function">toString</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="-2033829975%2FProperties%2F-1207441962" anchor-label="anvilGradlePlugin" id="-2033829975%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="anvil-gradle-plugin.html">anvilGradlePlugin</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2033829975%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="-2033829975%2FProperties%2F-1207441962" anchor-label="anvilGradlePlugin" id="-2033829975%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="anvil-gradle-plugin.html">anvilGradlePlugin</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-anvil-gradle-plugin/index.html">AnvilGradlePlugin</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1702051429%2FProperties%2F-1207441962" anchor-label="buildFile" id="1702051429%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="build-file.html">buildFile</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1702051429%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="1702051429%2FProperties%2F-1207441962" anchor-label="buildFile" id="1702051429%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="build-file.html">buildFile</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/File.html">File</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="156691718%2FProperties%2F-1207441962" anchor-label="buildFileParser" id="156691718%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="build-file-parser.html">buildFileParser</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="156691718%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="156691718%2FProperties%2F-1207441962" anchor-label="buildFileParser" id="156691718%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="build-file-parser.html">buildFileParser</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-build-file-parser/index.html">BuildFileParser</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1270037556%2FProperties%2F-1207441962" anchor-label="configurations" id="-1270037556%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#-1270037556%2FProperties%2F-1207441962">configurations</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1270037556%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="-1270037556%2FProperties%2F-1207441962" anchor-label="configurations" id="-1270037556%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#-1270037556%2FProperties%2F-1207441962">configurations</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configurations/index.html">Configurations</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1610799584%2FProperties%2F-1207441962" anchor-label="context" id="1610799584%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="context.html">context</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1610799584%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="1610799584%2FProperties%2F-1207441962" anchor-label="context" id="1610799584%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="context.html">context</a><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-context/index.html">ProjectContext</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1090226697%2FProperties%2F-1207441962" anchor-label="externalDependencies" id="-1090226697%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="external-dependencies.html">externalDependencies</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1090226697%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="-1090226697%2FProperties%2F-1207441962" anchor-label="externalDependencies" id="-1090226697%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="external-dependencies.html">externalDependencies</a><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-external-dependencies/index.html">ExternalDependencies</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-821636692%2FProperties%2F-1207441962" anchor-label="hasAGP" id="-821636692%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#-821636692%2FProperties%2F-1207441962">hasAGP</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-821636692%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="-821636692%2FProperties%2F-1207441962" anchor-label="hasAGP" id="-821636692%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="index.html#-821636692%2FProperties%2F-1207441962">hasAGP</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-71323049%2FProperties%2F-1207441962" anchor-label="hasAnvil" id="-71323049%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#-71323049%2FProperties%2F-1207441962">hasAnvil</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-71323049%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="-71323049%2FProperties%2F-1207441962" anchor-label="hasAnvil" id="-71323049%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#-71323049%2FProperties%2F-1207441962">hasAnvil</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1140833381%2FProperties%2F-1207441962" anchor-label="hasKapt" id="-1140833381%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="has-kapt.html">hasKapt</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1140833381%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="-1140833381%2FProperties%2F-1207441962" anchor-label="hasKapt" id="-1140833381%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="has-kapt.html">hasKapt</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1840138106%2FProperties%2F-1207441962" anchor-label="hasTestFixturesPlugin" id="-1840138106%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="has-test-fixtures-plugin.html">hasTestFixturesPlugin</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1840138106%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="-1840138106%2FProperties%2F-1207441962" anchor-label="hasTestFixturesPlugin" id="-1840138106%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="has-test-fixtures-plugin.html">hasTestFixturesPlugin</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1802391001%2FProperties%2F-1207441962" anchor-label="identifier" id="-1802391001%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#-1802391001%2FProperties%2F-1207441962">identifier</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1802391001%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="-1802391001%2FProperties%2F-1207441962" anchor-label="identifier" id="-1802391001%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#-1802391001%2FProperties%2F-1207441962">identifier</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-identifier/index.html">Identifier</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="413714772%2FProperties%2F-1207441962" anchor-label="javaSourceVersion" id="413714772%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="java-source-version.html">javaSourceVersion</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="413714772%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="413714772%2FProperties%2F-1207441962" anchor-label="javaSourceVersion" id="413714772%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="java-source-version.html">javaSourceVersion</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-java-version/index.html">JavaVersion</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="527240623%2FProperties%2F-1207441962" anchor-label="jvmFileProviderFactory" id="527240623%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="jvm-file-provider-factory.html">jvmFileProviderFactory</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="527240623%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="527240623%2FProperties%2F-1207441962" anchor-label="jvmFileProviderFactory" id="527240623%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="jvm-file-provider-factory.html">jvmFileProviderFactory</a><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-jvm-file-provider/-factory/index.html">JvmFileProvider.Factory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1569927419%2FProperties%2F-1207441962" anchor-label="logger" id="1569927419%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="logger.html">logger</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1569927419%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="1569927419%2FProperties%2F-1207441962" anchor-label="logger" id="1569927419%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="logger.html">logger</a><span class="token operator">: </span><a href="../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1040597114%2FProperties%2F-1207441962" anchor-label="path" id="-1040597114%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="path.html">path</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1040597114%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="-1040597114%2FProperties%2F-1207441962" anchor-label="path" id="-1040597114%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="path.html">path</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-project-path/-string-project-path/index.html">ProjectPath.StringProjectPath</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="411588549%2FProperties%2F-1207441962" anchor-label="platformPlugin" id="411588549%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="platform-plugin.html">platformPlugin</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="411588549%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="411588549%2FProperties%2F-1207441962" anchor-label="platformPlugin" id="411588549%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="platform-plugin.html">platformPlugin</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-platform-plugin/index.html">PlatformPlugin</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="349830722%2FProperties%2F-1207441962" anchor-label="projectCache" id="349830722%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="project-cache.html">projectCache</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="349830722%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="349830722%2FProperties%2F-1207441962" anchor-label="projectCache" id="349830722%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="project-cache.html">projectCache</a><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-cache/index.html">ProjectCache</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1957419763%2FProperties%2F-1207441962" anchor-label="projectDependencies" id="-1957419763%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="project-dependencies.html">projectDependencies</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1957419763%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="-1957419763%2FProperties%2F-1207441962" anchor-label="projectDependencies" id="-1957419763%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="project-dependencies.html">projectDependencies</a><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-dependencies/index.html">ProjectDependencies</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1558077097%2FProperties%2F-1207441962" anchor-label="projectDir" id="-1558077097%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="project-dir.html">projectDir</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1558077097%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="-1558077097%2FProperties%2F-1207441962" anchor-label="projectDir" id="-1558077097%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="project-dir.html">projectDir</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/File.html">File</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1421986851%2FProperties%2F-1207441962" anchor-label="sourceSets" id="-1421986851%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#-1421986851%2FProperties%2F-1207441962">sourceSets</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1421986851%2FProperties%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-project:impl:dokkaHtmlPartial/main"><a data-name="-1421986851%2FProperties%2F-1207441962" anchor-label="sourceSets" id="-1421986851%2FProperties%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#-1421986851%2FProperties%2F-1207441962">sourceSets</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-source-sets/index.html">SourceSets</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Sources</h2>
+      <div class="table" data-togglable="Sources"><a data-name="927088116%2FSource%2F-1207441962" anchor-label="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-project/impl/src/main/kotlin/modulecheck/project/impl/RealMcProject.kt#L36" id="927088116%2FSource%2F-1207441962" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-project:impl:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-project:impl:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-project/impl/src/main/kotlin/modulecheck/project/impl/RealMcProject.kt#L36">jvm source</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="927088116%2FSource%2F-1207441962"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+
+

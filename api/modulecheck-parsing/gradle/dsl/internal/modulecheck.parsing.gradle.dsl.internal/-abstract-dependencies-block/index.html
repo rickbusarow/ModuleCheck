@@ -1,0 +1,462 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>AbstractDependenciesBlock</title>
+<link href="../../../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../../../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.parsing.gradle.dsl.internal/-abstract-dependencies-block/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../../../../../older/0.12.5/modulecheck-parsing/gradle/dsl/internal/modulecheck.parsing.gradle.dsl.internal/-abstract-dependencies-block/index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-parsing:gradle:dsl:internal/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-parsing:gradle:dsl:internal::modulecheck.parsing.gradle.dsl.internal/AbstractDependenciesBlock///PointingToDeclaration//846198880">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-parsing:gradle:dsl:internal</a><span class="delimiter">/</span><a href="../index.html">modulecheck.parsing.gradle.dsl.internal</a><span class="delimiter">/</span><span class="current">AbstractDependenciesBlock</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Abstract</span><wbr><span>Dependencies</span><wbr><span><span>Block</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">AbstractDependenciesBlock</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>logger<span class="token operator">: </span><a href="../../../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter ">blockSuppressed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>configurationNameTransform<span class="token operator">: </span><a href="../../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-dependency-declaration/-configuration-name-transform/index.html">DependencyDeclaration.ConfigurationNameTransform</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>projectDependency<span class="token operator">: </span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/-factory/index.html">ProjectDependency.Factory</a></span></span><span class="token punctuation">)</span> : <a href="../../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-dependencies-block/index.html">DependenciesBlock</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-parsing/gradle/dsl/internal/src/main/kotlin/modulecheck/parsing/gradle/dsl/internal/AbstractDependenciesBlock.kt#L38">source</a>)</span></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="863535420%2FConstructors%2F846198880" anchor-label="AbstractDependenciesBlock" id="863535420%2FConstructors%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-abstract-dependencies-block.html"><span>Abstract</span><wbr><span>Dependencies</span><wbr><span><span>Block</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="863535420%2FConstructors%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">logger<span class="token operator">: </span><a href="../../../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter ">blockSuppressed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">configurationNameTransform<span class="token operator">: </span><a href="../../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-dependency-declaration/-configuration-name-transform/index.html">DependencyDeclaration.ConfigurationNameTransform</a><span class="token punctuation">, </span></span><span class="parameter ">projectDependency<span class="token operator">: </span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/-factory/index.html">ProjectDependency.Factory</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-156484037%2FClasslikes%2F846198880" anchor-label="Companion" id="-156484037%2FClasslikes%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-156484037%2FClasslikes%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="1166938827%2FProperties%2F846198880" anchor-label="_allDeclarations" id="1166938827%2FProperties%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="_all-declarations.html"><span>_all</span><wbr><span><span>Declarations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1166938827%2FProperties%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="_all-declarations.html">_allDeclarations</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html">MutableList</a><span class="token operator">&lt;</span><a href="../../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-dependency-declaration/index.html">DependencyDeclaration</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-156749969%2FProperties%2F846198880" anchor-label="allExternalDeclarations" id="-156749969%2FProperties%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="all-external-declarations.html"><span>all</span><wbr><span>External</span><wbr><span><span>Declarations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-156749969%2FProperties%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="all-external-declarations.html">allExternalDeclarations</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html">MutableMap</a><span class="token operator">&lt;</span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-maven-coordinates/index.html">MavenCoordinates</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html">MutableList</a><span class="token operator">&lt;</span><a href="../../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-external-dependency-declaration/index.html">ExternalDependencyDeclaration</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1612518674%2FProperties%2F846198880" anchor-label="allModuleDeclarations" id="-1612518674%2FProperties%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="all-module-declarations.html"><span>all</span><wbr><span>Module</span><wbr><span><span>Declarations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1612518674%2FProperties%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="all-module-declarations.html">allModuleDeclarations</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html">MutableMap</a><span class="token operator">&lt;</span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/index.html">ProjectDependency</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html">MutableList</a><span class="token operator">&lt;</span><a href="../../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-module-dependency-declaration/index.html">ModuleDependencyDeclaration</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="380142835%2FProperties%2F846198880" anchor-label="allSuppressions" id="380142835%2FProperties%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="all-suppressions.html"><span>all</span><wbr><span><span>Suppressions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="380142835%2FProperties%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="all-suppressions.html">allSuppressions</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/index.html">ProjectDependency</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="../../../../../../modulecheck-finding/name/modulecheck.finding/-finding-name/index.html">FindingName</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-844424109%2FProperties%2F846198880" anchor-label="blockSuppressed" id="-844424109%2FProperties%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="block-suppressed.html"><span>block</span><wbr><span><span>Suppressed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-844424109%2FProperties%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">override </span><span class="token keyword">val </span><a href="block-suppressed.html">blockSuppressed</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-657153541%2FProperties%2F846198880" anchor-label="configurationNameTransform" id="-657153541%2FProperties%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="configuration-name-transform.html"><span>configuration</span><wbr><span>Name</span><wbr><span><span>Transform</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-657153541%2FProperties%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="configuration-name-transform.html">configurationNameTransform</a><span class="token operator">: </span><a href="../../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-dependency-declaration/-configuration-name-transform/index.html">DependencyDeclaration.ConfigurationNameTransform</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1042225322%2FProperties%2F846198880" anchor-label="fullText" id="-1042225322%2FProperties%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-abstract-plugins-block/index.html#-1042225322%2FProperties%2F846198880"><span>full</span><wbr><span><span>Text</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1042225322%2FProperties%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-abstract-plugins-block/index.html#-1042225322%2FProperties%2F846198880">fullText</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-468658698%2FProperties%2F846198880" anchor-label="lambdaContent" id="-468658698%2FProperties%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-abstract-plugins-block/index.html#-468658698%2FProperties%2F846198880"><span>lambda</span><wbr><span><span>Content</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-468658698%2FProperties%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-abstract-plugins-block/index.html#-468658698%2FProperties%2F846198880">lambdaContent</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-232215978%2FProperties%2F846198880" anchor-label="logger" id="-232215978%2FProperties%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="logger.html"><span><span>logger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-232215978%2FProperties%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="logger.html">logger</a><span class="token operator">: </span><a href="../../../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="579275142%2FProperties%2F846198880" anchor-label="originalLines" id="579275142%2FProperties%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="original-lines.html"><span>original</span><wbr><span><span>Lines</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="579275142%2FProperties%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="original-lines.html">originalLines</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html">MutableList</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1919775952%2FProperties%2F846198880" anchor-label="projectDependency" id="-1919775952%2FProperties%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="project-dependency.html"><span>project</span><wbr><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1919775952%2FProperties%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="project-dependency.html">projectDependency</a><span class="token operator">: </span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/-factory/index.html">ProjectDependency.Factory</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-638034552%2FProperties%2F846198880" anchor-label="resetManager" id="-638034552%2FProperties%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="reset-manager.html"><span>reset</span><wbr><span><span>Manager</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-638034552%2FProperties%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="reset-manager.html">resetManager</a><span class="token operator">: </span><a href="../../../../../../modulecheck-utils/lazy/modulecheck.utils.lazy/-reset-manager/index.html">ResetManager</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="534083811%2FProperties%2F846198880" anchor-label="settings" id="534083811%2FProperties%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="settings.html"><span><span>settings</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="534083811%2FProperties%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="settings.html">settings</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-dependency-declaration/index.html">DependencyDeclaration</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1945883%2FFunctions%2F846198880" anchor-label="addModuleStatement" id="1945883%2FFunctions%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="add-module-statement.html"><span>add</span><wbr><span>Module</span><wbr><span><span>Statement</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1945883%2FFunctions%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="add-module-statement.html"><span class="token function">addModuleStatement</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">configName<span class="token operator">: </span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span></span><span class="parameter ">parsedString<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">projectPath<span class="token operator">: </span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-path/index.html">ProjectPath</a><span class="token punctuation">, </span></span><span class="parameter ">projectAccessor<span class="token operator">: </span><a href="../../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-project-accessor/index.html">ProjectAccessor</a><span class="token punctuation">, </span></span><span class="parameter ">suppressed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2057362507%2FFunctions%2F846198880" anchor-label="addNonModuleStatement" id="-2057362507%2FFunctions%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="add-non-module-statement.html"><span>add</span><wbr><span>Non</span><wbr><span>Module</span><wbr><span><span>Statement</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2057362507%2FFunctions%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="add-non-module-statement.html"><span class="token function">addNonModuleStatement</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">configName<span class="token operator">: </span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span></span><span class="parameter ">parsedString<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">coordinates<span class="token operator">: </span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-maven-coordinates/index.html">MavenCoordinates</a><span class="token punctuation">, </span></span><span class="parameter ">suppressed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-219155226%2FFunctions%2F846198880" anchor-label="addUnknownStatement" id="-219155226%2FFunctions%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="add-unknown-statement.html"><span>add</span><wbr><span>Unknown</span><wbr><span><span>Statement</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-219155226%2FFunctions%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="add-unknown-statement.html"><span class="token function">addUnknownStatement</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">configName<span class="token operator">: </span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span></span><span class="parameter ">parsedString<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">argument<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">suppressed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1814831701%2FFunctions%2F846198880" anchor-label="asFindingNames" id="-1814831701%2FFunctions%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="as-finding-names.html"><span>as</span><wbr><span>Finding</span><wbr><span><span>Names</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1814831701%2FFunctions%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="as-finding-names.html"><span class="token function">asFindingNames</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="../../../../../../modulecheck-finding/name/modulecheck.finding/-finding-name/index.html">FindingName</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-319779230%2FFunctions%2F846198880" anchor-label="findLastMatchingRowIndex" id="-319779230%2FFunctions%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="find-last-matching-row-index.html"><span>find</span><wbr><span>Last</span><wbr><span>Matching</span><wbr><span>Row</span><wbr><span><span>Index</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-319779230%2FFunctions%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="find-last-matching-row-index.html"><span class="token function">findLastMatchingRowIndex</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">parsedString<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">Compares the target parsed string to the un-parsed lines of the original dependencies block, and returns the index of <strong>the last row</strong> which matches the parsed string.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-512214736%2FFunctions%2F846198880" anchor-label="getOrEmpty" id="-512214736%2FFunctions%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-or-empty.html"><span>get</span><wbr><span>Or</span><wbr><span><span>Empty</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-512214736%2FFunctions%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="get-or-empty.html"><span class="token function">getOrEmpty</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mavenCoordinates<span class="token operator">: </span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-maven-coordinates/index.html">MavenCoordinates</a><span class="token punctuation">, </span></span><span class="parameter ">configName<span class="token operator">: </span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-configuration-name/index.html">ConfigurationName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-external-dependency-declaration/index.html">ExternalDependencyDeclaration</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="get-or-empty.html"><span class="token function">getOrEmpty</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">moduleRef<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">configName<span class="token operator">: </span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span></span><span class="parameter ">testFixtures<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-module-dependency-declaration/index.html">ModuleDependencyDeclaration</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="get-or-empty.html"><span class="token function">getOrEmpty</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">moduleRef<span class="token operator">: </span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-path/index.html">ProjectPath</a><span class="token punctuation">, </span></span><span class="parameter ">configName<span class="token operator">: </span><a href="../../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span></span><span class="parameter ">testFixtures<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-module-dependency-declaration/index.html">ModuleDependencyDeclaration</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="171110344%2FFunctions%2F846198880" anchor-label="getOriginalString" id="171110344%2FFunctions%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-original-string.html"><span>get</span><wbr><span>Original</span><wbr><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="171110344%2FFunctions%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="get-original-string.html"><span class="token function">getOriginalString</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">parsedString<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="901033908%2FFunctions%2F846198880" anchor-label="originalLineMatchesParsed" id="901033908%2FFunctions%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="original-line-matches-parsed.html"><span>original</span><wbr><span>Line</span><wbr><span>Matches</span><wbr><span><span>Parsed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="901033908%2FFunctions%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="original-line-matches-parsed.html"><span class="token function">originalLineMatchesParsed</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">originalLine<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">parsedString<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="391009385%2FFunctions%2F846198880" anchor-label="updateOldSuppresses" id="391009385%2FFunctions%2F846198880" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:gradle:dsl:internal/main" data-filterable-set=":modulecheck-parsing:gradle:dsl:internal/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="update-old-suppresses.html"><span>update</span><wbr><span>Old</span><wbr><span><span>Suppresses</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="391009385%2FFunctions%2F846198880"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:gradle:dsl:internal/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="update-old-suppresses.html"><span class="token function">updateOldSuppresses</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

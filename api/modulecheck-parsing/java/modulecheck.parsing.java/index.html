@@ -1,0 +1,472 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>modulecheck.parsing.java</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.parsing.java/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../../older/0.12.5/modulecheck-parsing/java/modulecheck.parsing.java/index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-parsing:java/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageids="modulecheck-parsing:java::modulecheck.parsing.java////PointingToDeclaration//1398669373">
+  <div class="breadcrumbs"><a href="../index.html">modulecheck-parsing:java</a><span class="delimiter">/</span><span class="current">modulecheck.parsing.java</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="677086123%2FClasslikes%2F1398669373" anchor-label="JavaParserNodeResolver" id="677086123%2FClasslikes%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-java-parser-node-resolver/index.html"><span>Java</span><wbr><span>Parser</span><wbr><span>Node</span><wbr><span><span>Resolver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="677086123%2FClasslikes%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-java-parser-node-resolver/index.html">JavaParserNodeResolver</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>project<span class="token operator">: </span><a href="../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sourceSetName<span class="token operator">: </span><a href="../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="75771060%2FClasslikes%2F1398669373" anchor-label="JavaTreePrinter" id="75771060%2FClasslikes%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-java-tree-printer/index.html"><span>Java</span><wbr><span>Tree</span><wbr><span><span>Printer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="75771060%2FClasslikes%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-java-tree-printer/index.html">JavaTreePrinter</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">whitespaceChar<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html">Char</a><span class="token operator"> = </span>' '</span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-utils/traversal/modulecheck.utils.traversal/-abstract-tree-printer/index.html">AbstractTreePrinter</a><span class="token operator">&lt;</span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt; </span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="377806631%2FClasslikes%2F1398669373" anchor-label="ParsedFile" id="377806631%2FClasslikes%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-parsed-file/index.html"><span>Parsed</span><wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="377806631%2FClasslikes%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">data </span><span class="token keyword">class </span><a href="-parsed-file/index.html">ParsedFile</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>packageName<span class="token operator">: </span><a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-package-name/index.html">PackageName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>imports<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span data-unresolved-link="com.github.javaparser.ast/ImportDeclaration///PointingToDeclaration/">ImportDeclaration</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>classOrInterfaceTypes<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.name/FqName///PointingToDeclaration/">FqName</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>typeDeclarations<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span data-unresolved-link="com.github.javaparser.ast.body/TypeDeclaration///PointingToDeclaration/">TypeDeclaration</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>fieldDeclarations<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-qualified-declared-name/index.html">QualifiedDeclaredName</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>enumDeclarations<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-qualified-declared-name/index.html">QualifiedDeclaredName</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1683461112%2FClasslikes%2F1398669373" anchor-label="RealJavaFile" id="1683461112%2FClasslikes%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-real-java-file/index.html"><span>Real</span><wbr><span>Java</span><wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1683461112%2FClasslikes%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-real-java-file/index.html">RealJavaFile</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>file<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>psi<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.com.intellij.psi/PsiJavaFile///PointingToDeclaration/">PsiJavaFile</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>jvmTarget<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.config/JvmTarget///PointingToDeclaration/">JvmTarget</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>nameParser<span class="token operator">: </span><a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source.internal/-name-parser/index.html">NameParser</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-java-file/index.html">JavaFile</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="1239295307%2FProperties%2F1398669373" anchor-label="javaStdLibNames" id="1239295307%2FProperties%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="java-std-lib-names.html"><span>java</span><wbr><span>Std</span><wbr><span>Lib</span><wbr><span><span>Names</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1239295307%2FProperties%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">val </span><a href="java-std-lib-names.html">javaStdLibNames</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="EXTENSION_FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1416737737%2FFunctions%2F1398669373" anchor-label="apiReferences" id="1416737737%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="api-references.html"><span>api</span><wbr><span><span>References</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1416737737%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="com.github.javaparser.ast.body/FieldDeclaration///PointingToDeclaration/">FieldDeclaration</span><span class="token punctuation">.</span><a href="api-references.html"><span class="token function">apiReferences</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="com.github.javaparser.ast.body/MethodDeclaration///PointingToDeclaration/">MethodDeclaration</span><span class="token punctuation">.</span><a href="api-references.html"><span class="token function">apiReferences</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="951134449%2FFunctions%2F1398669373" anchor-label="canBeImported" id="951134449%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="can-be-imported.html"><span>can</span><wbr><span>Be</span><wbr><span><span>Imported</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="951134449%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="can-be-imported.html">T</a><span class="token operator"> : </span><span data-unresolved-link="com.github.javaparser.ast.nodeTypes.modifiers/NodeWithStaticModifier///PointingToDeclaration/">NodeWithStaticModifier</span><span class="token operator">&lt;</span><a href="can-be-imported.html">T</a><span class="token operator">&gt;</span>, <span data-unresolved-link="com.github.javaparser.ast.nodeTypes.modifiers/NodeWithPrivateModifier///PointingToDeclaration/">NodeWithPrivateModifier</span><span class="token operator">&lt;</span><a href="can-be-imported.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="can-be-imported.html">T</a><span class="token punctuation">.</span><a href="can-be-imported.html"><span class="token function">canBeImported</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1394571547%2FFunctions%2F1398669373" anchor-label="canBeResolved" id="-1394571547%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="can-be-resolved.html"><span>can</span><wbr><span>Be</span><wbr><span><span>Resolved</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1394571547%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="can-be-resolved.html">T</a><span class="token operator"> : </span><span data-unresolved-link="com.github.javaparser.ast.nodeTypes.modifiers/NodeWithStaticModifier///PointingToDeclaration/">NodeWithStaticModifier</span><span class="token operator">&lt;</span><a href="can-be-resolved.html">T</a><span class="token operator">&gt;</span>, <span data-unresolved-link="com.github.javaparser.ast.nodeTypes.modifiers/NodeWithPrivateModifier///PointingToDeclaration/">NodeWithPrivateModifier</span><span class="token operator">&lt;</span><a href="can-be-resolved.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="can-be-resolved.html">T</a><span class="token punctuation">.</span><a href="can-be-resolved.html"><span class="token function">canBeResolved</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1506997108%2FFunctions%2F1398669373" anchor-label="childrenBreadthFirst" id="1506997108%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="children-breadth-first.html"><span>children</span><wbr><span>Breadth</span><wbr><span><span>First</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1506997108%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="children-breadth-first.html"><span class="token function">childrenBreadthFirst</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="children-breadth-first.html"><span class="token function">childrenBreadthFirst</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">crossinline </span>predicate<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="143691604%2FFunctions%2F1398669373" anchor-label="childrenDepthFirst" id="143691604%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="children-depth-first.html"><span>children</span><wbr><span>Depth</span><wbr><span><span>First</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="143691604%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="children-depth-first.html"><span class="token function">childrenDepthFirst</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="children-depth-first.html"><span class="token function">childrenDepthFirst</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">crossinline </span>predicate<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1605645044%2FFunctions%2F1398669373" anchor-label="childrenOfTypeBreadthFirst" id="1605645044%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="children-of-type-breadth-first.html"><span>children</span><wbr><span>Of</span><wbr><span>Type</span><wbr><span>Breadth</span><wbr><span><span>First</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1605645044%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="children-of-type-breadth-first.html">T</a><span class="token operator"> : </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt; </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="children-of-type-breadth-first.html"><span class="token function">childrenOfTypeBreadthFirst</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="children-of-type-breadth-first.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1775511371%2FFunctions%2F1398669373" anchor-label="childrenOfTypeDepthFirst" id="1775511371%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="children-of-type-depth-first.html"><span>children</span><wbr><span>Of</span><wbr><span>Type</span><wbr><span>Depth</span><wbr><span><span>First</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1775511371%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="children-of-type-depth-first.html">T</a><span class="token operator"> : </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt; </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="children-of-type-depth-first.html"><span class="token function">childrenOfTypeDepthFirst</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="children-of-type-depth-first.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2073645151%2FFunctions%2F1398669373" anchor-label="fqNameOrNull" id="2073645151%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="fq-name-or-null.html"><span>fq</span><wbr><span>Name</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2073645151%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="com.github.javaparser.ast.type/ClassOrInterfaceType///PointingToDeclaration/">ClassOrInterfaceType</span><span class="token punctuation">.</span><a href="fq-name-or-null.html"><span class="token function">fqNameOrNull</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.name/FqName///PointingToDeclaration/">FqName</span><span class="token operator">?</span></div><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="fq-name-or-null.html">T</a><span class="token operator"> : </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span>, <span data-unresolved-link="com.github.javaparser.resolution/Resolvable///PointingToDeclaration/">Resolvable</span><span class="token operator">&lt;</span><a href="fq-name-or-null.html">R</a><span class="token operator">&gt;</span><span class="token punctuation">, </span><a href="fq-name-or-null.html">R</a><span class="token operator"> : </span><span data-unresolved-link="com.github.javaparser.resolution.declarations/ResolvedDeclaration///PointingToDeclaration/">ResolvedDeclaration</span><span class="token operator">&gt; </span><a href="fq-name-or-null.html">T</a><span class="token punctuation">.</span><a href="fq-name-or-null.html"><span class="token function">fqNameOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">typeDeclarations<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span data-unresolved-link="com.github.javaparser.ast.body/TypeDeclaration///PointingToDeclaration/">TypeDeclaration</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1085274417%2FFunctions%2F1398669373" anchor-label="getChildOfType" id="1085274417%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-child-of-type.html"><span>get</span><wbr><span>Child</span><wbr><span>Of</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1085274417%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="get-child-of-type.html">T</a><span class="token operator"> : </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt; </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="get-child-of-type.html"><span class="token function">getChildOfType</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="get-child-of-type.html">T</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-34174106%2FFunctions%2F1398669373" anchor-label="getChildrenOfType" id="-34174106%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-children-of-type.html"><span>get</span><wbr><span>Children</span><wbr><span>Of</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-34174106%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="get-children-of-type.html">T</a><span class="token operator"> : </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt; </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="get-children-of-type.html"><span class="token function">getChildrenOfType</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="get-children-of-type.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1867429787%2FFunctions%2F1398669373" anchor-label="getParentOfType" id="1867429787%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-parent-of-type.html"><span>get</span><wbr><span>Parent</span><wbr><span>Of</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1867429787%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="get-parent-of-type.html">T</a><span class="token operator"> : </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt; </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="get-parent-of-type.html"><span class="token function">getParentOfType</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="get-parent-of-type.html">T</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1324856898%2FFunctions%2F1398669373" anchor-label="getParentsOfTypeRecursive" id="-1324856898%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-parents-of-type-recursive.html"><span>get</span><wbr><span>Parents</span><wbr><span>Of</span><wbr><span>Type</span><wbr><span><span>Recursive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1324856898%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="get-parents-of-type-recursive.html">T</a><span class="token operator"> : </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt; </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="get-parents-of-type-recursive.html"><span class="token function">getParentsOfTypeRecursive</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="get-parents-of-type-recursive.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="204674989%2FFunctions%2F1398669373" anchor-label="getParentsRecursive" id="204674989%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-parents-recursive.html"><span>get</span><wbr><span>Parents</span><wbr><span><span>Recursive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="204674989%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="get-parents-recursive.html"><span class="token function">getParentsRecursive</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2060178184%2FFunctions%2F1398669373" anchor-label="getTypeParameterNamesInScope" id="2060178184%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-type-parameter-names-in-scope.html"><span>get</span><wbr><span>Type</span><wbr><span>Parameter</span><wbr><span>Names</span><wbr><span>In</span><wbr><span><span>Scope</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2060178184%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="get-type-parameter-names-in-scope.html"><span class="token function">getTypeParameterNamesInScope</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="366535807%2FFunctions%2F1398669373" anchor-label="javaLangFqNameOrNull" id="366535807%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="java-lang-fq-name-or-null.html"><span>java</span><wbr><span>Lang</span><wbr><span>Fq</span><wbr><span>Name</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="366535807%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="java-lang-fq-name-or-null.html"><span class="token function">javaLangFqNameOrNull</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-qualified-declared-name/index.html">QualifiedDeclaredName</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-767613824%2FFunctions%2F1398669373" anchor-label="requireChildOfType" id="-767613824%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="require-child-of-type.html"><span>require</span><wbr><span>Child</span><wbr><span>Of</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-767613824%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="require-child-of-type.html">T</a><span class="token operator"> : </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt; </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="require-child-of-type.html"><span class="token function">requireChildOfType</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="require-child-of-type.html">T</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1642758239%2FFunctions%2F1398669373" anchor-label="simpleName" id="1642758239%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="simple-name.html"><span>simple</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1642758239%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="simple-name.html">T</a><span class="token operator"> : </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt; </span><a href="simple-name.html">T</a><span class="token punctuation">.</span><a href="simple-name.html"><span class="token function">simpleName</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-147936337%2FFunctions%2F1398669373" anchor-label="toLanguageLevel" id="-147936337%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-language-level.html"><span>to</span><wbr><span>Language</span><wbr><span><span>Level</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-147936337%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.config/JvmTarget///PointingToDeclaration/">JvmTarget</span><span class="token punctuation">.</span><a href="to-language-level.html"><span class="token function">toLanguageLevel</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.github.javaparser/ParserConfiguration.LanguageLevel///PointingToDeclaration/">ParserConfiguration.LanguageLevel</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="524690990%2FFunctions%2F1398669373" anchor-label="typeReferencesRecursive" id="524690990%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="type-references-recursive.html"><span>type</span><wbr><span>References</span><wbr><span><span>Recursive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="524690990%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="com.github.javaparser.ast.type/ClassOrInterfaceType///PointingToDeclaration/">ClassOrInterfaceType</span><span class="token punctuation">.</span><a href="type-references-recursive.html"><span class="token function">typeReferencesRecursive</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><span data-unresolved-link="com.github.javaparser.ast.type/ClassOrInterfaceType///PointingToDeclaration/">ClassOrInterfaceType</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Includes all types referenced by the receiver <span data-unresolved-link="com.github.javaparser.ast.type/ClassOrInterfaceType///PointingToDeclaration/">ClassOrInterfaceType</span>, optionally including itself.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="92272447%2FFunctions%2F1398669373" anchor-label="visit" id="92272447%2FFunctions%2F1398669373" data-filterable-set=":modulecheck-parsing:java/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:java/main" data-filterable-set=":modulecheck-parsing:java/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="visit.html"><span><span>visit</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="92272447%2FFunctions%2F1398669373"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:java/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">inline </span><span class="token keyword">fun </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">.</span><a href="visit.html"><span class="token function">visit</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">crossinline </span>predicate<span class="token operator">: </span><span class="token punctuation">(</span>node<span class="token operator">: </span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><span data-unresolved-link="com.github.javaparser.ast/Node///PointingToDeclaration/">Node</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

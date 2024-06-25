@@ -1,0 +1,622 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>modulecheck.testing</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.testing/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../not-found-version.html?v=0.12.5">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-internal-testing/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageids="modulecheck-internal-testing::modulecheck.testing////PointingToDeclaration//-1404992111">
+  <div class="breadcrumbs"><a href="../index.html">modulecheck-internal-testing</a><span class="delimiter">/</span><span class="current">modulecheck.testing</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-379979043%2FClasslikes%2F-1404992111" anchor-label="BaseTest" id="-379979043%2FClasslikes%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-base-test/index.html"><span>Base</span><wbr><span><span>Test</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-379979043%2FClasslikes%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-base-test/index.html">BaseTest</a> : <span data-unresolved-link="com.rickbusarow.kase/HasTestEnvironmentFactory///PointingToDeclaration/">HasTestEnvironmentFactory</span><span class="token operator">&lt;</span><span data-unresolved-link="com.rickbusarow.kase/DefaultTestEnvironment.Factory///PointingToDeclaration/">DefaultTestEnvironment.Factory</span><span class="token operator">&gt; </span>, <a href="../modulecheck.testing.assertions/-trimmed-asserts/index.html">TrimmedAsserts</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="841725134%2FClasslikes%2F-1404992111" anchor-label="DefaultGradleKotlinAnvilAgpTestVersions" id="841725134%2FClasslikes%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-default-gradle-kotlin-anvil-agp-test-versions/index.html"><span>Default</span><wbr><span>Gradle</span><wbr><span>Kotlin</span><wbr><span>Anvil</span><wbr><span>Agp</span><wbr><span>Test</span><wbr><span><span>Versions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="841725134%2FClasslikes%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-default-gradle-kotlin-anvil-agp-test-versions/index.html">DefaultGradleKotlinAnvilAgpTestVersions</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>a1<span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/GradleDependencyVersion///PointingToDeclaration/">GradleDependencyVersion</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>a2<span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/KotlinDependencyVersion///PointingToDeclaration/">KotlinDependencyVersion</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>a3<span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AnvilDependencyVersion///PointingToDeclaration/">AnvilDependencyVersion</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>a4<span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AgpDependencyVersion///PointingToDeclaration/">AgpDependencyVersion</span></span></span><span class="token punctuation">)</span> : <a href="-gradle-kotlin-anvil-agp-test-versions/index.html">GradleKotlinAnvilAgpTestVersions</a>, <span data-unresolved-link="com.rickbusarow.kase.gradle/HasGradleDependencyVersion///PointingToDeclaration/">HasGradleDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/HasKotlinDependencyVersion///PointingToDeclaration/">HasKotlinDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/HasAnvilDependencyVersion///PointingToDeclaration/">HasAnvilDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/HasAgpDependencyVersion///PointingToDeclaration/">HasAgpDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase/Kase4///PointingToDeclaration/">Kase4</span><span class="token operator">&lt;</span><span data-unresolved-link="com.rickbusarow.kase.gradle/GradleDependencyVersion///PointingToDeclaration/">GradleDependencyVersion</span><span class="token punctuation">, </span><span data-unresolved-link="com.rickbusarow.kase.gradle/KotlinDependencyVersion///PointingToDeclaration/">KotlinDependencyVersion</span><span class="token punctuation">, </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AnvilDependencyVersion///PointingToDeclaration/">AnvilDependencyVersion</span><span class="token punctuation">, </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AgpDependencyVersion///PointingToDeclaration/">AgpDependencyVersion</span><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Holds <span data-unresolved-link="com.rickbusarow.kase.gradle/GradleDependencyVersion///PointingToDeclaration/">GradleDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/KotlinDependencyVersion///PointingToDeclaration/">KotlinDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/AnvilDependencyVersion///PointingToDeclaration/">AnvilDependencyVersion</span>, and <span data-unresolved-link="com.rickbusarow.kase.gradle/AgpDependencyVersion///PointingToDeclaration/">AgpDependencyVersion</span> versions</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="629132685%2FClasslikes%2F-1404992111" anchor-label="GradleKotlinAnvilAgpTestVersions" id="629132685%2FClasslikes%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-gradle-kotlin-anvil-agp-test-versions/index.html"><span>Gradle</span><wbr><span>Kotlin</span><wbr><span>Anvil</span><wbr><span>Agp</span><wbr><span>Test</span><wbr><span><span>Versions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="629132685%2FClasslikes%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-gradle-kotlin-anvil-agp-test-versions/index.html">GradleKotlinAnvilAgpTestVersions</a> : <span data-unresolved-link="com.rickbusarow.kase.gradle/TestVersions///PointingToDeclaration/">TestVersions</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/HasGradleDependencyVersion///PointingToDeclaration/">HasGradleDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/HasKotlinDependencyVersion///PointingToDeclaration/">HasKotlinDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/HasAnvilDependencyVersion///PointingToDeclaration/">HasAnvilDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/HasAgpDependencyVersion///PointingToDeclaration/">HasAgpDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase/Kase4///PointingToDeclaration/">Kase4</span><span class="token operator">&lt;</span><span data-unresolved-link="com.rickbusarow.kase.gradle/GradleDependencyVersion///PointingToDeclaration/">GradleDependencyVersion</span><span class="token punctuation">, </span><span data-unresolved-link="com.rickbusarow.kase.gradle/KotlinDependencyVersion///PointingToDeclaration/">KotlinDependencyVersion</span><span class="token punctuation">, </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AnvilDependencyVersion///PointingToDeclaration/">AnvilDependencyVersion</span><span class="token punctuation">, </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AgpDependencyVersion///PointingToDeclaration/">AgpDependencyVersion</span><span class="token operator">&gt; </span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/GradleTestVersions///PointingToDeclaration/">GradleTestVersions</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/GradleKotlinTestVersions///PointingToDeclaration/">GradleKotlinTestVersions</span></div><div class="brief "><p class="paragraph">Holds <span data-unresolved-link="com.rickbusarow.kase.gradle/GradleDependencyVersion///PointingToDeclaration/">GradleDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/KotlinDependencyVersion///PointingToDeclaration/">KotlinDependencyVersion</span>, and <span data-unresolved-link="com.rickbusarow.kase.gradle/AgpDependencyVersion///PointingToDeclaration/">AgpDependencyVersion</span> versions</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-667429413%2FClasslikes%2F-1404992111" anchor-label="HasTestVersions" id="-667429413%2FClasslikes%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-has-test-versions/index.html"><span>Has</span><wbr><span>Test</span><wbr><span><span>Versions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-667429413%2FClasslikes%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-has-test-versions/index.html">HasTestVersions</a></div><div class="brief "><p class="paragraph">Trait interface for <a href="-mc-test-versions/index.html">McTestVersions</a></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1559597923%2FClasslikes%2F-1404992111" anchor-label="McTestVersions" id="-1559597923%2FClasslikes%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mc-test-versions/index.html"><span>Mc</span><wbr><span>Test</span><wbr><span><span>Versions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1559597923%2FClasslikes%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-mc-test-versions/index.html">McTestVersions</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">a1<span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/GradleDependencyVersion///PointingToDeclaration/">GradleDependencyVersion</span><span class="token punctuation">, </span></span><span class="parameter ">a2<span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/KotlinDependencyVersion///PointingToDeclaration/">KotlinDependencyVersion</span><span class="token punctuation">, </span></span><span class="parameter ">a3<span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AnvilDependencyVersion///PointingToDeclaration/">AnvilDependencyVersion</span><span class="token punctuation">, </span></span><span class="parameter ">a4<span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AgpDependencyVersion///PointingToDeclaration/">AgpDependencyVersion</span></span></span><span class="token punctuation">)</span> : <a href="-gradle-kotlin-anvil-agp-test-versions/index.html">GradleKotlinAnvilAgpTestVersions</a></div><div class="brief "><p class="paragraph">The versions of dependencies which are changed during parameterized tests.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="838271391%2FClasslikes%2F-1404992111" anchor-label="McVersionMatrix" id="838271391%2FClasslikes%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mc-version-matrix/index.html"><span>Mc</span><wbr><span>Version</span><wbr><span><span>Matrix</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="838271391%2FClasslikes%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-mc-version-matrix/index.html">McVersionMatrix</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gradleVersions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Versions.gradleList<span class="token punctuation">, </span></span><span class="parameter ">agpVersions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Versions.agpList<span class="token punctuation">, </span></span><span class="parameter ">anvilVersions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Versions.anvilList<span class="token punctuation">, </span></span><span class="parameter ">kotlinVersions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Versions.kotlinList</span></span><span class="token punctuation">)</span> : <span data-unresolved-link="com.rickbusarow.kase/KaseMatrix///PointingToDeclaration/">KaseMatrix</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-840526113%2FClasslikes%2F-1404992111" anchor-label="SkipInStackTrace" id="-840526113%2FClasslikes%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-skip-in-stack-trace/index.html"><span>Skip</span><wbr><span>In</span><wbr><span>Stack</span><wbr><span><span>Trace</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-840526113%2FClasslikes%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.annotation/-target/index.html"><span class="token annotation builtin">Target</span></a><span class="token punctuation">(</span><span>allowedTargets<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.annotation/-annotation-target/-f-u-n-c-t-i-o-n/index.html">AnnotationTarget.FUNCTION</a><span class="token punctuation">, </span></span><wbr><span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.annotation/-annotation-target/-p-r-o-p-e-r-t-y/index.html">AnnotationTarget.PROPERTY</a><span class="token punctuation">, </span></span><wbr><span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.annotation/-annotation-target/-p-r-o-p-e-r-t-y_-g-e-t-t-e-r/index.html">AnnotationTarget.PROPERTY_GETTER</a><span class="token punctuation">, </span></span><wbr><span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.annotation/-annotation-target/-p-r-o-p-e-r-t-y_-s-e-t-t-e-r/index.html">AnnotationTarget.PROPERTY_SETTER</a><span class="token punctuation">, </span></span><wbr><span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.annotation/-annotation-target/-c-l-a-s-s/index.html">AnnotationTarget.CLASS</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">annotation class </span><a href="-skip-in-stack-trace/index.html">SkipInStackTrace</a></div><div class="brief "><p class="paragraph">Indicates that the annotated function/property should be ignored when walking a stack trace, such as in assertions or when trying to parse a test function's name.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1257945599%2FClasslikes%2F-1404992111" anchor-label="TestEnvironment" id="-1257945599%2FClasslikes%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-test-environment/index.html"><span>Test</span><wbr><span><span>Environment</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1257945599%2FClasslikes%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="-test-environment/index.html">TestEnvironment</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">names<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">testLocation<span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.files/TestLocation///PointingToDeclaration/">TestLocation</span><span class="token operator"> = </span>TestLocation.get()</span></span><span class="token punctuation">)</span> : <span data-unresolved-link="com.rickbusarow.kase/TestEnvironment///PointingToDeclaration/">TestEnvironment</span>, <a href="../modulecheck.testing.assertions/-trimmed-asserts/index.html">TrimmedAsserts</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="285068059%2FClasslikes%2F-1404992111" anchor-label="TestEnvironmentParams" id="285068059%2FClasslikes%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-test-environment-params/index.html"><span>Test</span><wbr><span>Environment</span><wbr><span><span>Params</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="285068059%2FClasslikes%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-test-environment-params/index.html">TestEnvironmentParams</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2127013445%2FClasslikes%2F-1404992111" anchor-label="Versions" id="2127013445%2FClasslikes%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-versions/index.html"><span><span>Versions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2127013445%2FClasslikes%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">object </span><a href="-versions/index.html">Versions</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2051728255%2FClasslikes%2F-1404992111" anchor-label="VersionsFactoryTest" id="-2051728255%2FClasslikes%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-versions-factory-test/index.html"><span>Versions</span><wbr><span>Factory</span><wbr><span><span>Test</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2051728255%2FClasslikes%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-versions-factory-test/index.html">VersionsFactoryTest</a><span class="token operator">&lt;</span><a href="-versions-factory-test/index.html">ENV</a><span class="token operator"> : </span><a href="-test-environment/index.html">TestEnvironment</a>, <a href="-has-test-versions/index.html">HasTestVersions</a><span class="token punctuation">, </span><a href="-versions-factory-test/index.html">FACT</a><span class="token operator"> : </span><span data-unresolved-link="com.rickbusarow.kase/TestEnvironmentFactory///PointingToDeclaration/">TestEnvironmentFactory</span><span class="token operator">&lt;</span><a href="-mc-test-versions/index.html">McTestVersions</a><span class="token punctuation">, </span><a href="-versions-factory-test/index.html">ENV</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span> : <span data-unresolved-link="com.rickbusarow.kase/KaseTestFactory///PointingToDeclaration/">KaseTestFactory</span><span class="token operator">&lt;</span><a href="-mc-test-versions/index.html">McTestVersions</a><span class="token punctuation">, </span><a href="-versions-factory-test/index.html">ENV</a><span class="token punctuation">, </span><a href="-versions-factory-test/index.html">FACT</a><span class="token operator">&gt; </span>, <span data-unresolved-link="com.rickbusarow.kase/HasKaseMatrix///PointingToDeclaration/">HasKaseMatrix</span></div><div class="brief "><p class="paragraph">Convenience interface for a test which uses <span data-unresolved-link="com.rickbusarow.kase/KaseTestFactory///PointingToDeclaration/">KaseTestFactory</span> in order to create <span data-unresolved-link="org.junit.jupiter.api/DynamicTest///PointingToDeclaration/">DynamicTest</span>s for a JUnit5 test factory.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-2092812717%2FProperties%2F-1404992111" anchor-label="sdkPackagePrefixes" id="-2092812717%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="sdk-package-prefixes.html"><span>sdk</span><wbr><span>Package</span><wbr><span><span>Prefixes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2092812717%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="sdk-package-prefixes.html">sdkPackagePrefixes</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1936723012%2FFunctions%2F-1404992111" anchor-label="alwaysUnixFileSeparators" id="-1936723012%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="always-unix-file-separators.html"><span>always</span><wbr><span>Unix</span><wbr><span>File</span><wbr><span><span>Separators</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1936723012%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="always-unix-file-separators.html"><span class="token function">alwaysUnixFileSeparators</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Replace Windows file separators with Unix ones, just for string comparison in tests</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1197957313%2FFunctions%2F-1404992111" anchor-label="asClueCatching" id="-1197957313%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="as-clue-catching.html"><span>as</span><wbr><span>Clue</span><wbr><span><span>Catching</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1197957313%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="as-clue-catching.html">T</a><span class="token punctuation">, </span><a href="as-clue-catching.html">R</a><span class="token operator">&gt; </span><a href="as-clue-catching.html">T</a><span class="token punctuation">.</span><a href="as-clue-catching.html"><span class="token function">asClueCatching</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">block<span class="token operator">: </span><a href="as-clue-catching.html">T</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="as-clue-catching.html">R</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="as-clue-catching.html">R</a></div><div class="brief "><p class="paragraph">Catch anything and rethrow, but prepend the receiver's toString(). This toString is evaluated lazily, meaning that it should reflect its state at the time of the exception (possibly excluding weirdness caused by concurrency).</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1950338192%2FFunctions%2F-1404992111" anchor-label="clean" id="1950338192%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="clean.html"><span><span>clean</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1950338192%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="clean.html"><span class="token function">clean</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">workingDir<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Removes various bits of noise and machine-specific variables from a console or report output. Cleans the provided string by applying various modifications such as normalising line separators, using relative paths, enforcing Unix file separators, and removing specific strings or patterns.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1814708708%2FFunctions%2F-1404992111" anchor-label="declaringClass" id="1814708708%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="declaring-class.html"><span>declaring</span><wbr><span><span>Class</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1814708708%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-published-api/index.html"><span class="token annotation builtin">PublishedApi</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/StackTraceElement.html">StackTraceElement</a><span class="token punctuation">.</span><a href="declaring-class.html"><span class="token function">declaringClass</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Retrieves the class from a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/StackTraceElement.html">StackTraceElement</a>.</p></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-published-api/index.html"><span class="token annotation builtin">PublishedApi</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/StackWalker.StackFrame.html">StackWalker.StackFrame</a><span class="token punctuation">.</span><a href="declaring-class.html"><span class="token function">declaringClass</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Retrieves the class from a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/StackWalker.StackFrame.html">StackFrame</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1199896630%2FFunctions%2F-1404992111" anchor-label="enclosingCanonicalNames" id="-1199896630%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="enclosing-canonical-names.html"><span>enclosing</span><wbr><span>Canonical</span><wbr><span><span>Names</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1199896630%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="enclosing-canonical-names.html"><span class="token function">enclosingCanonicalNames</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">includeSelf<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Provides a sequence of the canonical names of all enclosing classes of this <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">Class</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1593214132%2FFunctions%2F-1404992111" anchor-label="enclosingClasses" id="1593214132%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="enclosing-classes.html"><span>enclosing</span><wbr><span><span>Classes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1593214132%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="enclosing-classes.html"><span class="token function">enclosingClasses</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">includeSelf<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Provides a sequence of all the enclosing classes of this <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">Class</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2126678407%2FFunctions%2F-1404992111" anchor-label="firstNonSyntheticClass" id="-2126678407%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="first-non-synthetic-class.html"><span>first</span><wbr><span>Non</span><wbr><span>Synthetic</span><wbr><span><span>Class</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2126678407%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">tailrec </span><span class="token keyword">fun </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="first-non-synthetic-class.html"><span class="token function">firstNonSyntheticClass</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns the current class if it's a real class, otherwise walks up the hierarchy of enclosing/nesting classes until it finds a real one.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1463124028%2FFunctions%2F-1404992111" anchor-label="forAllBlocking" id="-1463124028%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="for-all-blocking.html"><span>for</span><wbr><span>All</span><wbr><span><span>Blocking</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1463124028%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="for-all-blocking.html">A</a><span class="token operator">&gt; </span><a href="for-all-blocking.html"><span class="token function">forAllBlocking</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">genA<span class="token operator">: </span><span data-unresolved-link="io.kotest.property/Gen///PointingToDeclaration/">Gen</span><span class="token operator">&lt;</span><a href="for-all-blocking.html">A</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">property<span class="token operator">: </span><span class="token keyword">suspend </span><span data-unresolved-link="io.kotest.property/PropertyContext///PointingToDeclaration/">PropertyContext</span><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="for-all-blocking.html">A</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">shorthand for the Kotest <code class="lang-kotlin">forAll</code>, but blocking and always returning Unit</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1562013953%2FFunctions%2F-1404992111" anchor-label="forAllBlocking" id="-1562013953%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="for-all-blocking.html"><span>for</span><wbr><span>All</span><wbr><span><span>Blocking</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1562013953%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"forAllBlockingExtension"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="for-all-blocking.html">A</a><span class="token operator">&gt; </span><span data-unresolved-link="io.kotest.property/Gen///PointingToDeclaration/">Gen</span><span class="token operator">&lt;</span><a href="for-all-blocking.html">A</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="for-all-blocking.html"><span class="token function">forAllBlocking</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">property<span class="token operator">: </span><span class="token keyword">suspend </span><span data-unresolved-link="io.kotest.property/PropertyContext///PointingToDeclaration/">PropertyContext</span><span class="token punctuation">.</span><span class="token punctuation">(</span><a href="for-all-blocking.html">A</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">shorthand for the Kotest <code class="lang-kotlin">forAll</code>, but blocking and always returning Unit</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="214712645%2FFunctions%2F-1404992111" anchor-label="getPrivateFieldByName" id="214712645%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-private-field-by-name.html"><span>get</span><wbr><span>Private</span><wbr><span>Field</span><wbr><span>By</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="214712645%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="get-private-field-by-name.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token punctuation">, </span><a href="get-private-field-by-name.html">R</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt; </span><a href="get-private-field-by-name.html">T</a><span class="token punctuation">.</span><a href="get-private-field-by-name.html"><span class="token function">getPrivateFieldByName</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="get-private-field-by-name.html">R</a></div><div class="brief "><p class="paragraph">Retrieves the value of a private property in the receiver instance by its name.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1925943804%2FFunctions%2F-1404992111" anchor-label="hasSkipAnnotation" id="1925943804%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="has-skip-annotation.html"><span>has</span><wbr><span>Skip</span><wbr><span><span>Annotation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1925943804%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-published-api/index.html"><span class="token annotation builtin">PublishedApi</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/AnnotatedElement.html">AnnotatedElement</a><span class="token punctuation">.</span><a href="has-skip-annotation.html"><span class="token function">hasSkipAnnotation</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if an <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/AnnotatedElement.html">AnnotatedElement</a> is annotated with <a href="-skip-in-stack-trace/index.html">SkipInStackTrace</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1092641904%2FFunctions%2F-1404992111" anchor-label="isSkipped" id="1092641904%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-skipped.html"><span>is</span><wbr><span><span>Skipped</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1092641904%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="is-skipped.html"><span class="token function">isSkipped</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">clazz<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">methodName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Determines whether a method within the given class should be skipped.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1117292280%2FFunctions%2F-1404992111" anchor-label="isSkipped" id="1117292280%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-skipped.html"><span>is</span><wbr><span><span>Skipped</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1117292280%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-published-api/index.html"><span class="token annotation builtin">PublishedApi</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/StackTraceElement.html">StackTraceElement</a><span class="token punctuation">.</span><a href="is-skipped.html"><span class="token function">isSkipped</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/StackTraceElement.html">StackTraceElement</a> should be skipped based on the <a href="-skip-in-stack-trace/index.html">SkipInStackTrace</a> annotation.</p></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-published-api/index.html"><span class="token annotation builtin">PublishedApi</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/StackWalker.StackFrame.html">StackWalker.StackFrame</a><span class="token punctuation">.</span><a href="is-skipped.html"><span class="token function">isSkipped</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/StackWalker.StackFrame.html">StackFrame</a> should be skipped based on the <a href="-skip-in-stack-trace/index.html">SkipInStackTrace</a> annotation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-643547624%2FFunctions%2F-1404992111" anchor-label="requireAllOrNoneAreAnnotated" id="-643547624%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="require-all-or-none-are-annotated.html"><span>require</span><wbr><span>All</span><wbr><span>Or</span><wbr><span>None</span><wbr><span>Are</span><wbr><span><span>Annotated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-643547624%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/Method.html">Method</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="require-all-or-none-are-annotated.html"><span class="token function">requireAllOrNoneAreAnnotated</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Validates that all methods in the list are either annotated with <a href="-skip-in-stack-trace/index.html">SkipInStackTrace</a> or not. If only some methods are annotated, an exception will be thrown.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1200028512%2FFunctions%2F-1404992111" anchor-label="sealedSubclassConstructorsRecursive" id="-1200028512%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="sealed-subclass-constructors-recursive.html"><span>sealed</span><wbr><span>Subclass</span><wbr><span>Constructors</span><wbr><span><span>Recursive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1200028512%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="sealed-subclass-constructors-recursive.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a><span class="token operator">&lt;</span><a href="sealed-subclass-constructors-recursive.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="sealed-subclass-constructors-recursive.html"><span class="token function">sealedSubclassConstructorsRecursive</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-function/index.html">KFunction</a><span class="token operator">&lt;</span><a href="sealed-subclass-constructors-recursive.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Provides a sequence of the primary constructors of all non-abstract, non-sealed subclasses of the sealed class or interface that implement this <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="197225899%2FFunctions%2F-1404992111" anchor-label="sealedSubclassesRecursive" id="197225899%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="sealed-subclasses-recursive.html"><span>sealed</span><wbr><span>Subclasses</span><wbr><span><span>Recursive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="197225899%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="sealed-subclasses-recursive.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a><span class="token operator">&lt;</span><a href="sealed-subclasses-recursive.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="sealed-subclasses-recursive.html"><span class="token function">sealedSubclassesRecursive</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="sealed-subclasses-recursive.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns the full tree of classes which implement a base sealed class/interface, including grandchildren, great-grandchildren, etc. This is different from <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/sealed-subclasses.html">KClass.sealedSubclasses</a> in that the latter only returns the direct children.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2012365231%2FFunctions%2F-1404992111" anchor-label="sealedSubclassInstances" id="-2012365231%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="sealed-subclass-instances.html"><span>sealed</span><wbr><span>Subclass</span><wbr><span><span>Instances</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2012365231%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="sealed-subclass-instances.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a><span class="token operator">&lt;</span><a href="sealed-subclass-instances.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="sealed-subclass-instances.html"><span class="token function">sealedSubclassInstances</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>args<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="sealed-subclass-instances.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Provides a sequence of instances of all non-abstract, non-sealed subclasses of the sealed class or interface that implement this <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a>. The instances are created using the primary constructor of each subclass, with the provided arguments.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="147533711%2FFunctions%2F-1404992111" anchor-label="testVersionsPrivate" id="147533711%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="test-versions-private.html"><span>test</span><wbr><span>Versions</span><wbr><span><span>Private</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="147533711%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-published-api/index.html"><span class="token annotation builtin">PublishedApi</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="-versions-factory-test/index.html">VersionsFactoryTest</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token punctuation">, </span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="test-versions-private.html"><span class="token function">testVersionsPrivate</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">exhaustive<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">filter<span class="token operator">: </span><span class="token punctuation">(</span><a href="-mc-test-versions/index.html">McTestVersions</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-mc-test-versions/index.html">McTestVersions</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1943015550%2FFunctions%2F-1404992111" anchor-label="useRelativePaths" id="1943015550%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="use-relative-paths.html"><span>use</span><wbr><span>Relative</span><wbr><span><span>Paths</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1943015550%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="use-relative-paths.html"><span class="token function">useRelativePaths</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">workingDir<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">replace absolute paths with relative ones</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1456695530%2FFunctions%2F-1404992111" anchor-label="withClueCatching" id="-1456695530%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="with-clue-catching.html"><span>with</span><wbr><span>Clue</span><wbr><span><span>Catching</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1456695530%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="with-clue-catching.html">R</a><span class="token operator">&gt; </span><a href="with-clue-catching.html"><span class="token function">withClueCatching</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">clue<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">thunk<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="with-clue-catching.html">R</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="with-clue-catching.html">R</a></div><div class="brief "><p class="paragraph">Catch anything and rethrow, but prepend the <a href="with-clue-catching.html">clue</a>'s toString(). This is basically the same as just using Kotest's <code class="lang-kotlin">clue.asClue { ... }</code>, except that <code class="lang-kotlin">asClue</code> only catches assertion errors from inside Kotest.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1234971138%2FFunctions%2F-1404992111" anchor-label="writeGroovy" id="-1234971138%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="write-groovy.html"><span>write</span><wbr><span><span>Groovy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1234971138%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token punctuation">.</span><a href="write-groovy.html"><span class="token function">writeGroovy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">content<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1438620846%2FFunctions%2F-1404992111" anchor-label="writeJava" id="-1438620846%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="write-java.html"><span>write</span><wbr><span><span>Java</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1438620846%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token punctuation">.</span><a href="write-java.html"><span class="token function">writeJava</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">content<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-551589839%2FFunctions%2F-1404992111" anchor-label="writeKotlin" id="-551589839%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="write-kotlin.html"><span>write</span><wbr><span><span>Kotlin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-551589839%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token punctuation">.</span><a href="write-kotlin.html"><span class="token function">writeKotlin</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">content<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
