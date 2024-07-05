@@ -1,0 +1,428 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>LimitedDispatcherImpl</title>
+<link href="../../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.utils.coroutines.impl/-limited-dispatcher-impl/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../../../../not-found-version.html?v=0.12.5">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-utils:coroutines:impl/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-utils:coroutines:impl::modulecheck.utils.coroutines.impl/LimitedDispatcherImpl///PointingToDeclaration//-1128330925">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-utils:coroutines:impl</a><span class="delimiter">/</span><a href="../index.html">modulecheck.utils.coroutines.impl</a><span class="delimiter">/</span><span class="current">LimitedDispatcherImpl</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Limited</span><wbr><span>Dispatcher</span><wbr><span><span>Impl</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">LimitedDispatcherImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>dispatcher<span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineDispatcher///PointingToDeclaration/">CoroutineDispatcher</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>parallelism<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span> : <a href="../../../../../modulecheck-utils/coroutines/api/modulecheck.utils.coroutines/-limited-dispatcher/index.html">LimitedDispatcher</a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Runnable.html">Runnable</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-utils/coroutines/impl/src/main/kotlin/modulecheck/utils/coroutines/impl/LimitedDispatcherImpl.kt#L37">source</a>)</span></span></div><p class="paragraph">Forked from kotlinx.coroutines</p><p class="paragraph">The result of .limitedParallelism(x) call, a dispatcher that wraps the given dispatcher, but limits the parallelism level, while trying to emulate fairness.</p><span class="kdoc-tag"><h4 class="">Since</h4><p class="paragraph">0.12.0</p></span></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="1522759307%2FConstructors%2F-1128330925" anchor-label="LimitedDispatcherImpl" id="1522759307%2FConstructors%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-limited-dispatcher-impl.html"><span>Limited</span><wbr><span>Dispatcher</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1522759307%2FConstructors%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">dispatcher<span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineDispatcher///PointingToDeclaration/">CoroutineDispatcher</span><span class="token punctuation">, </span></span><span class="parameter ">parallelism<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-325646051%2FProperties%2F-1128330925" anchor-label="dispatcher" id="-325646051%2FProperties%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dispatcher.html"><span><span>dispatcher</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-325646051%2FProperties%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="dispatcher.html">dispatcher</a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineDispatcher///PointingToDeclaration/">CoroutineDispatcher</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1762250447%2FProperties%2F-1128330925" anchor-label="key" id="-1762250447%2FProperties%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1762250447%2FProperties%2F-1128330925"><span><span>key</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1762250447%2FProperties%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#-1762250447%2FProperties%2F-1128330925">key</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/-key/index.html">CoroutineContext.Key</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1844756698%2FProperties%2F-1128330925" anchor-label="parallelism" id="1844756698%2FProperties%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="parallelism.html"><span><span>parallelism</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1844756698%2FProperties%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="parallelism.html">parallelism</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1758286523%2FProperties%2F-1128330925" anchor-label="queue" id="-1758286523%2FProperties%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="queue.html"><span><span>queue</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1758286523%2FProperties%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="queue.html">queue</a><span class="token operator">: </span><a href="../-lock-free-task-queue/index.html">LockFreeTaskQueue</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Runnable.html">Runnable</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1940702510%2FProperties%2F-1128330925" anchor-label="runningWorkers" id="1940702510%2FProperties%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="running-workers.html"><span>running</span><wbr><span><span>Workers</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1940702510%2FProperties%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-volatile/index.html"><span class="token annotation builtin">Volatile</span></a></div></div><span class="token keyword">private </span><span class="token keyword">var </span><a href="running-workers.html">runningWorkers</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="699757563%2FProperties%2F-1128330925" anchor-label="workerAllocationLock" id="699757563%2FProperties%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="worker-allocation-lock.html"><span>worker</span><wbr><span>Allocation</span><wbr><span><span>Lock</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="699757563%2FProperties%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="worker-allocation-lock.html">workerAllocationLock</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1746305904%2FFunctions%2F-1128330925" anchor-label="addAndTryDispatching" id="1746305904%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="add-and-try-dispatching.html"><span>add</span><wbr><span>And</span><wbr><span>Try</span><wbr><span><span>Dispatching</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1746305904%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="add-and-try-dispatching.html"><span class="token function">addAndTryDispatching</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">block<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Runnable.html">Runnable</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="534213153%2FFunctions%2F-1128330925" anchor-label="dispatch" id="534213153%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dispatch.html"><span><span>dispatch</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="534213153%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="dispatch.html"><span class="token function">dispatch</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a><span class="token punctuation">, </span></span><span class="parameter ">block<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Runnable.html">Runnable</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1086359875%2FFunctions%2F-1128330925" anchor-label="dispatchInternal" id="1086359875%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dispatch-internal.html"><span>dispatch</span><wbr><span><span>Internal</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1086359875%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="dispatch-internal.html"><span class="token function">dispatchInternal</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">block<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Runnable.html">Runnable</a><span class="token punctuation">, </span></span><span class="parameter ">dispatch<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1852195896%2FFunctions%2F-1128330925" anchor-label="dispatchYield" id="-1852195896%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dispatch-yield.html"><span>dispatch</span><wbr><span><span>Yield</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1852195896%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="dispatch-yield.html"><span class="token function">dispatchYield</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a><span class="token punctuation">, </span></span><span class="parameter ">block<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Runnable.html">Runnable</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="466442070%2FFunctions%2F-1128330925" anchor-label="fold" id="466442070%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-module-check-dispatcher-provider/index.html#466442070%2FFunctions%2F-1128330925"><span><span>fold</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="466442070%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../-module-check-dispatcher-provider/index.html#466442070%2FFunctions%2F-1128330925">R</a><span class="token operator">&gt; </span><a href="../-module-check-dispatcher-provider/index.html#466442070%2FFunctions%2F-1128330925"><span class="token function">fold</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">initial<span class="token operator">: </span><a href="../-module-check-dispatcher-provider/index.html#466442070%2FFunctions%2F-1128330925">R</a><span class="token punctuation">, </span></span><span class="parameter ">operation<span class="token operator">: </span><span class="token punctuation">(</span><a href="../-module-check-dispatcher-provider/index.html#466442070%2FFunctions%2F-1128330925">R</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/-element/index.html">CoroutineContext.Element</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="../-module-check-dispatcher-provider/index.html#466442070%2FFunctions%2F-1128330925">R</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-module-check-dispatcher-provider/index.html#466442070%2FFunctions%2F-1128330925">R</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="232613081%2FFunctions%2F-1128330925" anchor-label="get" id="232613081%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-module-check-dispatcher-provider/index.html#232613081%2FFunctions%2F-1128330925"><span><span>get</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="232613081%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../-module-check-dispatcher-provider/index.html#232613081%2FFunctions%2F-1128330925">E</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/-element/index.html">CoroutineContext.Element</a><span class="token operator">&gt; </span><a href="../-module-check-dispatcher-provider/index.html#232613081%2FFunctions%2F-1128330925"><span class="token function">get</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/-key/index.html">CoroutineContext.Key</a><span class="token operator">&lt;</span><a href="../-module-check-dispatcher-provider/index.html#232613081%2FFunctions%2F-1128330925">E</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-module-check-dispatcher-provider/index.html#232613081%2FFunctions%2F-1128330925">E</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1798799910%2FFunctions%2F-1128330925" anchor-label="interceptContinuation" id="-1798799910%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1798799910%2FFunctions%2F-1128330925"><span>intercept</span><wbr><span><span>Continuation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1798799910%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="index.html#-1798799910%2FFunctions%2F-1128330925">T</a><span class="token operator">&gt; </span><a href="index.html#-1798799910%2FFunctions%2F-1128330925"><span class="token function">interceptContinuation</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">continuation<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-continuation/index.html">Continuation</a><span class="token operator">&lt;</span><a href="index.html#-1798799910%2FFunctions%2F-1128330925">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-continuation/index.html">Continuation</a><span class="token operator">&lt;</span><a href="index.html#-1798799910%2FFunctions%2F-1128330925">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-381715142%2FFunctions%2F-1128330925" anchor-label="isDispatchNeeded" id="-381715142%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-381715142%2FFunctions%2F-1128330925"><span>is</span><wbr><span>Dispatch</span><wbr><span><span>Needed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-381715142%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="index.html#-381715142%2FFunctions%2F-1128330925"><span class="token function">isDispatchNeeded</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="182179104%2FFunctions%2F-1128330925" anchor-label="limitedParallelism" id="182179104%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="limited-parallelism.html"><span>limited</span><wbr><span><span>Parallelism</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="182179104%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="kotlinx.coroutines/ExperimentalCoroutinesApi///PointingToDeclaration/"><span class="token annotation builtin">ExperimentalCoroutinesApi</span></span></div></div><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="limited-parallelism.html"><span class="token function">limitedParallelism</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">parallelism<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineDispatcher///PointingToDeclaration/">CoroutineDispatcher</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1830620809%2FFunctions%2F-1128330925" anchor-label="minusKey" id="-1830620809%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-module-check-dispatcher-provider/index.html#-1830620809%2FFunctions%2F-1128330925"><span>minus</span><wbr><span><span>Key</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1830620809%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../-module-check-dispatcher-provider/index.html#-1830620809%2FFunctions%2F-1128330925"><span class="token function">minusKey</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/-key/index.html">CoroutineContext.Key</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1635288188%2FFunctions%2F-1128330925" anchor-label="plus" id="1635288188%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-module-check-dispatcher-provider/index.html#1141296693%2FFunctions%2F-1128330925"><span><span>plus</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1635288188%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator </span><span class="token keyword">fun </span><a href="../-module-check-dispatcher-provider/index.html#1141296693%2FFunctions%2F-1128330925"><span class="token function">plus</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a></div><div class="symbol monospace"><span class="token keyword">operator </span><span class="token keyword">fun </span><a href="index.html#1709458771%2FFunctions%2F-1128330925"><span class="token function"><strike>plus</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">other<span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineDispatcher///PointingToDeclaration/">CoroutineDispatcher</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineDispatcher///PointingToDeclaration/">CoroutineDispatcher</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1994945966%2FFunctions%2F-1128330925" anchor-label="releaseInterceptedContinuation" id="-1994945966%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1994945966%2FFunctions%2F-1128330925"><span>release</span><wbr><span>Intercepted</span><wbr><span><span>Continuation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1994945966%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#-1994945966%2FFunctions%2F-1128330925"><span class="token function">releaseInterceptedContinuation</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">continuation<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-continuation/index.html">Continuation</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-893660341%2FFunctions%2F-1128330925" anchor-label="run" id="-893660341%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="run.html"><span><span>run</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-893660341%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="run.html"><span class="token function">run</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="883294532%2FFunctions%2F-1128330925" anchor-label="toString" id="883294532%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#883294532%2FFunctions%2F-1128330925"><span>to</span><wbr><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="883294532%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#883294532%2FFunctions%2F-1128330925"><span class="token function">toString</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="264901824%2FFunctions%2F-1128330925" anchor-label="tryAllocateWorker" id="264901824%2FFunctions%2F-1128330925" data-filterable-set=":modulecheck-utils:coroutines:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:coroutines:impl/main" data-filterable-set=":modulecheck-utils:coroutines:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="try-allocate-worker.html"><span>try</span><wbr><span>Allocate</span><wbr><span><span>Worker</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="264901824%2FFunctions%2F-1128330925"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:coroutines:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="try-allocate-worker.html"><span class="token function">tryAllocateWorker</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

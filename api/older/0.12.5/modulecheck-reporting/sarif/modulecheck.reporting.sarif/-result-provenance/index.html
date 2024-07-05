@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>ResultProvenance</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet"></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../../index.html">
+<span>ModuleCheck</span>            </a>    </div>
+    <div>
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.reporting.sarif/-result-provenance/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.12.5</div>
+  <div class="versions-dropdown-data"><a href="../../../../../../modulecheck-reporting/sarif/modulecheck.reporting.sarif/-result-provenance/index.html">0.13.0-SNAPSHOT</a><a href="index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="modulecheck-reporting:sarif::modulecheck.reporting.sarif/ResultProvenance///PointingToDeclaration//-1774126442">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-reporting:sarif</a><span class="delimiter">/</span><a href="../index.html">modulecheck.reporting.sarif</a><span class="delimiter">/</span><a href="index.html">ResultProvenance</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Result</span><wbr><span><span>Provenance</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/JsonClass///PointingToDeclaration/"><span class="token annotation">JsonClass</span></span><span class="token punctuation">(</span><span>generateAdapter<span class="token operator"> = </span><span class="breakable-word"><span class="token boolean">true</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">ResultProvenance</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"conversionSources"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span><span class="token keyword">val </span>conversionSources<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../-physical-location/index.html">PhysicalLocation</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"firstDetectionRunGuid"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span><span class="token keyword">val </span>firstDetectionRunGUID<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"firstDetectionTimeUtc"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span><span class="token keyword">val </span>firstDetectionTimeUTC<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"invocationIndex"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span><span class="token keyword">val </span>invocationIndex<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"lastDetectionRunGuid"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span><span class="token keyword">val </span>lastDetectionRunGUID<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"lastDetectionTimeUtc"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span><span class="token keyword">val </span>lastDetectionTimeUTC<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"properties"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span><span class="token keyword">val </span>properties<span class="token operator">: </span><a href="../-property-bag/index.html">PropertyBag</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Information about how and when the result was detected.</p><p class="paragraph">Contains information about how and when a result was detected.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Sources">Sources</button></div>
+    <div class="tabs-section-body">
+      <h2 class="tabbedcontent">Constructors</h2>
+      <div class="table" data-togglable="Constructors"><a data-name="45839620%2FConstructors%2F-1774126442" anchor-label="ResultProvenance" id="45839620%2FConstructors%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-reporting:sarif:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-result-provenance.html"><span>Result</span><wbr><span><span>Provenance</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="45839620%2FConstructors%2F-1774126442"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-result-provenance.html"><span class="token function">ResultProvenance</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"conversionSources"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span>conversionSources<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../-physical-location/index.html">PhysicalLocation</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"firstDetectionRunGuid"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span>firstDetectionRunGUID<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"firstDetectionTimeUtc"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span>firstDetectionTimeUTC<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"invocationIndex"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span>invocationIndex<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"lastDetectionRunGuid"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span>lastDetectionRunGUID<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"lastDetectionTimeUtc"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span>lastDetectionTimeUTC<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="com.squareup.moshi/Json///PointingToDeclaration/"><span class="token annotation">Json</span></span><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"properties"</span></span></span><wbr><span class="token punctuation">)</span>&nbsp;</span>properties<span class="token operator">: </span><a href="../-property-bag/index.html">PropertyBag</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="1455273740%2FProperties%2F-1774126442" anchor-label="conversionSources" id="1455273740%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-reporting:sarif:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="conversion-sources.html">conversionSources</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1455273740%2FProperties%2F-1774126442"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"><a data-name="1455273740%2FProperties%2F-1774126442" anchor-label="conversionSources" id="1455273740%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="conversion-sources.html">conversionSources</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../-physical-location/index.html">PhysicalLocation</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1455273740%2FProperties%2F-1774126442" anchor-label="conversionSources" id="1455273740%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><p class="paragraph">An array of physicalLocation objects which specify the portions of an analysis tool's output that a converter transformed into the result.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="2111267535%2FProperties%2F-1774126442" anchor-label="firstDetectionRunGUID" id="2111267535%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-reporting:sarif:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="first-detection-run-g-u-i-d.html">firstDetectionRunGUID</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2111267535%2FProperties%2F-1774126442"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"><a data-name="2111267535%2FProperties%2F-1774126442" anchor-label="firstDetectionRunGUID" id="2111267535%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="first-detection-run-g-u-i-d.html">firstDetectionRunGUID</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="2111267535%2FProperties%2F-1774126442" anchor-label="firstDetectionRunGUID" id="2111267535%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><p class="paragraph">A GUID-valued string equal to the automationDetails.guid property of the run in which the result was first detected.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-559874004%2FProperties%2F-1774126442" anchor-label="firstDetectionTimeUTC" id="-559874004%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-reporting:sarif:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="first-detection-time-u-t-c.html">firstDetectionTimeUTC</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-559874004%2FProperties%2F-1774126442"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"><a data-name="-559874004%2FProperties%2F-1774126442" anchor-label="firstDetectionTimeUTC" id="-559874004%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="first-detection-time-u-t-c.html">firstDetectionTimeUTC</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-559874004%2FProperties%2F-1774126442" anchor-label="firstDetectionTimeUTC" id="-559874004%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><p class="paragraph">The Coordinated Universal Time (UTC) date and time at which the result was first detected. See "Date/time properties" in the SARIF spec for the required format.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1936323308%2FProperties%2F-1774126442" anchor-label="invocationIndex" id="1936323308%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-reporting:sarif:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="invocation-index.html">invocationIndex</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1936323308%2FProperties%2F-1774126442"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"><a data-name="1936323308%2FProperties%2F-1774126442" anchor-label="invocationIndex" id="1936323308%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="invocation-index.html">invocationIndex</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1936323308%2FProperties%2F-1774126442" anchor-label="invocationIndex" id="1936323308%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><p class="paragraph">The index within the run.invocations array of the invocation object which describes the tool invocation that detected the result.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-906095897%2FProperties%2F-1774126442" anchor-label="lastDetectionRunGUID" id="-906095897%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-reporting:sarif:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="last-detection-run-g-u-i-d.html">lastDetectionRunGUID</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-906095897%2FProperties%2F-1774126442"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"><a data-name="-906095897%2FProperties%2F-1774126442" anchor-label="lastDetectionRunGUID" id="-906095897%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="last-detection-run-g-u-i-d.html">lastDetectionRunGUID</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-906095897%2FProperties%2F-1774126442" anchor-label="lastDetectionRunGUID" id="-906095897%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><p class="paragraph">A GUID-valued string equal to the automationDetails.guid property of the run in which the result was most recently detected.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="717729860%2FProperties%2F-1774126442" anchor-label="lastDetectionTimeUTC" id="717729860%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-reporting:sarif:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="last-detection-time-u-t-c.html">lastDetectionTimeUTC</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="717729860%2FProperties%2F-1774126442"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"><a data-name="717729860%2FProperties%2F-1774126442" anchor-label="lastDetectionTimeUTC" id="717729860%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="last-detection-time-u-t-c.html">lastDetectionTimeUTC</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="717729860%2FProperties%2F-1774126442" anchor-label="lastDetectionTimeUTC" id="717729860%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><p class="paragraph">The Coordinated Universal Time (UTC) date and time at which the result was most recently detected. See "Date/time properties" in the SARIF spec for the required format.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1538965561%2FProperties%2F-1774126442" anchor-label="properties" id="1538965561%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-reporting:sarif:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="properties.html">properties</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1538965561%2FProperties%2F-1774126442"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"><a data-name="1538965561%2FProperties%2F-1774126442" anchor-label="properties" id="1538965561%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="properties.html">properties</a><span class="token operator">: </span><a href="../-property-bag/index.html">PropertyBag</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1538965561%2FProperties%2F-1774126442" anchor-label="properties" id="1538965561%2FProperties%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a><p class="paragraph">Key/value pairs that provide additional information about the result.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Sources</h2>
+      <div class="table" data-togglable="Sources"><a data-name="1748309011%2FSource%2F-1774126442" anchor-label="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-reporting/sarif/src/main/kotlin/modulecheck/reporting/sarif/SarifReport.kt#L2206" id="1748309011%2FSource%2F-1774126442" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-reporting:sarif:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-reporting:sarif:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-reporting/sarif/src/main/kotlin/modulecheck/reporting/sarif/SarifReport.kt#L2206">jvm source</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1748309011%2FSource%2F-1774126442"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+
+

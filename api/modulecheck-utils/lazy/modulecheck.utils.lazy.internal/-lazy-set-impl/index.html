@@ -1,0 +1,338 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>LazySetImpl</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.utils.lazy.internal/-lazy-set-impl/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../../../older/0.12.5/modulecheck-utils/lazy/modulecheck.utils.lazy.internal/-lazy-set-impl/index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-utils:lazy/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-utils:lazy::modulecheck.utils.lazy.internal/LazySetImpl///PointingToDeclaration//1400080046">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-utils:lazy</a><span class="delimiter">/</span><a href="../index.html">modulecheck.utils.lazy.internal</a><span class="delimiter">/</span><span class="current">LazySetImpl</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Lazy</span><wbr><span>Set</span><wbr><span><span>Impl</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="index.html">LazySetImpl</a><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">cache<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">sources<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/-lazy-set/-data-source/index.html">LazySet.DataSource</a><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="kotlinx.coroutines.flow/AbstractFlow///PointingToDeclaration/">AbstractFlow</span><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt; </span>, <a href="../../modulecheck.utils.lazy/-lazy-set/index.html">LazySet</a><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt; </span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-utils/lazy/src/main/kotlin/modulecheck/utils/lazy/internal/LazySetImpl.kt#L36">source</a>)</span></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-1202099180%2FConstructors%2F1400080046" anchor-label="LazySetImpl" id="-1202099180%2FConstructors%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-lazy-set-impl.html"><span>Lazy</span><wbr><span>Set</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1202099180%2FConstructors%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">cache<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">sources<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/-lazy-set/-data-source/index.html">LazySet.DataSource</a><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="1127390339%2FProperties%2F1400080046" anchor-label="isFullyCached" id="1127390339%2FProperties%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-fully-cached.html"><span>is</span><wbr><span>Fully</span><wbr><span><span>Cached</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1127390339%2FProperties%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="is-fully-cached.html">isFullyCached</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1362888916%2FProperties%2F1400080046" anchor-label="state" id="1362888916%2FProperties%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="state.html"><span><span>state</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1362888916%2FProperties%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">val </span><a href="state.html">state</a><span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/atomic/AtomicReference.html">AtomicReference</a><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/-lazy-set/-state/index.html">LazySet.State</a><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="325051833%2FFunctions%2F1400080046" anchor-label="asDataSource" id="325051833%2FFunctions%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../modulecheck.utils.lazy/as-data-source.html"><span>as</span><wbr><span>Data</span><wbr><span><span>Source</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="325051833%2FFunctions%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/as-data-source.html">E</a><span class="token operator">&gt; </span><span data-unresolved-link="kotlinx.coroutines.flow/Flow///PointingToDeclaration/">Flow</span><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/as-data-source.html">E</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="../../modulecheck.utils.lazy/as-data-source.html"><span class="token function">asDataSource</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">priority<span class="token operator">: </span><a href="../../modulecheck.utils.lazy/-lazy-set/-data-source/-priority/index.html">LazySet.DataSource.Priority</a><span class="token operator"> = </span>MEDIUM</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../modulecheck.utils.lazy/-lazy-set/-data-source/index.html">LazySet.DataSource</a><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/as-data-source.html">E</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="513457332%2FFunctions%2F1400080046" anchor-label="collect" id="513457332%2FFunctions%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#513457332%2FFunctions%2F1400080046"><span><span>collect</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="513457332%2FFunctions%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="index.html#513457332%2FFunctions%2F1400080046"><span class="token function">collect</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">collector<span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines.flow/FlowCollector///PointingToDeclaration/">FlowCollector</span><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1515585944%2FFunctions%2F1400080046" anchor-label="collectSafely" id="-1515585944%2FFunctions%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="collect-safely.html"><span>collect</span><wbr><span><span>Safely</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1515585944%2FFunctions%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="collect-safely.html"><span class="token function">collectSafely</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">collector<span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines.flow/FlowCollector///PointingToDeclaration/">FlowCollector</span><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="531888460%2FFunctions%2F1400080046" anchor-label="contains" id="531888460%2FFunctions%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="contains.html"><span><span>contains</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="531888460%2FFunctions%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="contains.html"><span class="token function">contains</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">element<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="404550933%2FFunctions%2F1400080046" anchor-label="containsAny" id="404550933%2FFunctions%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="contains-any.html"><span>contains</span><wbr><span><span>Any</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="404550933%2FFunctions%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="contains-any.html"><span class="token function">containsAny</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">other<span class="token operator">: </span><a href="../../modulecheck.utils.lazy/-lazy-set/index.html">LazySet</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="975110570%2FFunctions%2F1400080046" anchor-label="containsAny" id="975110570%2FFunctions%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../modulecheck.utils.lazy/contains-any.html"><span>contains</span><wbr><span><span>Any</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="975110570%2FFunctions%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/contains-any.html">T</a><span class="token operator"> : </span><a href="../../modulecheck.utils.lazy/contains-any.html">B</a><span class="token punctuation">, </span><a href="../../modulecheck.utils.lazy/contains-any.html">E</a><span class="token operator"> : </span><a href="../../modulecheck.utils.lazy/contains-any.html">B</a><span class="token punctuation">, </span><a href="../../modulecheck.utils.lazy/contains-any.html">B</a><span class="token operator">&gt; </span><a href="../../modulecheck.utils.lazy/-lazy-set/index.html">LazySet</a><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/contains-any.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="../../modulecheck.utils.lazy/contains-any.html"><span class="token function">containsAny</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">elements<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/contains-any.html">E</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-98515375%2FFunctions%2F1400080046" anchor-label="getOrNull" id="-98515375%2FFunctions%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../modulecheck.utils.lazy/get-or-null.html"><span>get</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-98515375%2FFunctions%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">inline suspend </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/get-or-null.html">T</a><span class="token operator"> : </span><a href="../../modulecheck.utils.lazy/get-or-null.html">E</a><span class="token punctuation">, </span><a href="../../modulecheck.utils.lazy/get-or-null.html">E</a><span class="token operator">&gt; </span><a href="../../modulecheck.utils.lazy/-lazy-set/index.html">LazySet</a><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/get-or-null.html">E</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="../../modulecheck.utils.lazy/get-or-null.html"><span class="token function">getOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">element<span class="token operator">: </span><a href="../../modulecheck.utils.lazy/get-or-null.html">E</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../modulecheck.utils.lazy/get-or-null.html">T</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1605827230%2FFunctions%2F1400080046" anchor-label="isEmpty" id="-1605827230%2FFunctions%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-empty.html"><span>is</span><wbr><span><span>Empty</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1605827230%2FFunctions%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="is-empty.html"><span class="token function">isEmpty</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-482884815%2FFunctions%2F1400080046" anchor-label="isNotEmpty" id="-482884815%2FFunctions%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-not-empty.html"><span>is</span><wbr><span>Not</span><wbr><span><span>Empty</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-482884815%2FFunctions%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="is-not-empty.html"><span class="token function">isNotEmpty</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="97288969%2FFunctions%2F1400080046" anchor-label="remainingFlow" id="97288969%2FFunctions%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="remaining-flow.html"><span>remaining</span><wbr><span><span>Flow</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="97288969%2FFunctions%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="../../modulecheck.utils.lazy/-lazy-set/-state/index.html">LazySet.State</a><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="remaining-flow.html"><span class="token function">remainingFlow</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines.flow/Flow///PointingToDeclaration/">Flow</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1241305329%2FFunctions%2F1400080046" anchor-label="snapshot" id="1241305329%2FFunctions%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="snapshot.html"><span><span>snapshot</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1241305329%2FFunctions%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="snapshot.html"><span class="token function">snapshot</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../modulecheck.utils.lazy/-lazy-set/-state/index.html">LazySet.State</a><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1471422161%2FFunctions%2F1400080046" anchor-label="toLazySet" id="-1471422161%2FFunctions%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../modulecheck.utils.lazy/to-lazy-set.html"><span>to</span><wbr><span>Lazy</span><wbr><span><span>Set</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1471422161%2FFunctions%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/to-lazy-set.html">E</a><span class="token operator">&gt; </span><span data-unresolved-link="kotlinx.coroutines.flow/Flow///PointingToDeclaration/">Flow</span><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/to-lazy-set.html">E</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="../../modulecheck.utils.lazy/to-lazy-set.html"><span class="token function">toLazySet</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">priority<span class="token operator">: </span><a href="../../modulecheck.utils.lazy/-lazy-set/-data-source/-priority/index.html">LazySet.DataSource.Priority</a><span class="token operator"> = </span>MEDIUM</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../modulecheck.utils.lazy/-lazy-set/index.html">LazySet</a><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/to-lazy-set.html">E</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="425125215%2FFunctions%2F1400080046" anchor-label="updateCache" id="425125215%2FFunctions%2F1400080046" data-filterable-set=":modulecheck-utils:lazy/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-utils:lazy/main" data-filterable-set=":modulecheck-utils:lazy/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="update-cache.html"><span>update</span><wbr><span><span>Cache</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="425125215%2FFunctions%2F1400080046"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-utils:lazy/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="update-cache.html"><span class="token function">updateCache</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">new<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">completed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../modulecheck.utils.lazy/-lazy-set/-data-source/index.html">LazySet.DataSource</a><span class="token operator">&lt;</span><a href="index.html">E</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

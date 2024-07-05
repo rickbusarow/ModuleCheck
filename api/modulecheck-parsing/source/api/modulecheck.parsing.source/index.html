@@ -1,0 +1,618 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>modulecheck.parsing.source</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.parsing.source/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../../../older/0.12.5/modulecheck-parsing/source/api/modulecheck.parsing.source/index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-parsing:source:api/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageids="modulecheck-parsing:source:api::modulecheck.parsing.source////PointingToDeclaration//1296946518">
+  <div class="breadcrumbs"><a href="../index.html">modulecheck-parsing:source:api</a><span class="delimiter">/</span><span class="current">modulecheck.parsing.source</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="226095804%2FClasslikes%2F1296946518" anchor-label="AndroidDataBindingDeclaredName" id="226095804%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-data-binding-declared-name/index.html"><span>Android</span><wbr><span>Data</span><wbr><span>Binding</span><wbr><span>Declared</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="226095804%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-android-data-binding-declared-name/index.html">AndroidDataBindingDeclaredName</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sourceLayout<span class="token operator">: </span><a href="-unqualified-android-resource-reference-name/index.html">UnqualifiedAndroidResourceReferenceName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>packageName<span class="token operator">: </span><a href="-package-name/index.html">PackageName</a></span></span><span class="token punctuation">)</span> : <a href="-qualified-declared-name/index.html">QualifiedDeclaredName</a>, <a href="-android-resource-declared-name/index.html">AndroidResourceDeclaredName</a>, <a href="-generated/index.html">Generated</a></div><div class="brief "><p class="paragraph">example: <code class="lang-kotlin">com.example.databinding.FragmentListBinding</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1101243819%2FClasslikes%2F1296946518" anchor-label="AndroidDataBindingReferenceName" id="1101243819%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-data-binding-reference-name/index.html"><span>Android</span><wbr><span>Data</span><wbr><span>Binding</span><wbr><span>Reference</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1101243819%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-android-data-binding-reference-name/index.html">AndroidDataBindingReferenceName</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>language<span class="token operator">: </span><a href="-mc-name/-compatible-language/index.html">McName.CompatibleLanguage</a></span></span><span class="token punctuation">)</span> : <a href="-android-resource-reference-name/index.html">AndroidResourceReferenceName</a></div><div class="brief "><p class="paragraph">example: <code class="lang-kotlin">com.example.databinding.FragmentViewBinding</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-606456347%2FClasslikes%2F1296946518" anchor-label="AndroidRDeclaredName" id="-606456347%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-r-declared-name/index.html"><span>Android</span><wbr><span>RDeclared</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-606456347%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-android-r-declared-name/index.html">AndroidRDeclaredName</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>packageName<span class="token operator">: </span><a href="-package-name/index.html">PackageName</a></span></span><span class="token punctuation">)</span> : <a href="-qualified-declared-name/index.html">QualifiedDeclaredName</a>, <a href="-android-resource-declared-name/index.html">AndroidResourceDeclaredName</a></div><div class="brief "><p class="paragraph">example: <code class="lang-kotlin">com.example.app.R</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="710642387%2FClasslikes%2F1296946518" anchor-label="AndroidResourceDeclaredName" id="710642387%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-resource-declared-name/index.html"><span>Android</span><wbr><span>Resource</span><wbr><span>Declared</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="710642387%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-android-resource-declared-name/index.html">AndroidResourceDeclaredName</a> : <a href="-declared-name/index.html">DeclaredName</a>, <a href="-has-simple-names/index.html">HasSimpleNames</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1057681292%2FClasslikes%2F1296946518" anchor-label="AndroidResourceReferenceName" id="-1057681292%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-resource-reference-name/index.html"><span>Android</span><wbr><span>Resource</span><wbr><span>Reference</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1057681292%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-android-resource-reference-name/index.html">AndroidResourceReferenceName</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span> : <a href="-reference-name/index.html">ReferenceName</a></div><div class="brief "><p class="paragraph">Any reference to an Android resource</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1061930914%2FClasslikes%2F1296946518" anchor-label="AndroidRReferenceName" id="1061930914%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-r-reference-name/index.html"><span>Android</span><wbr><span>RReference</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1061930914%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-android-r-reference-name/index.html">AndroidRReferenceName</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>packageName<span class="token operator">: </span><a href="-package-name/index.html">PackageName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>language<span class="token operator">: </span><a href="-mc-name/-compatible-language/index.html">McName.CompatibleLanguage</a></span></span><span class="token punctuation">)</span> : <a href="-android-resource-reference-name/index.html">AndroidResourceReferenceName</a></div><div class="brief "><p class="paragraph">example: <code class="lang-kotlin">com.example.R</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-908790425%2FClasslikes%2F1296946518" anchor-label="AnvilAnnotatedType" id="-908790425%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-anvil-annotated-type/index.html"><span>Anvil</span><wbr><span>Annotated</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-908790425%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-anvil-annotated-type/index.html">AnvilAnnotatedType</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>contributedTypeDeclaration<span class="token operator">: </span><a href="-qualified-declared-name/index.html">QualifiedDeclaredName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>contributedScope<span class="token operator">: </span><a href="-anvil-scope-name/index.html">AnvilScopeName</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1421865263%2FClasslikes%2F1296946518" anchor-label="AnvilGradlePlugin" id="1421865263%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-anvil-gradle-plugin/index.html"><span>Anvil</span><wbr><span>Gradle</span><wbr><span><span>Plugin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1421865263%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-anvil-gradle-plugin/index.html">AnvilGradlePlugin</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>version<span class="token operator">: </span><span data-unresolved-link="net.swiftzer.semver/SemVer///PointingToDeclaration/">SemVer</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>generateDaggerFactories<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-736653574%2FClasslikes%2F1296946518" anchor-label="AnvilScopeName" id="-736653574%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-anvil-scope-name/index.html"><span>Anvil</span><wbr><span>Scope</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-736653574%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-anvil-scope-name/index.html">AnvilScopeName</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>fqName<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.name/FqName///PointingToDeclaration/">FqName</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1034271478%2FClasslikes%2F1296946518" anchor-label="AnvilScopeNameEntry" id="1034271478%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-anvil-scope-name-entry/index.html"><span>Anvil</span><wbr><span>Scope</span><wbr><span>Name</span><wbr><span><span>Entry</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1034271478%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-anvil-scope-name-entry/index.html">AnvilScopeNameEntry</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="-reference-name/index.html">ReferenceName</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1335446504%2FClasslikes%2F1296946518" anchor-label="DeclaredName" id="1335446504%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-declared-name/index.html"><span>Declared</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1335446504%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-declared-name/index.html">DeclaredName</a> : <a href="-mc-name/index.html">McName</a>, <a href="-has-simple-names/index.html">HasSimpleNames</a></div><div class="brief "><p class="paragraph">Represents a "declaration" -- a named object which can be referenced elsewhere.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2137393414%2FClasslikes%2F1296946518" anchor-label="Generated" id="2137393414%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-generated/index.html"><span><span>Generated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2137393414%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-generated/index.html">Generated</a> : <a href="-mc-name/index.html">McName</a></div><div class="brief "><p class="paragraph">Indicates that a given <a href="-declared-name/index.html">DeclaredName</a> is generated by some mechanism, like AGP or Dagger.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-211829226%2FClasslikes%2F1296946518" anchor-label="HasPackageName" id="-211829226%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-has-package-name/index.html"><span>Has</span><wbr><span>Package</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-211829226%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-has-package-name/index.html">HasPackageName</a></div><div class="brief "><p class="paragraph">Convenience interface for providing a <a href="-package-name/index.html">PackageName</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1696952525%2FClasslikes%2F1296946518" anchor-label="HasReferences" id="-1696952525%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-has-references/index.html"><span>Has</span><wbr><span><span>References</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1696952525%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-has-references/index.html">HasReferences</a></div><div class="brief "><p class="paragraph">Marker which indicates that <a href="-has-references/references.html">references</a> exist. Typically implemented by "file" types</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1440100111%2FClasslikes%2F1296946518" anchor-label="HasSimpleNames" id="-1440100111%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-has-simple-names/index.html"><span>Has</span><wbr><span>Simple</span><wbr><span><span>Names</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1440100111%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-has-simple-names/index.html">HasSimpleNames</a></div><div class="brief "><p class="paragraph">Convenience interface for providing a <a href="-simple-name/index.html">SimpleName</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1379047215%2FClasslikes%2F1296946518" anchor-label="JavaFile" id="1379047215%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-java-file/index.html"><span>Java</span><wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1379047215%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-java-file/index.html">JavaFile</a> : <a href="-jvm-file/index.html">JvmFile</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-178793064%2FClasslikes%2F1296946518" anchor-label="JvmFile" id="-178793064%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-jvm-file/index.html"><span>Jvm</span><wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-178793064%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-jvm-file/index.html">JvmFile</a> : <a href="-has-references/index.html">HasReferences</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1739250096%2FClasslikes%2F1296946518" anchor-label="KotlinFile" id="1739250096%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-kotlin-file/index.html"><span>Kotlin</span><wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1739250096%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-kotlin-file/index.html">KotlinFile</a> : <a href="-jvm-file/index.html">JvmFile</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1329144076%2FClasslikes%2F1296946518" anchor-label="McName" id="1329144076%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mc-name/index.html"><span>Mc</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1329144076%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-mc-name/index.html">McName</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-comparable/index.html">Comparable</a><span class="token operator">&lt;</span><a href="-mc-name/index.html">McName</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Fundamentally, this is a version of <code class="lang-kotlin">FqName</code> (such as Kotlin's <span data-unresolved-link="org.jetbrains.kotlin.name/FqName///PointingToDeclaration/">FqName</span>) with syntactic sugar for complex matching requirements.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-561032220%2FClasslikes%2F1296946518" anchor-label="PackageName" id="-561032220%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-package-name/index.html"><span>Package</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-561032220%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-package-name/index.html">PackageName</a> : <a href="-mc-name/index.html">McName</a></div><div class="brief "><p class="paragraph">Represents a package name.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="261223460%2FClasslikes%2F1296946518" anchor-label="PackageNameImpl" id="261223460%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-package-name-impl/index.html"><span>Package</span><wbr><span>Name</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="261223460%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-package-name-impl/index.html">PackageNameImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span> : <a href="-package-name/index.html">PackageName</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1837196551%2FClasslikes%2F1296946518" anchor-label="QualifiedAndroidResourceDeclaredName" id="1837196551%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qualified-android-resource-declared-name/index.html"><span>Qualified</span><wbr><span>Android</span><wbr><span>Resource</span><wbr><span>Declared</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1837196551%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-qualified-android-resource-declared-name/index.html">QualifiedAndroidResourceDeclaredName</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>sourceR<span class="token operator">: </span><a href="-android-r-reference-name/index.html">AndroidRReferenceName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sourceResource<span class="token operator">: </span><a href="-unqualified-android-resource-reference-name/index.html">UnqualifiedAndroidResourceReferenceName</a></span></span><span class="token punctuation">)</span> : <a href="-qualified-declared-name/index.html">QualifiedDeclaredName</a>, <a href="-android-resource-declared-name/index.html">AndroidResourceDeclaredName</a>, <a href="-generated/index.html">Generated</a></div><div class="brief "><p class="paragraph">example: <code class="lang-kotlin">com.example.R.string.app_name</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-494240576%2FClasslikes%2F1296946518" anchor-label="QualifiedAndroidResourceReferenceName" id="-494240576%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qualified-android-resource-reference-name/index.html"><span>Qualified</span><wbr><span>Android</span><wbr><span>Resource</span><wbr><span>Reference</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-494240576%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-qualified-android-resource-reference-name/index.html">QualifiedAndroidResourceReferenceName</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>language<span class="token operator">: </span><a href="-mc-name/-compatible-language/index.html">McName.CompatibleLanguage</a></span></span><span class="token punctuation">)</span> : <a href="-android-resource-reference-name/index.html">AndroidResourceReferenceName</a></div><div class="brief "><p class="paragraph">example: <code class="lang-kotlin">com.example.R.string.app_name</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="642306100%2FClasslikes%2F1296946518" anchor-label="QualifiedDeclaredName" id="642306100%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qualified-declared-name/index.html"><span>Qualified</span><wbr><span>Declared</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="642306100%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-qualified-declared-name/index.html">QualifiedDeclaredName</a> : <a href="-declared-name/index.html">DeclaredName</a>, <a href="-mc-name/index.html">McName</a>, <a href="-has-package-name/index.html">HasPackageName</a>, <a href="-has-simple-names/index.html">HasSimpleNames</a>, <a href="-resolvable-mc-name/index.html">ResolvableMcName</a></div><div class="brief "><p class="paragraph">Represents a "declaration" -- a named object which can be referenced elsewhere.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1433089932%2FClasslikes%2F1296946518" anchor-label="QualifiedDeclaredNameImpl" id="-1433089932%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-qualified-declared-name-impl/index.html"><span>Qualified</span><wbr><span>Declared</span><wbr><span>Name</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1433089932%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-qualified-declared-name-impl/index.html">QualifiedDeclaredNameImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>packageName<span class="token operator">: </span><a href="-package-name/index.html">PackageName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>simpleNames<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-simple-name/index.html">SimpleName</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>languages<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="-mc-name/-compatible-language/index.html">McName.CompatibleLanguage</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="-qualified-declared-name/index.html">QualifiedDeclaredName</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2079407271%2FClasslikes%2F1296946518" anchor-label="RawAnvilAnnotatedType" id="2079407271%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-raw-anvil-annotated-type/index.html"><span>Raw</span><wbr><span>Anvil</span><wbr><span>Annotated</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2079407271%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-raw-anvil-annotated-type/index.html">RawAnvilAnnotatedType</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>declaredName<span class="token operator">: </span><a href="-qualified-declared-name/index.html">QualifiedDeclaredName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>anvilScopeNameEntry<span class="token operator">: </span><a href="-anvil-scope-name-entry/index.html">AnvilScopeNameEntry</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1131377151%2FClasslikes%2F1296946518" anchor-label="ReferenceName" id="1131377151%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-reference-name/index.html"><span>Reference</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1131377151%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-reference-name/index.html">ReferenceName</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span> : <a href="-mc-name/index.html">McName</a>, <a href="-resolvable-mc-name/index.html">ResolvableMcName</a></div><div class="brief "><p class="paragraph">Represents a name -- fully qualified or not -- which references a declaration somewhere else</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1397781313%2FClasslikes%2F1296946518" anchor-label="ReferenceNameImpl" id="-1397781313%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-reference-name-impl/index.html"><span>Reference</span><wbr><span>Name</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1397781313%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">class </span><a href="-reference-name-impl/index.html">ReferenceNameImpl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>language<span class="token operator">: </span><a href="-mc-name/-compatible-language/index.html">McName.CompatibleLanguage</a></span></span><span class="token punctuation">)</span> : <a href="-reference-name/index.html">ReferenceName</a>, <a href="-mc-name/index.html">McName</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2132300519%2FClasslikes%2F1296946518" anchor-label="ResolvableMcName" id="-2132300519%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-resolvable-mc-name/index.html"><span>Resolvable</span><wbr><span>Mc</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2132300519%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-resolvable-mc-name/index.html">ResolvableMcName</a> : <a href="-mc-name/index.html">McName</a></div><div class="brief "><p class="paragraph">An <a href="-mc-name/index.html">McName</a> which has the potential to be resolved -- meaning any <a href="-reference-name/index.html">ReferenceName</a>, or a <a href="-qualified-declared-name/index.html">QualifiedDeclaredName</a></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="360539248%2FClasslikes%2F1296946518" anchor-label="SimpleName" id="360539248%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-simple-name/index.html"><span>Simple</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="360539248%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-simple-name/index.html">SimpleName</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-comparable/index.html">Comparable</a><span class="token operator">&lt;</span><a href="-simple-name/index.html">SimpleName</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A name which is not fully qualified, like <code class="lang-kotlin">Foo</code> in <code class="lang-kotlin">com.example.Foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="85340019%2FClasslikes%2F1296946518" anchor-label="UnqualifiedAndroidResource" id="85340019%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unqualified-android-resource/index.html"><span>Unqualified</span><wbr><span>Android</span><wbr><span><span>Resource</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="85340019%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-unqualified-android-resource/index.html">UnqualifiedAndroidResource</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>prefix<span class="token operator">: </span><a href="-simple-name/index.html">SimpleName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>identifier<span class="token operator">: </span><a href="-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span> : <a href="-android-resource-declared-name/index.html">AndroidResourceDeclaredName</a>, <a href="-mc-name/index.html">McName</a>, <a href="-has-simple-names/index.html">HasSimpleNames</a></div><div class="brief "><p class="paragraph">example: <code class="lang-kotlin">R.string.app_name</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-553237351%2FClasslikes%2F1296946518" anchor-label="UnqualifiedAndroidResourceReferenceName" id="-553237351%2FClasslikes%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unqualified-android-resource-reference-name/index.html"><span>Unqualified</span><wbr><span>Android</span><wbr><span>Resource</span><wbr><span>Reference</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-553237351%2FClasslikes%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-unqualified-android-resource-reference-name/index.html">UnqualifiedAndroidResourceReferenceName</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>language<span class="token operator">: </span><a href="-mc-name/-compatible-language/index.html">McName.CompatibleLanguage</a></span></span><span class="token punctuation">)</span> : <a href="-android-resource-reference-name/index.html">AndroidResourceReferenceName</a>, <a href="-has-simple-names/index.html">HasSimpleNames</a></div><div class="brief "><p class="paragraph">example: <code class="lang-kotlin">R.string.app_name</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="EXTENSION_FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1557319182%2FFunctions%2F1296946518" anchor-label="append" id="1557319182%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="append.html"><span><span>append</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1557319182%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="-package-name/index.html">PackageName</a><span class="token punctuation">.</span><a href="append.html"><span class="token function">append</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>simpleNames<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Safe function for appending a simple name to the "end" of a package name.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-904582874%2FFunctions%2F1296946518" anchor-label="asDeclaredName" id="-904582874%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="as-declared-name.html"><span>as</span><wbr><span>Declared</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-904582874%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-iterable/index.html">Iterable</a><span class="token operator">&lt;</span><a href="-simple-name/index.html">SimpleName</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="as-declared-name.html"><span class="token function">asDeclaredName</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">packageName<span class="token operator">: </span><a href="-package-name/index.html">PackageName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">vararg </span>languages<span class="token operator">: </span><a href="-mc-name/-compatible-language/index.html">McName.CompatibleLanguage</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-qualified-declared-name/index.html">QualifiedDeclaredName</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="-simple-name/index.html">SimpleName</a><span class="token punctuation">.</span><a href="as-declared-name.html"><span class="token function">asDeclaredName</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">packageName<span class="token operator">: </span><a href="-package-name/index.html">PackageName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">vararg </span>languages<span class="token operator">: </span><a href="-mc-name/-compatible-language/index.html">McName.CompatibleLanguage</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-qualified-declared-name/index.html">QualifiedDeclaredName</a></div><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.name/FqName///PointingToDeclaration/">FqName</span><span class="token punctuation">.</span><a href="as-declared-name.html"><span class="token function">asDeclaredName</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">packageName<span class="token operator">: </span><a href="-package-name/index.html">PackageName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">vararg </span>languages<span class="token operator">: </span><a href="-mc-name/-compatible-language/index.html">McName.CompatibleLanguage</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-qualified-declared-name/index.html">QualifiedDeclaredName</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1644282510%2FFunctions%2F1296946518" anchor-label="getNameOrNull" id="1644282510%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-name-or-null.html"><span>get</span><wbr><span>Name</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1644282510%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">inline suspend </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="get-name-or-null.html">T</a><span class="token operator"> : </span><a href="-mc-name/index.html">McName</a><span class="token operator">&gt; </span><a href="../../../../modulecheck-utils/lazy/modulecheck.utils.lazy/-lazy-set/index.html">LazySet</a><span class="token operator">&lt;</span><a href="-mc-name/index.html">McName</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="get-name-or-null.html"><span class="token function">getNameOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">element<span class="token operator">: </span><a href="-mc-name/index.html">McName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="get-name-or-null.html">T</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

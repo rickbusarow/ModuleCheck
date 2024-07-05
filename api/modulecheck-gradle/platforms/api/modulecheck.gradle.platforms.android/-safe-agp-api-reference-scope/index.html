@@ -1,0 +1,278 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>SafeAgpApiReferenceScope</title>
+<link href="../../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.gradle.platforms.android/-safe-agp-api-reference-scope/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../../../../older/0.12.5/modulecheck-gradle/platforms/api/modulecheck.gradle.platforms.android/-safe-agp-api-reference-scope/index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-gradle:platforms:api/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-gradle:platforms:api::modulecheck.gradle.platforms.android/SafeAgpApiReferenceScope///PointingToDeclaration//415354270">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-gradle:platforms:api</a><span class="delimiter">/</span><a href="../index.html">modulecheck.gradle.platforms.android</a><span class="delimiter">/</span><span class="current">SafeAgpApiReferenceScope</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Safe</span><wbr><span>Agp</span><wbr><span>Api</span><wbr><span>Reference</span><wbr><span><span>Scope</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">SafeAgpApiReferenceScope</a>&nbsp;<span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-published-api/index.html"><span class="token annotation builtin">PublishedApi</span></a>&nbsp;</span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>agpApiAccess<span class="token operator">: </span><a href="../-agp-api-access/index.html">AgpApiAccess</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>gradleProject<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-gradle-project/index.html">GradleProject</a></span></span><span class="token punctuation">)</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-gradle/platforms/api/src/main/kotlin/modulecheck/gradle/platforms/android/SafeAgpApiReferenceScope.kt#L33">source</a>)</span></span></div><p class="paragraph">Wrapper for accessing AGP declarations only after it's been established that they exist in the classpath.</p><span class="kdoc-tag"><h4 class="">Since</h4><p class="paragraph">0.12.0</p></span><h4 class="">See also</h4><div class="table"><div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-agp-api-access/index.html"><span>Agp</span><wbr><span>Api</span><wbr><span><span>Access</span></span></a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-unsafe-direct-agp-api-reference/index.html"><span>Unsafe</span><wbr><span>Direct</span><wbr><span>Agp</span><wbr><span>Api</span><wbr><span><span>Reference</span></span></a></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-1346121604%2FConstructors%2F415354270" anchor-label="SafeAgpApiReferenceScope" id="-1346121604%2FConstructors%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-safe-agp-api-reference-scope.html"><span>Safe</span><wbr><span>Agp</span><wbr><span>Api</span><wbr><span>Reference</span><wbr><span><span>Scope</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1346121604%2FConstructors%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-published-api/index.html"><span class="token annotation builtin">PublishedApi</span></a></div></div><span class="token keyword">internal </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">agpApiAccess<span class="token operator">: </span><a href="../-agp-api-access/index.html">AgpApiAccess</a><span class="token punctuation">, </span></span><span class="parameter ">gradleProject<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-gradle-project/index.html">GradleProject</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="87551619%2FProperties%2F415354270" anchor-label="agpApiAccess" id="87551619%2FProperties%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="agp-api-access.html"><span>agp</span><wbr><span>Api</span><wbr><span><span>Access</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="87551619%2FProperties%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="agp-api-access.html">agpApiAccess</a><span class="token operator">: </span><a href="../-agp-api-access/index.html">AgpApiAccess</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1076916239%2FProperties%2F415354270" anchor-label="gradleProject" id="-1076916239%2FProperties%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="gradle-project.html"><span>gradle</span><wbr><span><span>Project</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1076916239%2FProperties%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="gradle-project.html">gradleProject</a><span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-gradle-project/index.html">GradleProject</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1885727348%2FFunctions%2F415354270" anchor-label="create" id="1885727348%2FFunctions%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="create.html"><span><span>create</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1885727348%2FFunctions%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../-android-platform-plugin-factory/index.html">AndroidPlatformPluginFactory</a><span class="token punctuation">.</span><a href="create.html"><span class="token function">create</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">hasTestFixturesPlugin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-android-platform-plugin/index.html">AndroidPlatformPlugin</a></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../modulecheck.gradle.platforms.sourcesets/-android-source-sets-parser/-factory/index.html">AndroidSourceSetsParser.Factory</a><span class="token punctuation">.</span><a href="create.html"><span class="token function">create</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mcConfigurations<span class="token operator">: </span><a href="../../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-configurations/index.html">Configurations</a><span class="token punctuation">, </span></span><span class="parameter ">hasTestFixturesPlugin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../modulecheck.gradle.platforms.sourcesets/-android-source-sets-parser/index.html">AndroidSourceSetsParser</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1712095691%2FFunctions%2F415354270" anchor-label="hasAgpTestFixtures" id="1712095691%2FFunctions%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="has-agp-test-fixtures.html"><span>has</span><wbr><span>Agp</span><wbr><span>Test</span><wbr><span><span>Fixtures</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1712095691%2FFunctions%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="has-agp-test-fixtures.html"><span class="token function">hasAgpTestFixtures</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-484161444%2FFunctions%2F415354270" anchor-label="isAndroidAppExtension" id="-484161444%2FFunctions%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-android-app-extension.html"><span>is</span><wbr><span>Android</span><wbr><span>App</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-484161444%2FFunctions%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token punctuation">.</span><a href="is-android-app-extension.html"><span class="token function">isAndroidAppExtension</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Helper function for <code class="lang-kotlin">this is AndroidAppExtension</code> which bypasses the opt-in requirement.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="819613326%2FFunctions%2F415354270" anchor-label="isAndroidBaseExtension" id="819613326%2FFunctions%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-android-base-extension.html"><span>is</span><wbr><span>Android</span><wbr><span>Base</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="819613326%2FFunctions%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token punctuation">.</span><a href="is-android-base-extension.html"><span class="token function">isAndroidBaseExtension</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Helper function for <code class="lang-kotlin">this is AndroidBaseExtension</code> which bypasses the opt-in requirement.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="386357620%2FFunctions%2F415354270" anchor-label="isAndroidCommonExtension" id="386357620%2FFunctions%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-android-common-extension.html"><span>is</span><wbr><span>Android</span><wbr><span>Common</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="386357620%2FFunctions%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token punctuation">.</span><a href="is-android-common-extension.html"><span class="token function">isAndroidCommonExtension</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Helper function for <code class="lang-kotlin">this is AndroidCommonExtension</code> which bypasses the opt-in requirement.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1227634818%2FFunctions%2F415354270" anchor-label="isAndroidLibraryExtension" id="1227634818%2FFunctions%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-android-library-extension.html"><span>is</span><wbr><span>Android</span><wbr><span>Library</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1227634818%2FFunctions%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token punctuation">.</span><a href="is-android-library-extension.html"><span class="token function">isAndroidLibraryExtension</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Helper function for <code class="lang-kotlin">this is AndroidLibraryExtension</code> which bypasses the opt-in requirement.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-554248082%2FFunctions%2F415354270" anchor-label="isAndroidTestedExtension" id="-554248082%2FFunctions%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-android-tested-extension.html"><span>is</span><wbr><span>Android</span><wbr><span>Tested</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-554248082%2FFunctions%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token punctuation">.</span><a href="is-android-tested-extension.html"><span class="token function">isAndroidTestedExtension</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Helper function for <code class="lang-kotlin">this is AndroidTestedExtension</code> which bypasses the opt-in requirement.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-20175538%2FFunctions%2F415354270" anchor-label="requireBaseExtension" id="-20175538%2FFunctions%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="require-base-extension.html"><span>require</span><wbr><span>Base</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-20175538%2FFunctions%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="require-base-extension.html"><span class="token function">requireBaseExtension</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-agp-base-extension/index.html">AgpBaseExtension</a></div><div class="brief "><p class="paragraph">Direct access to the AGP AndroidBaseExtension type, only accessible after it's been established that the type is in the classpath.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="280653352%2FFunctions%2F415354270" anchor-label="requireCommonExtension" id="280653352%2FFunctions%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="require-common-extension.html"><span>require</span><wbr><span>Common</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="280653352%2FFunctions%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="require-common-extension.html"><span class="token function">requireCommonExtension</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-agp-common-extension/index.html">AgpCommonExtension</a></div><div class="brief "><p class="paragraph">Direct access to the AGP <span data-unresolved-link="com.android.build.api.dsl/CommonExtension///PointingToDeclaration/">com.android.build.api.dsl.CommonExtension</span> type, only accessible after it's been established that the type is in the classpath.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

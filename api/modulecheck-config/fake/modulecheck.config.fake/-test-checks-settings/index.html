@@ -1,0 +1,304 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>TestChecksSettings</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.config.fake/-test-checks-settings/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../../../older/0.12.5/modulecheck-config/fake/modulecheck.config.fake/-test-checks-settings/index.html">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-config:fake/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-config:fake::modulecheck.config.fake/TestChecksSettings///PointingToDeclaration//1230452874">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-config:fake</a><span class="delimiter">/</span><a href="../index.html">modulecheck.config.fake</a><span class="delimiter">/</span><span class="current">TestChecksSettings</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Test</span><wbr><span>Checks</span><wbr><span><span>Settings</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">TestChecksSettings</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">var </span>redundantDependency<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.REDUNDANT_DEPENDENCY_DEFAULT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>unusedDependency<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.UNUSED_DEPENDENCY_DEFAULT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>overShotDependency<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.OVERSHOT_DEPENDENCY_DEFAULT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>mustBeApi<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.MUST_BE_API_DEFAULT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>inheritedDependency<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.INHERITED_DEPENDENCY_DEFAULT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>sortDependencies<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.SORT_DEPENDENCIES_DEFAULT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>sortPlugins<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.SORT_PLUGINS_DEFAULT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>unusedKapt<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.UNUSED_KAPT_DEFAULT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>anvilFactoryGeneration<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.ANVIL_FACTORY_GENERATION_DEFAULT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>disableAndroidResources<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.DISABLE_ANDROID_RESOURCES_DEFAULT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>disableViewBinding<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.DISABLE_VIEW_BINDING_DEFAULT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>unusedKotlinAndroidExtensions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>depths<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.DEPTHS_DEFAULT</span></span><span class="token punctuation">)</span> : <a href="../../../../modulecheck-config/api/modulecheck.config/-checks-settings/index.html">ChecksSettings</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-config/fake/src/main/kotlin/modulecheck/config/fake/TestSettings.kt#L49">source</a>)</span></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-1149922093%2FConstructors%2F1230452874" anchor-label="TestChecksSettings" id="-1149922093%2FConstructors%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-test-checks-settings.html"><span>Test</span><wbr><span>Checks</span><wbr><span><span>Settings</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1149922093%2FConstructors%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">redundantDependency<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.REDUNDANT_DEPENDENCY_DEFAULT<span class="token punctuation">, </span></span><span class="parameter ">unusedDependency<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.UNUSED_DEPENDENCY_DEFAULT<span class="token punctuation">, </span></span><span class="parameter ">overShotDependency<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.OVERSHOT_DEPENDENCY_DEFAULT<span class="token punctuation">, </span></span><span class="parameter ">mustBeApi<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.MUST_BE_API_DEFAULT<span class="token punctuation">, </span></span><span class="parameter ">inheritedDependency<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.INHERITED_DEPENDENCY_DEFAULT<span class="token punctuation">, </span></span><span class="parameter ">sortDependencies<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.SORT_DEPENDENCIES_DEFAULT<span class="token punctuation">, </span></span><span class="parameter ">sortPlugins<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.SORT_PLUGINS_DEFAULT<span class="token punctuation">, </span></span><span class="parameter ">unusedKapt<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.UNUSED_KAPT_DEFAULT<span class="token punctuation">, </span></span><span class="parameter ">anvilFactoryGeneration<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.ANVIL_FACTORY_GENERATION_DEFAULT<span class="token punctuation">, </span></span><span class="parameter ">disableAndroidResources<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.DISABLE_ANDROID_RESOURCES_DEFAULT<span class="token punctuation">, </span></span><span class="parameter ">disableViewBinding<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.DISABLE_VIEW_BINDING_DEFAULT<span class="token punctuation">, </span></span><span class="parameter ">unusedKotlinAndroidExtensions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT<span class="token punctuation">, </span></span><span class="parameter ">depths<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span>ChecksSettings.DEPTHS_DEFAULT</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-1325202056%2FProperties%2F1230452874" anchor-label="anvilFactoryGeneration" id="-1325202056%2FProperties%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="anvil-factory-generation.html"><span>anvil</span><wbr><span>Factory</span><wbr><span><span>Generation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1325202056%2FProperties%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="anvil-factory-generation.html">anvilFactoryGeneration</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1726689534%2FProperties%2F1230452874" anchor-label="depths" id="1726689534%2FProperties%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="depths.html"><span><span>depths</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1726689534%2FProperties%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="depths.html">depths</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1013291826%2FProperties%2F1230452874" anchor-label="disableAndroidResources" id="-1013291826%2FProperties%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disable-android-resources.html"><span>disable</span><wbr><span>Android</span><wbr><span><span>Resources</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1013291826%2FProperties%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="disable-android-resources.html">disableAndroidResources</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-441005450%2FProperties%2F1230452874" anchor-label="disableViewBinding" id="-441005450%2FProperties%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disable-view-binding.html"><span>disable</span><wbr><span>View</span><wbr><span><span>Binding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-441005450%2FProperties%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="disable-view-binding.html">disableViewBinding</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1933659111%2FProperties%2F1230452874" anchor-label="inheritedDependency" id="1933659111%2FProperties%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="inherited-dependency.html"><span>inherited</span><wbr><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1933659111%2FProperties%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="inherited-dependency.html">inheritedDependency</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1525824062%2FProperties%2F1230452874" anchor-label="mustBeApi" id="1525824062%2FProperties%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="must-be-api.html"><span>must</span><wbr><span>Be</span><wbr><span><span>Api</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1525824062%2FProperties%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="must-be-api.html">mustBeApi</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1981804075%2FProperties%2F1230452874" anchor-label="overShotDependency" id="-1981804075%2FProperties%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="over-shot-dependency.html"><span>over</span><wbr><span>Shot</span><wbr><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1981804075%2FProperties%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="over-shot-dependency.html">overShotDependency</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1559082228%2FProperties%2F1230452874" anchor-label="redundantDependency" id="1559082228%2FProperties%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="redundant-dependency.html"><span>redundant</span><wbr><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1559082228%2FProperties%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="redundant-dependency.html">redundantDependency</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1683977159%2FProperties%2F1230452874" anchor-label="sortDependencies" id="1683977159%2FProperties%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="sort-dependencies.html"><span>sort</span><wbr><span><span>Dependencies</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1683977159%2FProperties%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="sort-dependencies.html">sortDependencies</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1146617046%2FProperties%2F1230452874" anchor-label="sortPlugins" id="-1146617046%2FProperties%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="sort-plugins.html"><span>sort</span><wbr><span><span>Plugins</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1146617046%2FProperties%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="sort-plugins.html">sortPlugins</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1607402797%2FProperties%2F1230452874" anchor-label="unusedDependency" id="1607402797%2FProperties%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unused-dependency.html"><span>unused</span><wbr><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1607402797%2FProperties%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="unused-dependency.html">unusedDependency</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1311639998%2FProperties%2F1230452874" anchor-label="unusedKapt" id="1311639998%2FProperties%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unused-kapt.html"><span>unused</span><wbr><span><span>Kapt</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1311639998%2FProperties%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="unused-kapt.html">unusedKapt</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="234147488%2FProperties%2F1230452874" anchor-label="unusedKotlinAndroidExtensions" id="234147488%2FProperties%2F1230452874" data-filterable-set=":modulecheck-config:fake/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-config:fake/main" data-filterable-set=":modulecheck-config:fake/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unused-kotlin-android-extensions.html"><span>unused</span><wbr><span>Kotlin</span><wbr><span>Android</span><wbr><span><span>Extensions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="234147488%2FProperties%2F1230452874"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-config:fake/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">var </span><a href="unused-kotlin-android-extensions.html">unusedKotlinAndroidExtensions</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

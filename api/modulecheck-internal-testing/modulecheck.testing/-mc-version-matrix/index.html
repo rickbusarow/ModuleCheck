@@ -1,0 +1,233 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>McVersionMatrix</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            
+                    </a>            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.testing/-mc-version-matrix/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">0.13.0-SNAPSHOT</div>
+  <div class="versions-dropdown-data"><a href="index.html">0.13.0-SNAPSHOT</a><a href="../../../not-found-version.html?v=0.12.5">0.12.5</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-internal-testing/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-internal-testing::modulecheck.testing/McVersionMatrix///PointingToDeclaration//-1404992111">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-internal-testing</a><span class="delimiter">/</span><a href="../index.html">modulecheck.testing</a><span class="delimiter">/</span><span class="current">McVersionMatrix</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Mc</span><wbr><span>Version</span><wbr><span><span>Matrix</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">McVersionMatrix</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gradleVersions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Versions.gradleList<span class="token punctuation">, </span></span><span class="parameter ">agpVersions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Versions.agpList<span class="token punctuation">, </span></span><span class="parameter ">anvilVersions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Versions.anvilList<span class="token punctuation">, </span></span><span class="parameter ">kotlinVersions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Versions.kotlinList</span></span><span class="token punctuation">)</span> : <span data-unresolved-link="com.rickbusarow.kase/KaseMatrix///PointingToDeclaration/">KaseMatrix</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-internal-testing/src/main/kotlin/modulecheck/testing/McVersionMatrix.kt#L28">source</a>)</span></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-959138264%2FConstructors%2F-1404992111" anchor-label="McVersionMatrix" id="-959138264%2FConstructors%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mc-version-matrix.html"><span>Mc</span><wbr><span>Version</span><wbr><span><span>Matrix</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-959138264%2FConstructors%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gradleVersions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Versions.gradleList<span class="token punctuation">, </span></span><span class="parameter ">agpVersions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Versions.agpList<span class="token punctuation">, </span></span><span class="parameter ">anvilVersions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Versions.anvilList<span class="token punctuation">, </span></span><span class="parameter ">kotlinVersions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>Versions.kotlinList</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-155352322%2FProperties%2F-1404992111" anchor-label="allVersions" id="-155352322%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="all-versions.html"><span>all</span><wbr><span><span>Versions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-155352322%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="all-versions.html">allVersions</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-mc-test-versions/index.html">McTestVersions</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">every permutation in the matrix without any filtering</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1843787524%2FProperties%2F-1404992111" anchor-label="size" id="-1843787524%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1843787524%2FProperties%2F-1404992111"><span><span>size</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1843787524%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#-1843787524%2FProperties%2F-1404992111">size</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1687129490%2FFunctions%2F-1404992111" anchor-label="get" id="-1687129490%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1687129490%2FFunctions%2F-1404992111"><span><span>get</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1687129490%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/get.html">E</a><span class="token operator"> : </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix.KaseMatrixElement///PointingToDeclaration/">KaseMatrix.KaseMatrixElement</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">, </span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/get.html">K</a><span class="token operator"> : </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix.KaseMatrixKey///PointingToDeclaration/">KaseMatrix.KaseMatrixKey</span><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/get.html">E</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="index.html#-1687129490%2FFunctions%2F-1404992111"><span class="token function">get</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/get.html">K</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase/KaseElementList///PointingToDeclaration/">KaseElementList</span><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/get.html">E</a><span class="token punctuation">, </span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/get.html">K</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="970776344%2FFunctions%2F-1404992111" anchor-label="getOrNull" id="970776344%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#970776344%2FFunctions%2F-1404992111"><span>get</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="970776344%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/get-or-null.html">E</a><span class="token operator"> : </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix.KaseMatrixElement///PointingToDeclaration/">KaseMatrix.KaseMatrixElement</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">, </span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/get-or-null.html">K</a><span class="token operator"> : </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix.KaseMatrixKey///PointingToDeclaration/">KaseMatrix.KaseMatrixKey</span><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/get-or-null.html">E</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="index.html#970776344%2FFunctions%2F-1404992111"><span class="token function">getOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/get-or-null.html">K</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase/KaseElementList///PointingToDeclaration/">KaseElementList</span><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/get-or-null.html">E</a><span class="token punctuation">, </span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/get-or-null.html">K</a><span class="token operator">&gt;</span><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1692942953%2FFunctions%2F-1404992111" anchor-label="keys" id="1692942953%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1692942953%2FFunctions%2F-1404992111"><span><span>keys</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1692942953%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#1692942953%2FFunctions%2F-1404992111"><span class="token function">keys</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix.KaseMatrixKey///PointingToDeclaration/">KaseMatrix.KaseMatrixKey</span><span class="token operator">&lt;</span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix.KaseMatrixElement///PointingToDeclaration/">KaseMatrix.KaseMatrixElement</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1016330184%2FFunctions%2F-1404992111" anchor-label="minus" id="1016330184%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#576768460%2FFunctions%2F-1404992111"><span><span>minus</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1016330184%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/minus.html">E</a><span class="token operator"> : </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix.KaseMatrixElement///PointingToDeclaration/">KaseMatrix.KaseMatrixElement</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="index.html#576768460%2FFunctions%2F-1404992111"><span class="token function">minus</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix.KaseMatrixKey///PointingToDeclaration/">KaseMatrix.KaseMatrixKey</span><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/minus.html">E</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix///PointingToDeclaration/">KaseMatrix</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/minus.html">E</a><span class="token operator"> : </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix.KaseMatrixElement///PointingToDeclaration/">KaseMatrix.KaseMatrixElement</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="index.html#1776463662%2FFunctions%2F-1404992111"><span class="token function">minus</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>elements<span class="token operator">: </span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/minus.html">E</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix///PointingToDeclaration/">KaseMatrix</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/minus.html">E</a><span class="token operator"> : </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix.KaseMatrixElement///PointingToDeclaration/">KaseMatrix.KaseMatrixElement</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="index.html#-601366422%2FFunctions%2F-1404992111"><span class="token function">minus</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">elements<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-iterable/index.html">Iterable</a><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/minus.html">E</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix///PointingToDeclaration/">KaseMatrix</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="564387660%2FFunctions%2F-1404992111" anchor-label="plus" id="564387660%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#50313476%2FFunctions%2F-1404992111"><span><span>plus</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="564387660%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/plus.html">E</a><span class="token operator"> : </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix.KaseMatrixElement///PointingToDeclaration/">KaseMatrix.KaseMatrixElement</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="index.html#50313476%2FFunctions%2F-1404992111"><span class="token function">plus</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>elements<span class="token operator">: </span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/plus.html">E</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix///PointingToDeclaration/">KaseMatrix</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/plus.html">E</a><span class="token operator"> : </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix.KaseMatrixElement///PointingToDeclaration/">KaseMatrix.KaseMatrixElement</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="index.html#-165204012%2FFunctions%2F-1404992111"><span class="token function">plus</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">elements<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-iterable/index.html">Iterable</a><span class="token operator">&lt;</span><a href="../../../modulecheck-internal-testing/modulecheck.testing/-mc-version-matrix/plus.html">E</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase/KaseMatrix///PointingToDeclaration/">KaseMatrix</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1188403702%2FFunctions%2F-1404992111" anchor-label="versions" id="-1188403702%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="versions.html"><span><span>versions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1188403702%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="versions.html"><span class="token function">versions</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">exhaustive<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-mc-test-versions/index.html">McTestVersions</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">either all permutations or just the last</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
