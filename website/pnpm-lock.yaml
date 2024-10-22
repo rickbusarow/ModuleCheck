@@ -43,10 +43,10 @@ dependencies:
     version: 2.1.1
   mdx-mermaid:
     specifier: 2.0.0
-    version: 2.0.0(mermaid@10.9.1)(react@18.3.1)(unist-util-visit@4.1.2)
+    version: 2.0.0(mermaid@10.9.3)(react@18.3.1)(unist-util-visit@4.1.2)
   mermaid:
-    specifier: 10.9.1
-    version: 10.9.1
+    specifier: 10.9.3
+    version: 10.9.3
   prism-react-renderer:
     specifier: ^2.3.1
     version: 2.3.1(react@18.3.1)
@@ -2323,7 +2323,7 @@ packages:
       '@docusaurus/theme-common': 3.4.0(@docusaurus/types@3.4.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.3.3)
       '@docusaurus/types': 3.4.0(react-dom@18.3.1)(react@18.3.1)
       '@docusaurus/utils-validation': 3.4.0(@docusaurus/types@3.4.0)(typescript@5.3.3)
-      mermaid: 10.9.1
+      mermaid: 10.9.3
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       tslib: 2.6.2
@@ -7257,14 +7257,14 @@ packages:
     resolution: {integrity: sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==}
     dev: false
 
-  /mdx-mermaid@2.0.0(mermaid@10.9.1)(react@18.3.1)(unist-util-visit@4.1.2):
+  /mdx-mermaid@2.0.0(mermaid@10.9.3)(react@18.3.1)(unist-util-visit@4.1.2):
     resolution: {integrity: sha512-vmkh4yg/EgkhAWxdFsyol5Tgk9aTnM16njgGIYk3R3SdbejPt8YV+HRYycAOstR1TJefMNAmjAyqkRjukLP7qg==}
     peerDependencies:
       mermaid: '>=8.11.0'
       react: ^16.8.4 || ^17.0.0 || ^18.0.0
       unist-util-visit: ^4.1.0
     dependencies:
-      mermaid: 10.9.1
+      mermaid: 10.9.3
       react: 18.3.1
       unist-util-visit: 4.1.2
     optionalDependencies:
@@ -7308,8 +7308,8 @@ packages:
     engines: {node: '>= 8'}
     dev: false
 
-  /mermaid@10.9.1:
-    resolution: {integrity: sha512-Mx45Obds5W1UkW1nv/7dHRsbfMM1aOKA2+Pxs/IGHNonygDHwmng8xTHyS9z4KWVi0rbko8gjiBmuwwXQ7tiNA==}
+  /mermaid@10.9.3:
+    resolution: {integrity: sha512-V80X1isSEvAewIL3xhmz/rVmc27CVljcsbWxkxlWJWY/1kQa4XOABqpDl2qQLGKzpKm6WbTfUEKImBlUfFYArw==}
     dependencies:
       '@braintree/sanitize-url': 6.0.4
       '@types/d3-scale': 4.0.8
@@ -9105,7 +9105,7 @@ packages:
   /puppeteer@18.2.1:
     resolution: {integrity: sha512-7+UhmYa7wxPh2oMRwA++k8UGVDxh3YdWFB52r9C3tM81T6BU7cuusUSxImz0GEYSOYUKk/YzIhkQ6+vc0gHbxQ==}
     engines: {node: '>=14.1.0'}
-    deprecated: < 22.5.0 is no longer supported
+    deprecated: < 22.8.2 is no longer supported
     requiresBuild: true
     dependencies:
       https-proxy-agent: 5.0.1
