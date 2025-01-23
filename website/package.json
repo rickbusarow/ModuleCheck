@@ -24,7 +24,7 @@
     "@docusaurus/theme-common": "3.4.0",
     "@docusaurus/theme-live-codeblock": "3.4.0",
     "@docusaurus/theme-mermaid": "3.4.0",
-    "@mdx-js/react": "3.0.1",
+    "@mdx-js/react": "3.1.0",
     "clsx": "2.1.1",
     "mdx-mermaid": "2.0.3",
     "mermaid": "10.9.1",

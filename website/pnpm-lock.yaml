@@ -36,8 +36,8 @@ dependencies:
     specifier: 3.4.0
     version: 3.4.0(react-dom@18.3.1)(react@18.3.1)(typescript@5.7.3)
   '@mdx-js/react':
-    specifier: 3.0.1
-    version: 3.0.1(@types/react@19.0.8)(react@18.3.1)
+    specifier: 3.1.0
+    version: 3.1.0(@types/react@19.0.8)(react@18.3.1)
   clsx:
     specifier: 2.1.1
     version: 2.1.1
@@ -2230,7 +2230,7 @@ packages:
       '@docusaurus/utils': 3.4.0(@docusaurus/types@3.4.0)(typescript@5.7.3)
       '@docusaurus/utils-common': 3.4.0(@docusaurus/types@3.4.0)
       '@docusaurus/utils-validation': 3.4.0(@docusaurus/types@3.4.0)(typescript@5.7.3)
-      '@mdx-js/react': 3.0.1(@types/react@19.0.8)(react@18.3.1)
+      '@mdx-js/react': 3.1.0(@types/react@19.0.8)(react@18.3.1)
       clsx: 2.1.1
       copy-text-to-clipboard: 3.2.0
       infima: 0.2.0-alpha.43
@@ -2649,8 +2649,8 @@ packages:
       - supports-color
     dev: false
 
-  /@mdx-js/react@3.0.1(@types/react@19.0.8)(react@18.3.1):
-    resolution: {integrity: sha512-9ZrPIU4MGf6et1m1ov3zKf+q9+deetI51zprKB1D/z3NOb+rUxxtEl3mCjW5wTGh6VhRdwPueh1oRzi6ezkA8A==}
+  /@mdx-js/react@3.1.0(@types/react@19.0.8)(react@18.3.1):
+    resolution: {integrity: sha512-QjHtSaoameoalGnKDT3FoIl4+9RwyTmo9ZJGBdLOks/YOiWHoRDI3PUwEzOE7kEmGcV3AFcp9K6dYu9rEuKLAQ==}
     peerDependencies:
       '@types/react': '>=16'
       react: '>=16'
@@ -3204,7 +3204,7 @@ packages:
     resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.2.47
+      '@types/react': 19.0.8
       '@types/react-router': 5.1.20
     dev: false
 
@@ -3212,7 +3212,7 @@ packages:
     resolution: {integrity: sha512-jGjmu/ZqS7FjSH6owMcD5qpq19+1RS9DeVRqfl1FeBMxTDQAGwlMWOcs52NDoXaNKyG3d1cYQFMs9rCrb88o9Q==}
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.2.47
+      '@types/react': 19.0.8
     dev: false
 
   /@types/react@18.2.47:
