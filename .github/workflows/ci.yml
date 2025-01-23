@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: main build
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: jar compileKotlin
           write-cache-key: main-build-artifacts
@@ -44,10 +44,17 @@ jobs:
     needs: build-all
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - name: ktlint
-        uses: ./.github/actions/gradle-task-with-commit
+      - name: Create GitHub App Token
+        uses: actions/create-github-app-token@c1a285145b9d317df6ced56c09f525b5c2b6f755 # v1
+        id: app-token
         with:
-          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          app-id: ${{ secrets.PR_BOT_APP_ID }}
+          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
+
+      - name: ktlint
+        uses: rickbusarow/actions/gradle-task-with-commit@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
+        with:
+          personal-access-token: ${{ steps.app-token.outputs.token }}
           fix-task: ktlintFormat
           check-task: ktlintCheck
 
@@ -56,10 +63,17 @@ jobs:
     needs: build-all
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - name: ci-matrices
-        uses: ./.github/actions/gradle-task-with-commit
+      - name: Create GitHub App Token
+        uses: actions/create-github-app-token@c1a285145b9d317df6ced56c09f525b5c2b6f755 # v1
+        id: app-token
         with:
-          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          app-id: ${{ secrets.PR_BOT_APP_ID }}
+          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
+
+      - name: ci-matrices
+        uses: rickbusarow/actions/gradle-task-with-commit@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
+        with:
+          personal-access-token: ${{ steps.app-token.outputs.token }}
           fix-task: versionsMatrixYamlUpdate unitTestShardMatrixYamlUpdate
           check-task: versionsMatrixYamlCheck unitTestShardMatrixYamlCheck
 
@@ -68,10 +82,17 @@ jobs:
     needs: build-all
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - name: dependency-guard
-        uses: ./.github/actions/gradle-task-with-commit
+      - name: Create GitHub App Token
+        uses: actions/create-github-app-token@c1a285145b9d317df6ced56c09f525b5c2b6f755 # v1
+        id: app-token
         with:
-          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          app-id: ${{ secrets.PR_BOT_APP_ID }}
+          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
+
+      - name: dependency-guard
+        uses: rickbusarow/actions/gradle-task-with-commit@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
+        with:
+          personal-access-token: ${{ steps.app-token.outputs.token }}
           fix-task: dependencyGuardBaseline
           check-task: dependencyGuard
 
@@ -80,10 +101,17 @@ jobs:
     needs: build-all
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - name: moduleCheck
-        uses: ./.github/actions/gradle-task-with-commit
+      - name: Create GitHub App Token
+        uses: actions/create-github-app-token@c1a285145b9d317df6ced56c09f525b5c2b6f755 # v1
+        id: app-token
         with:
-          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          app-id: ${{ secrets.PR_BOT_APP_ID }}
+          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
+
+      - name: moduleCheck
+        uses: rickbusarow/actions/gradle-task-with-commit@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
+        with:
+          personal-access-token: ${{ steps.app-token.outputs.token }}
           fix-task: moduleCheckAuto
           check-task: moduleCheck
 
@@ -92,10 +120,17 @@ jobs:
     needs: build-all
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - name: doks
-        uses: ./.github/actions/gradle-task-with-commit
+      - name: Create GitHub App Token
+        uses: actions/create-github-app-token@c1a285145b9d317df6ced56c09f525b5c2b6f755 # v1
+        id: app-token
         with:
-          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          app-id: ${{ secrets.PR_BOT_APP_ID }}
+          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
+
+      - name: doks
+        uses: rickbusarow/actions/gradle-task-with-commit@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
+        with:
+          personal-access-token: ${{ steps.app-token.outputs.token }}
           fix-task: doks
           check-task: doksCheck
 
@@ -104,10 +139,17 @@ jobs:
     needs: build-all
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - name: website versioning
-        uses: ./.github/actions/gradle-task-with-commit
+      - name: Create GitHub App Token
+        uses: actions/create-github-app-token@c1a285145b9d317df6ced56c09f525b5c2b6f755 # v1
+        id: app-token
         with:
-          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          app-id: ${{ secrets.PR_BOT_APP_ID }}
+          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
+
+      - name: website versioning
+        uses: rickbusarow/actions/gradle-task-with-commit@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
+        with:
+          personal-access-token: ${{ steps.app-token.outputs.token }}
           fix-task: updateWebsiteNextDocsVersionRefs updateWebsitePackageJsonVersion updateWebsiteChangelog
           check-task: checkWebsiteNextDocsVersionRefs checkWebsitePackageJsonVersion
 
@@ -116,10 +158,17 @@ jobs:
     needs: build-all
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - name: artifacts-check
-        uses: ./.github/actions/gradle-task-with-commit
+      - name: Create GitHub App Token
+        uses: actions/create-github-app-token@c1a285145b9d317df6ced56c09f525b5c2b6f755 # v1
+        id: app-token
         with:
-          personal-access-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          app-id: ${{ secrets.PR_BOT_APP_ID }}
+          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
+
+      - name: artifacts-check
+        uses: rickbusarow/actions/gradle-task-with-commit@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
+        with:
+          personal-access-token: ${{ steps.app-token.outputs.token }}
           fix-task: artifactsDump
           check-task: artifactsCheck
 
@@ -129,7 +178,7 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: check version is snapshot
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: checkVersionIsSnapshot
 
@@ -139,7 +188,7 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: detektAll
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: detektAll
           restore-cache-key: main-build-artifacts
@@ -161,7 +210,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: dokkaHtmlMultiModule
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: dokkaHtmlMultiModule
           restore-cache-key: main-build-artifacts
@@ -194,7 +243,7 @@ jobs:
         run: pnpm install --no-lockfile
 
       - name: build website
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: buildSite
           write-cache-key: website-build
@@ -217,7 +266,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: unit tests
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: testShard${{ matrix.shardNum }}
           restore-cache-key: main-build-artifacts
@@ -253,7 +302,7 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: integration-tests
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: |
             integrationTest
@@ -284,7 +333,7 @@ jobs:
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: integration-tests-windows
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: integrationTestShard${{ matrix.shardNum }} -Pmodulecheck.exhaustive=false
           restore-cache-key: main-build-artifacts

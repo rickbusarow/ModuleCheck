@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: build build-logic
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: :build-logic:compileKotlin :build-logic:jar
           write-cache-key: build-logic-jar
@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: main build
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: jar compileKotlin
           restore-cache-key: build-logic-jar
@@ -43,13 +43,13 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Dokka & JavadocJar
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: dokkaJavadocJar
           restore-cache-key: main-build-artifacts
 
       - name: Publish Snapshots
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: publish
           write-cache-key: local-m2
@@ -66,7 +66,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: dokkaHtmlMultiModule
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: dokkaHtmlMultiModule
           restore-cache-key: main-build-artifacts
@@ -99,7 +99,7 @@ jobs:
         run: pnpm install --no-lockfile
 
       - name: build website
-        uses: ./.github/actions/gradle-task
+        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
           task: buildSite
           write-cache-key: website-build
