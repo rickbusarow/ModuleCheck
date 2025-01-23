@@ -14,9 +14,9 @@ It does this **without performing a build**, which makes the parsing extremely f
 
 All inspection is done using Gradle build files, Java/Kotlin source, and `res` xml files for Kotlin.
 
-Documentation is at [https://rbusarow.github.io/ModuleCheck](https://rbusarow.github.io/ModuleCheck/).
+Documentation is at [https://rickbusarow.github.io/ModuleCheck](https://rbusarow.github.io/ModuleCheck/).
 
-For snapshots, use the "next" version for documentation: https://rbusarow.github.io/ModuleCheck/docs/next/
+For snapshots, use the "next" version for documentation: https://rickbusarow.github.io/ModuleCheck/docs/next/
 
 ![Diagram of flattening module structure](website/static/img/modulecheck_diagram.png)
 
