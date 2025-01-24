@@ -324,7 +324,7 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.rickbusarow.kgx:kotlin-gradle-extensions:0.1.12
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.rickbusarow.kgx:names:0.1.12
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.anvil:annotations:2.4.9
-:modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.1
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.2
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.okio:okio-jvm:3.7.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.okio:okio:3.7.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- guru.nidi:graphviz-java-min-deps:0.18.1
@@ -871,7 +871,7 @@
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.2.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.36.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-reporting:sarif -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.1
+:modulecheck-reporting:sarif -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.2
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.squareup.okio:okio-jvm:3.7.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- com.squareup.okio:okio:3.7.0
 :modulecheck-reporting:sarif -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
@@ -1045,7 +1045,7 @@
 :modulecheck-runtime:api -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-runtime:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.36.0
 :modulecheck-runtime:api -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
-:modulecheck-runtime:api -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.1
+:modulecheck-runtime:api -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.2
 :modulecheck-runtime:api -- runtimeClasspath -- com.squareup.okio:okio-jvm:3.7.0
 :modulecheck-runtime:api -- runtimeClasspath -- com.squareup.okio:okio:3.7.0
 :modulecheck-runtime:api -- runtimeClasspath -- guru.nidi:graphviz-java-min-deps:0.18.1
@@ -1100,7 +1100,7 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.kase:kase-gradle:0.11.1
 :modulecheck-runtime:testing -- runtimeClasspath -- com.rickbusarow.kase:kase:0.11.1
 :modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.anvil:annotations:2.4.9
-:modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.1
+:modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.moshi:moshi:1.15.2
 :modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.okio:okio-jvm:3.7.0
 :modulecheck-runtime:testing -- runtimeClasspath -- com.squareup.okio:okio:3.7.0
 :modulecheck-runtime:testing -- runtimeClasspath -- dev.drewhamilton.poko:poko-annotations-jvm:0.15.2
