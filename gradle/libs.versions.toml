@@ -18,7 +18,7 @@ androidTools = "8.1.0"
 antlr = "4.13.1"
 
 benManes-caffeine = "3.2.0"
-benManes-versions = "0.51.0"
+benManes-versions = "0.52.0"
 buildconfig = "5.5.1"
 changeTracker = "0.7.4"
 classgraph = "4.8.174"
