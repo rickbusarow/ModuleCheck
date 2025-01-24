@@ -4,7 +4,7 @@
     "config:best-practices",
     "default:disableRateLimiting"
   ],
-  "rebaseWhen": "conflicted",
+  "rebaseWhen": "auto",
   "rebaseLabel": "rebase",
   "stopUpdatingLabel": "renovate-ignore",
   "labels": [
@@ -39,6 +39,20 @@
       ]
     },
     {
+      "automergeStrategy": "rebase",
+      "matchPackageNames": [
+        "com.rickbusarow.modulecheck:{/,}**",
+        "com.rickbusarow.module-check"
+      ],
+      "groupName": "ModuleCheck published version",
+      "automerge": true,
+      "automergeType": "pr",
+      "autoApprove": true,
+      "labels": [
+        "dependencies"
+      ]
+    },
+    {
       "matchPackageNames": [
         "com.rickbusarow.module-check",
         "com.rickbusarow.dispatch:{/,}**",
@@ -52,14 +66,17 @@
         "com.rickbusarow.lattice:{/,}**",
         "com.rickbusarow.modulecheck:{/,}**"
       ],
+      "automergeStrategy": "rebase",
       "matchRepositories": [
-        "repo.maven.apache.org",
-        "plugins.gradle.org"
+        "repo.maven.apache.org/maven2",
+        "plugins.gradle.org/m2"
       ],
       "automerge": true,
-      "automergeStrategy": "rebase",
       "automergeType": "pr",
-      "rebaseWhen": "smart"
+      "autoApprove": true,
+      "labels": [
+        "dependencies"
+      ]
     }
   ]
 }
