@@ -29,7 +29,7 @@ diffplug-spotless = "7.0.2"
 dokka = "2.0.0"
 dokkatoo = "2.4.0"
 dropbox-dependencyGuard = "0.5.0"
-ec4j = "0.3.0"
+ec4j = "1.1.0"
 exhaustive = "0.2.0"
 github-release = "2.5.2"
 
