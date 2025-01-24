@@ -339,8 +339,8 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:ST4:4.3.4
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:antlr-runtime:3.5.3
-:modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.1
-:modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:antlr4:4.13.1
+:modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.2
+:modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:antlr4:4.13.2
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.checkerframework:checker-qual:3.42.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
@@ -403,8 +403,8 @@
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:ST4:4.3.4
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:antlr-runtime:3.5.3
-:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.1
-:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:antlr4:4.13.1
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.2
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:antlr4:4.13.2
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
@@ -521,8 +521,8 @@
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:ST4:4.3.4
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:antlr-runtime:3.5.3
-:modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.1
-:modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:antlr4:4.13.1
+:modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.2
+:modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:antlr4:4.13.2
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.checkerframework:checker-qual:3.42.0
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
@@ -651,8 +651,8 @@
 :modulecheck-project:testing -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-project:testing -- runtimeClasspath -- org.antlr:ST4:4.3.4
 :modulecheck-project:testing -- runtimeClasspath -- org.antlr:antlr-runtime:3.5.3
-:modulecheck-project:testing -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.1
-:modulecheck-project:testing -- runtimeClasspath -- org.antlr:antlr4:4.13.1
+:modulecheck-project:testing -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.2
+:modulecheck-project:testing -- runtimeClasspath -- org.antlr:antlr4:4.13.2
 :modulecheck-project:testing -- runtimeClasspath -- org.checkerframework:checker-qual:3.42.0
 :modulecheck-project:testing -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
 :modulecheck-project:testing -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
@@ -722,8 +722,8 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:ST4:4.3.4
 :modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:antlr-runtime:3.5.3
-:modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.1
-:modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:antlr4:4.13.1
+:modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.2
+:modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:antlr4:4.13.2
 :modulecheck-project-generation:api -- runtimeClasspath -- org.checkerframework:checker-qual:3.42.0
 :modulecheck-project-generation:api -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
 :modulecheck-project-generation:api -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
@@ -1122,8 +1122,8 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:ST4:4.3.4
 :modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:antlr-runtime:3.5.3
-:modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.1
-:modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:antlr4:4.13.1
+:modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.2
+:modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:antlr4:4.13.2
 :modulecheck-runtime:testing -- runtimeClasspath -- org.checkerframework:checker-qual:3.42.0
 :modulecheck-runtime:testing -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
 :modulecheck-runtime:testing -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
