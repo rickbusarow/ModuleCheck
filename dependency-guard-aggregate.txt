@@ -317,7 +317,7 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.10
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.10
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
-:modulecheck-gradle:plugin -- runtimeClasspath -- com.google.dagger:dagger:2.51.1
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.google.dagger:dagger:2.55
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.36.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.guava:failureaccess:1.0.2
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.guava:guava:33.1.0-jre
@@ -332,6 +332,7 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.squareup.okio:okio:3.7.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- guru.nidi:graphviz-java-min-deps:0.18.1
 :modulecheck-gradle:plugin -- runtimeClasspath -- guru.nidi:graphviz-java:0.18.1
+:modulecheck-gradle:plugin -- runtimeClasspath -- jakarta.inject:jakarta.inject-api:2.0.1
 :modulecheck-gradle:plugin -- runtimeClasspath -- javax.inject:javax.inject:1
 :modulecheck-gradle:plugin -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-gradle:plugin -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
@@ -624,7 +625,7 @@
 :modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.10
 :modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.10
 :modulecheck-project:testing -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
-:modulecheck-project:testing -- runtimeClasspath -- com.google.dagger:dagger:2.51.1
+:modulecheck-project:testing -- runtimeClasspath -- com.google.dagger:dagger:2.55
 :modulecheck-project:testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.36.0
 :modulecheck-project:testing -- runtimeClasspath -- com.google.guava:failureaccess:1.0.2
 :modulecheck-project:testing -- runtimeClasspath -- com.google.guava:guava:33.1.0-jre
@@ -644,6 +645,7 @@
 :modulecheck-project:testing -- runtimeClasspath -- io.kotest:kotest-common-jvm:5.8.1
 :modulecheck-project:testing -- runtimeClasspath -- io.kotest:kotest-common:5.8.1
 :modulecheck-project:testing -- runtimeClasspath -- io.kotest:kotest-property-jvm:5.8.1
+:modulecheck-project:testing -- runtimeClasspath -- jakarta.inject:jakarta.inject-api:2.0.1
 :modulecheck-project:testing -- runtimeClasspath -- javax.inject:javax.inject:1
 :modulecheck-project:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-project:testing -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
@@ -695,7 +697,7 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.10
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.10
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
-:modulecheck-project-generation:api -- runtimeClasspath -- com.google.dagger:dagger:2.51.1
+:modulecheck-project-generation:api -- runtimeClasspath -- com.google.dagger:dagger:2.55
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.36.0
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.guava:failureaccess:1.0.2
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.guava:guava:33.1.0-jre
@@ -715,6 +717,7 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- io.kotest:kotest-common-jvm:5.8.1
 :modulecheck-project-generation:api -- runtimeClasspath -- io.kotest:kotest-common:5.8.1
 :modulecheck-project-generation:api -- runtimeClasspath -- io.kotest:kotest-property-jvm:5.8.1
+:modulecheck-project-generation:api -- runtimeClasspath -- jakarta.inject:jakarta.inject-api:2.0.1
 :modulecheck-project-generation:api -- runtimeClasspath -- javax.inject:javax.inject:1
 :modulecheck-project-generation:api -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-project-generation:api -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
@@ -1004,10 +1007,11 @@
 :modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
 :modulecheck-rule:testing -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-rule:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.2.0
-:modulecheck-rule:testing -- runtimeClasspath -- com.google.dagger:dagger:2.51.1
+:modulecheck-rule:testing -- runtimeClasspath -- com.google.dagger:dagger:2.55
 :modulecheck-rule:testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.36.0
 :modulecheck-rule:testing -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 :modulecheck-rule:testing -- runtimeClasspath -- com.squareup.anvil:annotations:2.4.9
+:modulecheck-rule:testing -- runtimeClasspath -- jakarta.inject:jakarta.inject-api:2.0.1
 :modulecheck-rule:testing -- runtimeClasspath -- javax.inject:javax.inject:1
 :modulecheck-rule:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-rule:testing -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
@@ -1089,7 +1093,7 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.25.10
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.25.10
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
-:modulecheck-runtime:testing -- runtimeClasspath -- com.google.dagger:dagger:2.51.1
+:modulecheck-runtime:testing -- runtimeClasspath -- com.google.dagger:dagger:2.55
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.36.0
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.guava:failureaccess:1.0.2
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.guava:guava:33.1.0-jre
@@ -1115,6 +1119,7 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- io.kotest:kotest-common-jvm:5.8.1
 :modulecheck-runtime:testing -- runtimeClasspath -- io.kotest:kotest-common:5.8.1
 :modulecheck-runtime:testing -- runtimeClasspath -- io.kotest:kotest-property-jvm:5.8.1
+:modulecheck-runtime:testing -- runtimeClasspath -- jakarta.inject:jakarta.inject-api:2.0.1
 :modulecheck-runtime:testing -- runtimeClasspath -- javax.inject:javax.inject:1
 :modulecheck-runtime:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-runtime:testing -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
@@ -1377,9 +1382,10 @@
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant-jvm:2.1.0
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ajalt.mordant:mordant:2.1.0
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.2.0
-:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.google.dagger:dagger:2.51.1
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.google.dagger:dagger:2.55
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.36.0
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
+:modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- jakarta.inject:jakarta.inject-api:2.0.1
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- javax.inject:javax.inject:1
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-parsing:kotlin-compiler:impl -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
