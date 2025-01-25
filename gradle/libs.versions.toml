@@ -5,8 +5,8 @@ jdk = "17"
 jvmTarget = "11"
 kotlinApi = "1.6"
 
-kotlin-gradle = "1.9.22"
-kotlin-core = "1.9.22"
+kotlin-gradle = "2.1.0"
+kotlin-core = "2.1.0"
 google-ksp = "1.9.22-1.0.18"
 square-anvil = "2.4.9"
 
