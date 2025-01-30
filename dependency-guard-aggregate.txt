@@ -8,8 +8,8 @@
 :modulecheck-api -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-api -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
 :modulecheck-api -- runtimeClasspath -- net.swiftzer.semver:semver:2.0.0
-:modulecheck-api -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-api -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-api -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-api -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-api -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22
@@ -42,8 +42,8 @@
 :modulecheck-core -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-core -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
 :modulecheck-core -- runtimeClasspath -- net.swiftzer.semver:semver:2.0.0
-:modulecheck-core -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-core -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-core -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-core -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-core -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-core -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22
@@ -341,8 +341,8 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.2
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.antlr:antlr4:4.13.2
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.checkerframework:checker-qual:3.43.0
-:modulecheck-gradle:plugin -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-gradle:plugin -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-gradle:plugin -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-gradle:plugin -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.javassist:javassist:3.30.2-GA
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
@@ -372,8 +372,8 @@
 
 :modulecheck-parsing:android -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
 :modulecheck-parsing:android -- runtimeClasspath -- net.swiftzer.semver:semver:2.0.0
-:modulecheck-parsing:android -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-parsing:android -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-parsing:android -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-parsing:android -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-parsing:android -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22
@@ -404,7 +404,7 @@
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:antlr-runtime:3.5.3
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.2
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.antlr:antlr4:4.13.2
-:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22
@@ -525,8 +525,8 @@
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.2
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.antlr:antlr4:4.13.2
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.checkerframework:checker-qual:3.43.0
-:modulecheck-parsing:wiring -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-parsing:wiring -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-parsing:wiring -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-parsing:wiring -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.javassist:javassist:3.30.2-GA
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
@@ -592,8 +592,8 @@
 :modulecheck-project:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-project:impl -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
 :modulecheck-project:impl -- runtimeClasspath -- net.swiftzer.semver:semver:2.0.0
-:modulecheck-project:impl -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-project:impl -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-project:impl -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-project:impl -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-project:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22
@@ -657,8 +657,8 @@
 :modulecheck-project:testing -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.2
 :modulecheck-project:testing -- runtimeClasspath -- org.antlr:antlr4:4.13.2
 :modulecheck-project:testing -- runtimeClasspath -- org.checkerframework:checker-qual:3.43.0
-:modulecheck-project:testing -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-project:testing -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-project:testing -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-project:testing -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-project:testing -- runtimeClasspath -- org.javassist:javassist:3.30.2-GA
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
@@ -730,8 +730,8 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.2
 :modulecheck-project-generation:api -- runtimeClasspath -- org.antlr:antlr4:4.13.2
 :modulecheck-project-generation:api -- runtimeClasspath -- org.checkerframework:checker-qual:3.43.0
-:modulecheck-project-generation:api -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-project-generation:api -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-project-generation:api -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-project-generation:api -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-project-generation:api -- runtimeClasspath -- org.javassist:javassist:3.30.2-GA
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
@@ -805,8 +805,8 @@
 :modulecheck-reporting:console -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-reporting:console -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
 :modulecheck-reporting:console -- runtimeClasspath -- net.swiftzer.semver:semver:2.0.0
-:modulecheck-reporting:console -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-reporting:console -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-reporting:console -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-reporting:console -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-reporting:console -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22
@@ -842,8 +842,8 @@
 :modulecheck-reporting:graphviz -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-reporting:graphviz -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
 :modulecheck-reporting:graphviz -- runtimeClasspath -- net.swiftzer.semver:semver:2.0.0
-:modulecheck-reporting:graphviz -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-reporting:graphviz -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-reporting:graphviz -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-reporting:graphviz -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-reporting:graphviz -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22
@@ -946,8 +946,8 @@
 :modulecheck-rule:impl -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-rule:impl -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
 :modulecheck-rule:impl -- runtimeClasspath -- net.swiftzer.semver:semver:2.0.0
-:modulecheck-rule:impl -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-rule:impl -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-rule:impl -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-rule:impl -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-rule:impl -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22
@@ -980,8 +980,8 @@
 :modulecheck-rule:impl-factory -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-rule:impl-factory -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
 :modulecheck-rule:impl-factory -- runtimeClasspath -- net.swiftzer.semver:semver:2.0.0
-:modulecheck-rule:impl-factory -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-rule:impl-factory -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-rule:impl-factory -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-rule:impl-factory -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-rule:impl-factory -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22
@@ -1018,8 +1018,8 @@
 :modulecheck-rule:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-rule:testing -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
 :modulecheck-rule:testing -- runtimeClasspath -- net.swiftzer.semver:semver:2.0.0
-:modulecheck-rule:testing -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-rule:testing -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-rule:testing -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-rule:testing -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-rule:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22
@@ -1058,8 +1058,8 @@
 :modulecheck-runtime:api -- runtimeClasspath -- net.java.dev.jna:jna:5.13.0
 :modulecheck-runtime:api -- runtimeClasspath -- net.swiftzer.semver:semver-jvm:2.0.0
 :modulecheck-runtime:api -- runtimeClasspath -- net.swiftzer.semver:semver:2.0.0
-:modulecheck-runtime:api -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-runtime:api -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-runtime:api -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-runtime:api -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
 :modulecheck-runtime:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22
@@ -1133,8 +1133,8 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:antlr4-runtime:4.13.2
 :modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:antlr4:4.13.2
 :modulecheck-runtime:testing -- runtimeClasspath -- org.checkerframework:checker-qual:3.43.0
-:modulecheck-runtime:testing -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.21
-:modulecheck-runtime:testing -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.21
+:modulecheck-runtime:testing -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.23
+:modulecheck-runtime:testing -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.23
 :modulecheck-runtime:testing -- runtimeClasspath -- org.javassist:javassist:3.30.2-GA
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-bom:1.9.22
