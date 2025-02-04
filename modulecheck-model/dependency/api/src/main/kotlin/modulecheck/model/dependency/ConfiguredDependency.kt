@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,6 +38,7 @@ sealed interface ConfiguredDependency : Dependency {
    */
   val isTestFixture: Boolean
 
+  /** */
   companion object {
 
     inline fun <reified T : ConfiguredDependency> T.copy(
@@ -84,6 +85,7 @@ sealed interface Dependency
 data class PluginDependency(
   val accessor: PluginAccessor
 ) : Dependency {
+  /** */
   companion object {
     /**
      * @return a [PluginDependency] wrapping the [PluginAccessor] receiver

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,6 +18,7 @@ package modulecheck.reporting.console
 import com.github.ajalt.mordant.rendering.OverflowWrap
 import com.github.ajalt.mordant.rendering.TextAlign
 import com.github.ajalt.mordant.rendering.Whitespace
+import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.grid
 import com.github.ajalt.mordant.terminal.Terminal
 import modulecheck.finding.Finding
@@ -53,34 +54,53 @@ class ReportFactory @Inject constructor(private val terminal: Terminal) {
       val values = entry.value
       val path = values.first().dependentPath
 
+      val sortedValues = values.sortedWith(
+        compareBy(
+          { !it.fixed },
+          { it.dependencyIdentifier },
+          { it.positionOrNull },
+          { it.findingName.id },
+          { it.configurationName },
+          { it.sourceOrNull },
+          { it.toString() }
+        )
+      )
+
       appendLine("    ${path.value}")
       val grid = grid {
 
-        whitespace = Whitespace.NORMAL
+        cellBorders = Borders.NONE
+        // borderType = BorderType.DOUBLE
+
+        whitespace = Whitespace.PRE
         overflowWrap = OverflowWrap.NORMAL
-        align = TextAlign.NONE
-        padding { left = PADDING }
 
-        row("           ", "configuration", "dependency", "name", "source", "build file") {
-          align = TextAlign.LEFT
+        padding {
+          left = PADDING
+          right = 1
         }
-        column(0) { align = TextAlign.RIGHT }
-        column(0) { padding { left = PADDING_START } }
-        column(1) { padding { left = 1 } }
 
-        values.sortedWith(
-          compareBy(
-            { !it.fixed },
-            { it.dependencyIdentifier },
-            { it.positionOrNull },
-            { it.findingName.id },
-            { it.configurationName },
-            { it.sourceOrNull },
-            { it.toString() }
-          )
-        ).forEach { result ->
+        row("   ", "configuration", "dependency", "name", "source", "build file")
 
+        column(0) {
+          align = TextAlign.RIGHT
+          padding {
+            right = 0
+          }
+        }
+        column(1) {
+          padding {
+            left = 2
+            right = 1
+          }
+        }
+
+        align = TextAlign.LEFT
+
+        for (result in sortedValues) {
           val icon = if (result.fixed) theme.success(FIXED) else theme.danger(ERROR)
+
+          val rowColor = if (result.fixed) theme.warning.color else theme.danger.color
 
           row(
             icon,
@@ -90,12 +110,12 @@ class ReportFactory @Inject constructor(private val terminal: Terminal) {
             result.sourceOrNull.orEmpty(),
             result.filePathString
           ) {
-            style(color = if (result.fixed) theme.warning.color else theme.danger.color)
+            style(color = rowColor)
           }
         }
       }
 
-      appendLine(terminal.render(grid))
+      appendLine(terminal.render(grid).prependIndent("      "))
 
       if (entry != entries.last()) {
         appendLine()
@@ -112,8 +132,5 @@ class ReportFactory @Inject constructor(private val terminal: Terminal) {
 
     /** */
     const val PADDING: Int = 3
-
-    /** */
-    private const val PADDING_START = 8
   }
 }

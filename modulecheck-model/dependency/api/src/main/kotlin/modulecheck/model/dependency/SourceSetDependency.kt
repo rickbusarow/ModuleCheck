@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -50,18 +50,18 @@ sealed interface SourceSetDependency : HasIdentifier {
 
 fun ConfiguredDependency.toSourceSetDependency(
   sourceSetName: SourceSetName = configurationName.toSourceSetName()
-): SourceSetDependency = when (this) {
+): SourceSetDependency = when (val dep = this@toSourceSetDependency as ConfiguredDependency) {
   is ExternalDependency -> SourceSetExternalDependency(
     sourceSetName = sourceSetName,
-    group = group,
-    moduleName = moduleName,
-    version = version,
+    group = dep.group,
+    moduleName = dep.moduleName,
+    version = dep.version,
     isTestFixture = isTestFixture
   )
 
   is ProjectDependency -> SourceSetProjectDependency(
     sourceSetName = sourceSetName,
-    projectPath = projectPath,
+    projectPath = dep.projectPath,
     isTestFixture = isTestFixture
   )
 }

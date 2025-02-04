@@ -56,7 +56,6 @@ public class modulecheck/gradle/ChecksExtension : modulecheck/config/ChecksSetti
 public final class modulecheck/gradle/ChecksExtension_Factory : dagger/internal/Factory {
 	public fun <init> (Ldagger/internal/Provider;)V
 	public static fun create (Ldagger/internal/Provider;)Lmodulecheck/gradle/ChecksExtension_Factory;
-	public static fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/ChecksExtension_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/ChecksExtension;
 	public static fun newInstance (Lorg/gradle/api/model/ObjectFactory;)Lmodulecheck/gradle/ChecksExtension;
@@ -74,7 +73,6 @@ public final class modulecheck/gradle/GradleMcLogger : modulecheck/reporting/log
 public final class modulecheck/gradle/GradleMcLogger_Factory : dagger/internal/Factory {
 	public fun <init> (Ldagger/internal/Provider;)V
 	public static fun create (Ldagger/internal/Provider;)Lmodulecheck/gradle/GradleMcLogger_Factory;
-	public static fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/GradleMcLogger_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/GradleMcLogger;
 	public static fun newInstance (Lcom/github/ajalt/mordant/terminal/Terminal;)Lmodulecheck/gradle/GradleMcLogger;
@@ -111,7 +109,6 @@ public class modulecheck/gradle/ModuleCheckExtension : modulecheck/config/Module
 public final class modulecheck/gradle/ModuleCheckExtension_Factory : dagger/internal/Factory {
 	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;)V
 	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/gradle/ModuleCheckExtension_Factory;
-	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/ModuleCheckExtension_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/ModuleCheckExtension;
 	public static fun newInstance (Lorg/gradle/api/model/ObjectFactory;Lorg/gradle/api/file/ProjectLayout;)Lmodulecheck/gradle/ModuleCheckExtension;
@@ -161,7 +158,6 @@ public class modulecheck/gradle/ReportsExtension : modulecheck/config/ReportsSet
 public final class modulecheck/gradle/ReportsExtension_Factory : dagger/internal/Factory {
 	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;)V
 	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/gradle/ReportsExtension_Factory;
-	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/ReportsExtension_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/ReportsExtension;
 	public static fun newInstance (Lorg/gradle/api/model/ObjectFactory;Lorg/gradle/api/file/ProjectLayout;)Lmodulecheck/gradle/ReportsExtension;
@@ -178,7 +174,6 @@ public class modulecheck/gradle/SortExtension : modulecheck/config/SortSettings 
 public final class modulecheck/gradle/SortExtension_Factory : dagger/internal/Factory {
 	public fun <init> (Ldagger/internal/Provider;)V
 	public static fun create (Ldagger/internal/Provider;)Lmodulecheck/gradle/SortExtension_Factory;
-	public static fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/SortExtension_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/SortExtension;
 	public static fun newInstance (Lorg/gradle/api/model/ObjectFactory;)Lmodulecheck/gradle/SortExtension;
@@ -200,7 +195,6 @@ public final class modulecheck/gradle/internal/GradleProjectProvider$Companion {
 public final class modulecheck/gradle/internal/GradleProjectProvider_Factory : dagger/internal/Factory {
 	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;)V
 	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/gradle/internal/GradleProjectProvider_Factory;
-	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/internal/GradleProjectProvider_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/internal/GradleProjectProvider;
 	public static fun newInstance (Lorg/gradle/api/Project;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/project/ProjectCache;Lmodulecheck/gradle/GradleMcLogger;Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lmodulecheck/parsing/gradle/dsl/BuildFileParser$Factory;Lmodulecheck/parsing/wiring/RealJvmFileProvider$Factory;Lmodulecheck/gradle/platforms/android/AndroidPlatformPluginFactory;Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory;Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;Lmodulecheck/model/dependency/AllProjectPathsProvider;)Lmodulecheck/gradle/internal/GradleProjectProvider;
@@ -284,7 +278,6 @@ public class modulecheck/gradle/task/MultiRuleModuleCheckTask : modulecheck/grad
 public final class modulecheck/gradle/task/MultiRuleModuleCheckTask_Factory : dagger/internal/Factory {
 	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;)V
 	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/gradle/task/MultiRuleModuleCheckTask_Factory;
-	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/task/MultiRuleModuleCheckTask_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/task/MultiRuleModuleCheckTask;
 	public static fun newInstance (ZZ)Lmodulecheck/gradle/task/MultiRuleModuleCheckTask;
@@ -298,7 +291,6 @@ public class modulecheck/gradle/task/SingleRuleModuleCheckTask : modulecheck/gra
 public final class modulecheck/gradle/task/SingleRuleModuleCheckTask_Factory : dagger/internal/Factory {
 	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;)V
 	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/gradle/task/SingleRuleModuleCheckTask_Factory;
-	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/task/SingleRuleModuleCheckTask_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/task/SingleRuleModuleCheckTask;
 	public static fun newInstance (Lmodulecheck/finding/FindingName;ZZ)Lmodulecheck/gradle/task/SingleRuleModuleCheckTask;
@@ -323,7 +315,6 @@ public final class modulecheck/parsing/groovy/antlr/GroovyAndroidGradleParser_Fa
 public final class modulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParser_Factory : dagger/internal/Factory {
 	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;)V
 	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParser_Factory;
-	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParser_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParser;
 	public static fun newInstance (Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/model/dependency/ProjectDependency$Factory;)Lmodulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParser;
@@ -332,7 +323,6 @@ public final class modulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParse
 public final class modulecheck/parsing/groovy/antlr/GroovyPluginsBlockParser_Factory : dagger/internal/Factory {
 	public fun <init> (Ldagger/internal/Provider;)V
 	public static fun create (Ldagger/internal/Provider;)Lmodulecheck/parsing/groovy/antlr/GroovyPluginsBlockParser_Factory;
-	public static fun create (Ljavax/inject/Provider;)Lmodulecheck/parsing/groovy/antlr/GroovyPluginsBlockParser_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/parsing/groovy/antlr/GroovyPluginsBlockParser;
 	public static fun newInstance (Lmodulecheck/reporting/logging/McLogger;)Lmodulecheck/parsing/groovy/antlr/GroovyPluginsBlockParser;
@@ -349,7 +339,6 @@ public final class modulecheck/parsing/kotlin/compiler/NoContextPsiFileFactory_F
 public final class modulecheck/parsing/psi/KotlinAndroidGradleParser_Factory : dagger/internal/Factory {
 	public fun <init> (Ldagger/internal/Provider;)V
 	public static fun create (Ldagger/internal/Provider;)Lmodulecheck/parsing/psi/KotlinAndroidGradleParser_Factory;
-	public static fun create (Ljavax/inject/Provider;)Lmodulecheck/parsing/psi/KotlinAndroidGradleParser_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/parsing/psi/KotlinAndroidGradleParser;
 	public static fun newInstance (Lmodulecheck/parsing/kotlin/compiler/NoContextPsiFileFactory;)Lmodulecheck/parsing/psi/KotlinAndroidGradleParser;
@@ -358,7 +347,6 @@ public final class modulecheck/parsing/psi/KotlinAndroidGradleParser_Factory : d
 public final class modulecheck/parsing/psi/KotlinDependenciesBlockParser_Factory : dagger/internal/Factory {
 	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;)V
 	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/parsing/psi/KotlinDependenciesBlockParser_Factory;
-	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/parsing/psi/KotlinDependenciesBlockParser_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/parsing/psi/KotlinDependenciesBlockParser;
 	public static fun newInstance (Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/parsing/kotlin/compiler/NoContextPsiFileFactory;Lmodulecheck/model/dependency/ProjectDependency$Factory;)Lmodulecheck/parsing/psi/KotlinDependenciesBlockParser;
@@ -367,7 +355,6 @@ public final class modulecheck/parsing/psi/KotlinDependenciesBlockParser_Factory
 public final class modulecheck/parsing/psi/KotlinPluginsBlockParser_Factory : dagger/internal/Factory {
 	public fun <init> (Ldagger/internal/Provider;)V
 	public static fun create (Ldagger/internal/Provider;)Lmodulecheck/parsing/psi/KotlinPluginsBlockParser_Factory;
-	public static fun create (Ljavax/inject/Provider;)Lmodulecheck/parsing/psi/KotlinPluginsBlockParser_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/parsing/psi/KotlinPluginsBlockParser;
 	public static fun newInstance (Lmodulecheck/reporting/logging/McLogger;)Lmodulecheck/parsing/psi/KotlinPluginsBlockParser;
