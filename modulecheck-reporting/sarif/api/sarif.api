@@ -201,6 +201,7 @@ public final class modulecheck/reporting/sarif/BaselineState : java/lang/Enum {
 	public static final field New Lmodulecheck/reporting/sarif/BaselineState;
 	public static final field Unchanged Lmodulecheck/reporting/sarif/BaselineState;
 	public static final field Updated Lmodulecheck/reporting/sarif/BaselineState;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public final fun getValue ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/BaselineState;
 	public static fun values ()[Lmodulecheck/reporting/sarif/BaselineState;
@@ -234,6 +235,7 @@ public final class modulecheck/reporting/sarif/CodeFlowJsonAdapter : com/squareu
 public final class modulecheck/reporting/sarif/ColumnKind : java/lang/Enum {
 	public static final field UnicodeCodePoints Lmodulecheck/reporting/sarif/ColumnKind;
 	public static final field Utf16CodeUnits Lmodulecheck/reporting/sarif/ColumnKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public final fun getValue ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/ColumnKind;
 	public static fun values ()[Lmodulecheck/reporting/sarif/ColumnKind;
@@ -267,6 +269,7 @@ public final class modulecheck/reporting/sarif/ConfigurationOverrideJsonAdapter 
 public final class modulecheck/reporting/sarif/Content : java/lang/Enum {
 	public static final field LocalizedData Lmodulecheck/reporting/sarif/Content;
 	public static final field NonLocalizedData Lmodulecheck/reporting/sarif/Content;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public final fun getValue ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/Content;
 	public static fun values ()[Lmodulecheck/reporting/sarif/Content;
@@ -622,6 +625,7 @@ public final class modulecheck/reporting/sarif/Importance : java/lang/Enum {
 	public static final field Essential Lmodulecheck/reporting/sarif/Importance;
 	public static final field Important Lmodulecheck/reporting/sarif/Importance;
 	public static final field Unimportant Lmodulecheck/reporting/sarif/Importance;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public final fun getValue ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/Importance;
 	public static fun values ()[Lmodulecheck/reporting/sarif/Importance;
@@ -703,6 +707,7 @@ public final class modulecheck/reporting/sarif/Level : java/lang/Enum {
 	public static final field None Lmodulecheck/reporting/sarif/Level;
 	public static final field Note Lmodulecheck/reporting/sarif/Level;
 	public static final field Warning Lmodulecheck/reporting/sarif/Level;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public final fun getValue ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/Level;
 	public static fun values ()[Lmodulecheck/reporting/sarif/Level;
@@ -1171,6 +1176,7 @@ public final class modulecheck/reporting/sarif/ResultKind : java/lang/Enum {
 	public static final field Open Lmodulecheck/reporting/sarif/ResultKind;
 	public static final field Pass Lmodulecheck/reporting/sarif/ResultKind;
 	public static final field Review Lmodulecheck/reporting/sarif/ResultKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public final fun getValue ()Ljava/lang/String;
 	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/ResultKind;
 	public static fun values ()[Lmodulecheck/reporting/sarif/ResultKind;
@@ -1234,6 +1240,7 @@ public final class modulecheck/reporting/sarif/Role : java/lang/Enum {
 	public static final field Uncontrolled Lmodulecheck/reporting/sarif/Role;
 	public static final field Unmodified Lmodulecheck/reporting/sarif/Role;
 	public static final field UserSpecifiedConfiguration Lmodulecheck/reporting/sarif/Role;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/Role;
 	public static fun values ()[Lmodulecheck/reporting/sarif/Role;
 }
@@ -1675,6 +1682,7 @@ public final class modulecheck/reporting/sarif/State : java/lang/Enum {
 	public static final field Accepted Lmodulecheck/reporting/sarif/State;
 	public static final field Rejected Lmodulecheck/reporting/sarif/State;
 	public static final field UnderReview Lmodulecheck/reporting/sarif/State;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/State;
 	public static fun values ()[Lmodulecheck/reporting/sarif/State;
 }
@@ -1713,6 +1721,7 @@ public final class modulecheck/reporting/sarif/SuppressionJsonAdapter : com/squa
 public final class modulecheck/reporting/sarif/SuppressionKind : java/lang/Enum {
 	public static final field External Lmodulecheck/reporting/sarif/SuppressionKind;
 	public static final field InSource Lmodulecheck/reporting/sarif/SuppressionKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/SuppressionKind;
 	public static fun values ()[Lmodulecheck/reporting/sarif/SuppressionKind;
 }
@@ -1884,6 +1893,7 @@ public final class modulecheck/reporting/sarif/TranslationMetadataJsonAdapter : 
 
 public final class modulecheck/reporting/sarif/Version : java/lang/Enum {
 	public static final field The210 Lmodulecheck/reporting/sarif/Version;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/reporting/sarif/Version;
 	public static fun values ()[Lmodulecheck/reporting/sarif/Version;
 }

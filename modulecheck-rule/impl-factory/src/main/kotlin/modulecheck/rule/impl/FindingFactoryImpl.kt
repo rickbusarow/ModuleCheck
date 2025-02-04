@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,7 +41,7 @@ import javax.inject.Inject
 interface FindingFactoryModule {
   // TODO maybe take another stab at removing the generic Finding type from FindingFactory
   @Binds
-  fun FindingFactoryImpl.bindFindingFactory(): FindingFactory<out Finding>
+  fun bindFindingFactory(findingFactoryImpl: FindingFactoryImpl): FindingFactory<out Finding>
 }
 
 /**

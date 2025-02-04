@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,6 @@ import modulecheck.parsing.kotlin.compiler.internal.AbstractMcPsiFileFactory
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 import org.intellij.lang.annotations.Language
-import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 import org.jetbrains.kotlin.cli.common.messages.PrintingMessageCollector
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
@@ -30,6 +29,7 @@ import org.jetbrains.kotlin.com.intellij.openapi.util.text.StringUtilRt
 import org.jetbrains.kotlin.com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.com.intellij.psi.PsiFileFactory
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
+import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
@@ -49,7 +49,7 @@ class NoContextPsiFileFactory @Inject constructor() :
 
   private val configuration = CompilerConfiguration().apply {
     put(
-      CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY,
+      CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY,
       PrintingMessageCollector(
         System.err,
         MessageRenderer.PLAIN_FULL_PATHS,
@@ -60,7 +60,7 @@ class NoContextPsiFileFactory @Inject constructor() :
 
   override val coreEnvironment: LazyDeferred<KotlinCoreEnvironment> = lazyDeferred {
     KotlinCoreEnvironment.createForProduction(
-      parentDisposable = Disposer.newDisposable(),
+      projectDisposable = Disposer.newDisposable(),
       configuration = configuration,
       configFiles = EnvironmentConfigFiles.JVM_CONFIG_FILES
     )

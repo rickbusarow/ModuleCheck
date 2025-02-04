@@ -69,10 +69,12 @@ public final class modulecheck/runtime/ModuleCheckRunner_Factory_Impl : modulech
 	public fun <init> (Lmodulecheck/runtime/ModuleCheckRunner_Factory;)V
 	public static final fun create (Lmodulecheck/runtime/ModuleCheckRunner_Factory;)Ljavax/inject/Provider;
 	public fun create (Z)Lmodulecheck/runtime/ModuleCheckRunner;
+	public static final fun createFactoryProvider (Lmodulecheck/runtime/ModuleCheckRunner_Factory;)Ldagger/internal/Provider;
 }
 
 public final class modulecheck/runtime/ModuleCheckRunner_Factory_Impl$Companion {
 	public final fun create (Lmodulecheck/runtime/ModuleCheckRunner_Factory;)Ljavax/inject/Provider;
+	public final fun createFactoryProvider (Lmodulecheck/runtime/ModuleCheckRunner_Factory;)Ldagger/internal/Provider;
 }
 
 public abstract interface class modulecheck/runtime/RunnerComponent {

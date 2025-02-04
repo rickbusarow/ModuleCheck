@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
   id("mcbuild")
 }
@@ -26,9 +24,9 @@ mcbuild {
   anvil()
 }
 
-tasks.withType<KotlinCompile>().configureEach {
-  kotlinOptions {
-    freeCompilerArgs += "-opt-in=modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference"
+kotlin {
+  compilerOptions {
+    optIn.add("modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference")
   }
 }
 

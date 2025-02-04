@@ -1,12 +1,3 @@
-public final class anvil/hint/merge/anvil/module/modulecheck/rule/test/AllRulesComponentAnvilModuleKt {
-	public static final fun getAnvil_module_modulecheck_rule_test_AllRulesComponentAnvilModule_reference ()Lkotlin/reflect/KClass;
-	public static final fun getAnvil_module_modulecheck_rule_test_AllRulesComponentAnvilModule_scope0 ()Lkotlin/reflect/KClass;
-}
-
-public final class anvil/module/modulecheck/rule/test/AllRulesComponentAnvilModule {
-	public static final field INSTANCE Lanvil/module/modulecheck/rule/test/AllRulesComponentAnvilModule;
-}
-
 public abstract interface class modulecheck/rule/test/AllRulesComponent : modulecheck/rule/RulesComponent {
 	public static final field Companion Lmodulecheck/rule/test/AllRulesComponent$Companion;
 }

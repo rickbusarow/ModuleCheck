@@ -1,11 +1,11 @@
-public final class anvil/hint/binding/modulecheck/rule/impl/RealFindingResultFactoryKt {
-	public static final fun getModulecheck_rule_impl_RealFindingResultFactory_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_rule_impl_RealFindingResultFactory_scope0 ()Lkotlin/reflect/KClass;
-}
-
-public final class anvil/hint/merge/modulecheck/rule/impl/FindingFactoryModuleKt {
+public final class anvil/hint/Modulecheck_rule_impl_FindingFactoryModule_af1a469fKt {
 	public static final fun getModulecheck_rule_impl_FindingFactoryModule_reference ()Lkotlin/reflect/KClass;
 	public static final fun getModulecheck_rule_impl_FindingFactoryModule_scope0 ()Lkotlin/reflect/KClass;
+}
+
+public final class anvil/hint/Modulecheck_rule_impl_RealFindingResultFactory_FindingResultFactory_TaskScope_BindingModule_acf50564_6518a9c6Kt {
+	public static final fun getModulecheck_rule_impl_RealFindingResultFactory_FindingResultFactory_TaskScope_BindingModule_acf50564_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_rule_impl_RealFindingResultFactory_FindingResultFactory_TaskScope_BindingModule_acf50564_scope0 ()Lkotlin/reflect/KClass;
 }
 
 public final class modulecheck/rule/impl/FindingFactoryImpl : modulecheck/rule/FindingFactory, modulecheck/utils/trace/HasTraceTags {
@@ -51,5 +51,9 @@ public final class modulecheck/rule/impl/RealFindingResultFactory_Factory : dagg
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/rule/impl/RealFindingResultFactory;
 	public static final fun newInstance ()Lmodulecheck/rule/impl/RealFindingResultFactory;
+}
+
+public abstract interface class modulecheck/rule/impl/RealFindingResultFactory_FindingResultFactory_TaskScope_BindingModule_acf50564 {
+	public abstract fun bindFindingResultFactory (Lmodulecheck/rule/impl/RealFindingResultFactory;)Lmodulecheck/finding/FindingResultFactory;
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2024 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +13,9 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
 
 plugins {
@@ -55,25 +57,22 @@ allprojects ap@{
       jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(libs.versions.jdk.get()))
       }
+      compilerOptions {
+        val versionProvider = libs.versions.kotlinApi
+          .map { KotlinVersion.fromVersion(it) }
+
+        languageVersion.set(versionProvider)
+        apiVersion.set(versionProvider)
+
+        jvmTarget = libs.versions.jvmTarget.map { JvmTarget.fromTarget(it) }
+
+        optIn.add("kotlin.RequiresOptIn")
+      }
     }
   }
   plugins.withType(JavaPlugin::class.java).configureEach {
     extensions.configure(JavaPluginExtension::class.java) {
       sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
-    }
-  }
-
-  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-
-      languageVersion = "1.6"
-      apiVersion = "1.6"
-
-      jvmTarget = libs.versions.jvmTarget.get()
-
-      freeCompilerArgs = freeCompilerArgs + listOf(
-        "-opt-in=kotlin.RequiresOptIn"
-      )
     }
   }
 }

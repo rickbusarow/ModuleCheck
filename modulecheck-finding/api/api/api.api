@@ -1,6 +1,5 @@
 public abstract interface class modulecheck/finding/AddsDependency : modulecheck/finding/Fixable {
 	public fun addDependency (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun addDependency$suspendImpl (Lmodulecheck/finding/AddsDependency;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getNewDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
 }
 
@@ -15,7 +14,6 @@ public abstract interface class modulecheck/finding/ConfiguredDependencyFinding 
 
 public abstract interface class modulecheck/finding/Deletable : modulecheck/finding/DependencyFinding, modulecheck/finding/Finding {
 	public fun delete (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun delete$suspendImpl (Lmodulecheck/finding/Deletable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class modulecheck/finding/DependencyFinding {
@@ -86,7 +84,6 @@ public abstract interface class modulecheck/finding/Fixable : modulecheck/findin
 	public static final field Companion Lmodulecheck/finding/Fixable$Companion;
 	public static final field FIX_LABEL Ljava/lang/String;
 	public fun fix (Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun fix$suspendImpl (Lmodulecheck/finding/Fixable;Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun fixLabel ()Ljava/lang/String;
 }
 
@@ -100,7 +97,6 @@ public abstract interface class modulecheck/finding/ModifiesProjectDependency : 
 public abstract interface class modulecheck/finding/Problem : modulecheck/finding/DependencyFinding, modulecheck/finding/Finding {
 	public fun isSuppressed ()Lmodulecheck/utils/lazy/LazyDeferred;
 	public fun toResult (ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun toResult$suspendImpl (Lmodulecheck/finding/Problem;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class modulecheck/finding/ProjectDependencyFinding : modulecheck/finding/ConfigurationFinding, modulecheck/finding/ConfiguredDependencyFinding {
@@ -111,12 +107,12 @@ public abstract interface class modulecheck/finding/ProjectDependencyFinding : m
 public abstract interface class modulecheck/finding/RemovesDependency : modulecheck/finding/Fixable {
 	public abstract fun getOldDependency ()Lmodulecheck/model/dependency/ConfiguredDependency;
 	public fun removeDependency (Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun removeDependency$suspendImpl (Lmodulecheck/finding/RemovesDependency;Lmodulecheck/finding/RemovesDependency$RemovalStrategy;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class modulecheck/finding/RemovesDependency$RemovalStrategy : java/lang/Enum {
 	public static final field COMMENT Lmodulecheck/finding/RemovesDependency$RemovalStrategy;
 	public static final field DELETE Lmodulecheck/finding/RemovesDependency$RemovalStrategy;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lmodulecheck/finding/RemovesDependency$RemovalStrategy;
 	public static fun values ()[Lmodulecheck/finding/RemovesDependency$RemovalStrategy;
 }

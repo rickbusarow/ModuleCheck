@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2024 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -63,10 +63,10 @@ open class Versions @Inject constructor(
   )
 
   companion object {
-    internal val gradleListDefault = listOf("8.5", "8.6")
+    internal val gradleListDefault = listOf("8.5", "8.12.1")
     internal val agpListDefault = listOf("8.0.2", "8.1.0")
-    internal val anvilListDefault = listOf("2.4.9")
-    internal val kotlinListDefault = listOf("1.9.22")
+    internal val anvilListDefault = listOf("2.5.0", "2.5.1")
+    internal val kotlinListDefault = listOf("2.0.21")
   }
 }
 

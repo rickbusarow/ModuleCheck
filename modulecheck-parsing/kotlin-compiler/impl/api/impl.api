@@ -1,16 +1,16 @@
-public final class anvil/hint/binding/modulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment_FactoryKt {
-	public static final fun getModulecheck_parsing_kotlin_compiler_impl_RealKotlinEnvironment_Factory_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_parsing_kotlin_compiler_impl_RealKotlinEnvironment_Factory_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_parsing_kotlin_compiler_impl_Factory_Factory_TaskScope_BindingModule_92bd406a_2204ffa8Kt {
+	public static final fun getModulecheck_parsing_kotlin_compiler_impl_Factory_Factory_TaskScope_BindingModule_92bd406a_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_parsing_kotlin_compiler_impl_Factory_Factory_TaskScope_BindingModule_92bd406a_scope0 ()Lkotlin/reflect/KClass;
 }
 
-public final class anvil/hint/binding/modulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory_FactoryKt {
-	public static final fun getModulecheck_parsing_kotlin_compiler_impl_RealMcPsiFileFactory_Factory_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_parsing_kotlin_compiler_impl_RealMcPsiFileFactory_Factory_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_parsing_kotlin_compiler_impl_Factory_KotlinEnvironmentFactory_TaskScope_BindingModule_cebbbacd_959bf11bKt {
+	public static final fun getModulecheck_parsing_kotlin_compiler_impl_Factory_KotlinEnvironmentFactory_TaskScope_BindingModule_cebbbacd_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_parsing_kotlin_compiler_impl_Factory_KotlinEnvironmentFactory_TaskScope_BindingModule_cebbbacd_scope0 ()Lkotlin/reflect/KClass;
 }
 
-public final class anvil/hint/binding/modulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImplKt {
-	public static final fun getModulecheck_parsing_kotlin_compiler_impl_SafeAnalysisResultAccessImpl_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_parsing_kotlin_compiler_impl_SafeAnalysisResultAccessImpl_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_parsing_kotlin_compiler_impl_SafeAnalysisResultAccessImpl_SafeAnalysisResultAccess_TaskScope_BindingModule_7e93cce8_fc1e9a66Kt {
+	public static final fun getModulecheck_parsing_kotlin_compiler_impl_SafeAnalysisResultAccessImpl_SafeAnalysisResultAccess_TaskScope_BindingModule_7e93cce8_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_parsing_kotlin_compiler_impl_SafeAnalysisResultAccessImpl_SafeAnalysisResultAccess_TaskScope_BindingModule_7e93cce8_scope0 ()Lkotlin/reflect/KClass;
 }
 
 public final class modulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess {
@@ -30,6 +30,14 @@ public final class modulecheck/parsing/kotlin/compiler/impl/DependencyModuleDesc
 public final class modulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess_Factory$Companion {
 	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess_Factory;
 	public final fun newInstance (Lmodulecheck/project/ProjectCache;)Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;
+}
+
+public abstract interface class modulecheck/parsing/kotlin/compiler/impl/Factory_Factory_TaskScope_BindingModule_92bd406a {
+	public abstract fun bindFactory (Lmodulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory$Factory;)Lmodulecheck/parsing/kotlin/compiler/McPsiFileFactory$Factory;
+}
+
+public abstract interface class modulecheck/parsing/kotlin/compiler/impl/Factory_KotlinEnvironmentFactory_TaskScope_BindingModule_cebbbacd {
+	public abstract fun bindKotlinEnvironmentFactory (Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment$Factory;)Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;
 }
 
 public final class modulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment : modulecheck/parsing/kotlin/compiler/KotlinEnvironment {
@@ -113,6 +121,10 @@ public final class modulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAc
 public final class modulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl_Factory$Companion {
 	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl_Factory;
 	public final fun newInstance (Lmodulecheck/project/ProjectCache;)Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl;
+}
+
+public abstract interface class modulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl_SafeAnalysisResultAccess_TaskScope_BindingModule_7e93cce8 {
+	public abstract fun bindSafeAnalysisResultAccess (Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl;)Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccess;
 }
 
 public final class modulecheck/parsing/kotlin/compiler/impl/VersionNeutralTopDownAnalyzerFacadeForJVM {

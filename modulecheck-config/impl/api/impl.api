@@ -1,4 +1,4 @@
-public final class anvil/hint/merge/modulecheck/config/internal/CodeGeneratorBindingsModuleKt {
+public final class anvil/hint/Modulecheck_config_internal_CodeGeneratorBindingsModule_66130738Kt {
 	public static final fun getModulecheck_config_internal_CodeGeneratorBindingsModule_reference ()Lkotlin/reflect/KClass;
 	public static final fun getModulecheck_config_internal_CodeGeneratorBindingsModule_scope0 ()Lkotlin/reflect/KClass;
 }

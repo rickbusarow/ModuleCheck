@@ -1,21 +1,21 @@
-public final class anvil/hint/binding/modulecheck/parsing/wiring/RealAndroidGradleSettingsProvider_FactoryKt {
-	public static final fun getModulecheck_parsing_wiring_RealAndroidGradleSettingsProvider_Factory_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_parsing_wiring_RealAndroidGradleSettingsProvider_Factory_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_parsing_wiring_Factory_Factory_TaskScope_BindingModule_1921deb2_e05bb092Kt {
+	public static final fun getModulecheck_parsing_wiring_Factory_Factory_TaskScope_BindingModule_1921deb2_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_parsing_wiring_Factory_Factory_TaskScope_BindingModule_1921deb2_scope0 ()Lkotlin/reflect/KClass;
 }
 
-public final class anvil/hint/binding/modulecheck/parsing/wiring/RealDependenciesBlocksProvider_FactoryKt {
-	public static final fun getModulecheck_parsing_wiring_RealDependenciesBlocksProvider_Factory_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_parsing_wiring_RealDependenciesBlocksProvider_Factory_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_parsing_wiring_Factory_Factory_TaskScope_BindingModule_b4fd52ee_665a4d48Kt {
+	public static final fun getModulecheck_parsing_wiring_Factory_Factory_TaskScope_BindingModule_b4fd52ee_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_parsing_wiring_Factory_Factory_TaskScope_BindingModule_b4fd52ee_scope0 ()Lkotlin/reflect/KClass;
 }
 
-public final class anvil/hint/binding/modulecheck/parsing/wiring/RealJvmFileProvider_FactoryKt {
-	public static final fun getModulecheck_parsing_wiring_RealJvmFileProvider_Factory_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_parsing_wiring_RealJvmFileProvider_Factory_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_parsing_wiring_Factory_Factory_TaskScope_BindingModule_ddc1b456_8239e589Kt {
+	public static final fun getModulecheck_parsing_wiring_Factory_Factory_TaskScope_BindingModule_ddc1b456_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_parsing_wiring_Factory_Factory_TaskScope_BindingModule_ddc1b456_scope0 ()Lkotlin/reflect/KClass;
 }
 
-public final class anvil/hint/binding/modulecheck/parsing/wiring/RealPluginsBlockProvider_FactoryKt {
-	public static final fun getModulecheck_parsing_wiring_RealPluginsBlockProvider_Factory_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_parsing_wiring_RealPluginsBlockProvider_Factory_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_parsing_wiring_Factory_Factory_TaskScope_BindingModule_e67e1b72_fb328d24Kt {
+	public static final fun getModulecheck_parsing_wiring_Factory_Factory_TaskScope_BindingModule_e67e1b72_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_parsing_wiring_Factory_Factory_TaskScope_BindingModule_e67e1b72_scope0 ()Lkotlin/reflect/KClass;
 }
 
 public final class modulecheck/parsing/wiring/AndroidDataBindingReferenceParsingInterceptor : modulecheck/parsing/source/internal/ParsingInterceptor {
@@ -26,6 +26,22 @@ public final class modulecheck/parsing/wiring/AndroidDataBindingReferenceParsing
 public final class modulecheck/parsing/wiring/AndroidResourceReferenceParsingInterceptor : modulecheck/parsing/source/internal/ParsingInterceptor {
 	public fun <init> (Lmodulecheck/parsing/source/internal/AndroidRNameProvider;)V
 	public fun intercept (Lmodulecheck/parsing/source/internal/ParsingInterceptor$Chain;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class modulecheck/parsing/wiring/Factory_Factory_TaskScope_BindingModule_1921deb2 {
+	public abstract fun bindFactory (Lmodulecheck/parsing/wiring/RealAndroidGradleSettingsProvider$Factory;)Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettingsProvider$Factory;
+}
+
+public abstract interface class modulecheck/parsing/wiring/Factory_Factory_TaskScope_BindingModule_b4fd52ee {
+	public abstract fun bindFactory (Lmodulecheck/parsing/wiring/RealPluginsBlockProvider$Factory;)Lmodulecheck/parsing/gradle/dsl/PluginsBlockProvider$Factory;
+}
+
+public abstract interface class modulecheck/parsing/wiring/Factory_Factory_TaskScope_BindingModule_ddc1b456 {
+	public abstract fun bindFactory (Lmodulecheck/parsing/wiring/RealDependenciesBlocksProvider$Factory;)Lmodulecheck/parsing/gradle/dsl/DependenciesBlocksProvider$Factory;
+}
+
+public abstract interface class modulecheck/parsing/wiring/Factory_Factory_TaskScope_BindingModule_e67e1b72 {
+	public abstract fun bindFactory (Lmodulecheck/parsing/wiring/RealJvmFileProvider$Factory;)Lmodulecheck/project/JvmFileProvider$Factory;
 }
 
 public final class modulecheck/parsing/wiring/JvmFileCache {

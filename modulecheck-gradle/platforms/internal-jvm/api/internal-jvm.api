@@ -1,6 +1,6 @@
-public final class anvil/hint/binding/modulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParserKt {
-	public static final fun getModulecheck_gradle_platforms_sourcesets_RealJvmSourceSetsParser_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_gradle_platforms_sourcesets_RealJvmSourceSetsParser_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_gradle_platforms_sourcesets_RealJvmSourceSetsParser_JvmSourceSetsParser_TaskScope_BindingModule_5527c16a_dc4a0426Kt {
+	public static final fun getModulecheck_gradle_platforms_sourcesets_RealJvmSourceSetsParser_JvmSourceSetsParser_TaskScope_BindingModule_5527c16a_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_gradle_platforms_sourcesets_RealJvmSourceSetsParser_JvmSourceSetsParser_TaskScope_BindingModule_5527c16a_scope0 ()Lkotlin/reflect/KClass;
 }
 
 public final class modulecheck/gradle/platforms/JvmPlatformPluginFactory {
@@ -39,5 +39,9 @@ public final class modulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsPars
 public final class modulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser_Factory$Companion {
 	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser_Factory;
 	public final fun newInstance (Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;)Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser;
+}
+
+public abstract interface class modulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser_JvmSourceSetsParser_TaskScope_BindingModule_5527c16a {
+	public abstract fun bindJvmSourceSetsParser (Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser;)Lmodulecheck/gradle/platforms/sourcesets/JvmSourceSetsParser;
 }
 

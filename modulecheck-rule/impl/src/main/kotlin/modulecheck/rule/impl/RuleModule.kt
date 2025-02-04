@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,72 +36,74 @@ interface RuleModule {
   @Binds
   @IntoSet
   @AllRules
-  fun AnvilFactoryRule.bindAnvilFactoryRule(): ModuleCheckRule<*>
+  fun bindAnvilFactoryRule(rule: AnvilFactoryRule): ModuleCheckRule<*>
 
   @Binds
   @IntoSet
   @AllRules
-  fun DepthRule.bindDepthRule(): ModuleCheckRule<*>
+  fun bindDepthRule(rule: DepthRule): ModuleCheckRule<*>
 
   @Binds
   @IntoSet
   @AllRules
-  fun DisableAndroidResourcesRule.bindDisableAndroidResourcesRule(): ModuleCheckRule<*>
+  fun bindDisableAndroidResourcesRule(rule: DisableAndroidResourcesRule): ModuleCheckRule<*>
 
   @Binds
   @IntoSet
   @AllRules
-  fun DisableViewBindingRule.bindDisableViewBindingRule(): ModuleCheckRule<*>
+  fun bindDisableViewBindingRule(rule: DisableViewBindingRule): ModuleCheckRule<*>
 
   @Binds
   @IntoSet
   @AllRules
-  fun InheritedDependencyRule.bindInheritedDependencyRule(): ModuleCheckRule<*>
+  fun bindInheritedDependencyRule(rule: InheritedDependencyRule): ModuleCheckRule<*>
 
   @Binds
   @IntoSet
   @AllRules
-  fun MustBeApiRule.bindMustBeApiRule(): ModuleCheckRule<*>
+  fun bindMustBeApiRule(rule: MustBeApiRule): ModuleCheckRule<*>
 
   @Binds
   @IntoSet
   @AllRules
-  fun OverShotDependencyRule.bindOverShotDependencyRule(): ModuleCheckRule<*>
+  fun bindOverShotDependencyRule(rule: OverShotDependencyRule): ModuleCheckRule<*>
 
   @Binds
   @IntoSet
   @AllRules
-  fun RedundantRule.bindRedundantRule(): ModuleCheckRule<*>
+  fun bindRedundantRule(rule: RedundantRule): ModuleCheckRule<*>
 
   @Binds
   @IntoSet
   @AllRules
-  fun SortDependenciesRule.bindSortDependenciesRule(): ModuleCheckRule<*>
+  fun bindSortDependenciesRule(rule: SortDependenciesRule): ModuleCheckRule<*>
 
   @Binds
   @IntoSet
   @AllRules
-  fun SortPluginsRule.bindSortPluginsRule(): ModuleCheckRule<*>
+  fun bindSortPluginsRule(rule: SortPluginsRule): ModuleCheckRule<*>
 
   @Binds
   @IntoSet
   @AllRules
-  fun UnusedDependencyRule.bindUnusedDependencyRule(): ModuleCheckRule<*>
+  fun bindUnusedDependencyRule(rule: UnusedDependencyRule): ModuleCheckRule<*>
 
   @Binds
   @IntoSet
   @AllRules
-  fun UnusedKaptPluginRule.bindUnusedKaptPluginRule(): ModuleCheckRule<*>
+  fun bindUnusedKaptPluginRule(rule: UnusedKaptPluginRule): ModuleCheckRule<*>
 
   @Binds
   @IntoSet
   @AllRules
-  fun UnusedKaptProcessorRule.bindUnusedKaptProcessorRule(): ModuleCheckRule<*>
+  fun bindUnusedKaptProcessorRule(rule: UnusedKaptProcessorRule): ModuleCheckRule<*>
 
   @Binds
   @IntoSet
   @AllRules
-  fun UnusedKotlinAndroidExtensionsRule.bindUnusedKotlinAndroidExtensionsRule(): ModuleCheckRule<*>
+  fun bindUnusedKotlinAndroidExtensionsRule(
+    rule: UnusedKotlinAndroidExtensionsRule
+  ): ModuleCheckRule<*>
 
   companion object {
     @Provides

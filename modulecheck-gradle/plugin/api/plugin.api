@@ -1,57 +1,26 @@
-public final class anvil/hint/binding/modulecheck/gradle/GradleMcLoggerKt {
-	public static final fun getModulecheck_gradle_GradleMcLogger_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_gradle_GradleMcLogger_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_gradle_GradleMcLogger_McLogger_TaskScope_BindingModule_4e9c3b03_27e42822Kt {
+	public static final fun getModulecheck_gradle_GradleMcLogger_McLogger_TaskScope_BindingModule_4e9c3b03_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_gradle_GradleMcLogger_McLogger_TaskScope_BindingModule_4e9c3b03_scope0 ()Lkotlin/reflect/KClass;
 }
 
-public final class anvil/hint/binding/modulecheck/gradle/internal/GradleProjectProviderKt {
-	public static final fun getModulecheck_gradle_internal_GradleProjectProvider_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_gradle_internal_GradleProjectProvider_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_gradle_internal_GradleProjectProvider_ProjectProvider_TaskScope_BindingModule_5a875a70_0b43ebafKt {
+	public static final fun getModulecheck_gradle_internal_GradleProjectProvider_ProjectProvider_TaskScope_BindingModule_5a875a70_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_gradle_internal_GradleProjectProvider_ProjectProvider_TaskScope_BindingModule_5a875a70_scope0 ()Lkotlin/reflect/KClass;
 }
 
-public final class anvil/hint/binding/modulecheck/gradle/internal/RealDocsWebsiteUrlProviderKt {
-	public static final fun getModulecheck_gradle_internal_RealDocsWebsiteUrlProvider_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_gradle_internal_RealDocsWebsiteUrlProvider_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_gradle_internal_RealDocsWebsiteUrlProvider_DocsWebsiteUrlProvider_TaskScope_BindingModule_c5ad305f_7d731fc7Kt {
+	public static final fun getModulecheck_gradle_internal_RealDocsWebsiteUrlProvider_DocsWebsiteUrlProvider_TaskScope_BindingModule_c5ad305f_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_gradle_internal_RealDocsWebsiteUrlProvider_DocsWebsiteUrlProvider_TaskScope_BindingModule_c5ad305f_scope0 ()Lkotlin/reflect/KClass;
 }
 
-public final class anvil/hint/binding/modulecheck/gradle/internal/RealModuleCheckVersionProviderKt {
-	public static final fun getModulecheck_gradle_internal_RealModuleCheckVersionProvider_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_gradle_internal_RealModuleCheckVersionProvider_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_gradle_internal_RealModuleCheckVersionProvider_ModuleCheckVersionProvider_TaskScope_BindingModule_2d6f69be_90fe7a49Kt {
+	public static final fun getModulecheck_gradle_internal_RealModuleCheckVersionProvider_ModuleCheckVersionProvider_TaskScope_BindingModule_2d6f69be_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_gradle_internal_RealModuleCheckVersionProvider_ModuleCheckVersionProvider_TaskScope_BindingModule_2d6f69be_scope0 ()Lkotlin/reflect/KClass;
 }
 
-public final class anvil/hint/binding/modulecheck/gradle/internal/RealSourceWebsiteUrlProviderKt {
-	public static final fun getModulecheck_gradle_internal_RealSourceWebsiteUrlProvider_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_gradle_internal_RealSourceWebsiteUrlProvider_scope0 ()Lkotlin/reflect/KClass;
-}
-
-public final class anvil/hint/merge/anvil/module/modulecheck/gradle/task/TaskComponentAnvilModuleKt {
-	public static final fun getAnvil_module_modulecheck_gradle_task_TaskComponentAnvilModule_reference ()Lkotlin/reflect/KClass;
-	public static final fun getAnvil_module_modulecheck_gradle_task_TaskComponentAnvilModule_scope0 ()Lkotlin/reflect/KClass;
-}
-
-public abstract class anvil/module/modulecheck/gradle/task/TaskComponentAnvilModule {
-	public fun <init> ()V
-	public abstract fun bindAllProjectPathsProvider (Lmodulecheck/parsing/gradle/model/impl/RealAllProjectPathsProvider;)Lmodulecheck/model/dependency/AllProjectPathsProvider;
-	public abstract fun bindAndroidPlatformPluginFactory (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory;)Lmodulecheck/gradle/platforms/android/AndroidPlatformPluginFactory;
-	public abstract fun bindConfigurationsFactory (Lmodulecheck/gradle/platforms/RealConfigurationsFactory;)Lmodulecheck/gradle/platforms/ConfigurationsFactory;
-	public abstract fun bindDispatcherProvider (Lmodulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider;)Ldispatch/core/DispatcherProvider;
-	public abstract fun bindDocsWebsiteUrlProvider (Lmodulecheck/gradle/internal/RealDocsWebsiteUrlProvider;)Lmodulecheck/dagger/DocsWebsiteUrlProvider;
-	public abstract fun bindFactory0 (Lmodulecheck/parsing/wiring/RealAndroidGradleSettingsProvider$Factory;)Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettingsProvider$Factory;
-	public abstract fun bindFactory1 (Lmodulecheck/parsing/wiring/RealDependenciesBlocksProvider$Factory;)Lmodulecheck/parsing/gradle/dsl/DependenciesBlocksProvider$Factory;
-	public abstract fun bindFactory2 (Lmodulecheck/parsing/wiring/RealJvmFileProvider$Factory;)Lmodulecheck/project/JvmFileProvider$Factory;
-	public abstract fun bindFactory3 (Lmodulecheck/parsing/wiring/RealPluginsBlockProvider$Factory;)Lmodulecheck/parsing/gradle/dsl/PluginsBlockProvider$Factory;
-	public abstract fun bindFactory4 (Lmodulecheck/model/dependency/impl/RealConfiguredProjectDependencyFactory;)Lmodulecheck/model/dependency/ProjectDependency$Factory;
-	public abstract fun bindFactory5 (Lmodulecheck/model/dependency/impl/RealExternalDependencyFactory;)Lmodulecheck/model/dependency/ExternalDependency$Factory;
-	public abstract fun bindFactory6 (Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser$Factory;)Lmodulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser$Factory;
-	public abstract fun bindFactory7 (Lmodulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory$Factory;)Lmodulecheck/parsing/kotlin/compiler/McPsiFileFactory$Factory;
-	public abstract fun bindFactory8 (Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser$Factory;)Lmodulecheck/parsing/gradle/dsl/BuildFileParser$Factory;
-	public abstract fun bindFindingResultFactory (Lmodulecheck/rule/impl/RealFindingResultFactory;)Lmodulecheck/finding/FindingResultFactory;
-	public abstract fun bindJvmSourceSetsParser (Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser;)Lmodulecheck/gradle/platforms/sourcesets/JvmSourceSetsParser;
-	public abstract fun bindKotlinEnvironmentFactory (Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment$Factory;)Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;
-	public abstract fun bindMcLogger (Lmodulecheck/gradle/GradleMcLogger;)Lmodulecheck/reporting/logging/McLogger;
-	public abstract fun bindModuleCheckVersionProvider (Lmodulecheck/gradle/internal/RealModuleCheckVersionProvider;)Lmodulecheck/dagger/ModuleCheckVersionProvider;
-	public abstract fun bindProjectProvider (Lmodulecheck/gradle/internal/GradleProjectProvider;)Lmodulecheck/project/ProjectProvider;
-	public abstract fun bindSafeAnalysisResultAccess (Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl;)Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccess;
-	public abstract fun bindSourceWebsiteUrlProvider (Lmodulecheck/gradle/internal/RealSourceWebsiteUrlProvider;)Lmodulecheck/dagger/SourceWebsiteUrlProvider;
+public final class anvil/hint/Modulecheck_gradle_internal_RealSourceWebsiteUrlProvider_SourceWebsiteUrlProvider_TaskScope_BindingModule_70a21c45_74044ecfKt {
+	public static final fun getModulecheck_gradle_internal_RealSourceWebsiteUrlProvider_SourceWebsiteUrlProvider_TaskScope_BindingModule_70a21c45_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_gradle_internal_RealSourceWebsiteUrlProvider_SourceWebsiteUrlProvider_TaskScope_BindingModule_70a21c45_scope0 ()Lkotlin/reflect/KClass;
 }
 
 public class modulecheck/gradle/ChecksExtension : modulecheck/config/ChecksSettings {
@@ -85,7 +54,8 @@ public class modulecheck/gradle/ChecksExtension : modulecheck/config/ChecksSetti
 }
 
 public final class modulecheck/gradle/ChecksExtension_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;)V
+	public fun <init> (Ldagger/internal/Provider;)V
+	public static fun create (Ldagger/internal/Provider;)Lmodulecheck/gradle/ChecksExtension_Factory;
 	public static fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/ChecksExtension_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/ChecksExtension;
@@ -102,11 +72,16 @@ public final class modulecheck/gradle/GradleMcLogger : modulecheck/reporting/log
 }
 
 public final class modulecheck/gradle/GradleMcLogger_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;)V
+	public fun <init> (Ldagger/internal/Provider;)V
+	public static fun create (Ldagger/internal/Provider;)Lmodulecheck/gradle/GradleMcLogger_Factory;
 	public static fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/GradleMcLogger_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/GradleMcLogger;
 	public static fun newInstance (Lcom/github/ajalt/mordant/terminal/Terminal;)Lmodulecheck/gradle/GradleMcLogger;
+}
+
+public abstract interface class modulecheck/gradle/GradleMcLogger_McLogger_TaskScope_BindingModule_4e9c3b03 {
+	public abstract fun bindMcLogger (Lmodulecheck/gradle/GradleMcLogger;)Lmodulecheck/reporting/logging/McLogger;
 }
 
 public class modulecheck/gradle/ModuleCheckExtension : modulecheck/config/ModuleCheckSettings {
@@ -134,7 +109,8 @@ public class modulecheck/gradle/ModuleCheckExtension : modulecheck/config/Module
 }
 
 public final class modulecheck/gradle/ModuleCheckExtension_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;)V
+	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/gradle/ModuleCheckExtension_Factory;
 	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/ModuleCheckExtension_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/ModuleCheckExtension;
@@ -183,7 +159,8 @@ public class modulecheck/gradle/ReportsExtension : modulecheck/config/ReportsSet
 }
 
 public final class modulecheck/gradle/ReportsExtension_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;)V
+	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/gradle/ReportsExtension_Factory;
 	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/ReportsExtension_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/ReportsExtension;
@@ -199,7 +176,8 @@ public class modulecheck/gradle/SortExtension : modulecheck/config/SortSettings 
 }
 
 public final class modulecheck/gradle/SortExtension_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;)V
+	public fun <init> (Ldagger/internal/Provider;)V
+	public static fun create (Ldagger/internal/Provider;)Lmodulecheck/gradle/SortExtension_Factory;
 	public static fun create (Ljavax/inject/Provider;)Lmodulecheck/gradle/SortExtension_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/SortExtension;
@@ -220,17 +198,26 @@ public final class modulecheck/gradle/internal/GradleProjectProvider$Companion {
 }
 
 public final class modulecheck/gradle/internal/GradleProjectProvider_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;)V
+	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/gradle/internal/GradleProjectProvider_Factory;
 	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/internal/GradleProjectProvider_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/internal/GradleProjectProvider;
 	public static fun newInstance (Lorg/gradle/api/Project;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/project/ProjectCache;Lmodulecheck/gradle/GradleMcLogger;Lmodulecheck/gradle/platforms/android/AgpApiAccess;Lmodulecheck/parsing/gradle/dsl/BuildFileParser$Factory;Lmodulecheck/parsing/wiring/RealJvmFileProvider$Factory;Lmodulecheck/gradle/platforms/android/AndroidPlatformPluginFactory;Lmodulecheck/gradle/platforms/JvmPlatformPluginFactory;Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;Lmodulecheck/model/dependency/AllProjectPathsProvider;)Lmodulecheck/gradle/internal/GradleProjectProvider;
 }
 
+public abstract interface class modulecheck/gradle/internal/GradleProjectProvider_ProjectProvider_TaskScope_BindingModule_5a875a70 {
+	public abstract fun bindProjectProvider (Lmodulecheck/gradle/internal/GradleProjectProvider;)Lmodulecheck/project/ProjectProvider;
+}
+
 public final class modulecheck/gradle/internal/RealDocsWebsiteUrlProvider : modulecheck/dagger/DocsWebsiteUrlProvider {
 	public fun <init> ()V
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Ljava/lang/String;
+}
+
+public abstract interface class modulecheck/gradle/internal/RealDocsWebsiteUrlProvider_DocsWebsiteUrlProvider_TaskScope_BindingModule_c5ad305f {
+	public abstract fun bindDocsWebsiteUrlProvider (Lmodulecheck/gradle/internal/RealDocsWebsiteUrlProvider;)Lmodulecheck/dagger/DocsWebsiteUrlProvider;
 }
 
 public final class modulecheck/gradle/internal/RealDocsWebsiteUrlProvider_Factory : dagger/internal/Factory {
@@ -255,6 +242,10 @@ public final class modulecheck/gradle/internal/RealModuleCheckVersionProvider_Fa
 	public static fun newInstance ()Lmodulecheck/gradle/internal/RealModuleCheckVersionProvider;
 }
 
+public abstract interface class modulecheck/gradle/internal/RealModuleCheckVersionProvider_ModuleCheckVersionProvider_TaskScope_BindingModule_2d6f69be {
+	public abstract fun bindModuleCheckVersionProvider (Lmodulecheck/gradle/internal/RealModuleCheckVersionProvider;)Lmodulecheck/dagger/ModuleCheckVersionProvider;
+}
+
 public final class modulecheck/gradle/internal/RealSourceWebsiteUrlProvider : modulecheck/dagger/SourceWebsiteUrlProvider {
 	public fun <init> ()V
 	public synthetic fun get ()Ljava/lang/Object;
@@ -267,6 +258,10 @@ public final class modulecheck/gradle/internal/RealSourceWebsiteUrlProvider_Fact
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/internal/RealSourceWebsiteUrlProvider;
 	public static fun newInstance ()Lmodulecheck/gradle/internal/RealSourceWebsiteUrlProvider;
+}
+
+public abstract interface class modulecheck/gradle/internal/RealSourceWebsiteUrlProvider_SourceWebsiteUrlProvider_TaskScope_BindingModule_70a21c45 {
+	public abstract fun bindSourceWebsiteUrlProvider (Lmodulecheck/gradle/internal/RealSourceWebsiteUrlProvider;)Lmodulecheck/dagger/SourceWebsiteUrlProvider;
 }
 
 public abstract class modulecheck/gradle/task/AbstractModuleCheckTask : org/gradle/api/DefaultTask {
@@ -287,7 +282,8 @@ public class modulecheck/gradle/task/MultiRuleModuleCheckTask : modulecheck/grad
 }
 
 public final class modulecheck/gradle/task/MultiRuleModuleCheckTask_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;)V
+	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/gradle/task/MultiRuleModuleCheckTask_Factory;
 	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/task/MultiRuleModuleCheckTask_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/task/MultiRuleModuleCheckTask;
@@ -300,7 +296,8 @@ public class modulecheck/gradle/task/SingleRuleModuleCheckTask : modulecheck/gra
 }
 
 public final class modulecheck/gradle/task/SingleRuleModuleCheckTask_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;)V
+	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/gradle/task/SingleRuleModuleCheckTask_Factory;
 	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/gradle/task/SingleRuleModuleCheckTask_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/gradle/task/SingleRuleModuleCheckTask;
@@ -324,7 +321,8 @@ public final class modulecheck/parsing/groovy/antlr/GroovyAndroidGradleParser_Fa
 }
 
 public final class modulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParser_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;)V
+	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParser_Factory;
 	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParser_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParser;
@@ -332,7 +330,8 @@ public final class modulecheck/parsing/groovy/antlr/GroovyDependenciesBlockParse
 }
 
 public final class modulecheck/parsing/groovy/antlr/GroovyPluginsBlockParser_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;)V
+	public fun <init> (Ldagger/internal/Provider;)V
+	public static fun create (Ldagger/internal/Provider;)Lmodulecheck/parsing/groovy/antlr/GroovyPluginsBlockParser_Factory;
 	public static fun create (Ljavax/inject/Provider;)Lmodulecheck/parsing/groovy/antlr/GroovyPluginsBlockParser_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/parsing/groovy/antlr/GroovyPluginsBlockParser;
@@ -348,7 +347,8 @@ public final class modulecheck/parsing/kotlin/compiler/NoContextPsiFileFactory_F
 }
 
 public final class modulecheck/parsing/psi/KotlinAndroidGradleParser_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;)V
+	public fun <init> (Ldagger/internal/Provider;)V
+	public static fun create (Ldagger/internal/Provider;)Lmodulecheck/parsing/psi/KotlinAndroidGradleParser_Factory;
 	public static fun create (Ljavax/inject/Provider;)Lmodulecheck/parsing/psi/KotlinAndroidGradleParser_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/parsing/psi/KotlinAndroidGradleParser;
@@ -356,7 +356,8 @@ public final class modulecheck/parsing/psi/KotlinAndroidGradleParser_Factory : d
 }
 
 public final class modulecheck/parsing/psi/KotlinDependenciesBlockParser_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)V
+	public fun <init> (Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;)V
+	public static fun create (Ldagger/internal/Provider;Ldagger/internal/Provider;Ldagger/internal/Provider;)Lmodulecheck/parsing/psi/KotlinDependenciesBlockParser_Factory;
 	public static fun create (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)Lmodulecheck/parsing/psi/KotlinDependenciesBlockParser_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/parsing/psi/KotlinDependenciesBlockParser;
@@ -364,7 +365,8 @@ public final class modulecheck/parsing/psi/KotlinDependenciesBlockParser_Factory
 }
 
 public final class modulecheck/parsing/psi/KotlinPluginsBlockParser_Factory : dagger/internal/Factory {
-	public fun <init> (Ljavax/inject/Provider;)V
+	public fun <init> (Ldagger/internal/Provider;)V
+	public static fun create (Ldagger/internal/Provider;)Lmodulecheck/parsing/psi/KotlinPluginsBlockParser_Factory;
 	public static fun create (Ljavax/inject/Provider;)Lmodulecheck/parsing/psi/KotlinPluginsBlockParser_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/parsing/psi/KotlinPluginsBlockParser;

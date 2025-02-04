@@ -1,11 +1,11 @@
-public final class anvil/hint/binding/modulecheck/model/dependency/impl/RealConfiguredProjectDependencyFactoryKt {
-	public static final fun getModulecheck_model_dependency_impl_RealConfiguredProjectDependencyFactory_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_model_dependency_impl_RealConfiguredProjectDependencyFactory_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_model_dependency_impl_RealConfiguredProjectDependencyFactory_Factory_TaskScope_BindingModule_0bd0aac9_096dc8a8Kt {
+	public static final fun getModulecheck_model_dependency_impl_RealConfiguredProjectDependencyFactory_Factory_TaskScope_BindingModule_0bd0aac9_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_model_dependency_impl_RealConfiguredProjectDependencyFactory_Factory_TaskScope_BindingModule_0bd0aac9_scope0 ()Lkotlin/reflect/KClass;
 }
 
-public final class anvil/hint/binding/modulecheck/model/dependency/impl/RealExternalDependencyFactoryKt {
-	public static final fun getModulecheck_model_dependency_impl_RealExternalDependencyFactory_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_model_dependency_impl_RealExternalDependencyFactory_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_model_dependency_impl_RealExternalDependencyFactory_Factory_TaskScope_BindingModule_fe27a160_b7fc6128Kt {
+	public static final fun getModulecheck_model_dependency_impl_RealExternalDependencyFactory_Factory_TaskScope_BindingModule_fe27a160_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_model_dependency_impl_RealExternalDependencyFactory_Factory_TaskScope_BindingModule_fe27a160_scope0 ()Lkotlin/reflect/KClass;
 }
 
 public final class modulecheck/model/dependency/impl/RealConfiguredProjectDependencyFactory : modulecheck/model/dependency/ProjectDependency$Factory {
@@ -27,6 +27,10 @@ public final class modulecheck/model/dependency/impl/RealConfiguredProjectDepend
 	public final fun newInstance (Lmodulecheck/model/dependency/TypeSafeProjectPathResolver;Ljava/util/List;)Lmodulecheck/model/dependency/impl/RealConfiguredProjectDependencyFactory;
 }
 
+public abstract interface class modulecheck/model/dependency/impl/RealConfiguredProjectDependencyFactory_Factory_TaskScope_BindingModule_0bd0aac9 {
+	public abstract fun bindFactory (Lmodulecheck/model/dependency/impl/RealConfiguredProjectDependencyFactory;)Lmodulecheck/model/dependency/ProjectDependency$Factory;
+}
+
 public final class modulecheck/model/dependency/impl/RealExternalDependencyFactory : modulecheck/model/dependency/ExternalDependency$Factory {
 	public fun <init> (Ljava/util/List;)V
 	public fun create-FdhTdL0 (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Lmodulecheck/model/dependency/ExternalDependency;
@@ -44,5 +48,9 @@ public final class modulecheck/model/dependency/impl/RealExternalDependencyFacto
 public final class modulecheck/model/dependency/impl/RealExternalDependencyFactory_Factory$Companion {
 	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/model/dependency/impl/RealExternalDependencyFactory_Factory;
 	public final fun newInstance (Ljava/util/List;)Lmodulecheck/model/dependency/impl/RealExternalDependencyFactory;
+}
+
+public abstract interface class modulecheck/model/dependency/impl/RealExternalDependencyFactory_Factory_TaskScope_BindingModule_fe27a160 {
+	public abstract fun bindFactory (Lmodulecheck/model/dependency/impl/RealExternalDependencyFactory;)Lmodulecheck/model/dependency/ExternalDependency$Factory;
 }
 

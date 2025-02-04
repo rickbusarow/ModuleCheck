@@ -3,12 +3,12 @@
 jdk = "17"
 # the jdk used in packaging
 jvmTarget = "11"
-kotlinApi = "1.6"
+kotlinApi = "1.8"
 
-kotlin-gradle = "1.9.25"
-kotlin-core = "1.9.25"
-google-ksp = "1.9.25-1.0.20"
-square-anvil = "2.4.9"
+kotlin-gradle = "2.0.21"
+kotlin-core = "2.0.21"
+google-ksp = "2.0.21-1.0.27"
+square-anvil = "2.5.1"
 
 ajalt-clikt = "5.0.2"
 ajalt-mordant = "2.1.0"

@@ -1,11 +1,15 @@
-public final class anvil/hint/binding/modulecheck/parsing/gradle/model/impl/RealAllProjectPathsProviderKt {
-	public static final fun getModulecheck_parsing_gradle_model_impl_RealAllProjectPathsProvider_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_parsing_gradle_model_impl_RealAllProjectPathsProvider_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_parsing_gradle_model_impl_RealAllProjectPathsProvider_AllProjectPathsProvider_TaskScope_BindingModule_f5d2ea7a_07db9a7bKt {
+	public static final fun getModulecheck_parsing_gradle_model_impl_RealAllProjectPathsProvider_AllProjectPathsProvider_TaskScope_BindingModule_f5d2ea7a_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_parsing_gradle_model_impl_RealAllProjectPathsProvider_AllProjectPathsProvider_TaskScope_BindingModule_f5d2ea7a_scope0 ()Lkotlin/reflect/KClass;
 }
 
 public final class modulecheck/parsing/gradle/model/impl/RealAllProjectPathsProvider : modulecheck/model/dependency/AllProjectPathsProvider {
 	public fun <init> (Lorg/gradle/api/Project;)V
 	public fun getAllPaths ()Ljava/util/List;
+}
+
+public abstract interface class modulecheck/parsing/gradle/model/impl/RealAllProjectPathsProvider_AllProjectPathsProvider_TaskScope_BindingModule_f5d2ea7a {
+	public abstract fun bindAllProjectPathsProvider (Lmodulecheck/parsing/gradle/model/impl/RealAllProjectPathsProvider;)Lmodulecheck/model/dependency/AllProjectPathsProvider;
 }
 
 public final class modulecheck/parsing/gradle/model/impl/RealAllProjectPathsProvider_Factory : dagger/internal/Factory {

@@ -1,11 +1,11 @@
-public final class anvil/hint/binding/modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactoryKt {
-	public static final fun getModulecheck_gradle_platforms_android_RealAndroidPlatformPluginFactory_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_gradle_platforms_android_RealAndroidPlatformPluginFactory_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_gradle_platforms_android_RealAndroidPlatformPluginFactory_AndroidPlatformPluginFactory_TaskScope_BindingModule_c3aae00d_284c2c20Kt {
+	public static final fun getModulecheck_gradle_platforms_android_RealAndroidPlatformPluginFactory_AndroidPlatformPluginFactory_TaskScope_BindingModule_c3aae00d_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_gradle_platforms_android_RealAndroidPlatformPluginFactory_AndroidPlatformPluginFactory_TaskScope_BindingModule_c3aae00d_scope0 ()Lkotlin/reflect/KClass;
 }
 
-public final class anvil/hint/binding/modulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser_FactoryKt {
-	public static final fun getModulecheck_gradle_platforms_android_sourcesets_RealAndroidSourceSetsParser_Factory_reference ()Lkotlin/reflect/KClass;
-	public static final fun getModulecheck_gradle_platforms_android_sourcesets_RealAndroidSourceSetsParser_Factory_scope0 ()Lkotlin/reflect/KClass;
+public final class anvil/hint/Modulecheck_gradle_platforms_android_sourcesets_Factory_Factory_TaskScope_BindingModule_b5d09f9c_7cf27766Kt {
+	public static final fun getModulecheck_gradle_platforms_android_sourcesets_Factory_Factory_TaskScope_BindingModule_b5d09f9c_reference ()Lkotlin/reflect/KClass;
+	public static final fun getModulecheck_gradle_platforms_android_sourcesets_Factory_Factory_TaskScope_BindingModule_b5d09f9c_scope0 ()Lkotlin/reflect/KClass;
 }
 
 public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory : modulecheck/gradle/platforms/android/AndroidPlatformPluginFactory {
@@ -70,6 +70,10 @@ public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPlugi
 	public fun toString ()Ljava/lang/String;
 }
 
+public abstract interface class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory_AndroidPlatformPluginFactory_TaskScope_BindingModule_c3aae00d {
+	public abstract fun bindAndroidPlatformPluginFactory (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory;)Lmodulecheck/gradle/platforms/android/AndroidPlatformPluginFactory;
+}
+
 public final class modulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory_Factory : dagger/internal/Factory {
 	public static final field Companion Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory_Factory$Companion;
 	public fun <init> (Ljavax/inject/Provider;Ljavax/inject/Provider;Ljavax/inject/Provider;)V
@@ -92,6 +96,10 @@ public final class modulecheck/gradle/platforms/android/internal/ProjectKt {
 	public static final fun isMissingManifestFile (Lorg/gradle/api/Project;Lmodulecheck/gradle/platforms/android/AgpApiAccess;)Z
 	public static final fun mainAndroidManifest (Lorg/gradle/api/Project;Lmodulecheck/gradle/platforms/android/AgpApiAccess;)Ljava/io/File;
 	public static final fun orPropertyDefault (Ljava/lang/Boolean;Lorg/gradle/api/Project;Ljava/lang/String;Z)Z
+}
+
+public abstract interface class modulecheck/gradle/platforms/android/sourcesets/Factory_Factory_TaskScope_BindingModule_b5d09f9c {
+	public abstract fun bindFactory (Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser$Factory;)Lmodulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser$Factory;
 }
 
 public final class modulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser : modulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser {

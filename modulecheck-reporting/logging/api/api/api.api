@@ -1,4 +1,4 @@
-public final class anvil/hint/merge/modulecheck/reporting/logging/TerminalModuleKt {
+public final class anvil/hint/Modulecheck_reporting_logging_TerminalModule_75a8fe3bKt {
 	public static final fun getModulecheck_reporting_logging_TerminalModule_reference ()Lkotlin/reflect/KClass;
 	public static final fun getModulecheck_reporting_logging_TerminalModule_scope0 ()Lkotlin/reflect/KClass;
 }

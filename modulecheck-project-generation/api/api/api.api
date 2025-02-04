@@ -286,7 +286,6 @@ public abstract interface class modulecheck/project/generation/ProjectCollector 
 	public static synthetic fun androidTest$default (Lmodulecheck/project/generation/ProjectCollector;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lmodulecheck/project/McProject;
 	public fun editSimple (Lmodulecheck/project/McProject;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun editSimple$default (Lmodulecheck/project/generation/ProjectCollector;Lmodulecheck/project/McProject;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
-	public static synthetic fun editSimple$suspendImpl (Lmodulecheck/project/generation/ProjectCollector;Lmodulecheck/project/McProject;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getCodeGeneratorBindings ()Ljava/util/List;
 	public abstract fun getDependencyModuleDescriptorAccess ()Lmodulecheck/parsing/kotlin/compiler/impl/DependencyModuleDescriptorAccess;
 	public abstract fun getProjectCache ()Lmodulecheck/project/ProjectCache;
@@ -298,13 +297,10 @@ public abstract interface class modulecheck/project/generation/ProjectCollector 
 	public fun kotlinProject (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lmodulecheck/project/McProject;
 	public static synthetic fun kotlinProject$default (Lmodulecheck/project/generation/ProjectCollector;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lmodulecheck/project/McProject;
 	public fun resolveReferences (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun resolveReferences$suspendImpl (Lmodulecheck/project/generation/ProjectCollector;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun simpleProject (Ljava/lang/String;Ljava/lang/String;)Lmodulecheck/project/McProject;
 	public static synthetic fun simpleProject$default (Lmodulecheck/project/generation/ProjectCollector;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lmodulecheck/project/McProject;
 	public fun toBuilder (Lmodulecheck/model/dependency/PlatformPlugin;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun toBuilder$suspendImpl (Lmodulecheck/project/generation/ProjectCollector;Lmodulecheck/model/dependency/PlatformPlugin;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun toProjectBuilder (Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun toProjectBuilder$suspendImpl (Lmodulecheck/project/generation/ProjectCollector;Lmodulecheck/project/McProject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class modulecheck/project/generation/SourceSetBuilder {

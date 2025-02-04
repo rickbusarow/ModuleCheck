@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,23 +17,22 @@
 
 package modulecheck.parsing.kotlin.compiler.internal
 
-import org.jetbrains.kotlin.incremental.isKotlinFile
 import java.io.File
 
 /**
  * @return true if the file exists in the Java file system
  *   and has an extension of `.kt` or `.kts`, otherwise false
  */
-fun File.isKotlinFile(): Boolean = exists() && isKotlinFile(listOf("kts", "kt"))
+fun File.isKotlinFile(): Boolean = exists() && extension.let { it == "kt" || it == "kts" }
 
 /**
  * @return true if the file exists in the Java file system
  *   and has an extension of `.kts`, otherwise false
  */
-fun File.isKotlinScriptFile(): Boolean = exists() && isKotlinFile(listOf("kts"))
+fun File.isKotlinScriptFile(): Boolean = exists() && extension == "kts"
 
 /**
  * @return true if the file exists in the Java file
  *   system and has an extension of `.kt`, otherwise false
  */
-fun File.isKtFile(): Boolean = exists() && isKotlinFile(listOf("kt"))
+fun File.isKtFile(): Boolean = exists() && extension == "kt"

@@ -225,7 +225,11 @@ public abstract class modulecheck/runtime/test/RunnerTest : com/rickbusarow/kase
 	public final fun run-5dDjBWM (Lmodulecheck/runtime/test/RunnerTestEnvironment;ZZLmodulecheck/rule/FindingFactory;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/project/ProjectProvider;Lmodulecheck/finding/FindingResultFactory;Lcom/github/ajalt/mordant/terminal/Terminal;Lmodulecheck/reporting/console/ReportFactory;Lmodulecheck/reporting/checkstyle/CheckstyleReporter;Lmodulecheck/reporting/graphviz/GraphvizFileWriter;Ldispatch/core/DispatcherProvider;Ljava/util/List;)Ljava/lang/Object;
 	public static synthetic fun run-5dDjBWM$default (Lmodulecheck/runtime/test/RunnerTest;Lmodulecheck/runtime/test/RunnerTestEnvironment;ZZLmodulecheck/rule/FindingFactory;Lmodulecheck/config/ModuleCheckSettings;Lmodulecheck/reporting/logging/McLogger;Lmodulecheck/project/ProjectProvider;Lmodulecheck/finding/FindingResultFactory;Lcom/github/ajalt/mordant/terminal/Terminal;Lmodulecheck/reporting/console/ReportFactory;Lmodulecheck/reporting/checkstyle/CheckstyleReporter;Lmodulecheck/reporting/graphviz/GraphvizFileWriter;Ldispatch/core/DispatcherProvider;Ljava/util/List;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun shouldBe (Ljava/util/List;Ljava/util/List;)V
+	public fun test (Lcom/rickbusarow/kase/HasTestEnvironmentFactory;Ljava/lang/Object;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;)V
+	public fun test (Lcom/rickbusarow/kase/HasTestEnvironmentFactory;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;)V
+	public fun test (Lcom/rickbusarow/kase/NoParamTestEnvironmentFactory;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;)V
 	public final fun test (Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;)V
+	public fun test (Ljava/lang/Object;Lcom/rickbusarow/kase/TestEnvironmentFactory;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;)V
 	public static synthetic fun test$default (Lmodulecheck/runtime/test/RunnerTest;Lcom/rickbusarow/kase/files/TestLocation;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
 }
 
@@ -241,10 +245,10 @@ public class modulecheck/runtime/test/RunnerTestEnvironment : modulecheck/projec
 	public final fun parsedReport (Lmodulecheck/reporting/logging/test/ReportingLogger;)Ljava/util/List;
 }
 
-public final class modulecheck/runtime/test/RunnerTestEnvironmentFactory : com/rickbusarow/kase/TestEnvironmentFactory {
+public final class modulecheck/runtime/test/RunnerTestEnvironmentFactory : com/rickbusarow/kase/ParamTestEnvironmentFactory {
 	public fun <init> ()V
-	public synthetic fun createEnvironment (Ljava/lang/Object;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;)Lcom/rickbusarow/kase/TestEnvironment;
-	public fun createEnvironment (Lmodulecheck/runtime/test/RunnerTestEnvironmentParams;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;)Lmodulecheck/runtime/test/RunnerTestEnvironment;
+	public synthetic fun create (Ljava/lang/Object;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;)Lcom/rickbusarow/kase/TestEnvironment;
+	public fun create (Lmodulecheck/runtime/test/RunnerTestEnvironmentParams;Ljava/util/List;Lcom/rickbusarow/kase/files/TestLocation;)Lmodulecheck/runtime/test/RunnerTestEnvironment;
 }
 
 public final class modulecheck/runtime/test/RunnerTestEnvironmentParams : modulecheck/testing/TestEnvironmentParams {

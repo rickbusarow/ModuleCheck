@@ -1,4 +1,4 @@
-public final class anvil/hint/merge/modulecheck/rule/RulesComponentKt {
+public final class anvil/hint/Modulecheck_rule_RulesComponent_7021c374Kt {
 	public static final fun getModulecheck_rule_RulesComponent_reference ()Lkotlin/reflect/KClass;
 	public static final fun getModulecheck_rule_RulesComponent_scope0 ()Lkotlin/reflect/KClass;
 }

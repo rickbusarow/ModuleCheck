@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2024 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,7 +28,6 @@ import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.ResetManager
 import modulecheck.utils.lazy.lazyDeferred
 import org.jetbrains.kotlin.analyzer.AnalysisResult
-import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
@@ -186,7 +185,7 @@ class RealKotlinEnvironment(
       TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
         project = coreEnvironment.project,
         files = ktFiles,
-        trace = NoScopeRecordCliBindingTrace(),
+        trace = NoScopeRecordCliBindingTrace(coreEnvironment.project),
         configuration = coreEnvironment.configuration,
         packagePartProvider = coreEnvironment::createPackagePartProvider,
         declarationProviderFactory = ::FileBasedDeclarationProviderFactory,
@@ -216,7 +215,7 @@ class RealKotlinEnvironment(
     }
 
     return CompilerConfiguration().apply {
-      put(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, messageCollector)
+      put(CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY, messageCollector)
       put(JVMConfigurationKeys.JVM_TARGET, jvmTarget)
       put(CommonConfigurationKeys.MODULE_NAME, "${projectPath.value}:${sourceSetName.value}")
 
@@ -243,7 +242,7 @@ class RealKotlinEnvironment(
     setIdeaIoUseFallback()
 
     return KotlinCoreEnvironment.createForProduction(
-      parentDisposable = resetManager,
+      projectDisposable = resetManager,
       configuration = configuration,
       configFiles = JVM_CONFIG_FILES
     )
