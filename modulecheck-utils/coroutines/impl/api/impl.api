@@ -17,7 +17,6 @@ public final class modulecheck/utils/coroutines/impl/CoroutineScopeModule {
 	public static final field INSTANCE Lmodulecheck/utils/coroutines/impl/CoroutineScopeModule;
 	public final fun provideCoroutineScope ()Lkotlinx/coroutines/CoroutineScope;
 	public final fun provideDefaultCoroutineScope ()Ldispatch/core/DefaultCoroutineScope;
-	public final fun provideDefaultDispatcher ()Lmodulecheck/utils/coroutines/LimitedDispatcher;
 	public final fun provideIOCoroutineScope ()Ldispatch/core/IOCoroutineScope;
 	public final fun provideMainCoroutineScope ()Ldispatch/core/MainCoroutineScope;
 	public final fun provideMainImmediateCoroutineScope ()Ldispatch/core/MainImmediateCoroutineScope;
@@ -38,14 +37,6 @@ public final class modulecheck/utils/coroutines/impl/CoroutineScopeModule_Provid
 	public fun get ()Ldispatch/core/DefaultCoroutineScope;
 	public synthetic fun get ()Ljava/lang/Object;
 	public static final fun provideDefaultCoroutineScope ()Ldispatch/core/DefaultCoroutineScope;
-}
-
-public final class modulecheck/utils/coroutines/impl/CoroutineScopeModule_ProvideDefaultDispatcherFactory : dagger/internal/Factory {
-	public static final field INSTANCE Lmodulecheck/utils/coroutines/impl/CoroutineScopeModule_ProvideDefaultDispatcherFactory;
-	public static final fun create ()Lmodulecheck/utils/coroutines/impl/CoroutineScopeModule_ProvideDefaultDispatcherFactory;
-	public synthetic fun get ()Ljava/lang/Object;
-	public fun get ()Lmodulecheck/utils/coroutines/LimitedDispatcher;
-	public static final fun provideDefaultDispatcher ()Lmodulecheck/utils/coroutines/LimitedDispatcher;
 }
 
 public final class modulecheck/utils/coroutines/impl/CoroutineScopeModule_ProvideIOCoroutineScopeFactory : dagger/internal/Factory {
@@ -84,16 +75,8 @@ public abstract interface class modulecheck/utils/coroutines/impl/DispatcherProv
 	public abstract fun getDispatcherProvider ()Ldispatch/core/DispatcherProvider;
 }
 
-public final class modulecheck/utils/coroutines/impl/LimitedDispatcherImpl : modulecheck/utils/coroutines/LimitedDispatcher, java/lang/Runnable {
-	public fun <init> (Lkotlinx/coroutines/CoroutineDispatcher;I)V
-	public fun dispatch (Lkotlin/coroutines/CoroutineContext;Ljava/lang/Runnable;)V
-	public fun dispatchYield (Lkotlin/coroutines/CoroutineContext;Ljava/lang/Runnable;)V
-	public fun limitedParallelism (I)Lkotlinx/coroutines/CoroutineDispatcher;
-	public fun run ()V
-}
-
 public final class modulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider : dispatch/core/DispatcherProvider {
-	public fun <init> (Lmodulecheck/utils/coroutines/LimitedDispatcher;)V
+	public fun <init> ()V
 	public fun fold (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/lang/Object;
 	public fun get (Lkotlin/coroutines/CoroutineContext$Key;)Lkotlin/coroutines/CoroutineContext$Element;
 	public fun getDefault ()Lkotlinx/coroutines/CoroutineDispatcher;
@@ -111,16 +94,10 @@ public abstract interface class modulecheck/utils/coroutines/impl/ModuleCheckDis
 }
 
 public final class modulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider_Factory : dagger/internal/Factory {
-	public static final field Companion Lmodulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider_Factory$Companion;
-	public fun <init> (Ljavax/inject/Provider;)V
-	public static final fun create (Ljavax/inject/Provider;)Lmodulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider_Factory;
+	public static final field INSTANCE Lmodulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider_Factory;
+	public static final fun create ()Lmodulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider_Factory;
 	public synthetic fun get ()Ljava/lang/Object;
 	public fun get ()Lmodulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider;
-	public static final fun newInstance (Lmodulecheck/utils/coroutines/LimitedDispatcher;)Lmodulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider;
-}
-
-public final class modulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider_Factory$Companion {
-	public final fun create (Ljavax/inject/Provider;)Lmodulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider_Factory;
-	public final fun newInstance (Lmodulecheck/utils/coroutines/LimitedDispatcher;)Lmodulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider;
+	public static final fun newInstance ()Lmodulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider;
 }
 

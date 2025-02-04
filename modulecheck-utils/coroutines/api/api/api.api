@@ -26,7 +26,3 @@ public final class modulecheck/utils/coroutines/FlowKt {
 	public static final fun plus (Lkotlinx/coroutines/flow/Flow;Lkotlinx/coroutines/flow/Flow;)Lkotlinx/coroutines/flow/Flow;
 }
 
-public abstract class modulecheck/utils/coroutines/LimitedDispatcher : kotlinx/coroutines/CoroutineDispatcher {
-	public fun <init> ()V
-}
-

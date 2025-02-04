@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,22 +21,19 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import modulecheck.dagger.SingleIn
 import modulecheck.dagger.TaskScope
-import modulecheck.utils.coroutines.LimitedDispatcher
 import javax.inject.Inject
 
 /**
- * Uses a [LimitedDispatcher] as the [default] in order to keep things "fair" and limit heap size.
+ * Uses [default] as the [io] dispatcher in order to keep things "fair" and limit heap size.
  *
  * @since 0.12.0
  */
 @Suppress("InjectDispatcher")
 @SingleIn(TaskScope::class)
 @ContributesBinding(TaskScope::class)
-class ModuleCheckDispatcherProvider @Inject constructor(
-  limitedDispatcher: LimitedDispatcher
-) : DispatcherProvider {
+class ModuleCheckDispatcherProvider @Inject constructor() : DispatcherProvider {
 
-  override val default: CoroutineDispatcher = limitedDispatcher
+  override val default: CoroutineDispatcher = Dispatchers.Default
   override val io: CoroutineDispatcher = default
   override val main: CoroutineDispatcher = Dispatchers.Main
   override val mainImmediate: CoroutineDispatcher = Dispatchers.Main.immediate

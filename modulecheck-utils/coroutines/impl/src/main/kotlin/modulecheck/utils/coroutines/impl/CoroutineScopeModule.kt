@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,25 +25,12 @@ import dispatch.core.MainCoroutineScope
 import dispatch.core.MainImmediateCoroutineScope
 import dispatch.core.UnconfinedCoroutineScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import modulecheck.dagger.SingleIn
 import modulecheck.dagger.TaskScope
-import modulecheck.utils.coroutines.LimitedDispatcher
 
 @Suppress("UndocumentedPublicFunction", "UndocumentedPublicClass", "InjectDispatcher")
 @Module
 @ContributesTo(TaskScope::class)
 object CoroutineScopeModule {
-
-  private val DEFAULT_CONCURRENCY: Int
-    get() = Integer.max(Runtime.getRuntime().availableProcessors(), 2)
-
-  @Provides
-  @SingleIn(TaskScope::class)
-  fun provideDefaultDispatcher(): LimitedDispatcher = LimitedDispatcherImpl(
-    dispatcher = Dispatchers.Default,
-    parallelism = DEFAULT_CONCURRENCY
-  )
 
   @Provides
   fun provideCoroutineScope(): CoroutineScope = DefaultCoroutineScope()
