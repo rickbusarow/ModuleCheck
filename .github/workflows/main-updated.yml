@@ -7,20 +7,9 @@ on:
 
 jobs:
 
-  build-logic:
-    runs-on: macos-latest
-    steps:
-      - name: check out
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-
-      - name: build build-logic
-        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
-        with:
-          task: :build-logic:compileKotlin :build-logic:jar
-          write-cache-key: build-logic-jar
-
   build-all:
     runs-on: macos-latest
+    if: github.repository == 'rickbusarow/ModuleCheck'
     steps:
       - name: check out
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -35,7 +24,6 @@ jobs:
   publish-snapshot:
     needs:
       - build-all
-    if: github.repository == 'RBusarow/ModuleCheck'
     runs-on: macos-latest
 
     steps:
