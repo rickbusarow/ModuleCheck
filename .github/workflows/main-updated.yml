@@ -30,12 +30,6 @@ jobs:
       - name: check out
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - name: Dokka & JavadocJar
-        uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
-        with:
-          task: dokkaJavadocJar
-          restore-cache-key: main-build-artifacts
-
       - name: Publish Snapshots
         uses: rickbusarow/actions/gradle-task@bf0940965387f10bcb8b6699a79499d18167dfbe # v1
         with:
