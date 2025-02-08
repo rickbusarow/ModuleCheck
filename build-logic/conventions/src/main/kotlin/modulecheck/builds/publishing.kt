@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -120,7 +120,6 @@ private fun Project.configurePublish(artifactId: String, pomDescription: String,
 
   this@configurePublish.artifactId = artifactId
 
-  @Suppress("UnstableApiUsage")
   extensions.configure(MavenPublishBaseExtension::class.java) { extension ->
 
     extension.publishToMavenCentral(DEFAULT, automaticRelease = true)
@@ -159,7 +158,7 @@ private fun Project.configurePublish(artifactId: String, pomDescription: String,
       pluginManager.hasPlugin("java-gradle-plugin") -> {
         extension.configure(
           GradlePlugin(
-            javadocJar = Dokka(taskName = "dokkaHtml"),
+            javadocJar = Dokka(taskName = "dokkaGenerateModuleHtml"),
             sourcesJar = true
           )
         )
@@ -168,7 +167,7 @@ private fun Project.configurePublish(artifactId: String, pomDescription: String,
       pluginManager.hasPlugin("com.github.johnrengelman.shadow") -> {
         extension.configure(
           KotlinJvm(
-            javadocJar = Dokka(taskName = "dokkaHtml"),
+            javadocJar = Dokka(taskName = "dokkaGenerateModuleHtml"),
             sourcesJar = true
           )
         )
@@ -178,7 +177,7 @@ private fun Project.configurePublish(artifactId: String, pomDescription: String,
       else -> {
         extension.configure(
           KotlinJvm(
-            javadocJar = Dokka(taskName = "dokkaHtml"),
+            javadocJar = Dokka(taskName = "dokkaGenerateModuleHtml"),
             sourcesJar = true
           )
         )

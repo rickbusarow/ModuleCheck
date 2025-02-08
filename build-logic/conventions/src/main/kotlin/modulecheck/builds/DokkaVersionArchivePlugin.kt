@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,7 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Sync
 import org.gradle.api.tasks.bundling.Zip
-import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
+import org.jetbrains.dokka.gradle.tasks.DokkaBaseTask
 
 abstract class DokkaVersionArchivePlugin : Plugin<Project> {
 
@@ -34,9 +34,9 @@ abstract class DokkaVersionArchivePlugin : Plugin<Project> {
 
     val versionWithoutSnapshot = VERSION_NAME.removeSuffix("-SNAPSHOT")
 
-    val dokkaHtmlMultiModuleBuildDir = target.rootDir.resolve("build/dokka/htmlMultiModule")
+    val dokkaHtmlBuildDir = target.rootDir.resolve("build/dokka/html")
     val currentVersionBuildDirZip =
-      dokkaHtmlMultiModuleBuildDir.resolveSibling("$versionWithoutSnapshot.zip")
+      dokkaHtmlBuildDir.resolveSibling("$versionWithoutSnapshot.zip")
 
     val dokkaArchiveBuildDir = target.rootDir.resolve("build/tmp/dokka-archive")
 
@@ -53,8 +53,7 @@ abstract class DokkaVersionArchivePlugin : Plugin<Project> {
 
         task.into(dokkaArchiveBuildDir)
 
-        dokkaArchive
-          .walkTopDown()
+        dokkaArchive.walkTopDown()
           .maxDepth(1)
           .filter { file -> file.isFile }
           .filter { file -> file.extension == "zip" }
@@ -62,28 +61,28 @@ abstract class DokkaVersionArchivePlugin : Plugin<Project> {
           .forEach { zipFile -> task.from(target.zipTree(zipFile)) }
       }
 
-    target.tasks.withType(DokkaMultiModuleTask::class.java).dependOn(unzip)
+    target.tasks.withType(DokkaBaseTask::class.java).dependOn(unzip)
 
     val zipDokkaArchive = target.tasks
       .register("zipDokkaArchive", Zip::class.java) { task ->
         task.group = taskGroup
         task.description = "Zips the contents of $dokkaArchiveBuildDir"
 
-        task.destinationDirectory.set(dokkaHtmlMultiModuleBuildDir.parentFile)
+        task.destinationDirectory.set(dokkaHtmlBuildDir.parentFile)
         task.archiveFileName.set(currentVersionBuildDirZip.name)
         task.outputs.file(currentVersionBuildDirZip)
 
         task.enabled = versionWithoutSnapshot == VERSION_NAME
 
-        task.from(dokkaHtmlMultiModuleBuildDir) {
+        task.from(dokkaHtmlBuildDir) {
           it.into(versionWithoutSnapshot)
           // Don't copy the `older/` directory into the archive, because all navigation is done using
           // the root version's copy.  Archived `older/` directories just waste space.
           it.exclude("older/**")
         }
 
-        task.mustRunAfter(target.tasks.withType(DokkaMultiModuleTask::class.java))
-        task.dependsOn("dokkaHtmlMultiModule")
+        task.mustRunAfter(target.tasks.withType(DokkaBaseTask::class.java))
+        task.dependsOn("dokkaGenerate")
       }
 
     target.tasks.register("syncDokkaToArchive", Copy::class.java) { task ->
@@ -97,7 +96,7 @@ abstract class DokkaVersionArchivePlugin : Plugin<Project> {
 
       task.enabled = versionWithoutSnapshot == VERSION_NAME
 
-      task.mustRunAfter(target.tasks.withType(DokkaMultiModuleTask::class.java))
+      task.mustRunAfter(target.tasks.withType(DokkaBaseTask::class.java))
       task.dependsOn(zipDokkaArchive)
 
       task.onlyIf {
@@ -108,7 +107,7 @@ abstract class DokkaVersionArchivePlugin : Plugin<Project> {
       }
     }
 
-    target.tasks.withType(DokkaMultiModuleTask::class.java).configureEach {
+    target.tasks.withType(DokkaBaseTask::class.java).configureEach {
       it.finalizedBy(zipDokkaArchive)
     }
   }

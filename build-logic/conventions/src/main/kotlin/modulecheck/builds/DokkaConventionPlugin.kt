@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2024 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,89 +15,87 @@
 
 package modulecheck.builds
 
+import com.rickbusarow.kgx.applyOnce
 import com.rickbusarow.kgx.dependsOn
 import com.rickbusarow.kgx.isRootProject
 import com.rickbusarow.kgx.projectDependency
-import com.rickbusarow.ktlint.KtLintTask
+import com.rickbusarow.kgx.withType
 import com.vanniktech.maven.publish.tasks.JavadocJar
-import dev.adamko.dokkatoo.DokkatooExtension
-import dev.adamko.dokkatoo.dokka.plugins.DokkaVersioningPluginParameters
-import dev.adamko.dokkatoo.tasks.DokkatooGenerateTask
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.language.base.plugins.LifecycleBasePlugin
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.net.URI
+import org.jetbrains.dokka.gradle.DokkaExtension
+import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
+import org.jetbrains.dokka.gradle.engine.plugins.DokkaVersioningPluginParameters
+import org.jetbrains.dokka.gradle.tasks.DokkaBaseTask
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
-abstract class DokkatooConventionPlugin : Plugin<Project> {
+abstract class DokkaConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
 
-    target.pluginManager.apply(dev.adamko.dokkatoo.DokkatooPlugin::class.java)
+    target.extraProperties.apply {
+      set("org.jetbrains.dokka.experimental.gradle.pluginMode", "V2Enabled")
+      set("org.jetbrains.dokka.experimental.gradle.pluginMode.noWarn", "true")
+    }
 
-    target.extensions.configure(DokkatooExtension::class.java) { dokkatoo ->
+    target.plugins.applyOnce("org.jetbrains.dokka")
 
-      dokkatoo.versions.jetbrainsDokka.set(target.libs.versions.dokka)
+    target.extensions.configure(DokkaExtension::class.java) { dokka ->
 
-      dokkatoo.moduleVersion.set(target.VERSION_NAME_STABLE)
       val fullModuleName = target.path.removePrefix(":")
-      dokkatoo.moduleName.set(fullModuleName)
+      dokka.moduleName.set(fullModuleName)
+      dokka.moduleVersion.set(target.VERSION_NAME_STABLE)
 
-      dokkatoo.dokkatooSourceSets.configureEach { sourceSet ->
-        sourceSet.documentedVisibilities(
-          dev.adamko.dokkatoo.dokka.parameters.VisibilityModifier.PRIVATE,
-          dev.adamko.dokkatoo.dokka.parameters.VisibilityModifier.INTERNAL,
-          dev.adamko.dokkatoo.dokka.parameters.VisibilityModifier.PROTECTED,
-          dev.adamko.dokkatoo.dokka.parameters.VisibilityModifier.PACKAGE,
-          dev.adamko.dokkatoo.dokka.parameters.VisibilityModifier.PUBLIC
-        )
+      dokka.dokkaSourceSets.configureEach { ss ->
 
-        sourceSet.languageVersion.set(target.KOTLIN_API)
-        sourceSet.jdkVersion.set(target.JVM_TARGET_INT)
+        val ssName = ss.name
+
+        ss.documentedVisibilities(*VisibilityModifier.values())
+
+        ss.languageVersion.set(target.KOTLIN_API)
+        ss.jdkVersion.set(target.JVM_TARGET_INT)
 
         // include all project sources when resolving kdoc samples
-        sourceSet.samples.setFrom(target.fileTree(target.file("src")))
+        ss.samples.setFrom(target.fileTree(target.file("src")))
 
         if (!target.isRootProject()) {
           val readmeFile = target.projectDir.resolve("README.md")
           if (readmeFile.exists()) {
-            sourceSet.includes.from(readmeFile)
+            ss.includes.from(readmeFile)
           }
         }
 
-        sourceSet.sourceLink { sourceLinkBuilder ->
-          sourceLinkBuilder.localDirectory.set(target.file("src/main"))
+        ss.sourceLink { spec ->
+
+          // spec.localDirectory.files(kotlinSS.kotlin.sourceDirectories)
+          spec.localDirectory.files("src/$ssName")
 
           val modulePath = target.path.replace(":", "/")
             .replaceFirst("/", "")
 
           // URL showing where the source code can be accessed through the web browser
-          sourceLinkBuilder.remoteUrl.set(
-            URI("${SOURCE_WEBSITE}/blob/main/$modulePath/src/main")
-          )
+          spec.remoteUrl("${SOURCE_WEBSITE}/blob/main/$modulePath/src/$ssName")
           // Suffix which is used to append the line number to the URL. Use #L for GitHub
-          sourceLinkBuilder.remoteLineSuffix.set("#L")
+          spec.remoteLineSuffix.set("#L")
         }
       }
 
-      target.tasks.withType(DokkatooGenerateTask::class.java).configureEach { task ->
-
-        task.workerMinHeapSize.set("512m")
-        task.workerMaxHeapSize.set("1g")
+      target.tasks.withType(DokkaBaseTask::class.java).configureEach { task ->
 
         if (target.isRootProject()) {
           task.dependsOn("unzipDokkaArchives")
         }
 
         // Dokka uses their outputs but doesn't explicitly depend upon them.
-        task.mustRunAfter(target.tasks.withType(KotlinCompile::class.java))
-        task.mustRunAfter(target.tasks.withType(KtLintTask::class.java))
+        // task.mustRunAfter(target.tasks.withType(KotlinCompile::class.java))
+        // task.mustRunAfter(target.tasks.withType(KtLintTask::class.java))
       }
 
       if (target.isRootProject()) {
 
-        val config = target.configurations.getByName("dokkatoo")
+        val config = target.configurations.getByName("dokka")
 
         config.dependencies.addAllLater(
           target.provider {
@@ -107,32 +105,23 @@ abstract class DokkatooConventionPlugin : Plugin<Project> {
           }
         )
 
-        val pluginConfig = "dokkatooPluginHtml"
-
-        target.dependencies.add(pluginConfig, target.libs.dokka.all.modules)
-        target.dependencies.add(pluginConfig, target.libs.dokka.versioning)
+        target.dependencies.add("dokkaPlugin", target.libs.dokka.versioning)
 
         val dokkaArchiveBuildDir = target.rootProject.layout
           .buildDirectory
           .dir("tmp/dokka-archive")
 
-        dokkatoo.pluginsConfiguration
-          .withType(DokkaVersioningPluginParameters::class.java).configureEach { versioning ->
-            versioning.version.set(target.VERSION_NAME)
-            versioning.olderVersionsDir.set(dokkaArchiveBuildDir)
-            versioning.renderVersionsNavigationOnAllPages.set(true)
-          }
-
-        dokkatoo.dokkatooPublications.configureEach {
-          it.suppressObviousFunctions.set(true)
+        dokka.pluginsConfiguration.withType<DokkaVersioningPluginParameters>().configureEach { versioning ->
+          versioning.version.set(target.VERSION_NAME)
+          versioning.olderVersionsDir.set(dokkaArchiveBuildDir)
+          versioning.renderVersionsNavigationOnAllPages.set(true)
         }
+
+        // dokka.dokkatooPublications.configureEach {
+        //   it.suppressObviousFunctions.set(true)
+        // }
       }
     }
-
-    // Make dummy tasks with the original Dokka plugin names, then delegate them to the Dokkatoo tasks
-    target.tasks.register("dokkaHtml").dependsOn(DOKKATOO_HTML_TASK_NAME)
-    target.tasks.register("dokkaHtmlMultiModule")
-      .dependsOn(target.rootProject.tasks.named(DOKKATOO_HTML_TASK_NAME))
 
     target.plugins.withType(MavenPublishPlugin::class.java).configureEach {
 
@@ -174,6 +163,6 @@ abstract class DokkatooConventionPlugin : Plugin<Project> {
   }
 
   companion object {
-    internal const val DOKKATOO_HTML_TASK_NAME = "dokkatooGeneratePublicationHtml"
+    const val DOKKA_HTML_TASK_NAME = "dokkaGenerate"
   }
 }
