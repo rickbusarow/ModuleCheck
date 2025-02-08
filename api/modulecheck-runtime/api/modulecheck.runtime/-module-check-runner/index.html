@@ -1,0 +1,490 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>ModuleCheckRunner</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../../../index.html">
+                    
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.runtime/-module-check-runner/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0">0.13.0-SNAPSHOT</div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+    <div><a href="index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.13.0-SNAPSHOT</a></div>
+    <div><a href="../../../../older/0.12.5/modulecheck-runtime/api/modulecheck.runtime/-module-check-runner/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.12.5</a></div>
+  </div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-runtime:api/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":modulecheck-runtime:api/main" data-filter=":modulecheck-runtime:api/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-runtime:api::modulecheck.runtime/ModuleCheckRunner///PointingToDeclaration//1802463093">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-runtime:api</a><span class="delimiter">/</span><a href="../index.html">modulecheck.runtime</a><span class="delimiter">/</span><span class="current">ModuleCheckRunner</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Module</span><wbr><span>Check</span><wbr><span><span>Runner</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">ModuleCheckRunner</a>&nbsp;<span><span class="token annotation builtin">@</span><span data-unresolved-link="dagger.assisted/AssistedInject///PointingToDeclaration/"><span class="token annotation builtin">AssistedInject</span></span>&nbsp;</span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>settings<span class="token operator">: </span><a href="../../../../modulecheck-config/api/modulecheck.config/-module-check-settings/index.html">ModuleCheckSettings</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>findingFactory<span class="token operator">: </span><a href="../../../../modulecheck-rule/api/modulecheck.rule/-finding-factory/index.html">FindingFactory</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding/index.html">Finding</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>logger<span class="token operator">: </span><a href="../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>findingResultFactory<span class="token operator">: </span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding-result-factory/index.html">FindingResultFactory</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>reportFactory<span class="token operator">: </span><a href="../../../../modulecheck-reporting/console/modulecheck.reporting.console/-report-factory/index.html">ReportFactory</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>checkstyleReporter<span class="token operator">: </span><a href="../../../../modulecheck-reporting/checkstyle/modulecheck.reporting.checkstyle/-checkstyle-reporter/index.html">CheckstyleReporter</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>graphvizFileWriter<span class="token operator">: </span><a href="../../../../modulecheck-reporting/graphviz/modulecheck.reporting.graphviz/-graphviz-file-writer/index.html">GraphvizFileWriter</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>dispatcherProvider<span class="token operator">: </span><span data-unresolved-link="dispatch.core/DispatcherProvider///PointingToDeclaration/">DispatcherProvider</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sarifReportFactory<span class="token operator">: </span><a href="../../../../modulecheck-reporting/sarif/modulecheck.reporting.sarif/-sarif-report-factory/index.html">SarifReportFactory</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>depthLogFactoryLazy<span class="token operator">: </span><a href="../../../../modulecheck-dagger/modulecheck.dagger/-dagger-lazy/index.html">DaggerLazy</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-reporting/console/modulecheck.reporting.console/-depth-log-factory/index.html">DepthLogFactory</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>projectProvider<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-provider/index.html">ProjectProvider</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rules<span class="token operator">: </span><a href="../../../../modulecheck-dagger/modulecheck.dagger/-dagger-list/index.html">DaggerList</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-rule/api/modulecheck.rule/-module-check-rule/index.html">ModuleCheckRule</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="dagger.assisted/Assisted///PointingToDeclaration/"><span class="token annotation builtin">Assisted</span></span>&nbsp;</span><span class="token keyword">val </span>autoCorrect<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-runtime/api/src/main/kotlin/modulecheck/runtime/ModuleCheckRunner.kt#L59">source</a>)</span></span></div><p class="paragraph">Proxy for a Gradle task, without all the Gradle framework stuff. Most logic is delegated to its various dependencies.</p><span class="kdoc-tag"><h4 class="">Since</h4><p class="paragraph">0.12.0</p></span></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-215954559%2FConstructors%2F1802463093" anchor-label="ModuleCheckRunner" id="-215954559%2FConstructors%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-module-check-runner.html"><span>Module</span><wbr><span>Check</span><wbr><span><span>Runner</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-215954559%2FConstructors%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="dagger.assisted/AssistedInject///PointingToDeclaration/"><span class="token annotation builtin">AssistedInject</span></span></div></div><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">settings<span class="token operator">: </span><a href="../../../../modulecheck-config/api/modulecheck.config/-module-check-settings/index.html">ModuleCheckSettings</a><span class="token punctuation">, </span></span><span class="parameter ">findingFactory<span class="token operator">: </span><a href="../../../../modulecheck-rule/api/modulecheck.rule/-finding-factory/index.html">FindingFactory</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding/index.html">Finding</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">logger<span class="token operator">: </span><a href="../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter ">findingResultFactory<span class="token operator">: </span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding-result-factory/index.html">FindingResultFactory</a><span class="token punctuation">, </span></span><span class="parameter ">reportFactory<span class="token operator">: </span><a href="../../../../modulecheck-reporting/console/modulecheck.reporting.console/-report-factory/index.html">ReportFactory</a><span class="token punctuation">, </span></span><span class="parameter ">checkstyleReporter<span class="token operator">: </span><a href="../../../../modulecheck-reporting/checkstyle/modulecheck.reporting.checkstyle/-checkstyle-reporter/index.html">CheckstyleReporter</a><span class="token punctuation">, </span></span><span class="parameter ">graphvizFileWriter<span class="token operator">: </span><a href="../../../../modulecheck-reporting/graphviz/modulecheck.reporting.graphviz/-graphviz-file-writer/index.html">GraphvizFileWriter</a><span class="token punctuation">, </span></span><span class="parameter ">dispatcherProvider<span class="token operator">: </span><span data-unresolved-link="dispatch.core/DispatcherProvider///PointingToDeclaration/">DispatcherProvider</span><span class="token punctuation">, </span></span><span class="parameter ">sarifReportFactory<span class="token operator">: </span><a href="../../../../modulecheck-reporting/sarif/modulecheck.reporting.sarif/-sarif-report-factory/index.html">SarifReportFactory</a><span class="token punctuation">, </span></span><span class="parameter ">depthLogFactoryLazy<span class="token operator">: </span><a href="../../../../modulecheck-dagger/modulecheck.dagger/-dagger-lazy/index.html">DaggerLazy</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-reporting/console/modulecheck.reporting.console/-depth-log-factory/index.html">DepthLogFactory</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">projectProvider<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-provider/index.html">ProjectProvider</a><span class="token punctuation">, </span></span><span class="parameter ">rules<span class="token operator">: </span><a href="../../../../modulecheck-dagger/modulecheck.dagger/-dagger-list/index.html">DaggerList</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-rule/api/modulecheck.rule/-module-check-rule/index.html">ModuleCheckRule</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><span data-unresolved-link="dagger.assisted/Assisted///PointingToDeclaration/"><span class="token annotation builtin">Assisted</span></span>&nbsp;</span>autoCorrect<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-66853710%2FClasslikes%2F1802463093" anchor-label="Factory" id="-66853710%2FClasslikes%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-factory/index.html"><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-66853710%2FClasslikes%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="dagger.assisted/AssistedFactory///PointingToDeclaration/"><span class="token annotation builtin">AssistedFactory</span></span></div></div><span class="token keyword">interface </span><a href="-factory/index.html">Factory</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1533026073%2FClasslikes%2F1802463093" anchor-label="TimedResults" id="-1533026073%2FClasslikes%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timed-results/index.html"><span>Timed</span><wbr><span><span>Results</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1533026073%2FClasslikes%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-timed-results/index.html">TimedResults</a><span class="token operator">&lt;</span><a href="-timed-results/index.html">R</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>timeMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>data<span class="token operator">: </span><a href="-timed-results/index.html">R</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="98299534%2FProperties%2F1802463093" anchor-label="autoCorrect" id="98299534%2FProperties%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="auto-correct.html"><span>auto</span><wbr><span><span>Correct</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="98299534%2FProperties%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="auto-correct.html">autoCorrect</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-461038169%2FProperties%2F1802463093" anchor-label="checkstyleReporter" id="-461038169%2FProperties%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="checkstyle-reporter.html"><span>checkstyle</span><wbr><span><span>Reporter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-461038169%2FProperties%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="checkstyle-reporter.html">checkstyleReporter</a><span class="token operator">: </span><a href="../../../../modulecheck-reporting/checkstyle/modulecheck.reporting.checkstyle/-checkstyle-reporter/index.html">CheckstyleReporter</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1026379476%2FProperties%2F1802463093" anchor-label="depthLogFactoryLazy" id="-1026379476%2FProperties%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="depth-log-factory-lazy.html"><span>depth</span><wbr><span>Log</span><wbr><span>Factory</span><wbr><span><span>Lazy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1026379476%2FProperties%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="depth-log-factory-lazy.html">depthLogFactoryLazy</a><span class="token operator">: </span><a href="../../../../modulecheck-dagger/modulecheck.dagger/-dagger-lazy/index.html">DaggerLazy</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-reporting/console/modulecheck.reporting.console/-depth-log-factory/index.html">DepthLogFactory</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">handles console output of the depth results</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="399010137%2FProperties%2F1802463093" anchor-label="dispatcherProvider" id="399010137%2FProperties%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dispatcher-provider.html"><span>dispatcher</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="399010137%2FProperties%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="dispatcher-provider.html">dispatcherProvider</a><span class="token operator">: </span><span data-unresolved-link="dispatch.core/DispatcherProvider///PointingToDeclaration/">DispatcherProvider</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-853365776%2FProperties%2F1802463093" anchor-label="findingFactory" id="-853365776%2FProperties%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="finding-factory.html"><span>finding</span><wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-853365776%2FProperties%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="finding-factory.html">findingFactory</a><span class="token operator">: </span><a href="../../../../modulecheck-rule/api/modulecheck.rule/-finding-factory/index.html">FindingFactory</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding/index.html">Finding</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">handles parsing of the projects in order to generate the findings</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="138056301%2FProperties%2F1802463093" anchor-label="findingResultFactory" id="138056301%2FProperties%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="finding-result-factory.html"><span>finding</span><wbr><span>Result</span><wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="138056301%2FProperties%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="finding-result-factory.html">findingResultFactory</a><span class="token operator">: </span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding-result-factory/index.html">FindingResultFactory</a></div><div class="brief "><p class="paragraph">attempts to apply fixes to the findings and returns a list of <a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding/-finding-result/index.html">FindingResult</a></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1580772105%2FProperties%2F1802463093" anchor-label="graphvizFileWriter" id="1580772105%2FProperties%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="graphviz-file-writer.html"><span>graphviz</span><wbr><span>File</span><wbr><span><span>Writer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1580772105%2FProperties%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="graphviz-file-writer.html">graphvizFileWriter</a><span class="token operator">: </span><a href="../../../../modulecheck-reporting/graphviz/modulecheck.reporting.graphviz/-graphviz-file-writer/index.html">GraphvizFileWriter</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1540637313%2FProperties%2F1802463093" anchor-label="logger" id="1540637313%2FProperties%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="logger.html"><span><span>logger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1540637313%2FProperties%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="logger.html">logger</a><span class="token operator">: </span><a href="../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1262786817%2FProperties%2F1802463093" anchor-label="projectProvider" id="-1262786817%2FProperties%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="project-provider.html"><span>project</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1262786817%2FProperties%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="project-provider.html">projectProvider</a><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-provider/index.html">ProjectProvider</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-772562317%2FProperties%2F1802463093" anchor-label="reportFactory" id="-772562317%2FProperties%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="report-factory.html"><span>report</span><wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-772562317%2FProperties%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="report-factory.html">reportFactory</a><span class="token operator">: </span><a href="../../../../modulecheck-reporting/console/modulecheck.reporting.console/-report-factory/index.html">ReportFactory</a></div><div class="brief "><p class="paragraph">handles console output of the main results</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-337067566%2FProperties%2F1802463093" anchor-label="rules" id="-337067566%2FProperties%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="rules.html"><span><span>rules</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-337067566%2FProperties%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="rules.html">rules</a><span class="token operator">: </span><a href="../../../../modulecheck-dagger/modulecheck.dagger/-dagger-list/index.html">DaggerList</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-rule/api/modulecheck.rule/-module-check-rule/index.html">ModuleCheckRule</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1489531644%2FProperties%2F1802463093" anchor-label="sarifReportFactory" id="1489531644%2FProperties%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="sarif-report-factory.html"><span>sarif</span><wbr><span>Report</span><wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1489531644%2FProperties%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="sarif-report-factory.html">sarifReportFactory</a><span class="token operator">: </span><a href="../../../../modulecheck-reporting/sarif/modulecheck.reporting.sarif/-sarif-report-factory/index.html">SarifReportFactory</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-855920050%2FProperties%2F1802463093" anchor-label="settings" id="-855920050%2FProperties%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="settings.html"><span><span>settings</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-855920050%2FProperties%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="settings.html">settings</a><span class="token operator">: </span><a href="../../../../modulecheck-config/api/modulecheck.config/-module-check-settings/index.html">ModuleCheckSettings</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-384614741%2FFunctions%2F1802463093" anchor-label="maybeCreateGraphs" id="-384614741%2FFunctions%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="maybe-create-graphs.html"><span>maybe</span><wbr><span>Create</span><wbr><span><span>Graphs</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-384614741%2FFunctions%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="maybe-create-graphs.html"><span class="token function">maybeCreateGraphs</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">depths<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-api/modulecheck.api.context/-project-depth/index.html">ProjectDepth</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="431533027%2FFunctions%2F1802463093" anchor-label="maybeLogDepths" id="431533027%2FFunctions%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="maybe-log-depths.html"><span>maybe</span><wbr><span>Log</span><wbr><span><span>Depths</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="431533027%2FFunctions%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="maybe-log-depths.html"><span class="token function">maybeLogDepths</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">depths<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-api/modulecheck.api/-depth-finding/index.html">DepthFinding</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="938265099%2FFunctions%2F1802463093" anchor-label="maybeReportDepths" id="938265099%2FFunctions%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="maybe-report-depths.html"><span>maybe</span><wbr><span>Report</span><wbr><span><span>Depths</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="938265099%2FFunctions%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="maybe-report-depths.html"><span class="token function">maybeReportDepths</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">depths<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-api/modulecheck.api/-depth-finding/index.html">DepthFinding</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1364641053%2FFunctions%2F1802463093" anchor-label="measured" id="1364641053%2FFunctions%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="measured.html"><span><span>measured</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1364641053%2FFunctions%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="measured.html">T</a><span class="token punctuation">, </span><a href="measured.html">R</a><span class="token operator">&gt; </span><a href="measured.html">T</a><span class="token punctuation">.</span><a href="measured.html"><span class="token function">measured</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">action<span class="token operator">: </span><a href="measured.html">T</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="measured.html">R</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-timed-results/index.html">ModuleCheckRunner.TimedResults</a><span class="token operator">&lt;</span><a href="measured.html">R</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="270582446%2FFunctions%2F1802463093" anchor-label="processFindings" id="270582446%2FFunctions%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="process-findings.html"><span>process</span><wbr><span><span>Findings</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="270582446%2FFunctions%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="process-findings.html"><span class="token function">processFindings</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">findings<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding/index.html">Finding</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding/-finding-result/index.html">Finding.FindingResult</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Tries to fix all findings one project at a time, then reports the results.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1757411459%2FFunctions%2F1802463093" anchor-label="reportResults" id="-1757411459%2FFunctions%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="report-results.html"><span>report</span><wbr><span><span>Results</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1757411459%2FFunctions%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="report-results.html"><span class="token function">reportResults</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">results<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-finding/api/modulecheck.finding/-finding/-finding-result/index.html">Finding.FindingResult</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Creates any applicable reports.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-817286170%2FFunctions%2F1802463093" anchor-label="run" id="-817286170%2FFunctions%2F1802463093" data-filterable-set=":modulecheck-runtime:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-runtime:api/main" data-filterable-set=":modulecheck-runtime:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="run.html"><span><span>run</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-817286170%2FFunctions%2F1802463093"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-runtime:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="run.html"><span class="token function">run</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">projects<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-result/index.html">Result</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

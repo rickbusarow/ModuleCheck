@@ -1,0 +1,545 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>modulecheck.parsing.psi</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../../index.html">
+                    
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.parsing.psi/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0">0.13.0-SNAPSHOT</div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+    <div><a href="index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.13.0-SNAPSHOT</a></div>
+    <div><a href="../../../older/0.12.5/modulecheck-parsing/psi/modulecheck.parsing.psi/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.12.5</a></div>
+  </div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-parsing:psi/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":modulecheck-parsing:psi/main" data-filter=":modulecheck-parsing:psi/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageids="modulecheck-parsing:psi::modulecheck.parsing.psi////PointingToDeclaration//790358777">
+  <div class="breadcrumbs"><a href="../index.html">modulecheck-parsing:psi</a><span class="delimiter">/</span><span class="current">modulecheck.parsing.psi</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="1153850179%2FClasslikes%2F790358777" anchor-label="ConcatenatingParsingInterceptor" id="1153850179%2FClasslikes%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-concatenating-parsing-interceptor/index.html"><span>Concatenating</span><wbr><span>Parsing</span><wbr><span><span>Interceptor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1153850179%2FClasslikes%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-concatenating-parsing-interceptor/index.html">ConcatenatingParsingInterceptor</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>declarationsProvider<span class="token operator">: </span><a href="../modulecheck.parsing.psi.internal/-declarations-provider/index.html">DeclarationsProvider</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sourceSetName<span class="token operator">: </span><a href="../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source.internal/-parsing-interceptor/index.html">ParsingInterceptor</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1653018894%2FClasslikes%2F790358777" anchor-label="ExternalDependencyDeclarationVisitor" id="1653018894%2FClasslikes%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-external-dependency-declaration-visitor/index.html"><span>External</span><wbr><span>Dependency</span><wbr><span>Declaration</span><wbr><span><span>Visitor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1653018894%2FClasslikes%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-external-dependency-declaration-visitor/index.html">ExternalDependencyDeclarationVisitor</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>configuration<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">group<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">version<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="460017901%2FClasslikes%2F790358777" anchor-label="FqNames" id="460017901%2FClasslikes%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fq-names/index.html"><span>Fq</span><wbr><span><span>Names</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="460017901%2FClasslikes%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-fq-names/index.html">FqNames</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-377636554%2FClasslikes%2F790358777" anchor-label="KotlinAndroidGradleParser" id="-377636554%2FClasslikes%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-kotlin-android-gradle-parser/index.html"><span>Kotlin</span><wbr><span>Android</span><wbr><span>Gradle</span><wbr><span><span>Parser</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-377636554%2FClasslikes%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-kotlin-android-gradle-parser/index.html">KotlinAndroidGradleParser</a>&nbsp;<span><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation builtin">Inject</span></span>&nbsp;</span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>psiFileFactory<span class="token operator">: </span><a href="../../../modulecheck-parsing/kotlin-compiler/api/modulecheck.parsing.kotlin.compiler/-no-context-psi-file-factory/index.html">NoContextPsiFileFactory</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-android-gradle-parser/index.html">AndroidGradleParser</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="232568071%2FClasslikes%2F790358777" anchor-label="KotlinDependenciesBlock" id="232568071%2FClasslikes%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-kotlin-dependencies-block/index.html"><span>Kotlin</span><wbr><span>Dependencies</span><wbr><span><span>Block</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="232568071%2FClasslikes%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-kotlin-dependencies-block/index.html">KotlinDependenciesBlock</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">logger<span class="token operator">: </span><a href="../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>fullText<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>lambdaContent<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">blockSuppressed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">configurationNameTransform<span class="token operator">: </span><a href="../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-dependency-declaration/-configuration-name-transform/index.html">DependencyDeclaration.ConfigurationNameTransform</a><span class="token punctuation">, </span></span><span class="parameter ">projectDependency<span class="token operator">: </span><a href="../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/-factory/index.html">ProjectDependency.Factory</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/gradle/dsl/internal/modulecheck.parsing.gradle.dsl.internal/-abstract-dependencies-block/index.html">AbstractDependenciesBlock</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1610352936%2FClasslikes%2F790358777" anchor-label="KotlinDependenciesBlockParser" id="1610352936%2FClasslikes%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-kotlin-dependencies-block-parser/index.html"><span>Kotlin</span><wbr><span>Dependencies</span><wbr><span>Block</span><wbr><span><span>Parser</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1610352936%2FClasslikes%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-kotlin-dependencies-block-parser/index.html">KotlinDependenciesBlockParser</a>&nbsp;<span><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation builtin">Inject</span></span>&nbsp;</span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>logger<span class="token operator">: </span><a href="../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>psiFileFactory<span class="token operator">: </span><a href="../../../modulecheck-parsing/kotlin-compiler/api/modulecheck.parsing.kotlin.compiler/-no-context-psi-file-factory/index.html">NoContextPsiFileFactory</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>projectDependency<span class="token operator">: </span><a href="../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependency/-factory/index.html">ProjectDependency.Factory</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="993241738%2FClasslikes%2F790358777" anchor-label="KotlinPluginsBlock" id="993241738%2FClasslikes%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-kotlin-plugins-block/index.html"><span>Kotlin</span><wbr><span>Plugins</span><wbr><span><span>Block</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="993241738%2FClasslikes%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-kotlin-plugins-block/index.html">KotlinPluginsBlock</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">logger<span class="token operator">: </span><a href="../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>fullText<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>lambdaContent<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">blockSuppressed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/gradle/dsl/internal/modulecheck.parsing.gradle.dsl.internal/-abstract-plugins-block/index.html">AbstractPluginsBlock</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="492277867%2FClasslikes%2F790358777" anchor-label="KotlinPluginsBlockParser" id="492277867%2FClasslikes%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-kotlin-plugins-block-parser/index.html"><span>Kotlin</span><wbr><span>Plugins</span><wbr><span>Block</span><wbr><span><span>Parser</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="492277867%2FClasslikes%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-kotlin-plugins-block-parser/index.html">KotlinPluginsBlockParser</a>&nbsp;<span><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation builtin">Inject</span></span>&nbsp;</span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>logger<span class="token operator">: </span><a href="../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1950787093%2FClasslikes%2F790358777" anchor-label="PsiElementWithSurroundingText" id="1950787093%2FClasslikes%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-psi-element-with-surrounding-text/index.html"><span>Psi</span><wbr><span>Element</span><wbr><span>With</span><wbr><span>Surrounding</span><wbr><span><span>Text</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1950787093%2FClasslikes%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-psi-element-with-surrounding-text/index.html">PsiElementWithSurroundingText</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>psiElement<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.com.intellij.psi/PsiElement///PointingToDeclaration/">PsiElement</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="613582722%2FClasslikes%2F790358777" anchor-label="PsiTreePrinter" id="613582722%2FClasslikes%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-psi-tree-printer/index.html"><span>Psi</span><wbr><span>Tree</span><wbr><span><span>Printer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="613582722%2FClasslikes%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="-psi-tree-printer/index.html">PsiTreePrinter</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">whitespaceChar<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-char/index.html">Char</a><span class="token operator"> = </span>' '</span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-utils/traversal/modulecheck.utils.traversal/-abstract-tree-printer/index.html">AbstractTreePrinter</a><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.com.intellij.psi/PsiElement///PointingToDeclaration/">PsiElement</span><span class="token operator">&gt; </span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1664512835%2FClasslikes%2F790358777" anchor-label="RealKotlinFile" id="-1664512835%2FClasslikes%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-real-kotlin-file/index.html"><span>Real</span><wbr><span>Kotlin</span><wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1664512835%2FClasslikes%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-real-kotlin-file/index.html">RealKotlinFile</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>file<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>psi<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtFile///PointingToDeclaration/">KtFile</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>psiResolver<span class="token operator">: </span><a href="../modulecheck.parsing.psi.internal/-psi-element-resolver/index.html">PsiElementResolver</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>nameParser<span class="token operator">: </span><a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source.internal/-name-parser/index.html">NameParser</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-kotlin-file/index.html">KotlinFile</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-26642507%2FClasslikes%2F790358777" anchor-label="ReferenceVisitor" id="-26642507%2FClasslikes%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-reference-visitor/index.html"><span>Reference</span><wbr><span><span>Visitor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-26642507%2FClasslikes%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-reference-visitor/index.html">ReferenceVisitor</a> : <span data-unresolved-link="org.jetbrains.kotlin.psi/KtTreeVisitorVoid///PointingToDeclaration/">KtTreeVisitorVoid</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="293328558%2FProperties%2F790358777" anchor-label="kotlinStdLibNames" id="293328558%2FProperties%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="kotlin-std-lib-names.html"><span>kotlin</span><wbr><span>Std</span><wbr><span>Lib</span><wbr><span><span>Names</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="293328558%2FProperties%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">val </span><a href="kotlin-std-lib-names.html">kotlinStdLibNames</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">The entries of this map was generate with this script:</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1611355227%2FFunctions%2F790358777" anchor-label="androidBlocks" id="1611355227%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="android-blocks.html"><span>android</span><wbr><span><span>Blocks</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1611355227%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.com.intellij.psi/PsiElement///PointingToDeclaration/">PsiElement</span><span class="token punctuation">.</span><a href="android-blocks.html"><span class="token function">androidBlocks</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtCallExpression///PointingToDeclaration/">KtCallExpression</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1571473335%2FFunctions%2F790358777" anchor-label="blockExpressionRecursiveVisitor" id="1571473335%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="block-expression-recursive-visitor.html"><span>block</span><wbr><span>Expression</span><wbr><span>Recursive</span><wbr><span><span>Visitor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1571473335%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="block-expression-recursive-visitor.html"><span class="token function">blockExpressionRecursiveVisitor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">crossinline </span>block<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtTreeVisitorVoid///PointingToDeclaration/">KtTreeVisitorVoid</span><span class="token punctuation">.</span><span class="token punctuation">(</span>expression<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtBlockExpression///PointingToDeclaration/">KtBlockExpression</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtTreeVisitorVoid///PointingToDeclaration/">KtTreeVisitorVoid</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-687530497%2FFunctions%2F790358777" anchor-label="buildFeaturesBlocks" id="-687530497%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="build-features-blocks.html"><span>build</span><wbr><span>Features</span><wbr><span><span>Blocks</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-687530497%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.com.intellij.psi/PsiElement///PointingToDeclaration/">PsiElement</span><span class="token punctuation">.</span><a href="build-features-blocks.html"><span class="token function">buildFeaturesBlocks</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtCallExpression///PointingToDeclaration/">KtCallExpression</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1158733323%2FFunctions%2F790358777" anchor-label="getMavenCoordinatesOrNull" id="1158733323%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-maven-coordinates-or-null.html"><span>get</span><wbr><span>Maven</span><wbr><span>Coordinates</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1158733323%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtCallExpression///PointingToDeclaration/">KtCallExpression</span><span class="token punctuation">.</span><a href="get-maven-coordinates-or-null.html"><span class="token function">getMavenCoordinatesOrNull</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-maven-coordinates/index.html">MavenCoordinates</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1213893469%2FFunctions%2F790358777" anchor-label="getStringModuleNameOrNull" id="-1213893469%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-string-module-name-or-null.html"><span>get</span><wbr><span>String</span><wbr><span>Module</span><wbr><span>Name</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1213893469%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtCallExpression///PointingToDeclaration/">KtCallExpression</span><span class="token punctuation">.</span><a href="get-string-module-name-or-null.html"><span class="token function">getStringModuleNameOrNull</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1013130879%2FFunctions%2F790358777" anchor-label="getStringTestFixturesModuleNameOrNull" id="1013130879%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-string-test-fixtures-module-name-or-null.html"><span>get</span><wbr><span>String</span><wbr><span>Test</span><wbr><span>Fixtures</span><wbr><span>Module</span><wbr><span>Name</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1013130879%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtCallExpression///PointingToDeclaration/">KtCallExpression</span><span class="token punctuation">.</span><a href="get-string-test-fixtures-module-name-or-null.html"><span class="token function">getStringTestFixturesModuleNameOrNull</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="635209977%2FFunctions%2F790358777" anchor-label="getTypeSafeModuleNameOrNull" id="635209977%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-type-safe-module-name-or-null.html"><span>get</span><wbr><span>Type</span><wbr><span>Safe</span><wbr><span>Module</span><wbr><span>Name</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="635209977%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtCallExpression///PointingToDeclaration/">KtCallExpression</span><span class="token punctuation">.</span><a href="get-type-safe-module-name-or-null.html"><span class="token function">getTypeSafeModuleNameOrNull</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1822452181%2FFunctions%2F790358777" anchor-label="getTypeSafeTestFixturesModuleNameOrNull" id="1822452181%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-type-safe-test-fixtures-module-name-or-null.html"><span>get</span><wbr><span>Type</span><wbr><span>Safe</span><wbr><span>Test</span><wbr><span>Fixtures</span><wbr><span>Module</span><wbr><span>Name</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1822452181%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtCallExpression///PointingToDeclaration/">KtCallExpression</span><span class="token punctuation">.</span><a href="get-type-safe-test-fixtures-module-name-or-null.html"><span class="token function">getTypeSafeTestFixturesModuleNameOrNull</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2013957758%2FFunctions%2F790358777" anchor-label="getUnknownArgumentOrNull" id="-2013957758%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-unknown-argument-or-null.html"><span>get</span><wbr><span>Unknown</span><wbr><span>Argument</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2013957758%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtCallExpression///PointingToDeclaration/">KtCallExpression</span><span class="token punctuation">.</span><a href="get-unknown-argument-or-null.html"><span class="token function">getUnknownArgumentOrNull</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1502102084%2FFunctions%2F790358777" anchor-label="inBuildscript" id="-1502102084%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="in-buildscript.html"><span>in</span><wbr><span><span>Buildscript</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1502102084%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.com.intellij.psi/PsiElement///PointingToDeclaration/">PsiElement</span><span class="token punctuation">.</span><a href="in-buildscript.html"><span class="token function">inBuildscript</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1574968319%2FFunctions%2F790358777" anchor-label="kotlinStdLibNameOrNull" id="-1574968319%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="kotlin-std-lib-name-or-null.html"><span>kotlin</span><wbr><span>Std</span><wbr><span>Lib</span><wbr><span>Name</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1574968319%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="kotlin-std-lib-name-or-null.html"><span class="token function">kotlinStdLibNameOrNull</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-qualified-declared-name/index.html">QualifiedDeclaredName</a><span class="token operator">?</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-reference-name/index.html">ReferenceName</a><span class="token punctuation">.</span><a href="kotlin-std-lib-name-or-null.html"><span class="token function">kotlinStdLibNameOrNull</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-qualified-declared-name/index.html">QualifiedDeclaredName</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-590416413%2FFunctions%2F790358777" anchor-label="literalStringTemplateRecursiveVisitor" id="-590416413%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="literal-string-template-recursive-visitor.html"><span>literal</span><wbr><span>String</span><wbr><span>Template</span><wbr><span>Recursive</span><wbr><span><span>Visitor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-590416413%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="literal-string-template-recursive-visitor.html"><span class="token function">literalStringTemplateRecursiveVisitor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">crossinline </span>block<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtTreeVisitorVoid///PointingToDeclaration/">KtTreeVisitorVoid</span><span class="token punctuation">.</span><span class="token punctuation">(</span>entry<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtLiteralStringTemplateEntry///PointingToDeclaration/">KtLiteralStringTemplateEntry</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtTreeVisitorVoid///PointingToDeclaration/">KtTreeVisitorVoid</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2043477116%2FFunctions%2F790358777" anchor-label="parseStatements" id="-2043477116%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="parse-statements.html"><span>parse</span><wbr><span><span>Statements</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2043477116%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtCallExpression///PointingToDeclaration/">KtCallExpression</span><span class="token punctuation">.</span><a href="parse-statements.html"><span class="token function">parseStatements</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">block<span class="token operator">: </span><a href="-kotlin-dependencies-block/index.html">KotlinDependenciesBlock</a><span class="token punctuation">, </span></span><span class="parameter ">suppressed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1615846184%2FFunctions%2F790358777" anchor-label="suppressedNames" id="-1615846184%2FFunctions%2F790358777" data-filterable-set=":modulecheck-parsing:psi/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":modulecheck-parsing:psi/main" data-filterable-set=":modulecheck-parsing:psi/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="suppressed-names.html"><span>suppressed</span><wbr><span><span>Names</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1615846184%2FFunctions%2F790358777"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:psi/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtAnnotatedExpression///PointingToDeclaration/">KtAnnotatedExpression</span><span class="token punctuation">.</span><a href="suppressed-names.html"><span class="token function">suppressedNames</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><span data-unresolved-link="org.jetbrains.kotlin.psi/KtExpression///PointingToDeclaration/">KtExpression</span><span class="token punctuation">.</span><a href="suppressed-names.html"><span class="token function">suppressedNames</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

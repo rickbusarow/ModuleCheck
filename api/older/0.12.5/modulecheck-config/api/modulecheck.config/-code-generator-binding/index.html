@@ -1,0 +1,285 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>CodeGeneratorBinding</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet"></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../../index.html">
+<span>ModuleCheck</span>            </a>    </div>
+    <div>
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.config/-code-generator-binding/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0">0.12.5</div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+    <div><a href="../../../../../../modulecheck-config/api/modulecheck.config/-code-generator-binding/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.13.0-SNAPSHOT</a></div>
+    <div><a href="index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.12.5</a></div>
+  </div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="modulecheck-config:api::modulecheck.config/CodeGeneratorBinding///PointingToDeclaration//-1221451403">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-config:api</a><span class="delimiter">/</span><a href="../index.html">modulecheck.config</a><span class="delimiter">/</span><a href="index.html">CodeGeneratorBinding</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Code</span><wbr><span>Generator</span><wbr><span><span>Binding</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-config:api:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="index.html">CodeGeneratorBinding</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>extensionTypeName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>baseConfigNames<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configuration-name/index.html">ConfigurationName</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Models a special kind of dependency, where the symbols which determine whether it's "used" are actually provided by a different artifact.</p><p class="paragraph">For instance, an annotation processor <code class="lang-kotlin">com.example.foo:foo-generator</code> does not have any declarations which show up in a library's source code. Instead, it looks for annotations from <code class="lang-kotlin">com.example.foo:foo-annotations</code> in order to trigger code generation. So, in order for us to determine whether <code class="lang-kotlin">foo-generator</code> is used, we must look for those annotations. If there are no annotations, then <code class="lang-kotlin">foo-generator</code> isn't triggered and could probably be removed.</p><p class="paragraph">N.B. Code generators often evolve over time, adding new annotations. So if a defined generator is throwing a false positive saying it's unused, it's best to first check the list of <a href="annotation-names.html">annotationNames</a> to make sure it's exhaustive.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Sources">Sources</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
+    <div class="tabs-section-body">
+      <h2 class="tabbedcontent">Constructors</h2>
+      <div class="table" data-togglable="Constructors"><a data-name="-958954083%2FConstructors%2F-1221451403" anchor-label="CodeGeneratorBinding" id="-958954083%2FConstructors%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-code-generator-binding.html"><span>Code</span><wbr><span>Generator</span><wbr><span><span>Binding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-958954083%2FConstructors%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-config:api:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">protected </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="-code-generator-binding.html"><span class="token function">CodeGeneratorBinding</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">extensionTypeName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">baseConfigNames<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configuration-name/index.html">ConfigurationName</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Types</h2>
+      <div class="table" data-togglable="Types"><a data-name="985913026%2FClasslikes%2F-1221451403" anchor-label="AnnotationProcessor" id="985913026%2FClasslikes%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-annotation-processor/index.html"><span>Annotation</span><wbr><span><span>Processor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="985913026%2FClasslikes%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-config:api:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-annotation-processor/index.html">AnnotationProcessor</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>generatorMavenCoordinates<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>annotationNames<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="index.html">CodeGeneratorBinding</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Represents an annotation processor like Dagger or Room, which could be used via <code class="lang-kotlin">kapt</code> in a Kotlin library or <code class="lang-kotlin">annotationProcessor</code> in a pure Java library.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1197054698%2FClasslikes%2F-1221451403" anchor-label="AnvilExtension" id="1197054698%2FClasslikes%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-anvil-extension/index.html"><span>Anvil</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1197054698%2FClasslikes%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-config:api:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-anvil-extension/index.html">AnvilExtension</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>generatorMavenCoordinates<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>annotationNames<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="index.html">CodeGeneratorBinding</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Represents code generators which <strong>extend</strong> Anvil's codegen functionality, but <strong>not Anvil itself</strong>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-788431190%2FClasslikes%2F-1221451403" anchor-label="KotlinCompilerPlugin" id="-788431190%2FClasslikes%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-kotlin-compiler-plugin/index.html"><span>Kotlin</span><wbr><span>Compiler</span><wbr><span><span>Plugin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-788431190%2FClasslikes%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-config:api:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-kotlin-compiler-plugin/index.html">KotlinCompilerPlugin</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>generatorMavenCoordinates<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>annotationNames<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>gradlePlugin<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-plugin-definition/index.html">PluginDefinition</a></span></span><span class="token punctuation">)</span> : <a href="index.html">CodeGeneratorBinding</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Pure Kotlin compiler plugins, like Anvil.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1070574042%2FClasslikes%2F-1221451403" anchor-label="KspExtension" id="-1070574042%2FClasslikes%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-ksp-extension/index.html"><span>Ksp</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1070574042%2FClasslikes%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-config:api:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-ksp-extension/index.html">KspExtension</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>generatorMavenCoordinates<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>annotationNames<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="index.html">CodeGeneratorBinding</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Represents KSP extensions, like Moshi or Room.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="948380345%2FProperties%2F-1221451403" anchor-label="annotationNames" id="948380345%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="annotation-names.html">annotationNames</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="948380345%2FProperties%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-config:api:dokkaHtmlPartial/main"><a data-name="948380345%2FProperties%2F-1221451403" anchor-label="annotationNames" id="948380345%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="annotation-names.html">annotationNames</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="948380345%2FProperties%2F-1221451403" anchor-label="annotationNames" id="948380345%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a><p class="paragraph">The <i>fully qualified</i> names of all annotations which make this compiler extension do something -- typically code generation or perhaps static analysis.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="816004605%2FProperties%2F-1221451403" anchor-label="baseConfigNames" id="816004605%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="base-config-names.html">baseConfigNames</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="816004605%2FProperties%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-config:api:dokkaHtmlPartial/main"><a data-name="816004605%2FProperties%2F-1221451403" anchor-label="baseConfigNames" id="816004605%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="base-config-names.html">baseConfigNames</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configuration-name/index.html">ConfigurationName</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="816004605%2FProperties%2F-1221451403" anchor-label="baseConfigNames" id="816004605%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a><p class="paragraph">The configuration name(s) used when adding this extension to the "main" source set's compilation, such as <code class="lang-kotlin">kapt</code>, <code class="lang-kotlin">annotationProcessor</code>, <code class="lang-kotlin">ksp</code>, or <code class="lang-kotlin">anvil</code>. All other configuration names for downstream source sets are derived from these base names, like <code class="lang-kotlin">kapt</code> -&gt;<code class="lang-kotlin">kaptTest</code>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="672151278%2FProperties%2F-1221451403" anchor-label="extensionTypeName" id="672151278%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="extension-type-name.html">extensionTypeName</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="672151278%2FProperties%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-config:api:dokkaHtmlPartial/main"><a data-name="672151278%2FProperties%2F-1221451403" anchor-label="extensionTypeName" id="672151278%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="extension-type-name.html">extensionTypeName</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="672151278%2FProperties%2F-1221451403" anchor-label="extensionTypeName" id="672151278%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a><p class="paragraph">The human-readable name for this type of extension, like 'annotation processor' or 'KSP extension'</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1041752239%2FProperties%2F-1221451403" anchor-label="generatorMavenCoordinates" id="1041752239%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="generator-maven-coordinates.html">generatorMavenCoordinates</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1041752239%2FProperties%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-config:api:dokkaHtmlPartial/main"><a data-name="1041752239%2FProperties%2F-1221451403" anchor-label="generatorMavenCoordinates" id="1041752239%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="generator-maven-coordinates.html">generatorMavenCoordinates</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1041752239%2FProperties%2F-1221451403" anchor-label="generatorMavenCoordinates" id="1041752239%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a><p class="paragraph">This is the .jar for the compiler library, not the Gradle plugin. For instance, <code class="lang-kotlin">androidx.room:room-compiler</code> or <code class="lang-kotlin">com.squareup.anvil:compiler</code>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1606008957%2FProperties%2F-1221451403" anchor-label="name" id="1606008957%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="name.html">name</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1606008957%2FProperties%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-config:api:dokkaHtmlPartial/main"><a data-name="1606008957%2FProperties%2F-1221451403" anchor-label="name" id="1606008957%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="name.html">name</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1606008957%2FProperties%2F-1221451403" anchor-label="name" id="1606008957%2FProperties%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a><p class="paragraph">A human-readable, descriptive name for this specific compiler extension, such as 'Hilt Android' or 'Moshi Kotlin codegen (KSP)'.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Inheritors</h2>
+      <div class="table" data-togglable="Inheritors"><a data-name="985913026%2FInheritors%2F-1221451403" anchor-label="AnnotationProcessor" id="985913026%2FInheritors%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-annotation-processor/index.html">AnnotationProcessor</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="985913026%2FInheritors%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+<a data-name="-1070574042%2FInheritors%2F-1221451403" anchor-label="KspExtension" id="-1070574042%2FInheritors%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-ksp-extension/index.html">KspExtension</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1070574042%2FInheritors%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+<a data-name="1197054698%2FInheritors%2F-1221451403" anchor-label="AnvilExtension" id="1197054698%2FInheritors%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-anvil-extension/index.html">AnvilExtension</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1197054698%2FInheritors%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+<a data-name="-788431190%2FInheritors%2F-1221451403" anchor-label="KotlinCompilerPlugin" id="-788431190%2FInheritors%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-kotlin-compiler-plugin/index.html">KotlinCompilerPlugin</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-788431190%2FInheritors%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Sources</h2>
+      <div class="table" data-togglable="Sources"><a data-name="-549759177%2FSource%2F-1221451403" anchor-label="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-config/api/src/main/kotlin/modulecheck/config/CodeGeneratorBinding.kt#L21" id="-549759177%2FSource%2F-1221451403" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-config:api:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-config:api:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-config/api/src/main/kotlin/modulecheck/config/CodeGeneratorBinding.kt#L21">jvm source</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-549759177%2FSource%2F-1221451403"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+
+

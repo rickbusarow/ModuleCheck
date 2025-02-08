@@ -1,0 +1,576 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>RealMcProject</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../../../index.html">
+                    
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.project.impl/-real-mc-project/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0">0.13.0-SNAPSHOT</div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+    <div><a href="index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.13.0-SNAPSHOT</a></div>
+    <div><a href="../../../../older/0.12.5/modulecheck-project/impl/modulecheck.project.impl/-real-mc-project/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.12.5</a></div>
+  </div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-project:impl/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":modulecheck-project:impl/main" data-filter=":modulecheck-project:impl/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-project:impl::modulecheck.project.impl/RealMcProject///PointingToDeclaration//-838530702">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-project:impl</a><span class="delimiter">/</span><a href="../index.html">modulecheck.project.impl</a><span class="delimiter">/</span><span class="current">RealMcProject</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Real</span><wbr><span>Mc</span><wbr><span><span>Project</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">RealMcProject</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>projectPath<span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-path/-string-project-path/index.html">ProjectPath.StringProjectPath</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>projectDir<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>buildFile<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>hasKapt<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>hasTestFixturesPlugin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>projectCache<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-cache/index.html">ProjectCache</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>anvilGradlePlugin<span class="token operator">: </span><a href="../../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-anvil-gradle-plugin/index.html">AnvilGradlePlugin</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>logger<span class="token operator">: </span><a href="../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>jvmFileProviderFactory<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-jvm-file-provider/-factory/index.html">JvmFileProvider.Factory</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>jvmTarget<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.config/JvmTarget///PointingToDeclaration/">JvmTarget</span><span class="token punctuation">, </span></span><span class="parameter ">buildFileParserFactory<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-build-file-parser/-factory/index.html">BuildFileParser.Factory</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>platformPlugin<span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-platform-plugin/index.html">PlatformPlugin</a></span></span><span class="token punctuation">)</span> : <a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-project/impl/src/main/kotlin/modulecheck/project/impl/RealMcProject.kt#L36">source</a>)</span></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="1648031174%2FConstructors%2F-838530702" anchor-label="RealMcProject" id="1648031174%2FConstructors%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-real-mc-project.html"><span>Real</span><wbr><span>Mc</span><wbr><span><span>Project</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1648031174%2FConstructors%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">projectPath<span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-path/-string-project-path/index.html">ProjectPath.StringProjectPath</a><span class="token punctuation">, </span></span><span class="parameter ">projectDir<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter ">buildFile<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter ">hasKapt<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">hasTestFixturesPlugin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">projectCache<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-cache/index.html">ProjectCache</a><span class="token punctuation">, </span></span><span class="parameter ">anvilGradlePlugin<span class="token operator">: </span><a href="../../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-anvil-gradle-plugin/index.html">AnvilGradlePlugin</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">logger<span class="token operator">: </span><a href="../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter ">jvmFileProviderFactory<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-jvm-file-provider/-factory/index.html">JvmFileProvider.Factory</a><span class="token punctuation">, </span></span><span class="parameter ">jvmTarget<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.config/JvmTarget///PointingToDeclaration/">JvmTarget</span><span class="token punctuation">, </span></span><span class="parameter ">buildFileParserFactory<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-build-file-parser/-factory/index.html">BuildFileParser.Factory</a><span class="token punctuation">, </span></span><span class="parameter ">platformPlugin<span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-platform-plugin/index.html">PlatformPlugin</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-2033829975%2FProperties%2F-838530702" anchor-label="anvilGradlePlugin" id="-2033829975%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="anvil-gradle-plugin.html"><span>anvil</span><wbr><span>Gradle</span><wbr><span><span>Plugin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2033829975%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="anvil-gradle-plugin.html">anvilGradlePlugin</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-anvil-gradle-plugin/index.html">AnvilGradlePlugin</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1702051429%2FProperties%2F-838530702" anchor-label="buildFile" id="1702051429%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="build-file.html"><span>build</span><wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1702051429%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="build-file.html">buildFile</a><span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="156691718%2FProperties%2F-838530702" anchor-label="buildFileParser" id="156691718%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="build-file-parser.html"><span>build</span><wbr><span>File</span><wbr><span><span>Parser</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="156691718%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="build-file-parser.html">buildFileParser</a><span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-build-file-parser/index.html">BuildFileParser</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1270037556%2FProperties%2F-838530702" anchor-label="configurations" id="-1270037556%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1270037556%2FProperties%2F-838530702"><span><span>configurations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1270037556%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#-1270037556%2FProperties%2F-838530702">configurations</a><span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-configurations/index.html">Configurations</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1610799584%2FProperties%2F-838530702" anchor-label="context" id="1610799584%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="context.html"><span><span>context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1610799584%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="context.html">context</a><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-context/index.html">ProjectContext</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1090226697%2FProperties%2F-838530702" anchor-label="externalDependencies" id="-1090226697%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="external-dependencies.html"><span>external</span><wbr><span><span>Dependencies</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1090226697%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="external-dependencies.html">externalDependencies</a><span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-external-dependencies/index.html">ExternalDependencies</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="833802585%2FProperties%2F-838530702" anchor-label="hasAGP" id="833802585%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#833802585%2FProperties%2F-838530702"><span>has</span><wbr><span><span>AGP</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="833802585%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#833802585%2FProperties%2F-838530702">hasAGP</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-71323049%2FProperties%2F-838530702" anchor-label="hasAnvil" id="-71323049%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-71323049%2FProperties%2F-838530702"><span>has</span><wbr><span><span>Anvil</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-71323049%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#-71323049%2FProperties%2F-838530702">hasAnvil</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1140833381%2FProperties%2F-838530702" anchor-label="hasKapt" id="-1140833381%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="has-kapt.html"><span>has</span><wbr><span><span>Kapt</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1140833381%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="has-kapt.html">hasKapt</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1840138106%2FProperties%2F-838530702" anchor-label="hasTestFixturesPlugin" id="-1840138106%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="has-test-fixtures-plugin.html"><span>has</span><wbr><span>Test</span><wbr><span>Fixtures</span><wbr><span><span>Plugin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1840138106%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="has-test-fixtures-plugin.html">hasTestFixturesPlugin</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="32861462%2FProperties%2F-838530702" anchor-label="identifier" id="32861462%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#32861462%2FProperties%2F-838530702"><span><span>identifier</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="32861462%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#32861462%2FProperties%2F-838530702">identifier</a><span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-identifier/index.html">Identifier</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="527240623%2FProperties%2F-838530702" anchor-label="jvmFileProviderFactory" id="527240623%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="jvm-file-provider-factory.html"><span>jvm</span><wbr><span>File</span><wbr><span>Provider</span><wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="527240623%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="jvm-file-provider-factory.html">jvmFileProviderFactory</a><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-jvm-file-provider/-factory/index.html">JvmFileProvider.Factory</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1211174179%2FProperties%2F-838530702" anchor-label="jvmTarget" id="-1211174179%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="jvm-target.html"><span>jvm</span><wbr><span><span>Target</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1211174179%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="jvm-target.html">jvmTarget</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.config/JvmTarget///PointingToDeclaration/">JvmTarget</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1569927419%2FProperties%2F-838530702" anchor-label="logger" id="1569927419%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="logger.html"><span><span>logger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1569927419%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="logger.html">logger</a><span class="token operator">: </span><a href="../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="411588549%2FProperties%2F-838530702" anchor-label="platformPlugin" id="411588549%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="platform-plugin.html"><span>platform</span><wbr><span><span>Plugin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="411588549%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="platform-plugin.html">platformPlugin</a><span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-platform-plugin/index.html">PlatformPlugin</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="349830722%2FProperties%2F-838530702" anchor-label="projectCache" id="349830722%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="project-cache.html"><span>project</span><wbr><span><span>Cache</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="349830722%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="project-cache.html">projectCache</a><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-cache/index.html">ProjectCache</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1957419763%2FProperties%2F-838530702" anchor-label="projectDependencies" id="-1957419763%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="project-dependencies.html"><span>project</span><wbr><span><span>Dependencies</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1957419763%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="project-dependencies.html">projectDependencies</a><span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-dependencies/index.html">ProjectDependencies</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1558077097%2FProperties%2F-838530702" anchor-label="projectDir" id="-1558077097%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="project-dir.html"><span>project</span><wbr><span><span>Dir</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1558077097%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="project-dir.html">projectDir</a><span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-437273967%2FProperties%2F-838530702" anchor-label="projectPath" id="-437273967%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="project-path.html"><span>project</span><wbr><span><span>Path</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-437273967%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="project-path.html">projectPath</a><span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-project-path/-string-project-path/index.html">ProjectPath.StringProjectPath</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1421986851%2FProperties%2F-838530702" anchor-label="sourceSets" id="-1421986851%2FProperties%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1421986851%2FProperties%2F-838530702"><span>source</span><wbr><span><span>Sets</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1421986851%2FProperties%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#-1421986851%2FProperties%2F-838530702">sourceSets</a><span class="token operator">: </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-source-sets/index.html">SourceSets</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-419301975%2FFunctions%2F-838530702" anchor-label="clearContext" id="-419301975%2FFunctions%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="clear-context.html"><span>clear</span><wbr><span><span>Context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-419301975%2FFunctions%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="clear-context.html"><span class="token function">clearContext</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="904281815%2FFunctions%2F-838530702" anchor-label="compareTo" id="904281815%2FFunctions%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="compare-to.html"><span>compare</span><wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="904281815%2FFunctions%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><a href="compare-to.html"><span class="token function">compareTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">other<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="810196694%2FFunctions%2F-838530702" anchor-label="equals" id="810196694%2FFunctions%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="equals.html"><span><span>equals</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="810196694%2FFunctions%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><a href="equals.html"><span class="token function">equals</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">other<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="246386856%2FFunctions%2F-838530702" anchor-label="get" id="246386856%2FFunctions%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get.html"><span><span>get</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="246386856%2FFunctions%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="get.html">E</a><span class="token operator"> : </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-context/-element/index.html">ProjectContext.Element</a><span class="token operator">&gt; </span><a href="get.html"><span class="token function">get</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-project-context/-key/index.html">ProjectContext.Key</a><span class="token operator">&lt;</span><a href="get.html">E</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="get.html">E</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1110351536%2FFunctions%2F-838530702" anchor-label="hashCode" id="-1110351536%2FFunctions%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="hash-code.html"><span>hash</span><wbr><span><span>Code</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1110351536%2FFunctions%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="hash-code.html"><span class="token function">hashCode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1593918988%2FFunctions%2F-838530702" anchor-label="project" id="-1593918988%2FFunctions%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1593918988%2FFunctions%2F-838530702"><span><span>project</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1593918988%2FFunctions%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../../../modulecheck-model/dependency/api/modulecheck.model.dependency/-has-project-path/index.html">HasProjectPath</a><span class="token punctuation">.</span><a href="index.html#-1593918988%2FFunctions%2F-838530702"><span class="token function">project</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-422129380%2FFunctions%2F-838530702" anchor-label="resolvedNameOrNull" id="-422129380%2FFunctions%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="resolved-name-or-null.html"><span>resolved</span><wbr><span>Name</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-422129380%2FFunctions%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="resolved-name-or-null.html"><span class="token function">resolvedNameOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resolvableMcName<span class="token operator">: </span><a href="../../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-resolvable-mc-name/index.html">ResolvableMcName</a><span class="token punctuation">, </span></span><span class="parameter ">sourceSetName<span class="token operator">: </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-qualified-declared-name/index.html">QualifiedDeclaredName</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1288517601%2FFunctions%2F-838530702" anchor-label="toString" id="-1288517601%2FFunctions%2F-838530702" data-filterable-set=":modulecheck-project:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-project:impl/main" data-filterable-set=":modulecheck-project:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-string.html"><span>to</span><wbr><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1288517601%2FFunctions%2F-838530702"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-project:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="to-string.html"><span class="token function">toString</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

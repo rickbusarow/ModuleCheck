@@ -1,0 +1,586 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>modulecheck.gradle.platforms.android</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../../../index.html">
+                    
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.gradle.platforms.android/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0">0.13.0-SNAPSHOT</div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+    <div><a href="index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.13.0-SNAPSHOT</a></div>
+    <div><a href="../../../../older/0.12.5/modulecheck-gradle/platforms/api/modulecheck.gradle.platforms.android/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.12.5</a></div>
+  </div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-gradle:platforms:api/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":modulecheck-gradle:platforms:api/main" data-filter=":modulecheck-gradle:platforms:api/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageids="modulecheck-gradle:platforms:api::modulecheck.gradle.platforms.android////PointingToDeclaration//415354270">
+  <div class="breadcrumbs"><a href="../index.html">modulecheck-gradle:platforms:api</a><span class="delimiter">/</span><span class="current">modulecheck.gradle.platforms.android</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="707330330%2FClasslikes%2F415354270" anchor-label="AgpApiAccess" id="707330330%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-api-access/index.html"><span>Agp</span><wbr><span>Api</span><wbr><span><span>Access</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="707330330%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-agp-api-access/index.html">AgpApiAccess</a>&nbsp;<span><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation builtin">Inject</span></span>&nbsp;</span><span class="token keyword">constructor</span></div><div class="brief "><p class="paragraph">This class provides:</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1079985818%2FClasslikes%2F415354270" anchor-label="AgpApiBasePlugin" id="1079985818%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-api-base-plugin/index.html"><span>Agp</span><wbr><span>Api</span><wbr><span>Base</span><wbr><span><span>Plugin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1079985818%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-api-base-plugin/index.html">AgpApiBasePlugin</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.api/AndroidBasePlugin///PointingToDeclaration/">AndroidBasePlugin</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.api/AndroidBasePlugin///PointingToDeclaration/">com.android.build.gradle.api.AndroidBasePlugin</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1087698476%2FClasslikes%2F415354270" anchor-label="AgpAppExtension" id="1087698476%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-app-extension/index.html"><span>Agp</span><wbr><span>App</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1087698476%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-app-extension/index.html">AgpAppExtension</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle/AppExtension///PointingToDeclaration/">AppExtension</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle/AppExtension///PointingToDeclaration/">com.android.build.gradle.AppExtension</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-805204837%2FClasslikes%2F415354270" anchor-label="AgpApplicationExtension" id="-805204837%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-application-extension/index.html"><span>Agp</span><wbr><span>Application</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-805204837%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-application-extension/index.html">AgpApplicationExtension</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.api.dsl/ApplicationExtension///PointingToDeclaration/">ApplicationExtension</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.api.dsl/ApplicationExtension///PointingToDeclaration/">com.android.build.api.dsl.ApplicationExtension</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="466366741%2FClasslikes%2F415354270" anchor-label="AgpApplicationVariantImpl" id="466366741%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-application-variant-impl/index.html"><span>Agp</span><wbr><span>Application</span><wbr><span>Variant</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="466366741%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-application-variant-impl/index.html">AgpApplicationVariantImpl</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.internal.api/ApplicationVariantImpl///PointingToDeclaration/">ApplicationVariantImpl</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.internal.api/ApplicationVariantImpl///PointingToDeclaration/">com.android.build.gradle.internal.api.ApplicationVariantImpl</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1960988490%2FClasslikes%2F415354270" anchor-label="AgpBaseExtension" id="1960988490%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-base-extension/index.html"><span>Agp</span><wbr><span>Base</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1960988490%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-base-extension/index.html">AgpBaseExtension</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle/BaseExtension///PointingToDeclaration/">BaseExtension</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle/BaseExtension///PointingToDeclaration/">com.android.build.gradle.BaseExtension</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1994901734%2FClasslikes%2F415354270" anchor-label="AgpBasePlugin" id="1994901734%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-base-plugin/index.html"><span>Agp</span><wbr><span>Base</span><wbr><span><span>Plugin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1994901734%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-base-plugin/index.html">AgpBasePlugin</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle/BasePlugin///PointingToDeclaration/">BasePlugin</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle/BasePlugin///PointingToDeclaration/">com.android.build.gradle.BasePlugin</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2017940420%2FClasslikes%2F415354270" anchor-label="AgpBaseVariant" id="2017940420%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-base-variant/index.html"><span>Agp</span><wbr><span>Base</span><wbr><span><span>Variant</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2017940420%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-base-variant/index.html">AgpBaseVariant</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.api/BaseVariant///PointingToDeclaration/">BaseVariant</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.api/BaseVariant///PointingToDeclaration/">com.android.build.gradle.api.BaseVariant</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="332453412%2FClasslikes%2F415354270" anchor-label="AgpCommonExtension" id="332453412%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-common-extension/index.html"><span>Agp</span><wbr><span>Common</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="332453412%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-common-extension/index.html">AgpCommonExtension</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.api.dsl/CommonExtension///PointingToDeclaration/">CommonExtension</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token punctuation">, </span><span class="token operator">*</span><span class="token punctuation">, </span><span class="token operator">*</span><span class="token punctuation">, </span><span class="token operator">*</span><span class="token punctuation">, </span><span class="token operator">*</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.api.dsl/CommonExtension///PointingToDeclaration/">com.android.build.api.dsl.CommonExtension</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="362596623%2FClasslikes%2F415354270" anchor-label="AgpComponentsExtension" id="362596623%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-components-extension/index.html"><span>Agp</span><wbr><span>Components</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="362596623%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-components-extension/index.html">AgpComponentsExtension</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.api.variant/AndroidComponentsExtension///PointingToDeclaration/">AndroidComponentsExtension</span><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token punctuation">, </span><span class="token operator">*</span><span class="token punctuation">, </span><span class="token operator">*</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.api.variant/AndroidComponentsExtension///PointingToDeclaration/">com.android.build.api.variant.AndroidComponentsExtension</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-367818036%2FClasslikes%2F415354270" anchor-label="AgpDefaultAndroidSourceDirectorySet" id="-367818036%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-default-android-source-directory-set/index.html"><span>Agp</span><wbr><span>Default</span><wbr><span>Android</span><wbr><span>Source</span><wbr><span>Directory</span><wbr><span><span>Set</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-367818036%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-default-android-source-directory-set/index.html">AgpDefaultAndroidSourceDirectorySet</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.internal.api/DefaultAndroidSourceDirectorySet///PointingToDeclaration/">DefaultAndroidSourceDirectorySet</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.internal.api/DefaultAndroidSourceDirectorySet///PointingToDeclaration/">com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-568557584%2FClasslikes%2F415354270" anchor-label="AgpDynamicFeatureExtension" id="-568557584%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-dynamic-feature-extension/index.html"><span>Agp</span><wbr><span>Dynamic</span><wbr><span>Feature</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-568557584%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-dynamic-feature-extension/index.html">AgpDynamicFeatureExtension</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.api.dsl/DynamicFeatureExtension///PointingToDeclaration/">DynamicFeatureExtension</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.api.dsl/DynamicFeatureExtension///PointingToDeclaration/">com.android.build.api.dsl.DynamicFeatureExtension</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2031655037%2FClasslikes%2F415354270" anchor-label="AgpGenerateBuildConfig" id="2031655037%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-generate-build-config/index.html"><span>Agp</span><wbr><span>Generate</span><wbr><span>Build</span><wbr><span><span>Config</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2031655037%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-generate-build-config/index.html">AgpGenerateBuildConfig</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.tasks/GenerateBuildConfig///PointingToDeclaration/">GenerateBuildConfig</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.tasks/GenerateBuildConfig///PointingToDeclaration/">com.android.build.gradle.tasks.GenerateBuildConfig</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1086980573%2FClasslikes%2F415354270" anchor-label="AgpGenerateLibraryRFileTask" id="1086980573%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-generate-library-r-file-task/index.html"><span>Agp</span><wbr><span>Generate</span><wbr><span>Library</span><wbr><span>RFile</span><wbr><span><span>Task</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1086980573%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-generate-library-r-file-task/index.html">AgpGenerateLibraryRFileTask</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.internal.res/GenerateLibraryRFileTask///PointingToDeclaration/">GenerateLibraryRFileTask</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.internal.res/GenerateLibraryRFileTask///PointingToDeclaration/">com.android.build.gradle.internal.res.GenerateLibraryRFileTask</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1533420998%2FClasslikes%2F415354270" anchor-label="AgpLibraryExtension" id="1533420998%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-library-extension/index.html"><span>Agp</span><wbr><span>Library</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1533420998%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-library-extension/index.html">AgpLibraryExtension</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle/LibraryExtension///PointingToDeclaration/">LibraryExtension</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle/LibraryExtension///PointingToDeclaration/">com.android.build.gradle.LibraryExtension</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1617898368%2FClasslikes%2F415354270" anchor-label="AgpLibraryVariantImpl" id="1617898368%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-library-variant-impl/index.html"><span>Agp</span><wbr><span>Library</span><wbr><span>Variant</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1617898368%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-library-variant-impl/index.html">AgpLibraryVariantImpl</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.internal.api/LibraryVariantImpl///PointingToDeclaration/">LibraryVariantImpl</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.internal.api/LibraryVariantImpl///PointingToDeclaration/">com.android.build.gradle.internal.api.LibraryVariantImpl</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2126601049%2FClasslikes%2F415354270" anchor-label="AgpLinkApplicationAndroidResourcesTask" id="-2126601049%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-link-application-android-resources-task/index.html"><span>Agp</span><wbr><span>Link</span><wbr><span>Application</span><wbr><span>Android</span><wbr><span>Resources</span><wbr><span><span>Task</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2126601049%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-link-application-android-resources-task/index.html">AgpLinkApplicationAndroidResourcesTask</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.internal.res/LinkApplicationAndroidResourcesTask///PointingToDeclaration/">LinkApplicationAndroidResourcesTask</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.internal.res/LinkApplicationAndroidResourcesTask///PointingToDeclaration/">com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-148975952%2FClasslikes%2F415354270" anchor-label="AgpManifestProcessorTask" id="-148975952%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-manifest-processor-task/index.html"><span>Agp</span><wbr><span>Manifest</span><wbr><span>Processor</span><wbr><span><span>Task</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-148975952%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-manifest-processor-task/index.html">AgpManifestProcessorTask</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.tasks/ManifestProcessorTask///PointingToDeclaration/">ManifestProcessorTask</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.tasks/ManifestProcessorTask///PointingToDeclaration/">com.android.build.gradle.tasks.ManifestProcessorTask</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="280564192%2FClasslikes%2F415354270" anchor-label="AgpMergedFlavor" id="280564192%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-merged-flavor/index.html"><span>Agp</span><wbr><span>Merged</span><wbr><span><span>Flavor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="280564192%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-merged-flavor/index.html">AgpMergedFlavor</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.internal.core/InternalBaseVariant.MergedFlavor///PointingToDeclaration/">InternalBaseVariant.MergedFlavor</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.internal.core/InternalBaseVariant.MergedFlavor///PointingToDeclaration/">com.android.build.gradle.internal.core.InternalBaseVariant.MergedFlavor</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1632235759%2FClasslikes%2F415354270" anchor-label="AgpSourceSet" id="-1632235759%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-source-set/index.html"><span>Agp</span><wbr><span>Source</span><wbr><span><span>Set</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1632235759%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-source-set/index.html">AgpSourceSet</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.api.dsl/AndroidSourceSet///PointingToDeclaration/">AndroidSourceSet</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.api.dsl/AndroidSourceSet///PointingToDeclaration/">com.android.build.api.dsl.AndroidSourceSet</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1163587434%2FClasslikes%2F415354270" anchor-label="AgpTestedExtension" id="1163587434%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-tested-extension/index.html"><span>Agp</span><wbr><span>Tested</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1163587434%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-tested-extension/index.html">AgpTestedExtension</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle/TestedExtension///PointingToDeclaration/">TestedExtension</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle/TestedExtension///PointingToDeclaration/">com.android.build.gradle.TestedExtension</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-659981340%2FClasslikes%2F415354270" anchor-label="AgpTestedVariant" id="-659981340%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-tested-variant/index.html"><span>Agp</span><wbr><span>Tested</span><wbr><span><span>Variant</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-659981340%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-tested-variant/index.html">AgpTestedVariant</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.internal.api/TestedVariant///PointingToDeclaration/">TestedVariant</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.internal.api/TestedVariant///PointingToDeclaration/">com.android.build.gradle.internal.api.TestedVariant</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1576805173%2FClasslikes%2F415354270" anchor-label="AgpTestExtension" id="-1576805173%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-test-extension/index.html"><span>Agp</span><wbr><span>Test</span><wbr><span><span>Extension</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1576805173%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-test-extension/index.html">AgpTestExtension</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle/TestExtension///PointingToDeclaration/">TestExtension</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle/TestExtension///PointingToDeclaration/">com.android.build.gradle.TestExtension</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1614787195%2FClasslikes%2F415354270" anchor-label="AgpTestVariant" id="-1614787195%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-test-variant/index.html"><span>Agp</span><wbr><span>Test</span><wbr><span><span>Variant</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1614787195%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-test-variant/index.html">AgpTestVariant</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.api/TestVariant///PointingToDeclaration/">TestVariant</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.api/TestVariant///PointingToDeclaration/">com.android.build.gradle.api.TestVariant</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-87323223%2FClasslikes%2F415354270" anchor-label="AgpUnitTestVariant" id="-87323223%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-unit-test-variant/index.html"><span>Agp</span><wbr><span>Unit</span><wbr><span>Test</span><wbr><span><span>Variant</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-87323223%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-unit-test-variant/index.html">AgpUnitTestVariant</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.api/UnitTestVariant///PointingToDeclaration/">UnitTestVariant</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.api/UnitTestVariant///PointingToDeclaration/">com.android.build.gradle.api.UnitTestVariant</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1174379212%2FClasslikes%2F415354270" anchor-label="AgpVariantAwareTask" id="1174379212%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-agp-variant-aware-task/index.html"><span>Agp</span><wbr><span>Variant</span><wbr><span>Aware</span><wbr><span><span>Task</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1174379212%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-agp-variant-aware-task/index.html">AgpVariantAwareTask</a><span class="token operator"> = </span><span data-unresolved-link="com.android.build.gradle.internal.tasks/VariantAwareTask///PointingToDeclaration/">VariantAwareTask</span></div><div class="brief "><p class="paragraph"><span data-unresolved-link="com.android.build.gradle.internal.tasks/VariantAwareTask///PointingToDeclaration/">com.android.build.gradle.internal.tasks.VariantAwareTask</span></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1575185145%2FClasslikes%2F415354270" anchor-label="AndroidPlatformPluginFactory" id="1575185145%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-platform-plugin-factory/index.html"><span>Android</span><wbr><span>Platform</span><wbr><span>Plugin</span><wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1575185145%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-android-platform-plugin-factory/index.html">AndroidPlatformPluginFactory</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1789246024%2FClasslikes%2F415354270" anchor-label="SafeAgpApiReferenceScope" id="1789246024%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-safe-agp-api-reference-scope/index.html"><span>Safe</span><wbr><span>Agp</span><wbr><span>Api</span><wbr><span>Reference</span><wbr><span><span>Scope</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1789246024%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-safe-agp-api-reference-scope/index.html">SafeAgpApiReferenceScope</a>&nbsp;<span><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-published-api/index.html"><span class="token annotation builtin">PublishedApi</span></a>&nbsp;</span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>agpApiAccess<span class="token operator">: </span><a href="-agp-api-access/index.html">AgpApiAccess</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>gradleProject<span class="token operator">: </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-gradle-project/index.html">GradleProject</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Wrapper for accessing AGP declarations only after it's been established that they exist in the classpath.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-613850072%2FClasslikes%2F415354270" anchor-label="UnsafeDirectAgpApiReference" id="-613850072%2FClasslikes%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unsafe-direct-agp-api-reference/index.html"><span>Unsafe</span><wbr><span>Direct</span><wbr><span>Agp</span><wbr><span>Api</span><wbr><span><span>Reference</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-613850072%2FClasslikes%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.annotation/-target/index.html"><span class="token annotation builtin">Target</span></a><span class="token punctuation">(</span><span>allowedTargets<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.annotation/-annotation-target/-t-y-p-e-a-l-i-a-s/index.html">AnnotationTarget.TYPEALIAS</a><span class="token punctuation">, </span></span><wbr><span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.annotation/-annotation-target/-v-a-l-u-e_-p-a-r-a-m-e-t-e-r/index.html">AnnotationTarget.VALUE_PARAMETER</a><span class="token punctuation">, </span></span><wbr><span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.annotation/-annotation-target/-f-u-n-c-t-i-o-n/index.html">AnnotationTarget.FUNCTION</a><span class="token punctuation">, </span></span><wbr><span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.annotation/-annotation-target/-c-l-a-s-s/index.html">AnnotationTarget.CLASS</a></span><wbr><span class="token punctuation">]</span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">annotation class </span><a href="-unsafe-direct-agp-api-reference/index.html">UnsafeDirectAgpApiReference</a></div><div class="brief "><p class="paragraph">Any reference to AGP code is annotated with this opt-in requirement. AGP code can only be referenced if AGP is in the target project's <i>build</i> classpath, so it needs to be handled carefully.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="EXTENSION_FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1799500896%2FFunctions%2F415354270" anchor-label="isAndroid" id="-1799500896%2FFunctions%2F415354270" data-filterable-set=":modulecheck-gradle:platforms:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:api/main" data-filterable-set=":modulecheck-gradle:platforms:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-android.html"><span>is</span><wbr><span><span>Android</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1799500896%2FFunctions%2F415354270"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-gradle-project/index.html">GradleProject</a><span class="token punctuation">.</span><a href="is-android.html"><span class="token function">isAndroid</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">agpApiAccess<span class="token operator">: </span><a href="-agp-api-access/index.html">AgpApiAccess</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

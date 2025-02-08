@@ -1,0 +1,411 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>GradleKotlinAnvilAgpTestVersions</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../../index.html">
+                    
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.testing/-gradle-kotlin-anvil-agp-test-versions/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0">0.13.0-SNAPSHOT</div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+    <div><a href="index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.13.0-SNAPSHOT</a></div>
+    <div><a href="../../../not-found-version.html?v=0.12.5" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.12.5</a></div>
+  </div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-internal-testing/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":modulecheck-internal-testing/main" data-filter=":modulecheck-internal-testing/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-internal-testing::modulecheck.testing/GradleKotlinAnvilAgpTestVersions///PointingToDeclaration//-1404992111">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-internal-testing</a><span class="delimiter">/</span><a href="../index.html">modulecheck.testing</a><span class="delimiter">/</span><span class="current">GradleKotlinAnvilAgpTestVersions</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Gradle</span><wbr><span>Kotlin</span><wbr><span>Anvil</span><wbr><span>Agp</span><wbr><span>Test</span><wbr><span><span>Versions</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">GradleKotlinAnvilAgpTestVersions</a> : <span data-unresolved-link="com.rickbusarow.kase.gradle/TestVersions///PointingToDeclaration/">TestVersions</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/HasGradleDependencyVersion///PointingToDeclaration/">HasGradleDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/HasKotlinDependencyVersion///PointingToDeclaration/">HasKotlinDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/HasAnvilDependencyVersion///PointingToDeclaration/">HasAnvilDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/HasAgpDependencyVersion///PointingToDeclaration/">HasAgpDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase/Kase4///PointingToDeclaration/">Kase4</span><span class="token operator">&lt;</span><span data-unresolved-link="com.rickbusarow.kase.gradle/GradleDependencyVersion///PointingToDeclaration/">GradleDependencyVersion</span><span class="token punctuation">, </span><span data-unresolved-link="com.rickbusarow.kase.gradle/KotlinDependencyVersion///PointingToDeclaration/">KotlinDependencyVersion</span><span class="token punctuation">, </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AnvilDependencyVersion///PointingToDeclaration/">AnvilDependencyVersion</span><span class="token punctuation">, </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AgpDependencyVersion///PointingToDeclaration/">AgpDependencyVersion</span><span class="token operator">&gt; </span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/GradleTestVersions///PointingToDeclaration/">GradleTestVersions</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/GradleKotlinTestVersions///PointingToDeclaration/">GradleKotlinTestVersions</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-internal-testing/src/main/kotlin/modulecheck/testing/McTestVersions.kt#L63">source</a>)</span></span></div><p class="paragraph">Holds <span data-unresolved-link="com.rickbusarow.kase.gradle/GradleDependencyVersion///PointingToDeclaration/">GradleDependencyVersion</span>, <span data-unresolved-link="com.rickbusarow.kase.gradle/KotlinDependencyVersion///PointingToDeclaration/">KotlinDependencyVersion</span>, and <span data-unresolved-link="com.rickbusarow.kase.gradle/AgpDependencyVersion///PointingToDeclaration/">AgpDependencyVersion</span> versions</p><h4 class="">Inheritors</h4><div class="table"><div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-mc-test-versions/index.html">McTestVersions</a></div></span></div><div></div></div></div><div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html">DefaultGradleKotlinAnvilAgpTestVersions</a></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-625173041%2FClasslikes%2F-1404992111" anchor-label="Companion" id="-625173041%2FClasslikes%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-625173041%2FClasslikes%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a> : <span data-unresolved-link="com.rickbusarow.kase.gradle/TestVersionsFactory///PointingToDeclaration/">TestVersionsFactory</span><span class="token operator">&lt;</span><a href="index.html">GradleKotlinAnvilAgpTestVersions</a><span class="token operator">&gt; </span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-1318429471%2FProperties%2F-1404992111" anchor-label="a1" id="-1318429471%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1318429471%2FProperties%2F-1404992111"><span><span>a1</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1318429471%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="index.html#-1318429471%2FProperties%2F-1404992111">a1</a><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/GradleDependencyVersion///PointingToDeclaration/">GradleDependencyVersion</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-594307967%2FProperties%2F-1404992111" anchor-label="a2" id="-594307967%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-594307967%2FProperties%2F-1404992111"><span><span>a2</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-594307967%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="index.html#-594307967%2FProperties%2F-1404992111">a2</a><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/KotlinDependencyVersion///PointingToDeclaration/">KotlinDependencyVersion</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="129813537%2FProperties%2F-1404992111" anchor-label="a3" id="129813537%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#129813537%2FProperties%2F-1404992111"><span><span>a3</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="129813537%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="index.html#129813537%2FProperties%2F-1404992111">a3</a><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AnvilDependencyVersion///PointingToDeclaration/">AnvilDependencyVersion</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="853935041%2FProperties%2F-1404992111" anchor-label="a4" id="853935041%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#853935041%2FProperties%2F-1404992111"><span><span>a4</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="853935041%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="index.html#853935041%2FProperties%2F-1404992111">a4</a><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AgpDependencyVersion///PointingToDeclaration/">AgpDependencyVersion</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-121722840%2FProperties%2F-1404992111" anchor-label="agp" id="-121722840%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-121722840%2FProperties%2F-1404992111"><span><span>agp</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-121722840%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-121722840%2FProperties%2F-1404992111">agp</a><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AgpDependencyVersion///PointingToDeclaration/">AgpDependencyVersion</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1074107590%2FProperties%2F-1404992111" anchor-label="agpVersion" id="-1074107590%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-1074107590%2FProperties%2F-1404992111"><span>agp</span><wbr><span><span>Version</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1074107590%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-1074107590%2FProperties%2F-1404992111">agpVersion</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-357465368%2FProperties%2F-1404992111" anchor-label="anvil" id="-357465368%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-357465368%2FProperties%2F-1404992111"><span><span>anvil</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-357465368%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-357465368%2FProperties%2F-1404992111">anvil</a><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AnvilDependencyVersion///PointingToDeclaration/">AnvilDependencyVersion</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1025509254%2FProperties%2F-1404992111" anchor-label="anvilVersion" id="-1025509254%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-1025509254%2FProperties%2F-1404992111"><span>anvil</span><wbr><span><span>Version</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1025509254%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-1025509254%2FProperties%2F-1404992111">anvilVersion</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="100005286%2FProperties%2F-1404992111" anchor-label="displayName" id="100005286%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#100005286%2FProperties%2F-1404992111"><span>display</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="100005286%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="index.html#100005286%2FProperties%2F-1404992111">displayName</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="325465302%2FProperties%2F-1404992111" anchor-label="gradle" id="325465302%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#325465302%2FProperties%2F-1404992111"><span><span>gradle</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="325465302%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#325465302%2FProperties%2F-1404992111">gradle</a><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/GradleDependencyVersion///PointingToDeclaration/">GradleDependencyVersion</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1181393579%2FProperties%2F-1404992111" anchor-label="gradleVersion" id="1181393579%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#1181393579%2FProperties%2F-1404992111"><span>gradle</span><wbr><span><span>Version</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1181393579%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#1181393579%2FProperties%2F-1404992111">gradleVersion</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1453233122%2FProperties%2F-1404992111" anchor-label="kotlin" id="1453233122%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#1453233122%2FProperties%2F-1404992111"><span><span>kotlin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1453233122%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#1453233122%2FProperties%2F-1404992111">kotlin</a><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/KotlinDependencyVersion///PointingToDeclaration/">KotlinDependencyVersion</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="117881408%2FProperties%2F-1404992111" anchor-label="kotlinVersion" id="117881408%2FProperties%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#117881408%2FProperties%2F-1404992111"><span>kotlin</span><wbr><span><span>Version</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="117881408%2FProperties%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#117881408%2FProperties%2F-1404992111">kotlinVersion</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-2023335299%2FFunctions%2F-1404992111" anchor-label="component1" id="-2023335299%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-2023335299%2FFunctions%2F-1404992111"><span><span>component1</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2023335299%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator </span><span class="token keyword">fun </span><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-2023335299%2FFunctions%2F-1404992111"><span class="token function">component1</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/GradleDependencyVersion///PointingToDeclaration/">GradleDependencyVersion</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1662549731%2FFunctions%2F-1404992111" anchor-label="component2" id="-1662549731%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-1662549731%2FFunctions%2F-1404992111"><span><span>component2</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1662549731%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator </span><span class="token keyword">fun </span><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-1662549731%2FFunctions%2F-1404992111"><span class="token function">component2</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/KotlinDependencyVersion///PointingToDeclaration/">KotlinDependencyVersion</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1301764163%2FFunctions%2F-1404992111" anchor-label="component3" id="-1301764163%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-1301764163%2FFunctions%2F-1404992111"><span><span>component3</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1301764163%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator </span><span class="token keyword">fun </span><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-1301764163%2FFunctions%2F-1404992111"><span class="token function">component3</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AnvilDependencyVersion///PointingToDeclaration/">AnvilDependencyVersion</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-940978595%2FFunctions%2F-1404992111" anchor-label="component4" id="-940978595%2FFunctions%2F-1404992111" data-filterable-set=":modulecheck-internal-testing/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-internal-testing/main" data-filterable-set=":modulecheck-internal-testing/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-940978595%2FFunctions%2F-1404992111"><span><span>component4</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-940978595%2FFunctions%2F-1404992111"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-internal-testing/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator </span><span class="token keyword">fun </span><a href="../-default-gradle-kotlin-anvil-agp-test-versions/index.html#-940978595%2FFunctions%2F-1404992111"><span class="token function">component4</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="com.rickbusarow.kase.gradle/AgpDependencyVersion///PointingToDeclaration/">AgpDependencyVersion</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

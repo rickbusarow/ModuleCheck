@@ -1,0 +1,466 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>RealAndroidSourceSetsParser</title>
+<link href="../../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../../scripts/prism.js" async></script>
+<link href="../../../../../styles/multimodule.css" rel="Stylesheet"></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../../../index.html">
+<span>ModuleCheck</span>            </a>    </div>
+    <div>
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.gradle.platforms.android.sourcesets/-real-android-source-sets-parser/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0">0.12.5</div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+    <div><a href="../../../../../../../modulecheck-gradle/platforms/internal-android/modulecheck.gradle.platforms.android.sourcesets/-real-android-source-sets-parser/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.13.0-SNAPSHOT</a></div>
+    <div><a href="index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.12.5</a></div>
+  </div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="modulecheck-gradle:platforms:internal-android::modulecheck.gradle.platforms.android.sourcesets/RealAndroidSourceSetsParser///PointingToDeclaration//81346655">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-gradle:platforms:internal-android</a><span class="delimiter">/</span><a href="../index.html">modulecheck.gradle.platforms.android.sourcesets</a><span class="delimiter">/</span><a href="index.html">RealAndroidSourceSetsParser</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Real</span><wbr><span>Android</span><wbr><span>Source</span><wbr><span>Sets</span><wbr><span><span>Parser</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">RealAndroidSourceSetsParser</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>parsedConfigurations<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configurations/index.html">Configurations</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>extension<span class="token operator">: </span><span data-unresolved-link="com.android.build.gradle/BaseExtension///PointingToDeclaration/">BaseExtension</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">val </span>hasTestFixturesPlugin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span> : <a href="../../../../../modulecheck-gradle/platforms/api/modulecheck.gradle.platforms.sourcesets/-android-source-sets-parser/index.html">AndroidSourceSetsParser</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Given this Android config block:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">android {<br>  buildTypes {<br>    register("internalRelease").configure {<br>      isMinifyEnabled = true<br>      isShrinkResources = true<br>      matchingFallbacks.add("release")<br>    }<br>  }<br>  flavorDimensions("shade", "color")<br>  productFlavors {<br>    create("light") { dimension = "shade" }<br>    create("dark") { dimension = "shade" }<br>    create("red") { dimension = "color" }<br>    create("blue") { dimension = "color" }<br>  }<br>}</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph"><code class="lang-kotlin">BuildType</code> names: [debug, internalRelease, release]</p><p class="paragraph">Primitive flavor names: [light, dark, red, blue]</p><p class="paragraph">Combined flavor names: [lightRed, lightBlue, darkRed, darkBlue]</p><p class="paragraph">Flavor dimensions are just arbitrary keys which allow us to group flavors together. These names are not used to create SourceSets. The final collection of SourceSets would be unaffected if these were just named something like ["a", "b"].</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">Flavor dimensions (these do not become SourceSets): [[shade, color]]<br>Product flavors: { color: [[blue, red]], shade: [[light, dark]] }</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Flavors get combined via matrix multiplication and string concatenation in order to create more SourceSets. The order of the concatenated string components ("light", "red", etc.) is determined by the order in which their corresponding flavor dimensions are added. In this example, since "shade" is added before "color", then the flavors of "shade" ("light", "dark") will be before the flavors of "color" ("red", "blue").</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">[light, dark] x [red, blue] = [lightRed, lightBlue, darkRed, darkBlue]</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Build Variants are now created via more matrix multiplication and string concatenation, between the <code class="lang-kotlin">BuildType</code> and combined flavor names. <strong>BuildType names are always last.</strong></p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">[lightRed, lightBlue, darkRed, darkBlue] x [debug, internalRelease, release] =<br>  [<br>    lightRedDebug, lightRedRelease, lightRedInternalRelease,<br>    lightBlueDebug, lightBlueRelease, lightBlueInternalRelease,<br>    darkRedDebug,  darkRedRelease, darkRedInternalRelease,<br>    darkBlueDebug, darkBlueRelease, darkBlueInternalRelease<br>  ]</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Finally, a "main" SourceSet is always created.</p><p class="paragraph">So just within the <i>production code</i> sources, we get all these SourceSets:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">// primitives<br>main<br>light        dark<br>red          blue<br>debug        internalRelease     release<br><br>// flavor combinations<br>lightRed     darkRed       lightBlue     darkBlue<br><br>// flavor combinations with build types<br>lightRedDebug     lightRedInternalRelease    lightRedRelease<br>darkRedDebug      darkRedInternalRelease     darkRedRelease<br>lightBlueDebug    lightBlueInternalRelease   lightBlueRelease<br>darkBlueDebug     darkBlueInternalRelease    darkBlueRelease</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Sources">Sources</button></div>
+    <div class="tabs-section-body">
+      <h2 class="tabbedcontent">Constructors</h2>
+      <div class="table" data-togglable="Constructors"><a data-name="1415594348%2FConstructors%2F81346655" anchor-label="RealAndroidSourceSetsParser" id="1415594348%2FConstructors%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-real-android-source-sets-parser.html"><span>Real</span><wbr><span>Android</span><wbr><span>Source</span><wbr><span>Sets</span><wbr><span><span>Parser</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1415594348%2FConstructors%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="-real-android-source-sets-parser.html"><span class="token function">RealAndroidSourceSetsParser</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;parsedConfigurations<span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configurations/index.html">Configurations</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;extension<span class="token operator">: </span><span data-unresolved-link="com.android.build.gradle/BaseExtension///PointingToDeclaration/">BaseExtension</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;hasTestFixturesPlugin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Types</h2>
+      <div class="table" data-togglable="Types"><a data-name="-985320486%2FClasslikes%2F81346655" anchor-label="Factory" id="-985320486%2FClasslikes%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-factory/index.html"><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-985320486%2FClasslikes%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-factory/index.html">Factory</a>&nbsp;<span><span class="token annotation">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation">Inject</span></span>&nbsp;</span><span class="token keyword">constructor</span> : <a href="../../../../../modulecheck-gradle/platforms/api/modulecheck.gradle.platforms.sourcesets/-android-source-sets-parser/-factory/index.html">AndroidSourceSetsParser.Factory</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="796542083%2FFunctions%2F81346655" anchor-label="maybeAddTestFixturesSourceSets" id="796542083%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="maybe-add-test-fixtures-source-sets.html"><span>maybe</span><wbr><span>Add</span><wbr><span>Test</span><wbr><span>Fixtures</span><wbr><span>Source</span><wbr><span><span>Sets</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="796542083%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html">MutableMap</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-source-set/index.html">SourceSet</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="maybe-add-test-fixtures-source-sets.html"><span class="token function">maybeAddTestFixturesSourceSets</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html">MutableMap</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-source-set/index.html">SourceSet</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-2101926568%2FFunctions%2F81346655" anchor-label="nameWithoutAndroidTestSuffix" id="-2101926568%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="name-without-android-test-suffix.html"><span>name</span><wbr><span>Without</span><wbr><span>Android</span><wbr><span>Test</span><wbr><span><span>Suffix</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2101926568%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><span data-unresolved-link="com.android.build.gradle.api/TestVariant///PointingToDeclaration/">TestVariant</span><span class="token punctuation">.</span><a href="name-without-android-test-suffix.html"><span class="token function">nameWithoutAndroidTestSuffix</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This removes the <code class="lang-kotlin">-AndroidTest</code> suffix from <strong>variant</strong> names. SourceSet names don't get this suffix</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="941590541%2FFunctions%2F81346655" anchor-label="nameWithoutUnitTestSuffix" id="941590541%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="name-without-unit-test-suffix.html"><span>name</span><wbr><span>Without</span><wbr><span>Unit</span><wbr><span>Test</span><wbr><span><span>Suffix</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="941590541%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><span data-unresolved-link="com.android.build.gradle.api/UnitTestVariant///PointingToDeclaration/">UnitTestVariant</span><span class="token punctuation">.</span><a href="name-without-unit-test-suffix.html"><span class="token function">nameWithoutUnitTestSuffix</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">This removes the <code class="lang-kotlin">-UnitTest</code> suffix from <strong>variant</strong> names. SourceSet names don't get this suffix</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1042344770%2FFunctions%2F81346655" anchor-label="parse" id="-1042344770%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="parse.html"><span><span>parse</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1042344770%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="parse.html"><span class="token function">parse</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-source-sets/index.html">SourceSets</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1355750897%2FFunctions%2F81346655" anchor-label="parseNames" id="1355750897%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="parse-names.html"><span>parse</span><wbr><span><span>Names</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1355750897%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/-variant-name/index.html">GradleSourceSetName.VariantName</a><span class="token punctuation">.</span><a href="parse-names.html"><span class="token function">parseNames</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">testTypeOrNull<span class="token operator">: </span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/-test-type/index.html">GradleSourceSetName.TestType</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-parsed-names/index.html">ParsedNames</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="2040398728%2FFunctions%2F81346655" anchor-label="publishedVariants" id="2040398728%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="published-variants.html"><span>published</span><wbr><span><span>Variants</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2040398728%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><span data-unresolved-link="com.android.build.gradle/BaseExtension///PointingToDeclaration/">BaseExtension</span><span class="token punctuation">.</span><a href="published-variants.html"><span class="token function">publishedVariants</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="org.gradle.api/DomainObjectSet///PointingToDeclaration/">DomainObjectSet</span><span class="token operator">&lt;</span><span class="token keyword">out </span><span data-unresolved-link="com.android.build.gradle.api/BaseVariant///PointingToDeclaration/">BaseVariant</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-764319587%2FFunctions%2F81346655" anchor-label="put" id="-764319587%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="put.html"><span><span>put</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-764319587%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html">MutableMap</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/index.html">GradleSourceSetName</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="put.html"><span class="token function">put</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/index.html">GradleSourceSetName</a><span class="token punctuation">, </span></span><span class="parameter ">values<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/index.html">GradleSourceSetName</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-601510696%2FFunctions%2F81346655" anchor-label="removeAndroidTestPrefix" id="-601510696%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="remove-android-test-prefix.html"><span>remove</span><wbr><span>Android</span><wbr><span>Test</span><wbr><span><span>Prefix</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-601510696%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="remove-android-test-prefix.html"><span class="token function">removeAndroidTestPrefix</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-source-set-name/index.html">SourceSetName</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1473099805%2FFunctions%2F81346655" anchor-label="removeTestFixturesPrefix" id="-1473099805%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="remove-test-fixtures-prefix.html"><span>remove</span><wbr><span>Test</span><wbr><span>Fixtures</span><wbr><span><span>Prefix</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1473099805%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="remove-test-fixtures-prefix.html"><span class="token function">removeTestFixturesPrefix</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-source-set-name/index.html">SourceSetName</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-924312263%2FFunctions%2F81346655" anchor-label="removeTestPrefix" id="-924312263%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="remove-test-prefix.html"><span>remove</span><wbr><span>Test</span><wbr><span><span>Prefix</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-924312263%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="remove-test-prefix.html"><span class="token function">removeTestPrefix</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1032801988%2FFunctions%2F81346655" anchor-label="saveNameHierarchy" id="-1032801988%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="save-name-hierarchy.html"><span>save</span><wbr><span>Name</span><wbr><span><span>Hierarchy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1032801988%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html">MutableMap</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/index.html">GradleSourceSetName</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="save-name-hierarchy.html"><span class="token function">saveNameHierarchy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">parsedNames<span class="token operator">: </span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-parsed-names/index.html">ParsedNames</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1372497572%2FFunctions%2F81346655" anchor-label="splitFlavorAndBuildType" id="1372497572%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="split-flavor-and-build-type.html"><span>split</span><wbr><span>Flavor</span><wbr><span>And</span><wbr><span>Build</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1372497572%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/-variant-name/index.html">GradleSourceSetName.VariantName</a><span class="token punctuation">.</span><a href="split-flavor-and-build-type.html"><span class="token function">splitFlavorAndBuildType</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/-concatenated-flavors-name/index.html">GradleSourceSetName.ConcatenatedFlavorsName</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/-build-type-name/index.html">GradleSourceSetName.BuildTypeName</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1468951248%2FFunctions%2F81346655" anchor-label="toSourceSetOrNull" id="1468951248%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="to-source-set-or-null.html"><span>to</span><wbr><span>Source</span><wbr><span>Set</span><wbr><span>Or</span><wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1468951248%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><span data-unresolved-link="com.android.build.gradle.internal.api/DefaultAndroidSourceSet///PointingToDeclaration/">DefaultAndroidSourceSet</span><span class="token punctuation">.</span><a href="to-source-set-or-null.html"><span class="token function">toSourceSetOrNull</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-source-set/index.html">SourceSet</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-877073548%2FFunctions%2F81346655" anchor-label="upstreamFlavors" id="-877073548%2FFunctions%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="upstream-flavors.html"><span>upstream</span><wbr><span><span>Flavors</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-877073548%2FFunctions%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/-concatenated-flavors-name/index.html">GradleSourceSetName.ConcatenatedFlavorsName</a><span class="token punctuation">.</span><a href="upstream-flavors.html"><span class="token function">upstreamFlavors</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/-flavor-name/index.html">GradleSourceSetName.FlavorName</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="78307465%2FProperties%2F81346655" anchor-label="buildTypeNames" id="78307465%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="build-type-names.html">buildTypeNames</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="78307465%2FProperties%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><a data-name="78307465%2FProperties%2F81346655" anchor-label="buildTypeNames" id="78307465%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="build-type-names.html">buildTypeNames</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/-build-type-name/index.html">GradleSourceSetName.BuildTypeName</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="951082674%2FProperties%2F81346655" anchor-label="extension" id="951082674%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="extension.html">extension</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="951082674%2FProperties%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><a data-name="951082674%2FProperties%2F81346655" anchor-label="extension" id="951082674%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="extension.html">extension</a><span class="token operator">: </span><span data-unresolved-link="com.android.build.gradle/BaseExtension///PointingToDeclaration/">BaseExtension</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1538778174%2FProperties%2F81346655" anchor-label="flavorDimensions" id="1538778174%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="flavor-dimensions.html">flavorDimensions</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1538778174%2FProperties%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><a data-name="1538778174%2FProperties%2F81346655" anchor-label="flavorDimensions" id="1538778174%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="flavor-dimensions.html">flavorDimensions</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1327999939%2FProperties%2F81346655" anchor-label="gradleAndroidSourceSets" id="-1327999939%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="gradle-android-source-sets.html">gradleAndroidSourceSets</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1327999939%2FProperties%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><a data-name="-1327999939%2FProperties%2F81346655" anchor-label="gradleAndroidSourceSets" id="-1327999939%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="gradle-android-source-sets.html">gradleAndroidSourceSets</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><span data-unresolved-link="com.android.build.gradle.internal.api/DefaultAndroidSourceSet///PointingToDeclaration/">DefaultAndroidSourceSet</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1348840600%2FProperties%2F81346655" anchor-label="hasTestFixturesPlugin" id="-1348840600%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="has-test-fixtures-plugin.html">hasTestFixturesPlugin</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1348840600%2FProperties%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><a data-name="-1348840600%2FProperties%2F81346655" anchor-label="hasTestFixturesPlugin" id="-1348840600%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="has-test-fixtures-plugin.html">hasTestFixturesPlugin</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-325712901%2FProperties%2F81346655" anchor-label="parsedConfigurations" id="-325712901%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="parsed-configurations.html">parsedConfigurations</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-325712901%2FProperties%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><a data-name="-325712901%2FProperties%2F81346655" anchor-label="parsedConfigurations" id="-325712901%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="parsed-configurations.html">parsedConfigurations</a><span class="token operator">: </span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-configurations/index.html">Configurations</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="362435441%2FProperties%2F81346655" anchor-label="productFlavors2D" id="362435441%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="product-flavors2-d.html">productFlavors2D</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="362435441%2FProperties%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><a data-name="362435441%2FProperties%2F81346655" anchor-label="productFlavors2D" id="362435441%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="product-flavors2-d.html">productFlavors2D</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/-flavor-name/index.html">GradleSourceSetName.FlavorName</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="929969358%2FProperties%2F81346655" anchor-label="sourceSetCache" id="929969358%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="source-set-cache.html">sourceSetCache</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="929969358%2FProperties%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><a data-name="929969358%2FProperties%2F81346655" anchor-label="sourceSetCache" id="929969358%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="source-set-cache.html">sourceSetCache</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html">MutableMap</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="../../../../../modulecheck-parsing/gradle/model/api/modulecheck.parsing.gradle.model/-source-set/index.html">SourceSet</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-958277963%2FProperties%2F81346655" anchor-label="sourceSetNameToUpstreamMap" id="-958277963%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="source-set-name-to-upstream-map.html">sourceSetNameToUpstreamMap</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-958277963%2FProperties%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"><a data-name="-958277963%2FProperties%2F81346655" anchor-label="sourceSetNameToUpstreamMap" id="-958277963%2FProperties%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="source-set-name-to-upstream-map.html">sourceSetNameToUpstreamMap</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../modulecheck.gradle.platforms.android.sourcesets.internal/-gradle-source-set-name/index.html">GradleSourceSetName</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Sources</h2>
+      <div class="table" data-togglable="Sources"><a data-name="790769238%2FSource%2F81346655" anchor-label="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-gradle/platforms/internal-android/src/main/kotlin/modulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser.kt#L53" id="790769238%2FSource%2F81346655" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-gradle:platforms:internal-android:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-gradle/platforms/internal-android/src/main/kotlin/modulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser.kt#L53">jvm source</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="790769238%2FSource%2F81346655"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+
+

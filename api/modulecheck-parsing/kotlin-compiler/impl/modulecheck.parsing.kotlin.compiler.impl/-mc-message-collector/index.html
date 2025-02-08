@@ -1,0 +1,310 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>McMessageCollector</title>
+<link href="../../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../../../../index.html">
+                    
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.parsing.kotlin.compiler.impl/-mc-message-collector/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0">0.13.0-SNAPSHOT</div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+    <div><a href="index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.13.0-SNAPSHOT</a></div>
+    <div><a href="../../../../../not-found-version.html?v=0.12.5" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.12.5</a></div>
+  </div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-parsing:kotlin-compiler:impl/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":modulecheck-parsing:kotlin-compiler:impl/main" data-filter=":modulecheck-parsing:kotlin-compiler:impl/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-parsing:kotlin-compiler:impl::modulecheck.parsing.kotlin.compiler.impl/McMessageCollector///PointingToDeclaration//1565557354">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-parsing:kotlin-compiler:impl</a><span class="delimiter">/</span><a href="../index.html">modulecheck.parsing.kotlin.compiler.impl</a><span class="delimiter">/</span><span class="current">McMessageCollector</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Mc</span><wbr><span>Message</span><wbr><span><span>Collector</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="index.html">McMessageCollector</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>messageRenderer<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.cli.common.messages/MessageRenderer///PointingToDeclaration/">MessageRenderer</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>logger<span class="token operator">: </span><a href="../../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>logLevel<span class="token operator">: </span><a href="-log-level/index.html">McMessageCollector.LogLevel</a></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="org.jetbrains.kotlin.cli.common.messages/MessageCollector///PointingToDeclaration/">MessageCollector</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-parsing/kotlin-compiler/impl/src/main/kotlin/modulecheck/parsing/kotlin/compiler/impl/McMessageCollector.kt#L27">source</a>)</span></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-276749782%2FConstructors%2F1565557354" anchor-label="McMessageCollector" id="-276749782%2FConstructors%2F1565557354" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":modulecheck-parsing:kotlin-compiler:impl/main" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mc-message-collector.html"><span>Mc</span><wbr><span>Message</span><wbr><span><span>Collector</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-276749782%2FConstructors%2F1565557354"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">messageRenderer<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.cli.common.messages/MessageRenderer///PointingToDeclaration/">MessageRenderer</span><span class="token punctuation">, </span></span><span class="parameter ">logger<span class="token operator">: </span><a href="../../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a><span class="token punctuation">, </span></span><span class="parameter ">logLevel<span class="token operator">: </span><a href="-log-level/index.html">McMessageCollector.LogLevel</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="475479836%2FClasslikes%2F1565557354" anchor-label="LogLevel" id="475479836%2FClasslikes%2F1565557354" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:kotlin-compiler:impl/main" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-log-level/index.html"><span>Log</span><wbr><span><span>Level</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="475479836%2FClasslikes%2F1565557354"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-log-level/index.html">LogLevel</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-log-level/index.html">McMessageCollector.LogLevel</a><span class="token operator">&gt; </span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="288633397%2FProperties%2F1565557354" anchor-label="ignoredMessages" id="288633397%2FProperties%2F1565557354" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:kotlin-compiler:impl/main" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="ignored-messages.html"><span>ignored</span><wbr><span><span>Messages</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="288633397%2FProperties%2F1565557354"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">var </span><a href="ignored-messages.html">ignoredMessages</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-303503753%2FProperties%2F1565557354" anchor-label="logger" id="-303503753%2FProperties%2F1565557354" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:kotlin-compiler:impl/main" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="logger.html"><span><span>logger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-303503753%2FProperties%2F1565557354"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="logger.html">logger</a><span class="token operator">: </span><a href="../../../../../modulecheck-reporting/logging/api/modulecheck.reporting.logging/-mc-logger/index.html">McLogger</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1146867943%2FProperties%2F1565557354" anchor-label="logLevel" id="1146867943%2FProperties%2F1565557354" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:kotlin-compiler:impl/main" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="log-level.html"><span>log</span><wbr><span><span>Level</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1146867943%2FProperties%2F1565557354"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="log-level.html">logLevel</a><span class="token operator">: </span><a href="-log-level/index.html">McMessageCollector.LogLevel</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1651715593%2FProperties%2F1565557354" anchor-label="messageRenderer" id="1651715593%2FProperties%2F1565557354" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:kotlin-compiler:impl/main" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="message-renderer.html"><span>message</span><wbr><span><span>Renderer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1651715593%2FProperties%2F1565557354"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="message-renderer.html">messageRenderer</a><span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.cli.common.messages/MessageRenderer///PointingToDeclaration/">MessageRenderer</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1180757891%2FProperties%2F1565557354" anchor-label="totalMessages" id="1180757891%2FProperties%2F1565557354" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:kotlin-compiler:impl/main" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="total-messages.html"><span>total</span><wbr><span><span>Messages</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1180757891%2FProperties%2F1565557354"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">var </span><a href="total-messages.html">totalMessages</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-862787962%2FFunctions%2F1565557354" anchor-label="clear" id="-862787962%2FFunctions%2F1565557354" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:kotlin-compiler:impl/main" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="clear.html"><span><span>clear</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-862787962%2FFunctions%2F1565557354"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="clear.html"><span class="token function">clear</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1045859794%2FFunctions%2F1565557354" anchor-label="hasErrors" id="-1045859794%2FFunctions%2F1565557354" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:kotlin-compiler:impl/main" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="has-errors.html"><span>has</span><wbr><span><span>Errors</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1045859794%2FFunctions%2F1565557354"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="has-errors.html"><span class="token function">hasErrors</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="381825836%2FFunctions%2F1565557354" anchor-label="printIssuesCountIfAny" id="381825836%2FFunctions%2F1565557354" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:kotlin-compiler:impl/main" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="print-issues-count-if-any.html"><span>print</span><wbr><span>Issues</span><wbr><span>Count</span><wbr><span>If</span><wbr><span><span>Any</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="381825836%2FFunctions%2F1565557354"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="print-issues-count-if-any.html"><span class="token function">printIssuesCountIfAny</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1324846897%2FFunctions%2F1565557354" anchor-label="report" id="-1324846897%2FFunctions%2F1565557354" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:kotlin-compiler:impl/main" data-filterable-set=":modulecheck-parsing:kotlin-compiler:impl/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="report.html"><span><span>report</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1324846897%2FFunctions%2F1565557354"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:kotlin-compiler:impl/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="report.html"><span class="token function">report</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">severity<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.cli.common.messages/CompilerMessageSeverity///PointingToDeclaration/">CompilerMessageSeverity</span><span class="token punctuation">, </span></span><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">location<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.cli.common.messages/CompilerMessageSourceLocation///PointingToDeclaration/">CompilerMessageSourceLocation</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

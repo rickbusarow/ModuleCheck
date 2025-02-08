@@ -1,0 +1,437 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Companion</title>
+<link href="../../../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../../../../../index.html">
+                    
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.parsing.source/-unqualified-android-resource/-companion/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0">0.13.0-SNAPSHOT</div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+    <div><a href="index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.13.0-SNAPSHOT</a></div>
+    <div><a href="../../../../../../not-found-version.html?v=0.12.5" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.12.5</a></div>
+  </div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-parsing:source:api/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":modulecheck-parsing:source:api/main" data-filter=":modulecheck-parsing:source:api/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="modulecheck-parsing:source:api::modulecheck.parsing.source/UnqualifiedAndroidResource.Companion///PointingToDeclaration//1296946518">
+  <div class="breadcrumbs"><a href="../../../index.html">modulecheck-parsing:source:api</a><span class="delimiter">/</span><a href="../../index.html">modulecheck.parsing.source</a><span class="delimiter">/</span><a href="../index.html">UnqualifiedAndroidResource</a><span class="delimiter">/</span><span class="current">Companion</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Companion</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="index.html">Companion</a><span class="clearfix"><span class="floating-right">(<a href="https://github.com/rickbusarow/ModuleCheck/blob/main/modulecheck-parsing/source/api/src/main/kotlin/modulecheck/parsing/source/UnqualifiedAndroidResource.kt#L82">source</a>)</span></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-14776215%2FProperties%2F1296946518" anchor-label="REGEX" id="-14776215%2FProperties%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-r-e-g-e-x.html"><span><span>REGEX</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-14776215%2FProperties%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">val </span><a href="-r-e-g-e-x.html">REGEX</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.text/-regex/index.html">Regex</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1072614007%2FFunctions%2F1296946518" anchor-label="anim" id="-1072614007%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="anim.html"><span><span>anim</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1072614007%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="anim.html"><span class="token function">anim</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.anim.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1677867615%2FFunctions%2F1296946518" anchor-label="animator" id="1677867615%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="animator.html"><span><span>animator</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1677867615%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="animator.html"><span class="token function">animator</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.animator.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1311909045%2FFunctions%2F1296946518" anchor-label="array" id="-1311909045%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="array.html"><span><span>array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1311909045%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="array.html"><span class="token function">array</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.array.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2058799266%2FFunctions%2F1296946518" anchor-label="bool" id="2058799266%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="bool.html"><span><span>bool</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2058799266%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="bool.html"><span class="token function">bool</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.bool.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1733885227%2FFunctions%2F1296946518" anchor-label="color" id="-1733885227%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="color.html"><span><span>color</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1733885227%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="color.html"><span class="token function">color</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.color.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2029875677%2FFunctions%2F1296946518" anchor-label="dimen" id="-2029875677%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dimen.html"><span><span>dimen</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2029875677%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="dimen.html"><span class="token function">dimen</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.dimen.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="891640278%2FFunctions%2F1296946518" anchor-label="drawable" id="891640278%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="drawable.html"><span><span>drawable</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="891640278%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="drawable.html"><span class="token function">drawable</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.drawable.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1099958087%2FFunctions%2F1296946518" anchor-label="font" id="1099958087%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="font.html"><span><span>font</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1099958087%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="font.html"><span class="token function">font</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.font.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1667219124%2FFunctions%2F1296946518" anchor-label="fromFile" id="-1667219124%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-file.html"><span>from</span><wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1667219124%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-file.html"><span class="token function">fromFile</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">file<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-395941350%2FFunctions%2F1296946518" anchor-label="fromValuePair" id="-395941350%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-value-pair.html"><span>from</span><wbr><span>Value</span><wbr><span><span>Pair</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-395941350%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-value-pair.html"><span class="token function">fromValuePair</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1865417554%2FFunctions%2F1296946518" anchor-label="fromXmlString" id="1865417554%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-xml-string.html"><span>from</span><wbr><span>Xml</span><wbr><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1865417554%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-xml-string.html"><span class="token function">fromXmlString</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">str<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-346936365%2FFunctions%2F1296946518" anchor-label="id" id="-346936365%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="id.html"><span><span>id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-346936365%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="id.html"><span class="token function">id</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.id.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-397856720%2FFunctions%2F1296946518" anchor-label="integer" id="-397856720%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="integer.html"><span><span>integer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-397856720%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="integer.html"><span class="token function">integer</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.integer.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="218957858%2FFunctions%2F1296946518" anchor-label="layout" id="218957858%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="layout.html"><span><span>layout</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="218957858%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="layout.html"><span class="token function">layout</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.layout.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="317822039%2FFunctions%2F1296946518" anchor-label="menu" id="317822039%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="menu.html"><span><span>menu</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="317822039%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="menu.html"><span class="token function">menu</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.menu.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2104898816%2FFunctions%2F1296946518" anchor-label="mipmap" id="-2104898816%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="mipmap.html"><span><span>mipmap</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2104898816%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="mipmap.html"><span class="token function">mipmap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.mipmap.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-801658854%2FFunctions%2F1296946518" anchor-label="raw" id="-801658854%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="raw.html"><span><span>raw</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-801658854%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="raw.html"><span class="token function">raw</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.raw.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="380682953%2FFunctions%2F1296946518" anchor-label="string" id="380682953%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="string.html"><span><span>string</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="380682953%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="string.html"><span class="token function">string</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.string.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2131182429%2FFunctions%2F1296946518" anchor-label="style" id="-2131182429%2FFunctions%2F1296946518" data-filterable-set=":modulecheck-parsing:source:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:source:api/main" data-filterable-set=":modulecheck-parsing:source:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="style.html"><span><span>style</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2131182429%2FFunctions%2F1296946518"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:source:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="style.html"><span class="token function">style</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">identifier<span class="token operator">: </span><a href="../../-simple-name/index.html">SimpleName</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../index.html">UnqualifiedAndroidResource</a></div><div class="brief "><p class="paragraph"><code class="lang-kotlin">R.style.foo</code></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,965 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>modulecheck.model.dependency</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../../../index.html">
+                    
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.model.dependency/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0">0.13.0-SNAPSHOT</div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+    <div><a href="index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.13.0-SNAPSHOT</a></div>
+    <div><a href="../../../../older/0.12.5/modulecheck-model/dependency/api/modulecheck.model.dependency/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.12.5</a></div>
+  </div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-model:dependency:api/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":modulecheck-model:dependency:api/main" data-filter=":modulecheck-model:dependency:api/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageids="modulecheck-model:dependency:api::modulecheck.model.dependency////PointingToDeclaration//-1148686483">
+  <div class="breadcrumbs"><a href="../index.html">modulecheck-model:dependency:api</a><span class="delimiter">/</span><span class="current">modulecheck.model.dependency</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="1198213175%2FClasslikes%2F-1148686483" anchor-label="AllProjectPathsProvider" id="1198213175%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-all-project-paths-provider/index.html"><span>All</span><wbr><span>Project</span><wbr><span>Paths</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1198213175%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token keyword">interface </span><a href="-all-project-paths-provider/index.html">AllProjectPathsProvider</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="189994761%2FClasslikes%2F-1148686483" anchor-label="AndroidPlatformPlugin" id="189994761%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-platform-plugin/index.html"><span>Android</span><wbr><span>Platform</span><wbr><span><span>Plugin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="189994761%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-android-platform-plugin/index.html">AndroidPlatformPlugin</a> : <a href="-platform-plugin/index.html">PlatformPlugin</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-907921512%2FClasslikes%2F-1148686483" anchor-label="CodeGenerator" id="-907921512%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-code-generator/index.html"><span>Code</span><wbr><span><span>Generator</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-907921512%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-code-generator/index.html">CodeGenerator</a></div><div class="brief "><p class="paragraph">Models a special kind of dependency, where the symbols which determine whether it's "used" are actually provided by a different artifact.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1166855638%2FClasslikes%2F-1148686483" anchor-label="ConfigFactory" id="1166855638%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-config-factory/index.html"><span>Config</span><wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1166855638%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-config-factory/index.html">ConfigFactory</a><span class="token operator">&lt;</span><a href="-config-factory/index.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>identifier<span class="token operator">: </span><a href="-config-factory/index.html">T</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>projectDependencies<span class="token operator">: </span><a href="-config-factory/index.html">T</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="-project-dependency/index.html">ProjectDependency</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>externalDependencies<span class="token operator">: </span><a href="-config-factory/index.html">T</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="-external-dependency/index.html">ExternalDependency</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>allFactory<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="-config-factory/index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>extendsFrom<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-config-factory/index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1825906749%2FClasslikes%2F-1148686483" anchor-label="ConfigurationName" id="1825906749%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-configuration-name/index.html"><span>Configuration</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1825906749%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-comparable/index.html">Comparable</a><span class="token operator">&lt;</span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Wraps the unqualified, simple name of a Gradle Configuration, like <code class="lang-kotlin">implementation</code> or <code class="lang-kotlin">debugApi</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="577188391%2FClasslikes%2F-1148686483" anchor-label="Configurations" id="577188391%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-configurations/index.html"><span><span>Configurations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="577188391%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-configurations/index.html">Configurations</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">delegate<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span><a href="-mc-configuration/index.html">McConfiguration</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span><a href="-mc-configuration/index.html">McConfiguration</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Cache of <a href="-mc-configuration/index.html">configurations</a>, probably at the project level.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="39546747%2FClasslikes%2F-1148686483" anchor-label="ConfiguredDependency" id="39546747%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-configured-dependency/index.html"><span>Configured</span><wbr><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="39546747%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-configured-dependency/index.html">ConfiguredDependency</a> : <a href="-dependency/index.html">Dependency</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2051995225%2FClasslikes%2F-1148686483" anchor-label="Dependency" id="2051995225%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-dependency/index.html"><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2051995225%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-dependency/index.html">Dependency</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1302232215%2FClasslikes%2F-1148686483" anchor-label="DownstreamDependency" id="1302232215%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-downstream-dependency/index.html"><span>Downstream</span><wbr><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1302232215%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-downstream-dependency/index.html">DownstreamDependency</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>dependentProjectPath<span class="token operator">: </span><a href="-project-path/-string-project-path/index.html">ProjectPath.StringProjectPath</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>projectDependency<span class="token operator">: </span><a href="-project-dependency/index.html">ProjectDependency</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2115811984%2FClasslikes%2F-1148686483" anchor-label="ExternalDependencies" id="-2115811984%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-external-dependencies/index.html"><span>External</span><wbr><span><span>Dependencies</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2115811984%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-external-dependencies/index.html">ExternalDependencies</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">map<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="-external-dependency/index.html">ExternalDependency</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-mutable-map/index.html">MutableMap</a><span class="token operator">&lt;</span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="-external-dependency/index.html">ExternalDependency</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1017664626%2FClasslikes%2F-1148686483" anchor-label="ExternalDependency" id="-1017664626%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-external-dependency/index.html"><span>External</span><wbr><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1017664626%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-external-dependency/index.html">ExternalDependency</a> : <a href="-configured-dependency/index.html">ConfiguredDependency</a>, <a href="-has-maven-coordinates/index.html">HasMavenCoordinates</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-312679897%2FClasslikes%2F-1148686483" anchor-label="HasConfigurations" id="-312679897%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-has-configurations/index.html"><span>Has</span><wbr><span><span>Configurations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-312679897%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-has-configurations/index.html">HasConfigurations</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-992691845%2FClasslikes%2F-1148686483" anchor-label="HasDependencies" id="-992691845%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-has-dependencies/index.html"><span>Has</span><wbr><span><span>Dependencies</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-992691845%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-has-dependencies/index.html">HasDependencies</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2048560453%2FClasslikes%2F-1148686483" anchor-label="HasIdentifier" id="-2048560453%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-has-identifier/index.html"><span>Has</span><wbr><span><span>Identifier</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2048560453%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-has-identifier/index.html">HasIdentifier</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2043807852%2FClasslikes%2F-1148686483" anchor-label="HasMavenCoordinates" id="-2043807852%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-has-maven-coordinates/index.html"><span>Has</span><wbr><span>Maven</span><wbr><span><span>Coordinates</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2043807852%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-has-maven-coordinates/index.html">HasMavenCoordinates</a> : <a href="-has-identifier/index.html">HasIdentifier</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1899366816%2FClasslikes%2F-1148686483" anchor-label="HasProjectPath" id="-1899366816%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-has-project-path/index.html"><span>Has</span><wbr><span>Project</span><wbr><span><span>Path</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1899366816%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-has-project-path/index.html">HasProjectPath</a> : <a href="-has-identifier/index.html">HasIdentifier</a></div><div class="brief "><p class="paragraph">Something associated with a specific <a href="-project-path/index.html">ProjectPath</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1278631352%2FClasslikes%2F-1148686483" anchor-label="HasSourceSets" id="1278631352%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-has-source-sets/index.html"><span>Has</span><wbr><span>Source</span><wbr><span><span>Sets</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1278631352%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-has-source-sets/index.html">HasSourceSets</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-57163077%2FClasslikes%2F-1148686483" anchor-label="Identifier" id="-57163077%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-identifier/index.html"><span><span>Identifier</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-57163077%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-identifier/index.html">Identifier</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1377733399%2FClasslikes%2F-1148686483" anchor-label="JvmPlatformPlugin" id="1377733399%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-jvm-platform-plugin/index.html"><span>Jvm</span><wbr><span>Platform</span><wbr><span><span>Plugin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1377733399%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-jvm-platform-plugin/index.html">JvmPlatformPlugin</a> : <a href="-platform-plugin/index.html">PlatformPlugin</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1578874988%2FClasslikes%2F-1148686483" anchor-label="MavenCoordinates" id="-1578874988%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-maven-coordinates/index.html"><span>Maven</span><wbr><span><span>Coordinates</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1578874988%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-maven-coordinates/index.html">MavenCoordinates</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>group<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>moduleName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>version<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span> : <a href="-identifier/index.html">Identifier</a>, <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-comparable/index.html">Comparable</a><span class="token operator">&lt;</span><a href="-maven-coordinates/index.html">MavenCoordinates</a><span class="token operator">&gt; </span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1309288962%2FClasslikes%2F-1148686483" anchor-label="McConfiguration" id="-1309288962%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mc-configuration/index.html"><span>Mc</span><wbr><span><span>Configuration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1309288962%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-mc-configuration/index.html">McConfiguration</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>projectDependencies<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="-project-dependency/index.html">ProjectDependency</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>externalDependencies<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="-external-dependency/index.html">ExternalDependency</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>upstreamSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="-mc-configuration/index.html">McConfiguration</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>downstreamSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="-mc-configuration/index.html">McConfiguration</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-194146483%2FClasslikes%2F-1148686483" anchor-label="McSourceSet" id="-194146483%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mc-source-set/index.html"><span>Mc</span><wbr><span>Source</span><wbr><span><span>Set</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-194146483%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-mc-source-set/index.html">McSourceSet</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>compileOnlyConfiguration<span class="token operator">: </span><a href="-mc-configuration/index.html">McConfiguration</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>apiConfiguration<span class="token operator">: </span><a href="-mc-configuration/index.html">McConfiguration</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>implementationConfiguration<span class="token operator">: </span><a href="-mc-configuration/index.html">McConfiguration</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>runtimeOnlyConfiguration<span class="token operator">: </span><a href="-mc-configuration/index.html">McConfiguration</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>annotationProcessorConfiguration<span class="token operator">: </span><a href="-mc-configuration/index.html">McConfiguration</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>jvmFiles<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>resourceFiles<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>layoutFiles<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>jvmTarget<span class="token operator">: </span><span data-unresolved-link="org.jetbrains.kotlin.config/JvmTarget///PointingToDeclaration/">JvmTarget</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>kotlinEnvironmentDeferred<span class="token operator">: </span><a href="../../../../modulecheck-utils/lazy/modulecheck.utils.lazy/-lazy-deferred/index.html">LazyDeferred</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-parsing/kotlin-compiler/api/modulecheck.parsing.kotlin.compiler/-kotlin-environment/index.html">KotlinEnvironment</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>upstreamLazy<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-lazy/index.html">Lazy</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>downstreamLazy<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-lazy/index.html">Lazy</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-comparable/index.html">Comparable</a><span class="token operator">&lt;</span><a href="-mc-source-set/index.html">McSourceSet</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Models all the particulars for a compilation unit, roughly equivalent to the source set models in AGP, KGP, and the Java Gradle Plugin.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-249920896%2FClasslikes%2F-1148686483" anchor-label="MightHaveCodeGeneratorBinding" id="-249920896%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-might-have-code-generator-binding/index.html"><span>Might</span><wbr><span>Have</span><wbr><span>Code</span><wbr><span>Generator</span><wbr><span><span>Binding</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-249920896%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-might-have-code-generator-binding/index.html">MightHaveCodeGeneratorBinding</a></div><div class="brief "><p class="paragraph">Indicates that some type (probably a modulecheck.parsing.gradle.model.ConfiguredDependency) is associated with an established <a href="-code-generator/index.html">CodeGenerator</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-101806338%2FClasslikes%2F-1148686483" anchor-label="PlatformPlugin" id="-101806338%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-platform-plugin/index.html"><span>Platform</span><wbr><span><span>Plugin</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-101806338%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-platform-plugin/index.html">PlatformPlugin</a> : <a href="-has-configurations/index.html">HasConfigurations</a>, <a href="-has-source-sets/index.html">HasSourceSets</a></div><div class="brief "><p class="paragraph">This represents the <i>prevailing</i> build/platform plugin for a given module.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="169387114%2FClasslikes%2F-1148686483" anchor-label="PluginAccessor" id="169387114%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-plugin-accessor/index.html"><span>Plugin</span><wbr><span><span>Accessor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="169387114%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-plugin-accessor/index.html">PluginAccessor</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>text<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">The text used to declare a plugin dependency via a Gradle DSL.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1908177186%2FClasslikes%2F-1148686483" anchor-label="PluginDefinition" id="-1908177186%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-plugin-definition/index.html"><span>Plugin</span><wbr><span><span>Definition</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1908177186%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-plugin-definition/index.html">PluginDefinition</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>qualifiedId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>legacyIdOrNull<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>precompiledAccessorOrNull<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>kotlinFunctionArgumentOrNull<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">https://docs.gradle.org/current/userguide/plugins.html#sec:binary_plugins</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="25235430%2FClasslikes%2F-1148686483" anchor-label="PluginDependency" id="25235430%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-plugin-dependency/index.html"><span>Plugin</span><wbr><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="25235430%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-plugin-dependency/index.html">PluginDependency</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>accessor<span class="token operator">: </span><a href="-plugin-accessor/index.html">PluginAccessor</a></span></span><span class="token punctuation">)</span> : <a href="-dependency/index.html">Dependency</a></div><div class="brief "><p class="paragraph">https://docs.gradle.org/current/userguide/plugins.html#sec:binary_plugins</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1244625444%2FClasslikes%2F-1148686483" anchor-label="ProjectDependencies" id="-1244625444%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-project-dependencies/index.html"><span>Project</span><wbr><span><span>Dependencies</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1244625444%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-project-dependencies/index.html">ProjectDependencies</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">map<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="-project-dependency/index.html">ProjectDependency</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-mutable-map/index.html">MutableMap</a><span class="token operator">&lt;</span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="-project-dependency/index.html">ProjectDependency</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1003350278%2FClasslikes%2F-1148686483" anchor-label="ProjectDependency" id="-1003350278%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-project-dependency/index.html"><span>Project</span><wbr><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1003350278%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-project-dependency/index.html">ProjectDependency</a> : <a href="-configured-dependency/index.html">ConfiguredDependency</a>, <a href="-has-project-path/index.html">HasProjectPath</a></div><div class="brief "><p class="paragraph">Represents a specific dependency upon an internal project dependency.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-295590304%2FClasslikes%2F-1148686483" anchor-label="ProjectPath" id="-295590304%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-project-path/index.html"><span>Project</span><wbr><span><span>Path</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-295590304%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-project-path/index.html">ProjectPath</a> : <a href="-identifier/index.html">Identifier</a>, <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-comparable/index.html">Comparable</a><span class="token operator">&lt;</span><a href="-project-path/index.html">ProjectPath</a><span class="token operator">&gt; </span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1142795828%2FClasslikes%2F-1148686483" anchor-label="SourceSetDependency" id="-1142795828%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-source-set-dependency/index.html"><span>Source</span><wbr><span>Set</span><wbr><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1142795828%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-source-set-dependency/index.html">SourceSetDependency</a> : <a href="-has-identifier/index.html">HasIdentifier</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1024938568%2FClasslikes%2F-1148686483" anchor-label="SourceSets" id="-1024938568%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-source-sets/index.html"><span>Source</span><wbr><span><span>Sets</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1024938568%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-source-sets/index.html">SourceSets</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">delegate<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">, </span><a href="-mc-source-set/index.html">McSourceSet</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">, </span><a href="-mc-source-set/index.html">McSourceSet</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Cache of <a href="-mc-source-set/index.html">sourceSets</a>, probably at the project level.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-131393857%2FClasslikes%2F-1148686483" anchor-label="TransitiveProjectDependency" id="-131393857%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-transitive-project-dependency/index.html"><span>Transitive</span><wbr><span>Project</span><wbr><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-131393857%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-transitive-project-dependency/index.html">TransitiveProjectDependency</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>source<span class="token operator">: </span><a href="-project-dependency/index.html">ProjectDependency</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>contributed<span class="token operator">: </span><a href="-project-dependency/index.html">ProjectDependency</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="888540289%2FClasslikes%2F-1148686483" anchor-label="TypeSafeProjectPathResolver" id="888540289%2FClasslikes%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-type-safe-project-path-resolver/index.html"><span>Type</span><wbr><span>Safe</span><wbr><span>Project</span><wbr><span>Path</span><wbr><span><span>Resolver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="888540289%2FClasslikes%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-type-safe-project-path-resolver/index.html">TypeSafeProjectPathResolver</a>&nbsp;<span><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation builtin">Inject</span></span>&nbsp;</span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>allProjectPathsProvider<span class="token operator">: </span><a href="-all-project-paths-provider/index.html">AllProjectPathsProvider</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">A type-safe name can't always be resolved to a String path, because dashes and pascalCase in a String path are treated the same. For instance, these two paths:</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-2070544167%2FProperties%2F-1148686483" anchor-label="projectSplitRegex" id="-2070544167%2FProperties%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="project-split-regex.html"><span>project</span><wbr><span>Split</span><wbr><span><span>Regex</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2070544167%2FProperties%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">val </span><a href="project-split-regex.html">projectSplitRegex</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.text/-regex/index.html">Regex</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="EXTENSION_FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="809152461%2FFunctions%2F-1148686483" anchor-label="apiConfig" id="809152461%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="api-config.html"><span>api</span><wbr><span><span>Config</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="809152461%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">.</span><a href="api-config.html"><span class="token function">apiConfig</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-configuration-name/index.html">ConfigurationName</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1158503190%2FFunctions%2F-1148686483" anchor-label="asConfigurationName" id="-1158503190%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="as-configuration-name.html"><span>as</span><wbr><span>Configuration</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1158503190%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="as-configuration-name.html"><span class="token function">asConfigurationName</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-configuration-name/index.html">ConfigurationName</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-48739341%2FFunctions%2F-1148686483" anchor-label="asMap" id="-48739341%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="as-map.html"><span>as</span><wbr><span><span>Map</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-48739341%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-code-generator/index.html">CodeGenerator</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="as-map.html"><span class="token function">asMap</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="-code-generator/index.html">CodeGenerator</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="242179948%2FFunctions%2F-1148686483" anchor-label="distinctSourceSetNames" id="242179948%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="distinct-source-set-names.html"><span>distinct</span><wbr><span>Source</span><wbr><span>Set</span><wbr><span><span>Names</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="242179948%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-iterable/index.html">Iterable</a><span class="token operator">&lt;</span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="distinct-source-set-names.html"><span class="token function">distinctSourceSetNames</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="distinct-source-set-names.html"><span class="token function">distinctSourceSetNames</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1382115689%2FFunctions%2F-1148686483" anchor-label="implementationConfig" id="1382115689%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="implementation-config.html"><span>implementation</span><wbr><span><span>Config</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1382115689%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">.</span><a href="implementation-config.html"><span class="token function">implementationConfig</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-configuration-name/index.html">ConfigurationName</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="945037550%2FFunctions%2F-1148686483" anchor-label="inheritsFrom" id="945037550%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="inherits-from.html"><span>inherits</span><wbr><span><span>From</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="945037550%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">.</span><a href="inherits-from.html"><span class="token function">inheritsFrom</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">other<span class="token operator">: </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">, </span></span><span class="parameter ">hasSourceSets<span class="token operator">: </span><a href="-has-source-sets/index.html">HasSourceSets</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1239080148%2FFunctions%2F-1148686483" anchor-label="isAndroid" id="1239080148%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-android.html"><span>is</span><wbr><span><span>Android</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1239080148%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="-platform-plugin/index.html">PlatformPlugin</a><span class="token punctuation">.</span><a href="is-android.html"><span class="token function">isAndroid</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="954927463%2FFunctions%2F-1148686483" anchor-label="isTestingOnly" id="954927463%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-testing-only.html"><span>is</span><wbr><span>Testing</span><wbr><span><span>Only</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="954927463%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">.</span><a href="is-testing-only.html"><span class="token function">isTestingOnly</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sourceSets<span class="token operator">: </span><a href="-source-sets/index.html">SourceSets</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2038182153%2FFunctions%2F-1148686483" anchor-label="javaConfigurationNames" id="2038182153%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="java-configuration-names.html"><span>java</span><wbr><span>Configuration</span><wbr><span><span>Names</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2038182153%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">.</span><a href="java-configuration-names.html"><span class="token function">javaConfigurationNames</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="163062748%2FFunctions%2F-1148686483" anchor-label="kaptVariant" id="163062748%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="kapt-variant.html"><span>kapt</span><wbr><span><span>Variant</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="163062748%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">.</span><a href="kapt-variant.html"><span class="token function">kaptVariant</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-configuration-name/index.html">ConfigurationName</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="290288862%2FFunctions%2F-1148686483" anchor-label="main" id="290288862%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="main.html"><span><span>main</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="290288862%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="main.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><a href="main.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="main.html"><span class="token function">main</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="main.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1382842026%2FFunctions%2F-1148686483" anchor-label="names" id="1382842026%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="names.html"><span><span>names</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1382842026%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-iterable/index.html">Iterable</a><span class="token operator">&lt;</span><a href="-mc-configuration/index.html">McConfiguration</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="names.html"><span class="token function">names</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="-mc-configuration/index.html">McConfiguration</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="names.html"><span class="token function">names</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="-configuration-name/index.html">ConfigurationName</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">convenience for <code class="lang-kotlin">map { it.name }</code></p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-iterable/index.html">Iterable</a><span class="token operator">&lt;</span><a href="-mc-source-set/index.html">McSourceSet</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="names.html"><span class="token function">names</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="-mc-source-set/index.html">McSourceSet</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="names.html"><span class="token function">names</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="990522018%2FFunctions%2F-1148686483" anchor-label="nonTestSourceSetName" id="990522018%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="non-test-source-set-name.html"><span>non</span><wbr><span>Test</span><wbr><span>Source</span><wbr><span>Set</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="990522018%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">.</span><a href="non-test-source-set-name.html"><span class="token function">nonTestSourceSetName</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sourceSets<span class="token operator">: </span><a href="-source-sets/index.html">SourceSets</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-293109661%2FFunctions%2F-1148686483" anchor-label="propertyAccessName" id="-293109661%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="property-access-name.html"><span>property</span><wbr><span>Access</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-293109661%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="property-access-name.html"><span class="token function">propertyAccessName</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1429739156%2FFunctions%2F-1148686483" anchor-label="sortedByInheritance" id="1429739156%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="sorted-by-inheritance.html"><span>sorted</span><wbr><span>By</span><wbr><span><span>Inheritance</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1429739156%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><a href="-mc-source-set/index.html">McSourceSet</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="sorted-by-inheritance.html"><span class="token function">sortedByInheritance</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="-mc-source-set/index.html">McSourceSet</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1908941605%2FFunctions%2F-1148686483" anchor-label="toSourceSetDependency" id="1908941605%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-source-set-dependency.html"><span>to</span><wbr><span>Source</span><wbr><span>Set</span><wbr><span><span>Dependency</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1908941605%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="-configured-dependency/index.html">ConfiguredDependency</a><span class="token punctuation">.</span><a href="to-source-set-dependency.html"><span class="token function">toSourceSetDependency</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">sourceSetName<span class="token operator">: </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token operator"> = </span>configurationName.toSourceSetName()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-source-set-dependency/index.html">SourceSetDependency</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1381659983%2FFunctions%2F-1148686483" anchor-label="typeSafeName" id="-1381659983%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="type-safe-name.html"><span>type</span><wbr><span>Safe</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1381659983%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">.</span><a href="type-safe-name.html"><span class="token function">typeSafeName</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Takes a conventional Gradle project path (":core:jvm") and returns the type-safe accessor name.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1225969162%2FFunctions%2F-1148686483" anchor-label="upstream" id="-1225969162%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="upstream.html"><span><span>upstream</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1225969162%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">.</span><a href="upstream.html"><span class="token function">upstream</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">hasSourceSets<span class="token operator">: </span><a href="-has-source-sets/index.html">HasSourceSets</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Upstream source set names <strong>not</strong> including the receiver name.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1870649155%2FFunctions%2F-1148686483" anchor-label="withDownStream" id="1870649155%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="with-down-stream.html"><span>with</span><wbr><span>Down</span><wbr><span><span>Stream</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1870649155%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">.</span><a href="with-down-stream.html"><span class="token function">withDownStream</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">hasSourceSets<span class="token operator">: </span><a href="-has-source-sets/index.html">HasSourceSets</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1940173092%2FFunctions%2F-1148686483" anchor-label="withUpstream" id="-1940173092%2FFunctions%2F-1148686483" data-filterable-set=":modulecheck-model:dependency:api/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-model:dependency:api/main" data-filterable-set=":modulecheck-model:dependency:api/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="with-upstream.html"><span>with</span><wbr><span><span>Upstream</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1940173092%2FFunctions%2F-1148686483"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-model:dependency:api/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">.</span><a href="with-upstream.html"><span class="token function">withUpstream</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">hasSourceSets<span class="token operator">: </span><a href="-has-source-sets/index.html">HasSourceSets</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Upstream source set names <i>including the receiver name.</i></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>modulecheck.parsing.wiring</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<link href="../../../styles/multimodule.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../../index.html">
+                    
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.parsing.wiring/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0">0.13.0-SNAPSHOT</div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+    <div><a href="index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.13.0-SNAPSHOT</a></div>
+    <div><a href="../../../older/0.12.5/modulecheck-parsing/wiring/modulecheck.parsing.wiring/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.12.5</a></div>
+  </div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":modulecheck-parsing:wiring/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":modulecheck-parsing:wiring/main" data-filter=":modulecheck-parsing:wiring/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageids="modulecheck-parsing:wiring::modulecheck.parsing.wiring////PointingToDeclaration//416315677">
+  <div class="breadcrumbs"><a href="../index.html">modulecheck-parsing:wiring</a><span class="delimiter">/</span><span class="current">modulecheck.parsing.wiring</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-661035110%2FClasslikes%2F416315677" anchor-label="AndroidDataBindingReferenceParsingInterceptor" id="-661035110%2FClasslikes%2F416315677" data-filterable-set=":modulecheck-parsing:wiring/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:wiring/main" data-filterable-set=":modulecheck-parsing:wiring/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-data-binding-reference-parsing-interceptor/index.html"><span>Android</span><wbr><span>Data</span><wbr><span>Binding</span><wbr><span>Reference</span><wbr><span>Parsing</span><wbr><span><span>Interceptor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-661035110%2FClasslikes%2F416315677"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:wiring/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-android-data-binding-reference-parsing-interceptor/index.html">AndroidDataBindingReferenceParsingInterceptor</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>androidDataBindingNameProvider<span class="token operator">: </span><a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source.internal/-android-data-binding-name-provider/index.html">AndroidDataBindingNameProvider</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source.internal/-parsing-interceptor/index.html">ParsingInterceptor</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="772150481%2FClasslikes%2F416315677" anchor-label="AndroidResourceReferenceParsingInterceptor" id="772150481%2FClasslikes%2F416315677" data-filterable-set=":modulecheck-parsing:wiring/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:wiring/main" data-filterable-set=":modulecheck-parsing:wiring/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-resource-reference-parsing-interceptor/index.html"><span>Android</span><wbr><span>Resource</span><wbr><span>Reference</span><wbr><span>Parsing</span><wbr><span><span>Interceptor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="772150481%2FClasslikes%2F416315677"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:wiring/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-android-resource-reference-parsing-interceptor/index.html">AndroidResourceReferenceParsingInterceptor</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>androidRNameProvider<span class="token operator">: </span><a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source.internal/-android-r-name-provider/index.html">AndroidRNameProvider</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source.internal/-parsing-interceptor/index.html">ParsingInterceptor</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-546077521%2FClasslikes%2F416315677" anchor-label="JvmFileCache" id="-546077521%2FClasslikes%2F416315677" data-filterable-set=":modulecheck-parsing:wiring/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:wiring/main" data-filterable-set=":modulecheck-parsing:wiring/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-jvm-file-cache/index.html"><span>Jvm</span><wbr><span>File</span><wbr><span><span>Cache</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-546077521%2FClasslikes%2F416315677"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:wiring/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-jvm-file-cache/index.html">JvmFileCache</a>&nbsp;<span><span class="token annotation builtin">@</span><span data-unresolved-link="javax.inject/Inject///PointingToDeclaration/"><span class="token annotation builtin">Inject</span></span>&nbsp;</span><span class="token keyword">constructor</span></div><div class="brief "><p class="paragraph">Note that there is also a Psi file cache inside the <a href="../../../modulecheck-parsing/kotlin-compiler/api/modulecheck.parsing.kotlin.compiler/-kotlin-environment/index.html">KotlinEnvironment</a>. This cache of <a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source/-jvm-file/index.html">JvmFile</a> just provides the next layer, in order to have caching for parsed declarations, references, and whatnot.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="893554894%2FClasslikes%2F416315677" anchor-label="RealAndroidDataBindingNameProvider" id="893554894%2FClasslikes%2F416315677" data-filterable-set=":modulecheck-parsing:wiring/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:wiring/main" data-filterable-set=":modulecheck-parsing:wiring/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-real-android-data-binding-name-provider/index.html"><span>Real</span><wbr><span>Android</span><wbr><span>Data</span><wbr><span>Binding</span><wbr><span>Name</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="893554894%2FClasslikes%2F416315677"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:wiring/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-real-android-data-binding-name-provider/index.html">RealAndroidDataBindingNameProvider</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>project<span class="token operator">: </span><a href="../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sourceSetName<span class="token operator">: </span><a href="../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source.internal/-android-data-binding-name-provider/index.html">AndroidDataBindingNameProvider</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1166341890%2FClasslikes%2F416315677" anchor-label="RealAndroidGradleSettingsProvider" id="1166341890%2FClasslikes%2F416315677" data-filterable-set=":modulecheck-parsing:wiring/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:wiring/main" data-filterable-set=":modulecheck-parsing:wiring/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-real-android-gradle-settings-provider/index.html"><span>Real</span><wbr><span>Android</span><wbr><span>Gradle</span><wbr><span>Settings</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1166341890%2FClasslikes%2F416315677"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:wiring/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-real-android-gradle-settings-provider/index.html">RealAndroidGradleSettingsProvider</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>groovyParser<span class="token operator">: </span><a href="../../../modulecheck-parsing/groovy-antlr/modulecheck.parsing.groovy.antlr/-groovy-android-gradle-parser/index.html">GroovyAndroidGradleParser</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>kotlinParser<span class="token operator">: </span><a href="../../../modulecheck-parsing/psi/modulecheck.parsing.psi/-kotlin-android-gradle-parser/index.html">KotlinAndroidGradleParser</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>buildFile<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-android-gradle-settings-provider/index.html">AndroidGradleSettingsProvider</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-463768777%2FClasslikes%2F416315677" anchor-label="RealAndroidRNameProvider" id="-463768777%2FClasslikes%2F416315677" data-filterable-set=":modulecheck-parsing:wiring/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:wiring/main" data-filterable-set=":modulecheck-parsing:wiring/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-real-android-r-name-provider/index.html"><span>Real</span><wbr><span>Android</span><wbr><span>RName</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-463768777%2FClasslikes%2F416315677"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:wiring/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-real-android-r-name-provider/index.html">RealAndroidRNameProvider</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>project<span class="token operator">: </span><a href="../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sourceSetName<span class="token operator">: </span><a href="../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source.internal/-android-r-name-provider/index.html">AndroidRNameProvider</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-431211700%2FClasslikes%2F416315677" anchor-label="RealDeclarationsProvider" id="-431211700%2FClasslikes%2F416315677" data-filterable-set=":modulecheck-parsing:wiring/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:wiring/main" data-filterable-set=":modulecheck-parsing:wiring/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-real-declarations-provider/index.html"><span>Real</span><wbr><span>Declarations</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-431211700%2FClasslikes%2F416315677"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:wiring/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-real-declarations-provider/index.html">RealDeclarationsProvider</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>project<span class="token operator">: </span><a href="../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/psi/modulecheck.parsing.psi.internal/-declarations-provider/index.html">DeclarationsProvider</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1900143734%2FClasslikes%2F416315677" anchor-label="RealDependenciesBlocksProvider" id="1900143734%2FClasslikes%2F416315677" data-filterable-set=":modulecheck-parsing:wiring/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:wiring/main" data-filterable-set=":modulecheck-parsing:wiring/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-real-dependencies-blocks-provider/index.html"><span>Real</span><wbr><span>Dependencies</span><wbr><span>Blocks</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1900143734%2FClasslikes%2F416315677"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:wiring/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-real-dependencies-blocks-provider/index.html">RealDependenciesBlocksProvider</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>groovyParser<span class="token operator">: </span><a href="../../../modulecheck-parsing/groovy-antlr/modulecheck.parsing.groovy.antlr/-groovy-dependencies-block-parser/index.html">GroovyDependenciesBlockParser</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>kotlinParser<span class="token operator">: </span><a href="../../../modulecheck-parsing/psi/modulecheck.parsing.psi/-kotlin-dependencies-block-parser/index.html">KotlinDependenciesBlockParser</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>invokesConfigurationNames<span class="token operator">: </span><a href="../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-invokes-configuration-names/index.html">InvokesConfigurationNames</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-dependencies-blocks-provider/index.html">DependenciesBlocksProvider</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="635802334%2FClasslikes%2F416315677" anchor-label="RealJvmFileProvider" id="635802334%2FClasslikes%2F416315677" data-filterable-set=":modulecheck-parsing:wiring/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:wiring/main" data-filterable-set=":modulecheck-parsing:wiring/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-real-jvm-file-provider/index.html"><span>Real</span><wbr><span>Jvm</span><wbr><span>File</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="635802334%2FClasslikes%2F416315677"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:wiring/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-real-jvm-file-provider/index.html">RealJvmFileProvider</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>jvmFileCache<span class="token operator">: </span><a href="-jvm-file-cache/index.html">JvmFileCache</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>project<span class="token operator">: </span><a href="../../../modulecheck-project/api/modulecheck.project/-mc-project/index.html">McProject</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sourceSetName<span class="token operator">: </span><a href="../../../modulecheck-model/sourceset/api/modulecheck.model.sourceset/-source-set-name/index.html">SourceSetName</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>androidRNameProvider<span class="token operator">: </span><a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source.internal/-android-r-name-provider/index.html">AndroidRNameProvider</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>androidDataBindingNameProvider<span class="token operator">: </span><a href="../../../modulecheck-parsing/source/api/modulecheck.parsing.source.internal/-android-data-binding-name-provider/index.html">AndroidDataBindingNameProvider</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-project/api/modulecheck.project/-jvm-file-provider/index.html">JvmFileProvider</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2096269512%2FClasslikes%2F416315677" anchor-label="RealPluginsBlockProvider" id="-2096269512%2FClasslikes%2F416315677" data-filterable-set=":modulecheck-parsing:wiring/main"></a>
+          <div class="table-row" data-filterable-current=":modulecheck-parsing:wiring/main" data-filterable-set=":modulecheck-parsing:wiring/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-real-plugins-block-provider/index.html"><span>Real</span><wbr><span>Plugins</span><wbr><span>Block</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2096269512%2FClasslikes%2F416315677"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":modulecheck-parsing:wiring/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-real-plugins-block-provider/index.html">RealPluginsBlockProvider</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>groovyParser<span class="token operator">: </span><a href="../../../modulecheck-parsing/groovy-antlr/modulecheck.parsing.groovy.antlr/-groovy-plugins-block-parser/index.html">GroovyPluginsBlockParser</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>kotlinParser<span class="token operator">: </span><a href="../../../modulecheck-parsing/psi/modulecheck.parsing.psi/-kotlin-plugins-block-parser/index.html">KotlinPluginsBlockParser</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>buildFile<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html">File</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>psiFileFactory<span class="token operator">: </span><a href="../../../modulecheck-parsing/kotlin-compiler/api/modulecheck.parsing.kotlin.compiler/-no-context-psi-file-factory/index.html">NoContextPsiFileFactory</a></span></span><span class="token punctuation">)</span> : <a href="../../../modulecheck-parsing/gradle/dsl/api/modulecheck.parsing.gradle.dsl/-plugins-block-provider/index.html">PluginsBlockProvider</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

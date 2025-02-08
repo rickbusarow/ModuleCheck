@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>LazyResetsImpl</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet"></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../../index.html">
+<span>ModuleCheck</span>            </a>    </div>
+    <div>
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;modulecheck.utils.lazy/-lazy-resets-impl/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0">0.12.5</div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+    <div><a href="../../../../../../modulecheck-utils/lazy/modulecheck.utils.lazy/-lazy-resets-impl/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.13.0-SNAPSHOT</a></div>
+    <div><a href="index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option">0.12.5</a></div>
+  </div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="modulecheck-utils:lazy::modulecheck.utils.lazy/LazyResetsImpl///PointingToDeclaration//1240729626">
+  <div class="breadcrumbs"><a href="../../index.html">modulecheck-utils:lazy</a><span class="delimiter">/</span><a href="../index.html">modulecheck.utils.lazy</a><span class="delimiter">/</span><a href="index.html">LazyResetsImpl</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Lazy</span><wbr><span>Resets</span><wbr><span><span>Impl</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-utils:lazy:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">internal </span><span class="token keyword">class </span><a href="index.html">LazyResetsImpl</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="index.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>resetManager<span class="token operator">: </span><a href="../-reset-manager/index.html">ResetManager</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>valueFactory<span class="token operator">: </span><span class="token keyword">suspend </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="index.html">T</a></span></span><span class="token punctuation">)</span> : <a href="../-lazy-resets/index.html">LazyResets</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">T</a><span class="token operator">&gt; </span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Sources">Sources</button></div>
+    <div class="tabs-section-body">
+      <h2 class="tabbedcontent">Constructors</h2>
+      <div class="table" data-togglable="Constructors"><a data-name="679004911%2FConstructors%2F1240729626" anchor-label="LazyResetsImpl" id="679004911%2FConstructors%2F1240729626" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-utils:lazy:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-lazy-resets-impl.html"><span>Lazy</span><wbr><span>Resets</span><wbr><span><span>Impl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="679004911%2FConstructors%2F1240729626"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-utils:lazy:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="index.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt; </span><a href="-lazy-resets-impl.html"><span class="token function">LazyResetsImpl</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resetManager<span class="token operator">: </span><a href="../-reset-manager/index.html">ResetManager</a><span class="token punctuation">, </span></span><span class="parameter ">valueFactory<span class="token operator">: </span><span class="token keyword">suspend </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="index.html">T</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="-227811198%2FFunctions%2F1240729626" anchor-label="createLazy" id="-227811198%2FFunctions%2F1240729626" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-utils:lazy:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="create-lazy.html"><span>create</span><wbr><span><span>Lazy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-227811198%2FFunctions%2F1240729626"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-utils:lazy:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="create-lazy.html"><span class="token function">createLazy</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-lazy/index.html">Lazy</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1176615362%2FFunctions%2F1240729626" anchor-label="isInitialized" id="-1176615362%2FFunctions%2F1240729626" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-utils:lazy:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="is-initialized.html"><span>is</span><wbr><span><span>Initialized</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1176615362%2FFunctions%2F1240729626"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-utils:lazy:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="is-initialized.html"><span class="token function">isInitialized</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="577963737%2FFunctions%2F1240729626" anchor-label="reset" id="577963737%2FFunctions%2F1240729626" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-utils:lazy:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="reset.html"><span><span>reset</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="577963737%2FFunctions%2F1240729626"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-utils:lazy:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="reset.html"><span class="token function">reset</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="1119570642%2FProperties%2F1240729626" anchor-label="lazyHolder" id="1119570642%2FProperties%2F1240729626" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-utils:lazy:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="lazy-holder.html">lazyHolder</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1119570642%2FProperties%2F1240729626"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-utils:lazy:dokkaHtmlPartial/main"><a data-name="1119570642%2FProperties%2F1240729626" anchor-label="lazyHolder" id="1119570642%2FProperties%2F1240729626" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="lazy-holder.html">lazyHolder</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-lazy/index.html">Lazy</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1709361716%2FProperties%2F1240729626" anchor-label="resetManager" id="1709361716%2FProperties%2F1240729626" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-utils:lazy:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="reset-manager.html">resetManager</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1709361716%2FProperties%2F1240729626"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-utils:lazy:dokkaHtmlPartial/main"><a data-name="1709361716%2FProperties%2F1240729626" anchor-label="resetManager" id="1709361716%2FProperties%2F1240729626" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="reset-manager.html">resetManager</a><span class="token operator">: </span><a href="../-reset-manager/index.html">ResetManager</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1669602551%2FProperties%2F1240729626" anchor-label="value" id="1669602551%2FProperties%2F1240729626" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-utils:lazy:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="value.html">value</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1669602551%2FProperties%2F1240729626"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-utils:lazy:dokkaHtmlPartial/main"><a data-name="1669602551%2FProperties%2F1240729626" anchor-label="value" id="1669602551%2FProperties%2F1240729626" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="value.html">value</a><span class="token operator">: </span><a href="index.html">T</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1387816857%2FProperties%2F1240729626" anchor-label="valueFactory" id="1387816857%2FProperties%2F1240729626" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-utils:lazy:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="value-factory.html">valueFactory</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1387816857%2FProperties%2F1240729626"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":modulecheck-utils:lazy:dokkaHtmlPartial/main"><a data-name="1387816857%2FProperties%2F1240729626" anchor-label="valueFactory" id="1387816857%2FProperties%2F1240729626" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main"></a><div class="symbol monospace"><span class="token keyword">private </span><span class="token keyword"></span><span class="token keyword">val </span><a href="value-factory.html">valueFactory</a><span class="token operator">: </span><span class="token keyword">suspend </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="index.html">T</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Sources</h2>
+      <div class="table" data-togglable="Sources"><a data-name="-1203556147%2FSource%2F1240729626" anchor-label="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-utils/lazy/src/main/kotlin/modulecheck/utils/lazy/lazy.kt#L56" id="-1203556147%2FSource%2F1240729626" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main"></a>
+        <div class="table-row" data-filterable-current=":modulecheck-utils:lazy:dokkaHtmlPartial/main" data-filterable-set=":modulecheck-utils:lazy:dokkaHtmlPartial/main">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="https://github.com/RBusarow/ModuleCheck/blob/main/modulecheck-utils/lazy/src/main/kotlin/modulecheck/utils/lazy/lazy.kt#L56">jvm source</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1203556147%2FSource%2F1240729626"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
+
+</body></html>
+
+
