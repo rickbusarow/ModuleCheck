@@ -306,13 +306,7 @@ jobs:
       - name: integration-tests
         uses: rickbusarow/actions/gradle-task@c602f8da97f00279c6e77d3f25cbedcbf24ef936 # v1
         with:
-          task: |
-            integrationTest
-              -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }}
-              -Pmodulecheck.agpVersion=${{ matrix.agp-version }}
-              -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }}
-              -Pmodulecheck.anvilVersion=${{ matrix.anvil-version }}
-              -Pmodulecheck.exhaustive=false
+          task: integrationTest -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }} -Pmodulecheck.agpVersion=${{ matrix.agp-version }} -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }} -Pmodulecheck.anvilVersion=${{ matrix.anvil-version }} -Pmodulecheck.exhaustive=false
           restore-cache-key: main-build-artifacts
 
       - name: Unit test results
