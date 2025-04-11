@@ -15,6 +15,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: renovate
+  cancel-in-progress: false
+
 jobs:
   renovate:
     runs-on: ubuntu-latest
