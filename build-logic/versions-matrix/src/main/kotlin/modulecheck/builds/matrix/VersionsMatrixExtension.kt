@@ -63,7 +63,7 @@ open class Versions @Inject constructor(
   )
 
   companion object {
-    internal val gradleListDefault = listOf("8.5", "8.12.1")
+    internal val gradleListDefault = listOf("8.5", "8.13")
     internal val agpListDefault = listOf("8.0.2", "8.1.0")
     internal val anvilListDefault = listOf("2.5.0", "2.5.1")
     internal val kotlinListDefault = listOf("2.0.21")
