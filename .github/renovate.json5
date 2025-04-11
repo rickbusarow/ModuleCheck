@@ -1,0 +1,88 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:best-practices',
+    'default:disableRateLimiting'
+  ],
+  rebaseWhen: 'auto',
+  rebaseLabel: 'rebase',
+  stopUpdatingLabel: 'renovate-ignore',
+  labels: [
+    'dependencies',
+    'automerge'
+  ],
+  packageRules: [
+    {
+      groupName: 'All GitHub Actions dependencies',
+      matchManagers: [
+        'github-actions'
+      ]
+    },
+    {
+      groupName: 'Kotlin and compiler plugins',
+      separateMultipleMajor: false,
+      matchPackageNames: [
+        'org.jetbrains.kotlin:{/,}**',
+        'com.google.devtools.ksp:{/,}**',
+        'com.square.anvil:{/,}**',
+        'dev.drewhamilton.poko:{/,}**'
+      ]
+    },
+    {
+      groupName: 'JUnit5 libs',
+      matchPackageNames: [
+        'org.junit.jupiter:{/,}**',
+        'org.junit.platform:{/,}**',
+        'org.junit.vintage:{/,}**'
+      ]
+    },
+    {
+      groupName: 'KtLint libs',
+      matchPackageNames: [
+        'com.pinterest.ktlint:{/,}**',
+        'com.rickbusarow.ktlint:{/,}**',
+        'com.rickbusarow.ktrules:{/,}**'
+      ]
+    },
+    {
+      automergeStrategy: 'rebase',
+      matchPackageNames: [
+        'com.rickbusarow.modulecheck:{/,}**',
+        'com.rickbusarow.module-check'
+      ],
+      groupName: 'ModuleCheck published version',
+      automerge: true,
+      automergeType: 'pr',
+      autoApprove: true,
+      labels: [
+        'dependencies'
+      ]
+    },
+    {
+      matchPackageNames: [
+        'com.rickbusarow.module-check',
+        'com.rickbusarow.dispatch:{/,}**',
+        'com.rickbusarow.doks:{/,}**',
+        'com.rickbusarow.gradle-dependency-sync:{/,}**',
+        'com.rickbusarow.hermit:{/,}**',
+        'com.rickbusarow.kase:{/,}**',
+        'com.rickbusarow.kgx:{/,}**',
+        'com.rickbusarow.ktlint:{/,}**',
+        'com.rickbusarow.ktrules:{/,}**',
+        'com.rickbusarow.lattice:{/,}**',
+        'com.rickbusarow.modulecheck:{/,}**'
+      ],
+      automergeStrategy: 'rebase',
+      matchRepositories: [
+        'repo.maven.apache.org/maven2',
+        'plugins.gradle.org/m2'
+      ],
+      automerge: true,
+      automergeType: 'pr',
+      autoApprove: true,
+      labels: [
+        'dependencies'
+      ]
+    }
+  ]
+}
