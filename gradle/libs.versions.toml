@@ -10,7 +10,7 @@ kotlin-core = "2.0.21"
 google-ksp = "2.0.21-1.0.27"
 square-anvil = "2.5.1"
 
-ajalt-clikt = "5.0.2"
+ajalt-clikt = "5.0.3"
 ajalt-mordant = "2.1.0"
 
 androidTools = "8.1.0"
