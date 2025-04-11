@@ -47,10 +47,10 @@ jobs:
       - name: check out
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - name: dokkaHtmlMultiModule
+      - name: dokkaGenerate
         uses: rickbusarow/actions/gradle-task@c602f8da97f00279c6e77d3f25cbedcbf24ef936 # v1
         with:
-          task: dokkaHtmlMultiModule
+          task: dokkaGenerate
           restore-cache-key: main-build-artifacts
           write-cache-key: dokka-build-artifacts
 
