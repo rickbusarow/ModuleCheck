@@ -293,7 +293,7 @@ jobs:
       ### <start-versions-matrix>
       matrix:
         kotlin-version: [ 2.0.21 ]
-        gradle-version: [ 8.5, 8.13 ]
+        gradle-version: [ 8.5, 8.14 ]
         agp-version: [ 8.0.2, 8.1.0 ]
         anvil-version: [ 2.5.0, 2.5.1 ]
         exclude:
