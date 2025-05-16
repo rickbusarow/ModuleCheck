@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -65,7 +65,7 @@ typealias AgpApiBasePlugin = com.android.build.gradle.api.AndroidBasePlugin
 
 /** [com.android.build.api.dsl.CommonExtension] */
 @UnsafeDirectAgpApiReference
-typealias AgpCommonExtension = com.android.build.api.dsl.CommonExtension<*, *, *, *, *>
+typealias AgpCommonExtension = com.android.build.api.dsl.CommonExtension<*, *, *, *, *, *>
 
 /** [com.android.build.gradle.LibraryExtension] */
 @UnsafeDirectAgpApiReference
@@ -132,10 +132,6 @@ typealias AgpGenerateLibraryRFileTask = com.android.build.gradle.internal.res.Ge
 @UnsafeDirectAgpApiReference
 typealias AgpLinkApplicationAndroidResourcesTask =
   com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
-
-/** [com.android.build.gradle.internal.tasks.VariantAwareTask] */
-@UnsafeDirectAgpApiReference
-typealias AgpVariantAwareTask = com.android.build.gradle.internal.tasks.VariantAwareTask
 
 /** [com.android.build.gradle.tasks.GenerateBuildConfig] */
 @UnsafeDirectAgpApiReference

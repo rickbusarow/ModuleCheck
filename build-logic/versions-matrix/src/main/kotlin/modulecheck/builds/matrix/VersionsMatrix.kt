@@ -15,6 +15,8 @@
 
 package modulecheck.builds.matrix
 
+import net.swiftzer.semver.SemVer
+
 class VersionsMatrix(
   val gradleList: List<String>,
   val agpList: List<String>,
@@ -22,9 +24,28 @@ class VersionsMatrix(
   val kotlinList: List<String>
 ) {
 
+  private fun String.coerceSemVer() = split('.').let { parts ->
+    if (parts.size == 2) {
+      SemVer.parse("$this.0")
+    } else {
+      SemVer.parse(this)
+    }
+  }
+
   internal val exclusions = listOf<Exclusion>(
-    Exclusion(anvil = "2.5.0", kotlin = "2.0.21")
+    Exclusion(anvil = "2.5.0", kotlin = "2.0.21"),
+    *agpGradle(agp = "8.10.0", gradleMinimum = "8.11.1")
   ).requireNoDuplicates()
+
+  private fun agpGradle(agp: String, gradleMinimum: String): Array<Exclusion> {
+
+    val minSemVer = gradleMinimum.coerceSemVer()
+
+    return gradleList
+      .filter { it.coerceSemVer() < minSemVer }
+      .map { Exclusion(agp = agp, gradle = it) }
+      .toTypedArray()
+  }
 
   // ORDER MATTERS.
   // ...at least with regard to Gradle.
