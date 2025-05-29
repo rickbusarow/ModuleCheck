@@ -279,7 +279,7 @@ jobs:
           path: ${{ github.workspace }}/**/build/reports/tests/
 
       - name: Unit test results
-        uses: mikepenz/action-junit-report@cf701569b05ccdd861a76b8607a66d76f6fd4857 # v5
+        uses: mikepenz/action-junit-report@65fe03598d8d251738592a497a9e8547a5c48eaa # v5
         if: failure()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -312,7 +312,7 @@ jobs:
           restore-cache-key: main-build-artifacts
 
       - name: Unit test results
-        uses: mikepenz/action-junit-report@cf701569b05ccdd861a76b8607a66d76f6fd4857 # v5
+        uses: mikepenz/action-junit-report@65fe03598d8d251738592a497a9e8547a5c48eaa # v5
         if: failure()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -344,7 +344,7 @@ jobs:
           path: ${{ github.workspace }}/**/build/reports/tests/
 
       - name: Integration test results
-        uses: mikepenz/action-junit-report@cf701569b05ccdd861a76b8607a66d76f6fd4857 # v5
+        uses: mikepenz/action-junit-report@65fe03598d8d251738592a497a9e8547a5c48eaa # v5
         if: failure()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
