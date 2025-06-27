@@ -85,7 +85,7 @@ square-workflow = "1.0.0"
 
 taskTree = "4.0.1"
 
-vanniktech-publish = "0.32.0"
+vanniktech-publish = "0.33.0"
 
 [plugins]
 
