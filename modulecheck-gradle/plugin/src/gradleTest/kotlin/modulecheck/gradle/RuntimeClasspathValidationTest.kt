@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@ package modulecheck.gradle
 
 import io.kotest.inspectors.forAll
 import io.kotest.matchers.string.shouldContain
-import modulecheck.gradle.internal.BuildProperties
+import modulecheck.gradle.internal.BuildConfig
 import modulecheck.utils.remove
 import org.junit.jupiter.api.TestFactory
 
@@ -51,7 +51,7 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
                 useVersion("$agpVersion")
               }
               if (requested.id.id == "com.rickbusarow.module-check") {
-                useVersion("${BuildProperties.version}")
+                useVersion("${BuildConfig.version}")
               }
               if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
                 useVersion("$kotlinVersion")

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,82 +13,50 @@
  * limitations under the License.
  */
 
-import com.rickbusarow.kgx.dependsOn
-import modulecheck.builds.ShardTestTask
-import modulecheck.builds.shards.registerYamlShardsTasks
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+import kotlin.math.ceil
 
 plugins {
-  id("mcbuild")
-  id("com.gradle.plugin-publish")
-  id("java-gradle-plugin")
+  alias(libs.plugins.mahout.java.gradle.plugin)
+  alias(libs.plugins.gradle.plugin.publish)
+  alias(libs.plugins.buildconfig)
+  kotlin("kapt")
   idea
 }
 
 val pluginId = "com.rickbusarow.module-check"
 
-@Suppress("UnstableApiUsage")
 val pluginDeclaration: NamedDomainObjectProvider<PluginDeclaration> = gradlePlugin.plugins
-  .register("generateProtos") {
+  .register("moduleCheck") {
     id = pluginId
-    group = modulecheck.builds.GROUP
+    group = mahoutProperties.group.get()
     displayName = "ModuleCheck"
     implementationClass = "modulecheck.gradle.ModuleCheckPlugin"
-    version = modulecheck.builds.VERSION_NAME
     description = "Fast dependency graph validation for gradle"
     tags.addAll("kotlin", "dependencies", "android", "gradle-plugin", "kotlin-compiler-plugin")
   }
 
-mcbuild {
-  published(
-    artifactId = "modulecheck-gradle-plugin"
-  )
-  publishedPlugin(pluginDeclaration)
-  dagger()
+mahout {
+  publishing {
+    pluginMaven(
+      artifactId = "modulecheck-gradle-plugin"
+    )
+    publishPlugin(pluginDeclaration)
+  }
+  gradleTests()
+}
 
-  buildConfig {
+buildConfig {
+  val DOCS_WEBSITE = "https://rickbusarow.github.io/ModuleCheck"
+  sourceSets.named("main") {
     packageName.set("modulecheck.gradle.internal")
-    field("version") { modulecheck.builds.VERSION_NAME }
-    field("sourceWebsite") { modulecheck.builds.SOURCE_WEBSITE }
-    field("docsWebsite") { modulecheck.builds.DOCS_WEBSITE }
-  }
-  buildConfig("integrationTest") {
-    packageName.set("modulecheck.gradle.internal")
-    field("version") { modulecheck.builds.VERSION_NAME }
-    field("sourceWebsite") { modulecheck.builds.SOURCE_WEBSITE }
-    field("docsWebsite") { modulecheck.builds.DOCS_WEBSITE }
+    buildConfigField("version", mahoutProperties.versionName)
+    buildConfigField("sourceWebsite", mahoutProperties.publishing.pom.url)
+    buildConfigField("docsWebsite", DOCS_WEBSITE)
   }
 }
 
-val main by sourceSets.getting
-val test by sourceSets.getting
-
-val integrationTest by java.sourceSets.registering {
-  kotlin.apply {
-    compileClasspath += main.output
-      .plus(test.output)
-      .plus(configurations.testRuntimeClasspath.get())
-    runtimeClasspath += output + compileClasspath
-  }
-}
-
-// mark the integrationTest directory as a test directory in the IDE
-idea {
-  module {
-    integrationTest.configure {
-      allSource.srcDirs
-        .forEach { srcDir ->
-          module.testSources.from(srcDir)
-        }
-    }
-  }
-}
-
-val integrationTestCompile by configurations.registering {
-  extendsFrom(configurations["testCompileOnly"])
-}
-val integrationTestRuntime by configurations.registering {
-  extendsFrom(configurations["testRuntimeOnly"])
-}
+val gradleTestImplementation by configurations.getting
 
 dependencies {
 
@@ -136,68 +104,121 @@ dependencies {
   implementation(project(path = ":modulecheck-utils:coroutines:impl"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  "integrationTestImplementation"(project(path = ":modulecheck-config:impl"))
-  "integrationTestImplementation"(project(path = ":modulecheck-gradle:platforms:impl"))
-  "integrationTestImplementation"(project(path = ":modulecheck-gradle:platforms:internal-android"))
-  "integrationTestImplementation"(project(path = ":modulecheck-gradle:platforms:internal-jvm"))
-  "integrationTestImplementation"(project(path = ":modulecheck-internal-testing"))
-  "integrationTestImplementation"(project(path = ":modulecheck-model:dependency:impl"))
-  "integrationTestImplementation"(project(path = ":modulecheck-model:sourceset:api"))
-  "integrationTestImplementation"(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
-  "integrationTestImplementation"(project(path = ":modulecheck-parsing:gradle:model:impl-typesafe"))
-  "integrationTestImplementation"(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
-  "integrationTestImplementation"(project(path = ":modulecheck-parsing:wiring"))
-  "integrationTestImplementation"(project(path = ":modulecheck-reporting:logging:api"))
-  "integrationTestImplementation"(project(path = ":modulecheck-rule:api"))
-  "integrationTestImplementation"(project(path = ":modulecheck-rule:impl"))
-  "integrationTestImplementation"(project(path = ":modulecheck-rule:impl-factory"))
-  "integrationTestImplementation"(project(path = ":modulecheck-utils:coroutines:impl"))
-  "integrationTestImplementation"(project(path = ":modulecheck-utils:stdlib"))
+  gradleTestImplementation(libs.bundles.junit)
+  gradleTestImplementation(libs.bundles.kotest)
 
-  testImplementation(libs.bundles.junit)
-  testImplementation(libs.bundles.kotest)
+  gradleTestImplementation(project(path = ":modulecheck-config:api"))
+  gradleTestImplementation(project(path = ":modulecheck-config:impl"))
+  gradleTestImplementation(project(path = ":modulecheck-dagger"))
+  gradleTestImplementation(project(path = ":modulecheck-finding:name"))
+  gradleTestImplementation(project(path = ":modulecheck-gradle:platforms:api"))
+  gradleTestImplementation(project(path = ":modulecheck-gradle:platforms:impl"))
+  gradleTestImplementation(project(path = ":modulecheck-gradle:platforms:internal-android"))
+  gradleTestImplementation(project(path = ":modulecheck-gradle:platforms:internal-jvm"))
+  gradleTestImplementation(project(path = ":modulecheck-internal-testing"))
+  gradleTestImplementation(project(path = ":modulecheck-model:dependency:api"))
+  gradleTestImplementation(project(path = ":modulecheck-model:dependency:impl"))
+  gradleTestImplementation(project(path = ":modulecheck-model:sourceset:api"))
+  gradleTestImplementation(project(path = ":modulecheck-parsing:gradle:dsl:api"))
+  gradleTestImplementation(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
+  gradleTestImplementation(project(path = ":modulecheck-parsing:gradle:model:api"))
+  gradleTestImplementation(project(path = ":modulecheck-parsing:gradle:model:impl-typesafe"))
+  gradleTestImplementation(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
+  gradleTestImplementation(project(path = ":modulecheck-parsing:source:api"))
+  gradleTestImplementation(project(path = ":modulecheck-parsing:wiring"))
+  gradleTestImplementation(project(path = ":modulecheck-project-generation:api"))
+  gradleTestImplementation(project(path = ":modulecheck-project:api"))
+  gradleTestImplementation(project(path = ":modulecheck-project:impl"))
+  gradleTestImplementation(project(path = ":modulecheck-reporting:logging:api"))
+  gradleTestImplementation(project(path = ":modulecheck-rule:api"))
+  gradleTestImplementation(project(path = ":modulecheck-rule:impl"))
+  gradleTestImplementation(project(path = ":modulecheck-rule:impl-factory"))
+  gradleTestImplementation(project(path = ":modulecheck-runtime:api"))
+  gradleTestImplementation(project(path = ":modulecheck-utils:coroutines:impl"))
+  gradleTestImplementation(project(path = ":modulecheck-utils:stdlib"))
 
-  testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-project-generation:api"))
-  testImplementation(project(path = ":modulecheck-utils:stdlib"))
+  kapt(libs.google.dagger.compiler)
 }
 
-val integrationTestTask = tasks.register("integrationTest", Test::class) {
-  val integrationTestSourceSet = java.sourceSets["integrationTest"]
-  testClassesDirs = integrationTestSourceSet.output.classesDirs
-  classpath = integrationTestSourceSet.runtimeClasspath
-  dependsOn(":publishToMavenLocalNoDokka")
-}
+val gradleTestTask by tasks.named("gradleTest", Test::class)
 
-val shardCount = 6
-(1..shardCount).forEach {
+// val shardCount = 6
+// (1..shardCount).forEach {
+//
+//   tasks.register("gradleTestShard$it", ShardTestTask::class) {
+//     shardNumber.set(it)
+//     totalShards.set(shardCount)
+//     testClassesDirs = gradleTest.get().output.classesDirs
+//     classpath = gradleTest.get().runtimeClasspath
+//     doFirst {
+//       setFilter()
+//     }
+//     dependsOn("gradleTestClasses", ":publishToMavenLocalNoDokka")
+//   }
+// }
 
-  tasks.register("integrationTestShard$it", ShardTestTask::class) {
-    shardNumber.set(it)
-    totalShards.set(shardCount)
-    testClassesDirs = integrationTest.get().output.classesDirs
-    classpath = integrationTest.get().runtimeClasspath
-    doFirst {
-      setFilter()
-    }
-    dependsOn("integrationTestClasses", ":publishToMavenLocalNoDokka")
+// registerYamlShardsTasks(
+//   shardCount = shardCount,
+//   startTagName = "### <start-integration-test-shards>",
+//   endTagName = "### <end-integration-test-shards>",
+//   taskNamePart = "gradleTest",
+//   yamlFile = rootProject.file(".github/workflows/ci.yml")
+// )
+
+abstract class ShardTestTask : Test() {
+
+  @get:Input
+  abstract val totalShards: Property<Int>
+
+  @get:Input
+  abstract val shardNumber: Property<Int>
+
+  private var filterWasSet: Boolean = false
+
+  fun setFilter() {
+
+    // Calculate the range of test classes for this shard
+    val testClassCount = testClassesDirs.asFileTree.matching {
+      include("**/*Test.class")
+    }.files.size
+
+    val testsPerShard = ceil(testClassCount.toDouble() / totalShards.get()).toInt()
+    val startIndex = testsPerShard * (shardNumber.get() - 1)
+    val endIndex = minOf(testClassCount, startIndex + testsPerShard)
+
+    testLogging.events(
+      TestLogEvent.FAILED,
+      TestLogEvent.STARTED,
+      TestLogEvent.PASSED,
+      TestLogEvent.SKIPPED
+    )
+
+    testClassesDirs.asFileTree.matching {
+      include("**/*Test.class")
+    }.files.asSequence()
+      .sorted()
+      .map { file -> file.name.replace(".class", "") }
+      .drop(startIndex)
+      .take(endIndex - startIndex)
+      .also {
+
+        println(
+          "###### integration test shard ${shardNumber.get()} of ${totalShards.get()} includes:\n" +
+            it.joinToString("\n")
+        )
+      }
+      .forEach {
+        this@ShardTestTask.filter.includeTest(it, null)
+      }
+
+    filterWasSet = true
   }
-}
 
-registerYamlShardsTasks(
-  shardCount = shardCount,
-  startTagName = "### <start-integration-test-shards>",
-  endTagName = "### <end-integration-test-shards>",
-  taskNamePart = "integrationTest",
-  yamlFile = rootProject.file(".github/workflows/ci.yml")
-)
+  @TaskAction
+  fun execute() {
 
-tasks.named("check").dependsOn(integrationTestTask)
-
-kotlin {
-  val compilations = target.compilations
-
-  compilations.getByName("integrationTest") {
-    associateWith(compilations.getByName("main"))
+    if (!filterWasSet) {
+      throw GradleException("This shard test task did not have its filter set.")
+    }
   }
 }

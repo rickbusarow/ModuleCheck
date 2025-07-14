@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2024 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,28 +13,29 @@
  * limitations under the License.
  */
 
-import com.rickbusarow.kgx.buildDir
-import modulecheck.builds.GROUP
-import modulecheck.builds.PLUGIN_ID
-import modulecheck.builds.VERSION_NAME
-import modulecheck.builds.VERSION_NAME_STABLE
-
 buildscript {
   dependencies {
     classpath(libs.kotlin.gradle.plugin)
-    classpath(libs.vanniktech.publish)
-    classpath(libs.rickBusarow.kgx)
   }
 }
 
 plugins {
-  id("mcbuild.root")
-  alias(libs.plugins.dependencyAnalysis)
-  alias(libs.plugins.detekt)
   alias(libs.plugins.doks)
-  alias(libs.plugins.moduleCheck)
+  alias(libs.plugins.poko) apply false
+  alias(libs.plugins.mahout.root)
+
+  // Avoid "the plugin is already in the classpath with an unknown version" issues
+  // when consuming Mahout from a snapshot build.
+  alias(libs.plugins.mahout.kotlin.jvm.module) apply false
+  alias(libs.plugins.mahout.java.gradle.plugin) apply false
+
   alias(libs.plugins.taskTree)
 }
+
+val GROUP = mahoutProperties.group.get()
+val PLUGIN_ID = "com.rickbusarow.module-check"
+val VERSION_NAME = mahoutProperties.versionName.get()
+val VERSION_NAME_STABLE = libs.versions.rickBusarow.moduleCheck.get()
 
 doks {
   dokSet("readme") {
@@ -115,50 +116,17 @@ doks {
   }
 }
 
-moduleCheck {
-  deleteUnused = true
-  checks {
-    depths = true
-    sortDependencies = true
-  }
-  reports {
-    depths.enabled = true
-    graphs {
-      enabled = true
-      outputDir = "${buildDir()}/reports/modulecheck/graphs"
-    }
-  }
-}
-
-afterEvaluate {
-
-  // Hack for ensuring that when 'publishToMavenLocal' is invoked from the root project,
-  // all subprojects are published.  This is used in plugin tests.
-  sequenceOf(
-    "publishToMavenLocal",
-    "publishToMavenLocalNoDokka"
-  ).forEach { taskName ->
-    tasks.register(taskName) {
-      subprojects.forEach { sub ->
-        dependsOn(sub.tasks.matching { it.name == taskName })
-      }
-    }
-  }
-
-  sequenceOf(
-    "buildHealth",
-    "clean",
-    "ktlintCheck",
-    "ktlintFormat",
-    "ktlintCheckGradleScripts",
-    "ktlintFormatGradleScripts",
-    "moduleCheck",
-    "moduleCheckAuto",
-    "moduleCheckSortDependenciesAuto",
-    "test"
-  ).forEach { taskName ->
-    tasks.named(taskName).configure {
-      dependsOn(gradle.includedBuild("build-logic").task(":$taskName"))
-    }
-  }
-}
+// moduleCheck {
+//   deleteUnused = true
+//   checks {
+//     depths = true
+//     sortDependencies = true
+//   }
+//   reports {
+//     depths.enabled = true
+//     graphs {
+//       enabled = true
+//       outputDir = "${buildDir()}/reports/modulecheck/graphs"
+//     }
+//   }
+// }

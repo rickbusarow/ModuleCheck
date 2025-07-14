@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,14 +14,14 @@
  */
 
 plugins {
-  id("mcbuild")
+  alias(libs.plugins.mahout.kotlin.jvm.module)
+  alias(libs.plugins.anvil)
 }
 
-mcbuild {
-  published(
-    artifactId = "modulecheck-project-testing"
-  )
-  anvil()
+mahout {
+  publishing {
+    publishMaven(artifactId = "modulecheck-project-testing")
+  }
 }
 
 dependencies {

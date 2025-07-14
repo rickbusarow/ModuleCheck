@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2024 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@ import com.rickbusarow.kase.ParamTestEnvironmentFactory
 import com.rickbusarow.kase.files.TestLocation
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.internal.defaultCodeGeneratorBindings
-import modulecheck.gradle.internal.BuildProperties
+import modulecheck.gradle.internal.BuildConfig
 import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.project.ProjectCache
 import modulecheck.project.generation.ProjectCollector
@@ -100,7 +100,7 @@ class McGradleTestEnvironment(
               useVersion("$agpVersion")
             }
             if (requested.id.id == "com.rickbusarow.module-check") {
-              useVersion("${BuildProperties.version}")
+              useVersion("${BuildConfig.version}")
             }
             if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
               useVersion("$kotlinVersion")

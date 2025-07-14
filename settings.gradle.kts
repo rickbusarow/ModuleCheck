@@ -17,48 +17,35 @@ rootProject.name = "ModuleCheck"
 
 pluginManagement {
 
-  val allowMavenLocal = providers
-    .gradleProperty("moduleCheck.allow-maven-local")
-    .orNull.toBoolean()
-
   repositories {
-    if (allowMavenLocal) {
-      logger.lifecycle("${rootProject.name} -- allowing mavenLocal for plugins")
-      mavenLocal()
-    }
-    gradlePluginPortal()
-    mavenCentral()
-    google()
     maven {
-      url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+      url = uri("https://central.sonatype.com/repository/maven-snapshots/")
       content {
+        @Suppress("UnstableApiUsage")
+        includeGroupAndSubgroups("com.rickbusarow.mahout")
         includeGroup("com.rickbusarow.module-check")
         includeGroup("com.rickbusarow.modulecheck")
       }
     }
+    gradlePluginPortal()
+    mavenCentral()
+    google()
   }
   includeBuild("build-logic")
 }
 
-val allowMavenLocal = providers
-  .gradleProperty("moduleCheck.allow-maven-local")
-  .orNull.toBoolean()
-
 dependencyResolutionManagement {
   @Suppress("UnstableApiUsage")
   repositories {
-    if (allowMavenLocal) {
-      logger.lifecycle("${rootProject.name} -- allowing mavenLocal for dependencies")
-      mavenLocal()
-    }
     mavenCentral()
     google()
-    maven("https://plugins.gradle.org/m2/")
   }
 }
 
 plugins {
   id("com.gradle.develocity") version "4.0.2"
+  id("com.gradle.common-custom-user-data-gradle-plugin") version "2.2.1"
+  id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
 val isCI = System.getenv("CI")?.toBoolean() == true

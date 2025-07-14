@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2025 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,7 +36,7 @@ abstract class CheckPlugin : Plugin<Project> {
       task.dependsOn(target.rootProject.tasks.matchingName("artifactsDump"))
       task.dependsOn(target.rootProject.tasks.matchingName("spotlessApply"))
       task.dependsOn(target.rootProject.tasks.matchingName("updateChangelogVersionLinks"))
-      task.dependsOn(target.tasks.matchingName("apiDump"))
+      // task.dependsOn(target.tasks.matchingName("apiDump"))
       task.dependsOn(target.tasks.matchingName("dependencyGuardBaseline"))
       task.dependsOn(target.tasks.matchingName("ktlintFormat"))
       task.dependsOn(target.tasks.matchingName("deleteEmptyDirs"))

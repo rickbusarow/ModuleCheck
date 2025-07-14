@@ -9,6 +9,7 @@ kotlin-gradle = "2.0.21"
 kotlin-core = "2.0.21"
 google-ksp = "2.0.21-1.0.27"
 square-anvil = "2.5.1"
+poko = "0.18.7"
 
 ajalt-clikt = "5.0.3"
 ajalt-mordant = "3.0.2"
@@ -72,6 +73,7 @@ rickBusarow-kase = "0.12.0"
 rickBusarow-kgx = "0.1.12"
 rickBusarow-ktlint = "0.2.2"
 rickBusarow-ktrules = "1.5.0"
+rickBusarow-mahout = "0.1.0-SNAPSHOT"
 rickBusarow-moduleCheck = "0.12.5"
 rickBusarow-tangle = "0.15.1"
 semVer = "2.1.0"
@@ -112,6 +114,13 @@ shadow = { id = "com.github.johnrengelman.shadow", version.ref = "johnrengelman-
 tangle = { id = "com.rickbusarow.tangle", version.ref = "rickBusarow-tangle" }
 taskTree = { id = "com.dorongold.task-tree", version.ref = "taskTree" }
 wire = { id = "com.squareup.wire", version.ref = "square-wire" }
+
+
+poko = { id = "dev.drewhamilton.poko", version.ref = "poko" }
+mahout-root = { id = "com.rickbusarow.mahout.root", version.ref = "rickBusarow-mahout" }
+mahout-kotlin-jvm-module = { id = "com.rickbusarow.mahout.kotlin-jvm-module", version.ref = "rickBusarow-mahout" }
+mahout-java-gradle-plugin = { id = "com.rickbusarow.mahout.java-gradle-plugin", version.ref = "rickBusarow-mahout" }
+
 
 [libraries]
 agp = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }

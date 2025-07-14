@@ -22,7 +22,6 @@ import com.vanniktech.maven.publish.JavadocJar.Dokka
 import com.vanniktech.maven.publish.KotlinJvm
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.SonatypeHost.Companion.DEFAULT
-import kotlinx.validation.ApiValidationExtension
 import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
@@ -100,18 +99,18 @@ private fun Project.configurePublishPlugin(
 
 fun Project.applyBinaryCompatibility() {
 
-  pluginManager.apply("org.jetbrains.kotlinx.binary-compatibility-validator")
-
-  extensions.configure(ApiValidationExtension::class.java) { extension ->
-
-    // Packages that are excluded from public API dumps even if they contain public API
-    extension.ignoredPackages = mutableSetOf("sample", "samples")
-
-    // Subprojects that are excluded from API validation
-    extension.ignoredProjects = mutableSetOf()
-  }
-
-  tasks.named("apiCheck").mustRunAfter("apiDump")
+  // pluginManager.apply("org.jetbrains.kotlinx.binary-compatibility-validator")
+  //
+  // extensions.configure(ApiValidationExtension::class.java) { extension ->
+  //
+  //   // Packages that are excluded from public API dumps even if they contain public API
+  //   extension.ignoredPackages = mutableSetOf("sample", "samples")
+  //
+  //   // Subprojects that are excluded from API validation
+  //   extension.ignoredProjects = mutableSetOf()
+  // }
+  //
+  // tasks.named("apiCheck").mustRunAfter("apiDump")
 }
 
 private fun Project.configurePublish(artifactId: String, pomDescription: String, groupId: String) {

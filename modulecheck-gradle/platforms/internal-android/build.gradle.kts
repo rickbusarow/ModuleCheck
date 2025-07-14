@@ -14,14 +14,14 @@
  */
 
 plugins {
-  id("mcbuild")
+  alias(libs.plugins.mahout.kotlin.jvm.module)
+  alias(libs.plugins.anvil)
 }
 
-mcbuild {
-  published(
-    artifactId = "modulecheck-gradle-platform-internal-android"
-  )
-  anvil()
+mahout {
+  publishing {
+    publishMaven(artifactId = "modulecheck-gradle-platform-internal-android")
+  }
 }
 
 kotlin {
